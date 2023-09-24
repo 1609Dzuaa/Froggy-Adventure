@@ -101,7 +101,7 @@ public class StateManager : MonoBehaviour
         if (collision.gameObject.CompareTag("Orange"))
         {
             numOrange++;
-            txtCount.text = "Oranges: " + numOrange.ToString();
+            //txtCount.text = "Oranges: " + numOrange.ToString();
             Destroy(collision.gameObject);
         }
     }
