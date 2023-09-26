@@ -14,13 +14,14 @@ public class StateManager : MonoBehaviour
     public FallState fallState = new FallState();
     //public DashState dashState = new DashState();
     //public DeadState deadState = new DeadState();
+    public Transform movingPlatform; //just testing, looks stupid asf!
 
     Animator anim;  //use for control animation
     SpriteRenderer sprite;  //use for control sprite 
     Rigidbody2D rb; //use for control Rb
     float dirX, dirY;
     //make sure only if the player is on ground then he can jump
-    bool isOnGround;
+    bool isOnGround, isOnPlatform;
     bool isDashing;
     int numOrange;
 
@@ -47,7 +48,12 @@ public class StateManager : MonoBehaviour
 
     public bool getIsOnGround() { return this.isOnGround; }
 
+    public bool getIsOnPlatform() { return this.isOnPlatform; }
+
     public void setIsOnGround(bool value) { this.isOnGround = value; }
+
+    public void setIsOnPlatform(bool value) { this.isOnPlatform = value; }
+
 
     public bool getIsDashing() { return this.isDashing; }
 
@@ -61,6 +67,7 @@ public class StateManager : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        movingPlatform = GetComponent<Transform>();
         numOrange = 0;
         state = idleState;
         state.EnterState(this);
@@ -94,8 +101,13 @@ public class StateManager : MonoBehaviour
     {
         if (collision.collider.CompareTag("Ground"))
             isOnGround = true;
-        //if (collision.collider.CompareTag("Spike"))
-            //ChangeState(deadState);
+        if (collision.collider.CompareTag("Platform"))
+            isOnPlatform = true;
+        if (collision.collider.CompareTag("Spike"))
+        {
+            anim.SetTrigger("dead");
+            rb.bodyType = RigidbodyType2D.Static;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

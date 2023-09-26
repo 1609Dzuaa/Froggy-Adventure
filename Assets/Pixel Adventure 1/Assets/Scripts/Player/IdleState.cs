@@ -44,6 +44,7 @@ public class IdleState : BaseState
 
     public override void FixedUpdate(StateManager stateManager)
     {
-
+        if (stateManager.getIsOnPlatform())
+            stateManager.getRigidbody2D().position = new Vector2(stateManager.movingPlatform.position.x, stateManager.movingPlatform.position.y);
     }
 }

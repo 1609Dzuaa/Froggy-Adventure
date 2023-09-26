@@ -26,10 +26,13 @@ public class JumpState : BaseState
     {
         if (stateManager.getDirY() < 0)
         {
-            if (stateManager.getIsOnGround())
+            if (stateManager.getIsOnGround() || stateManager.getIsOnPlatform())
             {
                 stateManager.getRigidbody2D().velocity = new Vector2(stateManager.getRigidbody2D().velocity.x, stateManager.getvY());
-                stateManager.setIsOnGround(false);
+                if (stateManager.getIsOnGround())
+                    stateManager.setIsOnGround(false);
+                else 
+                    stateManager.setIsOnPlatform(false);
             }
         }
     }
