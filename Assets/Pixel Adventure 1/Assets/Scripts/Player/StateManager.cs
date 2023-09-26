@@ -15,17 +15,19 @@ public class StateManager : MonoBehaviour
     //public DashState dashState = new DashState();
     //public DeadState deadState = new DeadState();
 
-    Animator anim;
-    SpriteRenderer sprite;
-    Rigidbody2D rb;
+    Animator anim;  //use for control animation
+    SpriteRenderer sprite;  //use for control sprite 
+    Rigidbody2D rb; //use for control Rb
     float dirX, dirY;
     //make sure only if the player is on ground then he can jump
     bool isOnGround;
     bool isDashing;
     int numOrange;
 
+    //SerializeField:
+    //Cho phép điều chỉnh ngoài Editor mà 0 làm mất tính đóng gói
     [SerializeField] float vX, vY, dashSpeed;
-    [SerializeField] Text txtCount;
+    [SerializeField] Text txtScore;
 
     //Public Field
     public Rigidbody2D getRigidbody2D() { return this.rb; }
@@ -101,7 +103,7 @@ public class StateManager : MonoBehaviour
         if (collision.gameObject.CompareTag("Orange"))
         {
             numOrange++;
-            //txtCount.text = "Oranges: " + numOrange.ToString();
+            txtScore.text = "Oranges: " + numOrange.ToString();
             Destroy(collision.gameObject);
         }
     }
