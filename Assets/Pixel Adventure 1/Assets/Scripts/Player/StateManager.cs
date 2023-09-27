@@ -14,7 +14,6 @@ public class StateManager : MonoBehaviour
     public FallState fallState = new FallState();
     //public DashState dashState = new DashState();
     //public DeadState deadState = new DeadState();
-    public Transform movingPlatform; //just testing, looks stupid asf!
 
     Animator anim;  //use for control animation
     SpriteRenderer sprite;  //use for control sprite 
@@ -67,7 +66,6 @@ public class StateManager : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        movingPlatform = GetComponent<Transform>();
         numOrange = 0;
         state = idleState;
         state.EnterState(this);
@@ -83,6 +81,7 @@ public class StateManager : MonoBehaviour
     private void FixedUpdate()
     {
         state.FixedUpdate(this);
+        //Debug.Log("vX: " + rb.velocity.x);
     }
 
     public void ChangeState(BaseState state)
@@ -101,14 +100,20 @@ public class StateManager : MonoBehaviour
     {
         if (collision.collider.CompareTag("Ground"))
             isOnGround = true;
-        if (collision.collider.CompareTag("Platform"))
-            isOnPlatform = true;
+        //if (collision.gameObject.CompareTag("Platform"))
+           //this.gameObject.transform.SetParent(collision.gameObject.transform);
         if (collision.collider.CompareTag("Spike"))
         {
             anim.SetTrigger("dead");
             rb.bodyType = RigidbodyType2D.Static;
         }
     }
+
+    /*private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+            this.transform.SetParent(null);
+    }*/
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
