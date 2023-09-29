@@ -1,59 +1,63 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class JumpState : BaseState
 {
-    public override void EnterState(StateManager stateManager)
+    public override void EnterState(StateManager stateManager, PlayerController playerController)
     {
         stateManager.GetAnimator().SetInteger("state", (int)StateManager.EnumState.jump);
     }
 
-    public override void ExitState(StateManager stateManager)
+    public override void ExitState(StateManager stateManager, PlayerController playerController)
     {
 
     }
 
-    public override void UpdateState(StateManager stateManager)
+    public override void UpdateState(StateManager stateManager, PlayerController playerController)
     {
-        UpdateJumpLogic(stateManager);
+        UpdateJumpLogic(stateManager, playerController);
 
-        if (stateManager.getRigidbody2D().velocity.y < -0.1f)
+        if (playerController.GetRigidbody2D().velocity.y < -0.1f)
             stateManager.ChangeState(stateManager.fallState);
 
-        UpdateHorizontalLogic(stateManager);
+        UpdateHorizontalLogic(stateManager, playerController);
     }
 
-    void UpdateJumpLogic(StateManager stateManager)
+    void UpdateJumpLogic(StateManager stateManager, PlayerController playerController)
     {
-        if (stateManager.getDirY() < 0)
+        if (playerController.GetDirY() < 0)
         {
-            if (stateManager.getIsOnGround() || stateManager.getIsOnPlatform())
+            if (playerController.GetIsOnGround())
             {
-                stateManager.getRigidbody2D().velocity = new Vector2(stateManager.getRigidbody2D().velocity.x, stateManager.getvY());
-                if (stateManager.getIsOnGround())
-                    stateManager.setIsOnGround(false);
-                else 
-                    stateManager.setIsOnPlatform(false);
+                playerController.GetRigidbody2D().velocity = new Vector2(playerController.GetRigidbody2D().velocity.x, playerController.GetvY());
+                playerController.SetIsOnGround(false);
             }
         }
     }
 
-    void UpdateHorizontalLogic(StateManager stateManager)
+    void UpdateHorizontalLogic(StateManager stateManager, PlayerController playerController)
     {
-        if (stateManager.getDirX() != 0)
+        if (playerController.GetDirX() != 0)
         {
             //Lật mặt
-            if (stateManager.getDirX() < 0)
+            if (playerController.GetDirX() < 0)
                 stateManager.GetSpriteRenderer().flipX = true;
             else
                 stateManager.GetSpriteRenderer().flipX = false;
 
-            stateManager.getRigidbody2D().velocity = new Vector2(stateManager.getvX() * stateManager.getDirX(), stateManager.getRigidbody2D().velocity.y);
+            playerController.GetRigidbody2D().velocity = new Vector2(playerController.GetvX() * playerController.GetDirX(), playerController.GetRigidbody2D().velocity.y);
         }
     }
 
-    public override void FixedUpdate(StateManager stateManager)
+    public override void FixedUpdate(StateManager stateManager, PlayerController playerController)
     {
 
     }
+
+    /*private void OnCollisionEnter2D(Collision collision)
+    {
+        if(collision.collider.CompareTag("Rock"))
+
+    }*/
 
 }

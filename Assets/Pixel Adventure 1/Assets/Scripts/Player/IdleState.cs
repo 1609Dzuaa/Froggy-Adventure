@@ -2,47 +2,47 @@
 
 public class IdleState : BaseState
 {
-    public override void EnterState(StateManager stateManager)
+    public override void EnterState(StateManager stateManager, PlayerController playerController)
     {
         stateManager.GetAnimator().SetInteger("state", (int)StateManager.EnumState.idle);
     }
 
-    public override void ExitState(StateManager stateManager)
+    public override void ExitState(StateManager stateManager, PlayerController playerController)
     {
 
     }
 
-    public override void UpdateState(StateManager stateManager)
+    public override void UpdateState(StateManager stateManager, PlayerController playerController)
     {
-        UpdateHorizontalLogic(stateManager);
+        UpdateHorizontalLogic(stateManager, playerController);
 
-        UpdateVerticalLogic(stateManager);
+        UpdateVerticalLogic(stateManager, playerController);
     }
 
-    void UpdateHorizontalLogic(StateManager stateManager)
+    void UpdateHorizontalLogic(StateManager stateManager, PlayerController playerController)
     {
         //Hướng X khác 0 tức là đang di chuyển
-        if (stateManager.getDirX() != 0)
+        if (playerController.GetDirX() != 0)
         {
             stateManager.ChangeState(stateManager.runState);
         }
     }
 
-    void UpdateVerticalLogic(StateManager stateManager)
+    void UpdateVerticalLogic(StateManager stateManager, PlayerController playerController)
     {
         //Hướng Y khác 0 tức là đang nhảy hoặc rơi
-        if (stateManager.getDirY() < 0)
+        if (playerController.GetDirY() < 0)
         {
-            if (stateManager.getIsOnGround())
+            if (playerController.GetIsOnGround())
                 stateManager.ChangeState(stateManager.jumpState);
         }
-        else if (stateManager.getRigidbody2D().velocity.y < -0.1f)
+        else if (playerController.GetRigidbody2D().velocity.y < -0.1f)
         {
             stateManager.ChangeState(stateManager.fallState);
         }
     }
 
-    public override void FixedUpdate(StateManager stateManager)
+    public override void FixedUpdate(StateManager stateManager, PlayerController playerController)
     {
 
     }
