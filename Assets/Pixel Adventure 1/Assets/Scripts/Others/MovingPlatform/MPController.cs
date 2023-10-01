@@ -8,11 +8,18 @@ public class MPController : MonoBehaviour
     //2 cái vật thể dưới là mốc trái, phải của Platform -> ta sẽ 0 vẽ nó
     [SerializeField] Transform maxPointLeft;
     [SerializeField] Transform maxPointRight;
+    Rigidbody2D rb;
+    private void Start()
+    {
+        
+    }
 
     void Update()
     {
         //Còn chút giật khi Player di chuyển khỏi platform
         //=>Khả năng cũng do velocity
+        //Debug.Log(rb.velocity.x);
+        //Thử đặt trigger cho box collider onTop
     }
 
     private void FixedUpdate()

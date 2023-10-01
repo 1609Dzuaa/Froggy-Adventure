@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,6 +19,9 @@ public class PlayerController : MonoBehaviour
     //Cho phép điều chỉnh ngoài Editor mà 0 làm mất tính đóng gói
     [SerializeField] private float vX, vY, dashSpeed;
     [SerializeField] private Text txtScore;
+    [SerializeField] private AudioSource JumpSound;
+    [SerializeField] private AudioSource CollectSound;
+    [SerializeField] private AudioSource DeadSound;
 
     //Func
     public Rigidbody2D GetRigidbody2D() { return this.rb; }
@@ -34,6 +38,8 @@ public class PlayerController : MonoBehaviour
 
     public float GetDirY() { return this.dirY; }
 
+    public AudioSource GetAudioSource() { return this.JumpSound; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,12 +51,18 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleInput();
+        //Debug.Log(rb.velocity.y);
     }
 
     void HandleInput()
     {
         dirX = Input.GetAxis("Horizontal");
         dirY = Input.GetAxis("Vertical");
+
+        /*if(Input.GetKeyDown(KeyCode.E))
+        {
+            stateManager.ChangeState(stateManager.dashState);
+        }*/
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -62,15 +74,20 @@ public class PlayerController : MonoBehaviour
         {
             this.transform.SetParent(collision.collider.transform);
             isOnGround = true;
+            //Debug.Log("Col Platform");
         }
 
-        if (collision.collider.CompareTag("Rock"))
+        /*if (collision.collider.CompareTag("Ground") && Math.Abs(rb.velocity.y) > 0.1f)
+        {
             stateManager.ChangeState(stateManager.wallJumpState);
+            Debug.Log("I'm being called!");
+        }*/
 
         if (collision.collider.CompareTag("Trap"))
         {
             stateManager.GetAnimator().SetTrigger("dead");
             rb.bodyType = RigidbodyType2D.Static;
+            DeadSound.Play();
         }
     }
 
@@ -81,6 +98,7 @@ public class PlayerController : MonoBehaviour
             numOrange++;
             txtScore.text = "Oranges: " + numOrange.ToString();
             Destroy(collision.gameObject);
+            CollectSound.Play();
         }
     }
 
@@ -93,5 +111,6 @@ public class PlayerController : MonoBehaviour
     public void Reload()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //Nên tạo thêm class GameController và vứt thg này vào trong đó
     }
 }

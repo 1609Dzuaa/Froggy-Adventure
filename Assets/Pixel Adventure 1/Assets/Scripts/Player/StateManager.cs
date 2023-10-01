@@ -12,7 +12,8 @@ public class StateManager : MonoBehaviour
     public RunState runState = new RunState();
     public JumpState jumpState = new JumpState();
     public FallState fallState = new FallState();
-    public WallJumpState wallJumpState = new WallJumpState();
+    //2 States dưới đụng sau
+    //public WallJumpState wallJumpState = new WallJumpState();
     //public DashState dashState = new DashState();
 
     private Animator anim;  //use for control animation
@@ -20,9 +21,8 @@ public class StateManager : MonoBehaviour
     private PlayerController playerController;
 
     //Public Field
-
     //Tạo các enum của State để gán giá trị tương ứng cho Animations
-    public enum EnumState { idle, walk, jump, fall, walljump }
+    public enum EnumState { idle, walk, jump, fall, walljump, dash }
 
     public Animator GetAnimator() { return this.anim; }
 

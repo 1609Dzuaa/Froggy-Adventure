@@ -6,11 +6,12 @@ public class JumpState : BaseState
     public override void EnterState(StateManager stateManager, PlayerController playerController)
     {
         stateManager.GetAnimator().SetInteger("state", (int)StateManager.EnumState.jump);
+        playerController.GetAudioSource().Play();
     }
 
     public override void ExitState(StateManager stateManager, PlayerController playerController)
     {
-
+        //Từ Jump -> Wall Slide tạm ổn
     }
 
     public override void UpdateState(StateManager stateManager, PlayerController playerController)
@@ -39,11 +40,7 @@ public class JumpState : BaseState
     {
         if (playerController.GetDirX() != 0)
         {
-            //Lật mặt
-            if (playerController.GetDirX() < 0)
-                stateManager.GetSpriteRenderer().flipX = true;
-            else
-                stateManager.GetSpriteRenderer().flipX = false;
+            FlipSprite(stateManager, playerController);
 
             playerController.GetRigidbody2D().velocity = new Vector2(playerController.GetvX() * playerController.GetDirX(), playerController.GetRigidbody2D().velocity.y);
         }
@@ -52,6 +49,16 @@ public class JumpState : BaseState
     public override void FixedUpdate(StateManager stateManager, PlayerController playerController)
     {
 
+    }
+
+    private void FlipSprite(StateManager stateManager, PlayerController playerController)
+    {
+        if (playerController.GetDirX() < 0)
+            stateManager.GetSpriteRenderer().flipX = true;
+        else
+            stateManager.GetSpriteRenderer().flipX = false;
+        
+        //Hàm này dùng để lật sprite theo trục hoành
     }
 
     /*private void OnCollisionEnter2D(Collision collision)

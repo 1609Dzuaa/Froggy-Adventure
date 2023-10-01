@@ -10,7 +10,7 @@ public class FallState : BaseState
 
     public override void ExitState(StateManager stateManager, PlayerController playerController)
     {
-
+        //từ fall sang run đang có chút vấn đề
     }
 
     public override void UpdateState(StateManager stateManager, PlayerController playerController)

@@ -21,7 +21,7 @@ public class IdleState : BaseState
 
     void UpdateHorizontalLogic(StateManager stateManager, PlayerController playerController)
     {
-        //Hướng X khác 0 tức là đang di chuyển
+        //Hướng X khác 0 tức là đang di chuyển || dash
         if (playerController.GetDirX() != 0)
         {
             stateManager.ChangeState(stateManager.runState);
