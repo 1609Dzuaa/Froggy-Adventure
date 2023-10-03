@@ -100,6 +100,11 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
             CollectSound.Play();
         }
+
+        if(collision.gameObject.name == "Checkpoint")
+        {
+            Reload();
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
