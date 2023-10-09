@@ -30,6 +30,7 @@ public class RunState : BaseState
                 stateManager.GetSpriteRenderer().flipX = false;
 
             playerController.GetRigidbody2D().velocity = new Vector2(playerController.GetvX() * playerController.GetDirX(), playerController.GetRigidbody2D().velocity.y);
+            //playerController.transform.position += new Vector3(playerController.GetvX() * playerController.GetDirX(), playerController.transform.position.y) * Time.deltaTime;
         }
         else //X-direction = 0
         {

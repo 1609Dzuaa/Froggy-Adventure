@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MPController : MonoBehaviour
+public class MPHController : MonoBehaviour
 {
     [SerializeField] float vX;
     //2 cái vật thể dưới là mốc trái, phải của Platform -> ta sẽ 0 vẽ nó
@@ -16,10 +16,10 @@ public class MPController : MonoBehaviour
 
     void Update()
     {
-        //Còn chút giật khi Player di chuyển khỏi platform
-        //=>Khả năng cũng do velocity
-        //Debug.Log(rb.velocity.x);
-        //Thử đặt trigger cho box collider onTop
+        //Solution:
+        //1.Raycast ?
+        //2.FootCheck
+        //3.FF :)
     }
 
     private void FixedUpdate()
@@ -31,5 +31,17 @@ public class MPController : MonoBehaviour
             vX = -vX;
 
         this.transform.position += new Vector3(vX, 0, 0) * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //if (collision.gameObject.name == "Player")
+            //collision.gameObject.transform.SetParent(this.transform);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        //if (collision.gameObject.name == "Player")
+            //collision.gameObject.transform.SetParent(null);
     }
 }

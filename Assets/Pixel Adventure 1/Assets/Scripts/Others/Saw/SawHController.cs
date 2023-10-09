@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SawController : MonoBehaviour
+public class SawHController : MonoBehaviour
 {
     [SerializeField] float rotateSpeed = 2f;
     [SerializeField] float vX = 2f;
@@ -22,4 +22,5 @@ public class SawController : MonoBehaviour
 
         this.transform.Rotate(0f, 0f, rotateSpeed * 360 * Time.deltaTime);
     }
+
 }

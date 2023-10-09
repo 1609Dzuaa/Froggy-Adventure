@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private int numOrange = 0;
     private float dirX, dirY;
     private bool isOnGround;
+    private bool isOnPlatform;
     private Rigidbody2D rb; //use for control Rb
     private StateManager stateManager; //dùng để truy cập và chạy animations
 
@@ -51,7 +52,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleInput();
-        //Debug.Log(rb.velocity.y);
     }
 
     void HandleInput()
@@ -69,19 +69,6 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.collider.CompareTag("Ground"))
             isOnGround = true;
-
-        if (collision.collider.gameObject.CompareTag("Platform"))
-        {
-            this.transform.SetParent(collision.collider.transform);
-            isOnGround = true;
-            //Debug.Log("Col Platform");
-        }
-
-        /*if (collision.collider.CompareTag("Ground") && Math.Abs(rb.velocity.y) > 0.1f)
-        {
-            stateManager.ChangeState(stateManager.wallJumpState);
-            Debug.Log("I'm being called!");
-        }*/
 
         if (collision.collider.CompareTag("Trap"))
         {
@@ -101,16 +88,25 @@ public class PlayerController : MonoBehaviour
             CollectSound.Play();
         }
 
-        if(collision.gameObject.name == "Checkpoint")
+        if (collision.gameObject.CompareTag("Platform"))
         {
-            Reload();
+            this.transform.SetParent(collision.gameObject.transform);
+            isOnGround = true;
+        }
+
+        if (collision.gameObject.name == "Checkpoint")
+        {
+            //Reload();
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.collider.gameObject.CompareTag("Platform"))
-            this.transform.SetParent(null);
+        if(collision.gameObject.CompareTag("Platform"))
+        {
+            this.transform.SetParent(null); 
+            isOnGround = false;
+        }
     }
 
     public void Reload()
