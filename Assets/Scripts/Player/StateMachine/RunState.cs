@@ -2,26 +2,26 @@
 
 public class RunState : BaseState
 {
-    public override void EnterState(StateManager stateManager, PlayerController playerController)
+    public override void EnterState(BaseStateManager stateManager)
     {
-        stateManager.GetAnimator().SetInteger("state", (int)StateManager.EnumState.walk);
+        stateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.walk);
     }
 
-    public override void ExitState(StateManager stateManager, PlayerController playerController)
+    public override void ExitState(BaseStateManager stateManager)
     {
 
     }
 
-    public override void UpdateState(StateManager stateManager, PlayerController playerController)
+    public override void UpdateState(BaseStateManager stateManager)
     {
         //UpdateHorizontalLogic(stateManager);
 
-        UpdateVerticalLogic(stateManager, playerController);
+        //UpdateVerticalLogic(stateManager, playerController);
     }
 
-    void UpdateHorizontalLogic(StateManager stateManager, PlayerController playerController)
+    void UpdateHorizontalLogic(BaseStateManager stateManager)
     {
-        if (playerController.GetDirX() != 0)
+        /*if (playerController.GetDirX() != 0)
         {
             //Lật mặt
             if (playerController.GetDirX() < 0)
@@ -35,14 +35,14 @@ public class RunState : BaseState
         else //X-direction = 0
         {
             stateManager.ChangeState(stateManager.idleState);
-        }
+        }*/
     }
 
-    void UpdateVerticalLogic(StateManager stateManager, PlayerController playerController)
+    void UpdateVerticalLogic(BaseStateManager stateManager)
     {
         //Hướng Y khác 0 tức là đang nhảy hoặc rơi
 
-        if (playerController.GetDirY() < 0)
+        /*if (playerController.GetDirY() < 0)
         {
             if (playerController.GetIsOnGround())
                 stateManager.ChangeState(stateManager.jumpState);
@@ -50,11 +50,11 @@ public class RunState : BaseState
         else if (playerController.GetRigidbody2D().velocity.y < -0.1f)
         {
             stateManager.ChangeState(stateManager.fallState);
-        }
+        }*/
     }
 
-    public override void FixedUpdate(StateManager stateManager, PlayerController playerController)
+    public override void FixedUpdate(BaseStateManager stateManager)
     {
-        UpdateHorizontalLogic(stateManager, playerController);
+        //UpdateHorizontalLogic(stateManager, playerController);
     }
 }

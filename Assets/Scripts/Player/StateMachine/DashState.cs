@@ -3,20 +3,20 @@
 public class DashState : BaseState
 {
     float dash_start = 0.0f;
-    [SerializeField] private float dash_speed = 10.0f;
+    //[SerializeField] private float dash_speed = 10.0f;
 
-    public override void EnterState(StateManager stateManager, PlayerController playerController)
+    public override void EnterState(BaseStateManager stateManager)
     {
         dash_start = Time.time;
-        stateManager.GetAnimator().SetInteger("state", (int)StateManager.EnumState.dash);
+        stateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.dash);
     }
 
-    public override void ExitState(StateManager stateManager, PlayerController playerController)
+    public override void ExitState(BaseStateManager stateManager)
     {
 
     }
 
-    public override void UpdateState(StateManager stateManager, PlayerController playerController)
+    public override void UpdateState(BaseStateManager stateManager)
     {
         //UpdateHorizontalLogic(stateManager, playerController);
 
@@ -46,9 +46,9 @@ public class DashState : BaseState
         }
     }*/
 
-    public override void FixedUpdate(StateManager stateManager, PlayerController playerController)
+    public override void FixedUpdate(BaseStateManager stateManager)
     {
-        if (dash_start + Time.deltaTime <= 2.0f) //prob here
-            playerController.GetRigidbody2D().velocity = new Vector2(dash_speed, playerController.GetRigidbody2D().velocity.y);
+        //if (dash_start + Time.deltaTime <= 2.0f) //prob here
+            //playerController.GetRigidbody2D().velocity = new Vector2(dash_speed, playerController.GetRigidbody2D().velocity.y);
     }
 }
