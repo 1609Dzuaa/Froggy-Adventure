@@ -8,7 +8,7 @@ public class BaseStateManager : MonoBehaviour
     protected Animator anim;
     protected SpriteRenderer sprite;  //use for control sprite
 
-    private void Start()
+    protected virtual void Start()
     {
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();

@@ -17,7 +17,7 @@ public class PlayerStateManager : BaseStateManager
 
     private float dirX, dirY;
     private Rigidbody2D rb;
-    private bool IsOnGround;
+    private bool IsOnGround = false;
 
     public float GetDirX() { return this.dirX; }
 
@@ -28,11 +28,20 @@ public class PlayerStateManager : BaseStateManager
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         rb = GetComponent<Rigidbody2D>();
         state = idleState;
         state.EnterState(this);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.CompareTag("Ground"))
+        {
+            IsOnGround = true;
+        }
     }
 
     /*

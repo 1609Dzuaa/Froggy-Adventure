@@ -20,15 +20,9 @@ public class IdleState : BaseState
         if(stateManager is PlayerStateManager) 
         {
             PlayerStateManager playerStateManager = (PlayerStateManager)stateManager;
-            UpdateHorizontalLogic(playerStateManager); 
-        }
-
-        if (stateManager is PlayerStateManager)
-        {
-            PlayerStateManager playerStateManager = (PlayerStateManager)stateManager;
+            UpdateHorizontalLogic(playerStateManager);
             UpdateVerticalLogic(playerStateManager);
         }
-        Debug.Log("Im calling");
     }
 
     void UpdateHorizontalLogic(PlayerStateManager player_StateManager)

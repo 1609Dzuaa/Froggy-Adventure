@@ -18,16 +18,20 @@ public class FallState : BaseState
         //Because the velocity value will not always exactly equal 0
         //So we check does it greater or smaller than a very small value
 
-        //Nếu vận tốc 2 trục rất nhỏ thì coi như đang Idle
-        /*if (Math.Abs(stateManager.GetRigidbody2D().velocity.x) < 0.1f && Math.Abs(playerController.GetRigidbody2D().velocity.y) < 0.1f)
-            stateManager.ChangeState(stateManager.idleState);
+        if(stateManager is PlayerStateManager)
+        {
+            PlayerStateManager playerStateManager = (PlayerStateManager)stateManager;
+            //Nếu vận tốc 2 trục rất nhỏ thì coi như đang Idle
+            if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) < 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
+                playerStateManager.ChangeState(playerStateManager.idleState);
 
-        //Nếu vận tốc trục x lớn hơn .1f và trục y rất nhỏ thì
-        //chuyển sang state Walk
-        if (Math.Abs(playerController.GetRigidbody2D().velocity.x) > 0.1f && Math.Abs(playerController.GetRigidbody2D().velocity.y) < 0.1f)
-            stateManager.ChangeState(stateManager.runState);
+            //Nếu vận tốc trục x lớn hơn .1f và trục y rất nhỏ thì
+            //chuyển sang state Walk
+            if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) > 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
+                stateManager.ChangeState(playerStateManager.runState);
+        }
 
-        UpdateHorizontalLogic(stateManager, playerController);*/
+        UpdateHorizontalLogic(stateManager);
     }
 
     void UpdateHorizontalLogic(BaseStateManager stateManager)
