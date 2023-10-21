@@ -27,12 +27,15 @@ public class PlayerStateManager : BaseStateManager
 
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
 
+    public Animator GetAnimator() { return this.anim; }
+
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         rb = GetComponent<Rigidbody2D>();
         state = idleState;
+        //Debug.Log("PSM Called");
         state.EnterState(this);
     }
 

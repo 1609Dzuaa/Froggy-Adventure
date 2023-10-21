@@ -5,16 +5,20 @@ public class JumpState : BaseState
 {
     public override void EnterState(BaseStateManager stateManager)
     {
-        stateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.jump);
+        if (stateManager is PlayerStateManager)
+        {
+            PlayerStateManager playerStateManager = (PlayerStateManager)baseStateManager;
+            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.jump);
+        }
         //playerController.GetJumpSound().Play();
     }
 
-    public override void ExitState(BaseStateManager stateManager)
+    public override void ExitState()
     {
         //Từ Jump -> Wall Slide tạm ổn
     }
 
-    public override void UpdateState(BaseStateManager stateManager)
+    public override void UpdateState()
     {
         /*UpdateJumpLogic(stateManager, playerController);
 
@@ -24,7 +28,7 @@ public class JumpState : BaseState
         UpdateHorizontalLogic(stateManager, playerController);*/
     }
 
-    void UpdateJumpLogic(BaseStateManager stateManager)
+    void UpdateJumpLogic()
     {
         /*if (playerController.GetDirY() < 0)
         {
@@ -36,7 +40,7 @@ public class JumpState : BaseState
         }*/
     }
 
-    void UpdateHorizontalLogic(BaseStateManager stateManager)
+    void UpdateHorizontalLogic()
     {
         /*if (playerController.GetDirX() != 0)
         {
@@ -46,12 +50,12 @@ public class JumpState : BaseState
         }*/
     }
 
-    public override void FixedUpdate(BaseStateManager stateManager)
+    public override void FixedUpdate()
     {
 
     }
 
-    private void FlipSprite(BaseStateManager stateManager)
+    private void FlipSprite()
     {
         /*if (playerController.GetDirX() < 0)
             stateManager.GetSpriteRenderer().flipX = true;

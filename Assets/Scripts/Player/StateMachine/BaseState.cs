@@ -6,12 +6,19 @@ public class BaseState
     //Hoặc ở lớp Manager
     //Các GameObject khác muốn quản lý State thì kế thừa từ class này
 
-    public virtual void EnterState(BaseStateManager stateManager) { }
+    //Tham số là kiểu MonoBehaviour để lấy Context 
+    //=>Đại khái là lấy được đầy đủ thông tin của vật thể
 
-    public virtual void ExitState(BaseStateManager stateManager) { }
+    //Tạo sẵn những biến kiểu kế thừa từ class này ?
+    protected PlayerStateManager playerStateManager;
+    protected BaseStateManager baseStateManager;
 
-    public virtual void UpdateState(BaseStateManager stateManager) { }
+    public virtual void EnterState(BaseStateManager _baseStateManager) { }//playerStateManager = (PlayerStateManager)_baseStateManager; }
 
-    public virtual void FixedUpdate(BaseStateManager stateManager) { }
+    public virtual void ExitState() { }
+
+    public virtual void UpdateState() { }
+
+    public virtual void FixedUpdate() { }
 
 }

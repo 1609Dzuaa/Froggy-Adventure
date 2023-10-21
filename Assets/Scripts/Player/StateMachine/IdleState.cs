@@ -2,24 +2,28 @@
 
 public class IdleState : BaseState
 {
-    public override void EnterState(BaseStateManager stateManager)
+    public override void EnterState(BaseStateManager _baseStateManager)
     {
-        if(stateManager is PlayerStateManager)
+        if (_baseStateManager is PlayerStateManager)
         {
-            stateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.idle);
+            playerStateManager = (PlayerStateManager)_baseStateManager;
+            /*if (playerStateManager.GetAnimator() == null)
+            {
+                Debug.Log("NULL here");
+            }*/
+            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.idle);
         }
     }
 
-    public override void ExitState(BaseStateManager stateManager)
+    public override void ExitState()
     {
 
     }
 
-    public override void UpdateState(BaseStateManager stateManager)
+    public override void UpdateState()
     {
-        if(stateManager is PlayerStateManager) 
+        if(this.baseStateManager is PlayerStateManager) 
         {
-            PlayerStateManager playerStateManager = (PlayerStateManager)stateManager;
             UpdateHorizontalLogic(playerStateManager);
             UpdateVerticalLogic(playerStateManager);
         }
@@ -48,7 +52,7 @@ public class IdleState : BaseState
         }
     }
 
-    public override void FixedUpdate(BaseStateManager stateManager)
+    public override void FixedUpdate()
     {
 
     }

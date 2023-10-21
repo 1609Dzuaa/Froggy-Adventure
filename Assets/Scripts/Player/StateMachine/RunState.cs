@@ -4,22 +4,26 @@ public class RunState : BaseState
 {
     public override void EnterState(BaseStateManager stateManager)
     {
-        stateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.walk);
+        if (stateManager is PlayerStateManager)
+        {
+            PlayerStateManager playerStateManager = (PlayerStateManager)baseStateManager;
+            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.walk);
+        }
     }
 
-    public override void ExitState(BaseStateManager stateManager)
+    public override void ExitState()
     {
 
     }
 
-    public override void UpdateState(BaseStateManager stateManager)
+    public override void UpdateState()
     {
         //UpdateHorizontalLogic(stateManager);
 
         //UpdateVerticalLogic(stateManager, playerController);
     }
 
-    void UpdateHorizontalLogic(BaseStateManager stateManager)
+    void UpdateHorizontalLogic()
     {
         /*if (playerController.GetDirX() != 0)
         {
@@ -38,7 +42,7 @@ public class RunState : BaseState
         }*/
     }
 
-    void UpdateVerticalLogic(BaseStateManager stateManager)
+    void UpdateVerticalLogic()
     {
         //Hướng Y khác 0 tức là đang nhảy hoặc rơi
 
@@ -53,7 +57,7 @@ public class RunState : BaseState
         }*/
     }
 
-    public override void FixedUpdate(BaseStateManager stateManager)
+    public override void FixedUpdate()
     {
         //UpdateHorizontalLogic(stateManager, playerController);
     }

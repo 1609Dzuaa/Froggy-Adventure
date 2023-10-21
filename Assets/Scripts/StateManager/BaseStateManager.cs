@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,28 +10,28 @@ public class BaseStateManager : MonoBehaviour
 
     protected virtual void Start()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>(); 
         sprite = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
-        state.UpdateState(this);
+        state.UpdateState();
     }
 
     private void FixedUpdate()
     {
-        state.FixedUpdate(this);
+        state.FixedUpdate();
     }
 
     public void ChangeState(BaseState state)
     {
-        this.state.ExitState(this);
+        this.state.ExitState();
         this.state = state;
         state.EnterState(this);
     }
 
-    public Animator GetAnimator() { return this.anim; }
+    //public Animator GetAnimator() { return this.anim; }
 
     public SpriteRenderer GetSpriteRenderer() { return this.sprite; }
 }

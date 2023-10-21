@@ -8,15 +8,19 @@ public class DashState : BaseState
     public override void EnterState(BaseStateManager stateManager)
     {
         dash_start = Time.time;
-        stateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.dash);
+        if (stateManager is PlayerStateManager)
+        {
+            PlayerStateManager playerStateManager = (PlayerStateManager)baseStateManager;
+            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.dash);
+        }
     }
 
-    public override void ExitState(BaseStateManager stateManager)
+    public override void ExitState()
     {
 
     }
 
-    public override void UpdateState(BaseStateManager stateManager)
+    public override void UpdateState()
     {
         //UpdateHorizontalLogic(stateManager, playerController);
 
@@ -46,7 +50,7 @@ public class DashState : BaseState
         }
     }*/
 
-    public override void FixedUpdate(BaseStateManager stateManager)
+    public override void FixedUpdate()
     {
         //if (dash_start + Time.deltaTime <= 2.0f) //prob here
             //playerController.GetRigidbody2D().velocity = new Vector2(dash_speed, playerController.GetRigidbody2D().velocity.y);

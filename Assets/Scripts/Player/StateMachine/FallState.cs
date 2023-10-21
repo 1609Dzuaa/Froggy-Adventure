@@ -5,22 +5,26 @@ public class FallState : BaseState
 {
     public override void EnterState(BaseStateManager stateManager)
     {
-        stateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.fall);
+        if (stateManager is PlayerStateManager)
+        {
+            PlayerStateManager playerStateManager = (PlayerStateManager)baseStateManager;
+            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.fall);
+        }
     }
 
-    public override void ExitState(BaseStateManager stateManager)
+    public override void ExitState()
     {
         //từ fall sang run đang có chút vấn đề
     }
 
-    public override void UpdateState(BaseStateManager stateManager)
+    public override void UpdateState()
     {
         //Because the velocity value will not always exactly equal 0
         //So we check does it greater or smaller than a very small value
 
-        if(stateManager is PlayerStateManager)
+        if(baseStateManager is PlayerStateManager)
         {
-            PlayerStateManager playerStateManager = (PlayerStateManager)stateManager;
+            PlayerStateManager playerStateManager = (PlayerStateManager)baseStateManager;
             //Nếu vận tốc 2 trục rất nhỏ thì coi như đang Idle
             if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) < 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
                 playerStateManager.ChangeState(playerStateManager.idleState);
@@ -28,27 +32,32 @@ public class FallState : BaseState
             //Nếu vận tốc trục x lớn hơn .1f và trục y rất nhỏ thì
             //chuyển sang state Walk
             if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) > 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
-                stateManager.ChangeState(playerStateManager.runState);
+                baseStateManager.ChangeState(playerStateManager.runState);
         }
 
-        UpdateHorizontalLogic(stateManager);
+        UpdateHorizontalLogic();
     }
 
-    void UpdateHorizontalLogic(BaseStateManager stateManager)
+    void UpdateHorizontalLogic()
     {
-        /*if (playerController.GetDirX() != 0)
+        if(baseStateManager is PlayerStateManager)
         {
-            //Lật mặt
-            if (playerController.GetDirX() < 0)
-                stateManager.GetSpriteRenderer().flipX = true;
-            else
-                stateManager.GetSpriteRenderer().flipX = false;
+            PlayerStateManager playerStateManager = (PlayerStateManager)baseStateManager;
+            if (playerStateManager.GetDirX() != 0)
+            {
+                //Lật mặt
+                if (playerStateManager.GetDirX() < 0)
+                    baseStateManager.GetSpriteRenderer().flipX = true;
+                else
+                    baseStateManager.GetSpriteRenderer().flipX = false;
 
-            playerController.GetRigidbody2D().velocity = new Vector2(playerController.GetvX() * playerController.GetDirX(), playerController.GetRigidbody2D().velocity.y);
-        }*/
+                //Prob here
+                //playerStateManager.GetRigidBody2D().velocity = new Vector2(playerController.GetvX() * playerController.GetDirX(), playerController.GetRigidbody2D().velocity.y);
+            }
+        }
     }
 
-    public override void FixedUpdate(BaseStateManager stateManager)
+    public override void FixedUpdate()
     {
 
     }

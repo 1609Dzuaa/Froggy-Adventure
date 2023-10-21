@@ -5,22 +5,26 @@ public class WallJumpState : BaseState
 {
     public override void EnterState(BaseStateManager stateManager)
     {
-        stateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.walljump);
+        if (stateManager is PlayerStateManager)
+        {
+            PlayerStateManager playerStateManager = (PlayerStateManager)baseStateManager;
+            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.walljump);
+        }
     }
 
-    public override void ExitState(BaseStateManager stateManager)
+    public override void ExitState()
     {
 
     }
 
-    public override void UpdateState(BaseStateManager stateManager)
+    public override void UpdateState()
     {
         //UpdateHorizontalLogic(stateManager, playerController);
 
         //UpdateVerticalLogic(stateManager, playerController);
     }
 
-    void UpdateHorizontalLogic(BaseStateManager stateManager)
+    void UpdateHorizontalLogic()
     {
         /*Hướng X khác 0 tức là đang di chuyển
         if (playerController.GetDirX() != 0)
@@ -32,7 +36,7 @@ public class WallJumpState : BaseState
         //nếu kh thì fall
     }
 
-    void UpdateVerticalLogic(BaseStateManager stateManager)
+    void UpdateVerticalLogic()
     {
         //Hướng Y khác 0 tức là đang nhảy hoặc rơi
         /*if (playerController.GetDirY() < 0)
@@ -47,7 +51,7 @@ public class WallJumpState : BaseState
 
     }
 
-    public override void FixedUpdate(BaseStateManager stateManager)
+    public override void FixedUpdate()
     {
         /*if(Math.Abs(playerController.GetRigidbody2D().velocity.y) < 0.1f)
         {
