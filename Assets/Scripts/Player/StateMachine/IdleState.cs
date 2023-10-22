@@ -7,10 +7,6 @@ public class IdleState : BaseState
         if (_baseStateManager is PlayerStateManager)
         {
             playerStateManager = (PlayerStateManager)_baseStateManager;
-            /*if (playerStateManager.GetAnimator() == null)
-            {
-                Debug.Log("NULL here");
-            }*/
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.idle);
         }
     }
@@ -22,33 +18,31 @@ public class IdleState : BaseState
 
     public override void UpdateState()
     {
-        if(this.baseStateManager is PlayerStateManager) 
-        {
-            UpdateHorizontalLogic(playerStateManager);
-            UpdateVerticalLogic(playerStateManager);
-        }
+        UpdateHorizontalLogic();
+        UpdateVerticalLogic();
     }
 
-    void UpdateHorizontalLogic(PlayerStateManager player_StateManager)
+    void UpdateHorizontalLogic()
     {
         //Hướng X khác 0 tức là đang di chuyển || dash
-        if (player_StateManager.GetDirX() != 0)
+        if (playerStateManager.GetDirX() != 0)
         {
-            player_StateManager.ChangeState(player_StateManager.runState);
+            //Debug.Log("called");
+            playerStateManager.ChangeState(playerStateManager.runState);
         }
     }
 
-    void UpdateVerticalLogic(PlayerStateManager stateManager)
+    void UpdateVerticalLogic()
     {
         //Hướng Y khác 0 tức là đang nhảy hoặc rơi
-        if (stateManager.GetDirY() < 0)
+        if (playerStateManager.GetDirY() < 0)
         {
-            if (stateManager.GetIsOnGround())
-                stateManager.ChangeState(stateManager.jumpState);
+            if (playerStateManager.GetIsOnGround())
+                playerStateManager.ChangeState(playerStateManager.jumpState);
         }
-        else if (stateManager.GetRigidBody2D().velocity.y < -0.1f)
+        else if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
         {
-            stateManager.ChangeState(stateManager.fallState);
+            playerStateManager.ChangeState(playerStateManager.fallState);
         }
     }
 

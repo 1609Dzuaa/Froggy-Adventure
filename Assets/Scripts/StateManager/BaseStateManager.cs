@@ -5,12 +5,12 @@ using UnityEngine;
 public class BaseStateManager : MonoBehaviour
 {
     protected BaseState state;
-    protected Animator anim;
+    //protected Animator anim;
     protected SpriteRenderer sprite;  //use for control sprite
 
     protected virtual void Start()
     {
-        anim = GetComponent<Animator>(); 
+        //anim = GetComponent<Animator>(); 
         sprite = GetComponent<SpriteRenderer>();
     }
 
@@ -24,7 +24,7 @@ public class BaseStateManager : MonoBehaviour
         state.FixedUpdate();
     }
 
-    public void ChangeState(BaseState state)
+    public virtual void ChangeState(BaseState state)
     {
         this.state.ExitState();
         this.state = state;

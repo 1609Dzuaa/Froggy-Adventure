@@ -9,8 +9,10 @@ public class BaseState
     //Tham số là kiểu MonoBehaviour để lấy Context 
     //=>Đại khái là lấy được đầy đủ thông tin của vật thể
 
-    //Tạo sẵn những biến kiểu kế thừa từ class này ?
-    protected PlayerStateManager playerStateManager;
+    //Tạo sẵn những biến tĩnh kiểu là kiểu ...StateManager ?
+    //Mục đích:
+    //Nhằm cho các state biến dùng chung để reference context class
+    static protected PlayerStateManager playerStateManager;
     protected BaseStateManager baseStateManager;
 
     public virtual void EnterState(BaseStateManager _baseStateManager) { }//playerStateManager = (PlayerStateManager)_baseStateManager; }

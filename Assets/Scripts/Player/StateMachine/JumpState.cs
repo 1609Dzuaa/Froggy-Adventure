@@ -7,10 +7,9 @@ public class JumpState : BaseState
     {
         if (stateManager is PlayerStateManager)
         {
-            PlayerStateManager playerStateManager = (PlayerStateManager)baseStateManager;
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.jump);
         }
-        //playerController.GetJumpSound().Play();
+        playerStateManager.GetJumpSound().Play();
     }
 
     public override void ExitState()
@@ -20,55 +19,39 @@ public class JumpState : BaseState
 
     public override void UpdateState()
     {
-        /*UpdateJumpLogic(stateManager, playerController);
+        UpdateJumpLogic();
 
-        if (playerController.GetRigidbody2D().velocity.y < -0.1f)
-            stateManager.ChangeState(stateManager.fallState);
+        if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
+            playerStateManager.ChangeState(playerStateManager.fallState);
 
-        UpdateHorizontalLogic(stateManager, playerController);*/
+        UpdateHorizontalLogic();
     }
 
     void UpdateJumpLogic()
     {
-        /*if (playerController.GetDirY() < 0)
+        if (playerStateManager.GetDirY() < 0)
         {
-            if (playerController.GetIsOnGround())
+            if (playerStateManager.GetIsOnGround())
             {
-                playerController.GetRigidbody2D().velocity = new Vector2(playerController.GetRigidbody2D().velocity.x, playerController.GetvY());
-                playerController.SetIsOnGround(false);
+                playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetvY());
+                playerStateManager.SetIsOnGround(false);
             }
-        }*/
+        }
     }
 
     void UpdateHorizontalLogic()
     {
-        /*if (playerController.GetDirX() != 0)
+        if (playerStateManager.GetDirX() != 0)
         {
-            FlipSprite(stateManager, playerController);
+            playerStateManager.FlippingSprite();
 
-            playerController.GetRigidbody2D().velocity = new Vector2(playerController.GetvX() * playerController.GetDirX(), playerController.GetRigidbody2D().velocity.y);
-        }*/
+            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetvX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
+        }
     }
 
     public override void FixedUpdate()
     {
 
     }
-
-    private void FlipSprite()
-    {
-        /*if (playerController.GetDirX() < 0)
-            stateManager.GetSpriteRenderer().flipX = true;
-        else
-            stateManager.GetSpriteRenderer().flipX = false;
-        
-        //Hàm này dùng để lật sprite theo trục hoành*/
-    }
-
-    /*private void OnCollisionEnter2D(Collision collision)
-    {
-        if(collision.collider.CompareTag("Rock"))
-
-    }*/
 
 }

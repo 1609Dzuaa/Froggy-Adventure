@@ -4,6 +4,6 @@ public class EnumState
 {
     //Tạo các enum của State để gán giá trị tương ứng cho Animations
     public enum EState
-    { idle, walk, jump, fall, walljump, dash }
+    { idle, run, jump, fall, walljump, dash }
 
 }
