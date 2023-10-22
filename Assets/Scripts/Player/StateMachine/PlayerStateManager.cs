@@ -19,8 +19,10 @@ public class PlayerStateManager : BaseStateManager
     private float dirX, dirY;
     private Rigidbody2D rb;
     private bool IsOnGround = false;
+    private int OrangeCount = 0;
     [SerializeField] private float vX = 5f;
     [SerializeField] private float vY = 10.0f;
+    [SerializeField] Text txtScore;
     [SerializeField] private AudioSource jumpSound;
 
     //GET Functions
@@ -70,9 +72,23 @@ public class PlayerStateManager : BaseStateManager
         {
             IsOnGround = true;
         }
+        else if (collision.collider.CompareTag("Trap"))
+        {
+            anim.SetTrigger("dead");
+            rb.bodyType = RigidbodyType2D.Static;
+        }
     }
 
-    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Orange"))
+        {
+            Destroy(collision.gameObject);
+            OrangeCount++;
+            txtScore.text = "Oranges:" + OrangeCount.ToString();
+        }
+    }
+
     void Update()
     {
         HandleInput();
@@ -99,5 +115,10 @@ public class PlayerStateManager : BaseStateManager
             sprite.flipX = false;
 
         //Hàm này dùng để lật sprite theo chiều ngang
+    }
+
+    private void Reload()
+    {
+        SceneManager.LoadScene("Level 1");
     }
 }
