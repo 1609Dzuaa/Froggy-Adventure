@@ -3,43 +3,45 @@ using UnityEngine;
 
 public class JumpState : BaseState
 {
+    //Considering Coyote Time
     public override void EnterState(BaseStateManager stateManager)
     {
         if (stateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.jump);
         }
-        playerStateManager.GetJumpSound().Play();
+        HandleJump();
     }
 
     public override void ExitState()
     {
-        //Từ Jump -> Wall Slide tạm ổn
+
     }
 
     public override void UpdateState()
     {
         UpdateJumpLogic();
 
-        if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
-            playerStateManager.ChangeState(playerStateManager.fallState);
-
         UpdateHorizontalLogic();
     }
 
-    void UpdateJumpLogic()
+    private void UpdateJumpLogic()
     {
-        if (playerStateManager.GetDirY() < 0)
-        {
-            if (playerStateManager.GetIsOnGround())
-            {
-                playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetvY());
-                playerStateManager.SetIsOnGround(false);
-            }
-        }
+        //Press S While Jump => Doube Jump
+        if (Input.GetKeyDown(KeyCode.S))
+            playerStateManager.ChangeState(playerStateManager.doubleJumpState);
+        if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
+            playerStateManager.ChangeState(playerStateManager.fallState);
     }
 
-    void UpdateHorizontalLogic()
+    private void HandleJump()
+    {
+        playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetvY());
+        playerStateManager.GetJumpSound().Play();
+        playerStateManager.SetIsOnGround(false);
+    }
+
+    private void UpdateHorizontalLogic()
     {
         if (playerStateManager.GetDirX() != 0)
         {

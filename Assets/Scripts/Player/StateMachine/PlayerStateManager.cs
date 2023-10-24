@@ -12,9 +12,7 @@ public class PlayerStateManager : BaseStateManager
     public RunState runState = new RunState();
     public JumpState jumpState = new JumpState();
     public FallState fallState = new FallState();
-    //2 States dưới đụng sau
-    //public WallJumpState wallJumpState = new WallJumpState();
-    //public DashState dashState = new DashState();
+    public DoubleJumpState doubleJumpState = new DoubleJumpState();
 
     private float dirX, dirY;
     private Rigidbody2D rb;
@@ -22,8 +20,10 @@ public class PlayerStateManager : BaseStateManager
     private int OrangeCount = 0;
     [SerializeField] private float vX = 5f;
     [SerializeField] private float vY = 10.0f;
-    [SerializeField] Text txtScore;
+    [SerializeField] private Text txtScore;
     [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource collectSound;
+    [SerializeField] private AudioSource deadSound;
 
     //GET Functions
     public float GetDirX() { return this.dirX; }
@@ -33,10 +33,6 @@ public class PlayerStateManager : BaseStateManager
     public bool GetIsOnGround() { return this.IsOnGround; }
 
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
-
-    private Animator anim;
-
-    public Animator GetAnimator() { return this.anim; }
 
     public AudioSource GetJumpSound() { return this.jumpSound; }
 
@@ -52,9 +48,7 @@ public class PlayerStateManager : BaseStateManager
     {
         base.Start();
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
         state = idleState;
-        //Debug.Log("PSM Called");
         state.EnterState(this);
     }
 
@@ -62,20 +56,18 @@ public class PlayerStateManager : BaseStateManager
     {
         this.state.ExitState();
         this.state = state;
-        //Debug.Log("Called");
         this.state.EnterState(this);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.CompareTag("Ground"))
+        if (collision.collider.CompareTag("Ground") || collision.collider.CompareTag("Platform"))
         {
             IsOnGround = true;
         }
         else if (collision.collider.CompareTag("Trap"))
         {
-            anim.SetTrigger("dead");
-            rb.bodyType = RigidbodyType2D.Static;
+            HandleDeadState();
         }
     }
 
@@ -83,9 +75,19 @@ public class PlayerStateManager : BaseStateManager
     {
         if(collision.CompareTag("Orange"))
         {
-            Destroy(collision.gameObject);
-            OrangeCount++;
-            txtScore.text = "Oranges:" + OrangeCount.ToString();
+            HandleCollideItem(collision);
+        }
+        if(collision.CompareTag("Platform"))
+        {
+            this.transform.SetParent(collision.gameObject.transform);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Platform"))
+        {
+            this.transform.SetParent(null);
         }
     }
 
@@ -93,7 +95,6 @@ public class PlayerStateManager : BaseStateManager
     {
         HandleInput();
         state.UpdateState();
-        //Debug.Log("Axis Hori: " + dirX);
     }
 
     private void FixedUpdate()
@@ -105,6 +106,7 @@ public class PlayerStateManager : BaseStateManager
     {
         dirX = Input.GetAxis("Horizontal");
         dirY = Input.GetAxis("Vertical");
+        //if()
     }
 
     public void FlippingSprite()
@@ -120,5 +122,20 @@ public class PlayerStateManager : BaseStateManager
     private void Reload()
     {
         SceneManager.LoadScene("Level 1");
+    }
+
+    private void HandleCollideItem(Collider2D collision)
+    {
+        Destroy(collision.gameObject);
+        OrangeCount++;
+        txtScore.text = "Oranges:" + OrangeCount.ToString();
+        collectSound.Play();
+    }
+
+    private void HandleDeadState()
+    {
+        anim.SetTrigger("dead");
+        rb.bodyType = RigidbodyType2D.Static;
+        deadSound.Play();
     }
 }
