@@ -9,27 +9,25 @@ public class WallSlideState : BaseState
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.wallSlide);
         }
+        playerStateManager.GetRigidBody2D().gravityScale = 0.5f;
     }
 
     public override void ExitState()
     {
-
+        playerStateManager.GetRigidBody2D().gravityScale = 1.7f;
     }
 
     public override void UpdateState()
     {
-        //UpdateHorizontalLogic(stateManager, playerController);
+        UpdateHorizontalLogic();
+        UpdateVerticalLogic();
 
-        //UpdateVerticalLogic(stateManager, playerController);
+        playerStateManager.GetRigidBody2D().gravityScale = 0.5f;
     }
 
     void UpdateHorizontalLogic()
     {
-        /*Hướng X khác 0 tức là đang di chuyển
-        if (playerController.GetDirX() != 0)
-        {
-            stateManager.ChangeState(stateManager.runState);
-        }*/
+        
         //Lúc slide wall xuống thì:
         //nếu vY rất nhỏ thì change sang idle
         //nếu kh thì fall
@@ -52,9 +50,9 @@ public class WallSlideState : BaseState
 
     public override void FixedUpdate()
     {
-        /*if(Math.Abs(playerController.GetRigidbody2D().velocity.y) < 0.1f)
+        /*if(Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
         {
-            stateManager.ChangeState(stateManager.idleState);
+            playerStateManager.ChangeState(playerStateManager.idleState);
         }*/
     }
 }

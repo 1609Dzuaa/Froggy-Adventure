@@ -30,6 +30,10 @@ public class FallState : BaseState
         //chuyển sang state Run
         if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) > 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
             playerStateManager.ChangeState(playerStateManager.runState);
+
+        //Cho phép lúc Fall có thể Double Jump đc
+        if (Input.GetKeyDown(KeyCode.S) && !playerStateManager.GetHasDbJump())
+            playerStateManager.ChangeState(playerStateManager.doubleJumpState);
     }
 
     void UpdateHorizontalLogic()

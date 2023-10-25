@@ -2,7 +2,7 @@
 
 public class DoubleJumpState : BaseState
 {
-    //Chỉ có thể double jump khi đã và đang jump
+    //Chỉ có thể double jump khi đã và đang jump || fall
     public override void EnterState(BaseStateManager _baseStateManager)
     {
         if (_baseStateManager is PlayerStateManager)
@@ -10,12 +10,13 @@ public class DoubleJumpState : BaseState
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.doubleJump);
         }
 
+        playerStateManager.SetHasDbJump(true);
         playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetvY() * 0.9f);
     }
 
     public override void ExitState()
     {
-
+        
     }
 
     public override void UpdateState()

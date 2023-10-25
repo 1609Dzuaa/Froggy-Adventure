@@ -7,16 +7,18 @@ using UnityEngine.VFX;
 
 public class PlayerStateManager : BaseStateManager
 {
-    //Context Class, Use to pass DATA to each State
+    //PlayerStateManager - Context Class, Use to pass DATA to each State
     public IdleState idleState = new IdleState();
     public RunState runState = new RunState();
     public JumpState jumpState = new JumpState();
     public FallState fallState = new FallState();
     public DoubleJumpState doubleJumpState = new DoubleJumpState();
+    public WallSlideState wallSlideState = new WallSlideState();
 
     private float dirX, dirY;
     private Rigidbody2D rb;
     private bool IsOnGround = false;
+    private bool HasDbJump = false; //Cho phép DbJump 1 lần
     private int OrangeCount = 0;
     [SerializeField] private float vX = 5f;
     [SerializeField] private float vY = 10.0f;
@@ -40,8 +42,12 @@ public class PlayerStateManager : BaseStateManager
 
     public float GetvY() { return this.vY; }
 
+    public bool GetHasDbJump() { return this.HasDbJump; }
+
     //SET Functions
     public void SetIsOnGround(bool para) { this.IsOnGround = para; }
+
+    public void SetHasDbJump(bool para) { this.HasDbJump = para; }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -64,10 +70,16 @@ public class PlayerStateManager : BaseStateManager
         if (collision.collider.CompareTag("Ground") || collision.collider.CompareTag("Platform"))
         {
             IsOnGround = true;
+            HasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
         }
         else if (collision.collider.CompareTag("Trap"))
         {
             HandleDeadState();
+        }
+        else if (collision.collider.CompareTag("Wall"))
+        {
+            HasDbJump = false;
+            ChangeState(wallSlideState);
         }
     }
 
@@ -106,7 +118,6 @@ public class PlayerStateManager : BaseStateManager
     {
         dirX = Input.GetAxis("Horizontal");
         dirY = Input.GetAxis("Vertical");
-        //if()
     }
 
     public void FlippingSprite()
