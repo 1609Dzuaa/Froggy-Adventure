@@ -9,6 +9,7 @@ public class FallState : BaseState
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.fall);
         }
+        playerStateManager.SetIsOnGround(false); //Obviously!
     }
 
     public override void ExitState()

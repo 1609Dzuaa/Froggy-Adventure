@@ -21,31 +21,30 @@ public class WallSlideState : BaseState
     {
         UpdateHorizontalLogic();
         UpdateVerticalLogic();
-
-        playerStateManager.GetRigidBody2D().gravityScale = 0.5f;
     }
 
     void UpdateHorizontalLogic()
     {
-        
-        //Lúc slide wall xuống thì:
-        //nếu vY rất nhỏ thì change sang idle
-        //nếu kh thì fall
+        //muốn fall khi đang slide thì cân nhắc Collision Exit, Trigger Exit ?
+        if (playerStateManager.GetDirX() != 0)
+        {
+            //playerStateManager.FlippingSprite();
+
+            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetvX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
+            if (playerStateManager.GetLeft() * playerStateManager.GetDirX() > 0 || playerStateManager.GetRight() * playerStateManager.GetDirX() > 0)
+                playerStateManager.ChangeState(playerStateManager.fallState);
+        }
     }
 
     void UpdateVerticalLogic()
     {
-        //Hướng Y khác 0 tức là đang nhảy hoặc rơi
-        /*if (playerController.GetDirY() < 0)
-        {
-            if (playerController.GetIsOnGround())
-                stateManager.ChangeState(stateManager.jumpState);
-        }
-        else if (playerController.GetRigidbody2D().velocity.y < -0.1f)
-        {
-            stateManager.ChangeState(stateManager.fallState);
-        }*/
-
+        //Lúc slide wall xuống thì:
+        //nếu chạm đất thì change sang idle
+        //nếu bấm S thì change sang nhảy
+        if (playerStateManager.GetIsOnGround())
+            playerStateManager.ChangeState(playerStateManager.idleState);
+        if (Input.GetKeyDown(KeyCode.S))
+            playerStateManager.ChangeState(playerStateManager.jumpState);
     }
 
     public override void FixedUpdate()

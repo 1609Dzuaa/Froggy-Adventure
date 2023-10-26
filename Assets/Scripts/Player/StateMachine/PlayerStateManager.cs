@@ -19,6 +19,8 @@ public class PlayerStateManager : BaseStateManager
     private Rigidbody2D rb;
     private bool IsOnGround = false;
     private bool HasDbJump = false; //Cho phép DbJump 1 lần
+    private int isLeft = 0; //hướng va chạm với Wall là trái
+    private int isRight = 0;
     private int OrangeCount = 0;
     [SerializeField] private float vX = 5f;
     [SerializeField] private float vY = 10.0f;
@@ -43,6 +45,10 @@ public class PlayerStateManager : BaseStateManager
     public float GetvY() { return this.vY; }
 
     public bool GetHasDbJump() { return this.HasDbJump; }
+
+    public int GetLeft() { return this.isLeft; }
+
+    public int GetRight() { return this.isRight; }
 
     //SET Functions
     public void SetIsOnGround(bool para) { this.IsOnGround = para; }
@@ -76,10 +82,28 @@ public class PlayerStateManager : BaseStateManager
         {
             HandleDeadState();
         }
-        else if (collision.collider.CompareTag("Wall"))
+        else if (collision.collider.CompareTag("Wall") && !IsOnGround)
         {
             HasDbJump = false;
+            Vector2 WallPoint = collision.GetContact(0).point;
+
+            //Quy chiếu: Left = -1, Right = 1; None = 0;
+            if(transform.position.x > WallPoint.x) 
+            {
+                isLeft = 0;
+                isRight = 1;
+            }
+            if (transform.position.x < WallPoint.x)
+            {
+                isLeft = -1;
+                isRight = 0;
+            }
+
             ChangeState(wallSlideState);
+            //Xem lại vì có thể run chạm wall => wallSlide
+            //Solution: Thêm check trên không :)
+            //Vì check va chạm mới cho wallSlide 
+            //=> Có thể có TH bị overlap BoxCollider2D
         }
     }
 
@@ -107,6 +131,7 @@ public class PlayerStateManager : BaseStateManager
     {
         HandleInput();
         state.UpdateState();
+        //Debug.Log("Grav Scale: " + rb.gravityScale);
     }
 
     private void FixedUpdate()
