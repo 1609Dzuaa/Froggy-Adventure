@@ -19,16 +19,33 @@ public class PlayerStateManager : BaseStateManager
     private Rigidbody2D rb;
     private bool IsOnGround = false;
     private bool HasDbJump = false; //Cho phép DbJump 1 lần
+    private bool IsWallTouch = false;
     private int isLeft = 0; //hướng va chạm với Wall là trái
     private int isRight = 0;
+    private bool isFacingRight = true;
     private int OrangeCount = 0;
+
+    //Should we put it here ?
+    [SerializeField] private Text txtScore;
+
+    [Header("Velocity")]
     [SerializeField] private float vX = 5f;
     [SerializeField] private float vY = 10.0f;
-    [SerializeField] private Text txtScore;
+    [SerializeField] private float wallSlideSpeed = 2.0f;
+
+    [Header("Sound")]
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource collectSound;
     [SerializeField] private AudioSource deadSound;
 
+    [Header("Ground Check")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 1.0f;
+
+    [Header("Wall Check")]
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private float wallCheckDistance;
     //GET Functions
     public float GetDirX() { return this.dirX; }
 
@@ -44,7 +61,11 @@ public class PlayerStateManager : BaseStateManager
 
     public float GetvY() { return this.vY; }
 
+    public float GetWallSlideSpeed() { return this.wallSlideSpeed; }
+
     public bool GetHasDbJump() { return this.HasDbJump; }
+
+    public bool GetIsWallTouch() { return this.IsWallTouch; }
 
     public int GetLeft() { return this.isLeft; }
 
@@ -62,6 +83,7 @@ public class PlayerStateManager : BaseStateManager
         rb = GetComponent<Rigidbody2D>();
         state = idleState;
         state.EnterState(this);
+        //Để ý nếu kh có Friction thì nó sẽ bị trôi dù idle
     }
 
     public override void ChangeState(BaseState state)
@@ -75,35 +97,11 @@ public class PlayerStateManager : BaseStateManager
     {
         if (collision.collider.CompareTag("Ground") || collision.collider.CompareTag("Platform"))
         {
-            IsOnGround = true;
-            HasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
+            HandleCollideGround();
         }
         else if (collision.collider.CompareTag("Trap"))
         {
             HandleDeadState();
-        }
-        else if (collision.collider.CompareTag("Wall") && !IsOnGround)
-        {
-            HasDbJump = false;
-            Vector2 WallPoint = collision.GetContact(0).point;
-
-            //Quy chiếu: Left = -1, Right = 1; None = 0;
-            if(transform.position.x > WallPoint.x) 
-            {
-                isLeft = 0;
-                isRight = 1;
-            }
-            if (transform.position.x < WallPoint.x)
-            {
-                isLeft = -1;
-                isRight = 0;
-            }
-
-            ChangeState(wallSlideState);
-            //Xem lại vì có thể run chạm wall => wallSlide
-            //Solution: Thêm check trên không :)
-            //Vì check va chạm mới cho wallSlide 
-            //=> Có thể có TH bị overlap BoxCollider2D
         }
     }
 
@@ -131,7 +129,37 @@ public class PlayerStateManager : BaseStateManager
     {
         HandleInput();
         state.UpdateState();
-        //Debug.Log("Grav Scale: " + rb.gravityScale);
+        IsOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
+        IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
+
+        //Có chút vấn đề ở đoạn kéo theo thằng wall check khi quay trái
+
+        //Debug.Log("IsOG: " + IsOnGround);
+
+        //Vì change thẳng trong Manager luôn
+        //nên sẽ có TH: dù rời khỏi tường thì vẫn ở state wallSlide
+        /*if (IsWallTouch && !IsOnGround)
+        {
+            ChangeState(wallSlideState);
+        }*/
+
+        if (rb.velocity.x > 0.1f && !isFacingRight)
+        {
+            FlippingSprite();
+        }
+        else if (rb.velocity.x < -0.1f && isFacingRight)
+        {
+            FlippingSprite();
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        //Draw Ground Check
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+
+        //Draw Wall Check
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
     }
 
     private void FixedUpdate()
@@ -147,10 +175,16 @@ public class PlayerStateManager : BaseStateManager
 
     public void FlippingSprite()
     {
-        if (dirX < 0)
+        //Vẫn chưa lôi wallCheck theo đc ?@@
+        //Còn cách cũ thì chỉ đơn giản là lật sprite thôi
+        isFacingRight = !isFacingRight;
+        transform.Rotate(0, 180, 0);
+
+        //Bỏ cách cũ
+        /*if (dirX < 0)
             sprite.flipX = true;
-        else if(dirX > 0)
-            sprite.flipX = false;
+        else if (dirX > 0)
+            sprite.flipX = false;*/
 
         //Hàm này dùng để lật sprite theo chiều ngang
     }
@@ -173,5 +207,33 @@ public class PlayerStateManager : BaseStateManager
         anim.SetTrigger("dead");
         rb.bodyType = RigidbodyType2D.Static;
         deadSound.Play();
+    }
+
+    private void HandleCollideGround()
+    {
+        IsOnGround = true;
+        HasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
+    }
+
+    private void HandleCollideWall(Collision2D collision)
+    {
+        //Tạm cất hàm này, tìm cách wall slide hay hơn
+
+        /*HasDbJump = false;
+        Vector2 WallPoint = collision.GetContact(0).point;
+
+        //Quy chiếu: Left = -1, Right = 1; None = 0;
+        if (transform.position.x > WallPoint.x)
+        {
+            isLeft = 0;
+            isRight = 1;
+        }
+        if (transform.position.x < WallPoint.x)
+        {
+            isLeft = -1;
+            isRight = 0;
+        }
+
+        ChangeState(wallSlideState);*/
     }
 }

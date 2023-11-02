@@ -9,6 +9,7 @@ public class JumpState : BaseState
         if (stateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.jump);
+            Debug.Log("Jump");
         }
         HandleJump();
     }
@@ -32,6 +33,8 @@ public class JumpState : BaseState
             playerStateManager.ChangeState(playerStateManager.doubleJumpState);
         if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
             playerStateManager.ChangeState(playerStateManager.fallState);
+        if (playerStateManager.GetIsWallTouch() && !playerStateManager.GetIsOnGround())
+            playerStateManager.ChangeState(playerStateManager.wallSlideState);
     }
 
     private void HandleJump()
@@ -45,8 +48,6 @@ public class JumpState : BaseState
     {
         if (playerStateManager.GetDirX() != 0)
         {
-            playerStateManager.FlippingSprite();
-
             playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetvX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
         }
     }

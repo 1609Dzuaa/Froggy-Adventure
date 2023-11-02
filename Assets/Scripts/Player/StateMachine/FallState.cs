@@ -8,6 +8,7 @@ public class FallState : BaseState
         if (_baseStateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.fall);
+            Debug.Log("Fall");
         }
         playerStateManager.SetIsOnGround(false); //Obviously!
     }
@@ -15,6 +16,8 @@ public class FallState : BaseState
     public override void ExitState()
     {
         //từ fall sang run đang có chút vấn đề
+        //Khi đang fall + đụng tường thì chuyển sang run trên tường đó :v => DONE ?
+        //Khi đang fall + đụng tường của MAP + đang giữ phím A thì mãi ở trạng thái Fall
     }
 
     public override void UpdateState()
@@ -27,10 +30,15 @@ public class FallState : BaseState
         if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) < 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
             playerStateManager.ChangeState(playerStateManager.idleState);
 
-        //Nếu vận tốc trục x lớn hơn .1f và trục y rất nhỏ thì
+        //Nếu vận tốc trục x lớn hơn .1f và trục y rất nhỏ
+        //và đang OnGround thì
         //chuyển sang state Run
-        if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) > 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
+        //Prob here ?
+        if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) > 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f && playerStateManager.GetIsOnGround())
             playerStateManager.ChangeState(playerStateManager.runState);
+
+        if (playerStateManager.GetIsWallTouch() && !playerStateManager.GetIsOnGround())
+            playerStateManager.ChangeState(playerStateManager.wallSlideState);
 
         //Cho phép lúc Fall có thể Double Jump đc
         if (Input.GetKeyDown(KeyCode.S) && !playerStateManager.GetHasDbJump())
@@ -41,7 +49,6 @@ public class FallState : BaseState
     {
         //if (baseStateManager is PlayerStateManager)
         //{
-            playerStateManager.FlippingSprite();
             //Prob here
             playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetvX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
         //}

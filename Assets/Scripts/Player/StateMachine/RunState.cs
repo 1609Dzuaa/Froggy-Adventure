@@ -7,6 +7,7 @@ public class RunState : BaseState
         if (_baseStateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.run);
+            Debug.Log("Run");
         }
     }
 
@@ -25,8 +26,6 @@ public class RunState : BaseState
     {
         if (playerStateManager.GetDirX() != 0)
         {
-            playerStateManager.FlippingSprite();
-
             playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetvX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
         }
         else //X-direction = 0

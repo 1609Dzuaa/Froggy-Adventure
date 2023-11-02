@@ -8,6 +8,7 @@ public class IdleState : BaseState
         {
             playerStateManager = (PlayerStateManager)_baseStateManager;
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.idle);
+            Debug.Log("Idle");
         }
     }
 
@@ -27,7 +28,6 @@ public class IdleState : BaseState
         //Hướng X khác 0 tức là đang di chuyển || dash
         if (playerStateManager.GetDirX() != 0)
         {
-            //Debug.Log("called");
             playerStateManager.ChangeState(playerStateManager.runState);
         }
     }
