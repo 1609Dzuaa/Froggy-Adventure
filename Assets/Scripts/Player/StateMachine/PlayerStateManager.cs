@@ -14,6 +14,7 @@ public class PlayerStateManager : BaseStateManager
     public FallState fallState = new FallState();
     public DoubleJumpState doubleJumpState = new DoubleJumpState();
     public WallSlideState wallSlideState = new WallSlideState();
+    public GotHitState gotHitState = new GotHitState();
 
     private float dirX, dirY;
     private Rigidbody2D rb;
@@ -23,10 +24,12 @@ public class PlayerStateManager : BaseStateManager
     private int isLeft = 0; //hướng va chạm với Wall là trái
     private int isRight = 0;
     private bool isFacingRight = true;
+    private bool prevStateIsWallSlide = false;
     private int OrangeCount = 0;
 
     //Should we put it here ?
     [SerializeField] private Text txtScore;
+    private static int HP = 4;
 
     [Header("Velocity")]
     [SerializeField] private float vX = 5f;
@@ -46,6 +49,7 @@ public class PlayerStateManager : BaseStateManager
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float wallCheckDistance;
+
     //GET Functions
     public float GetDirX() { return this.dirX; }
 
@@ -71,10 +75,21 @@ public class PlayerStateManager : BaseStateManager
 
     public int GetRight() { return this.isRight; }
 
+    public bool GetPrevStateIsWallSlide() { return this.prevStateIsWallSlide; }
+
+    public bool GetIsFacingRight() { return this.isFacingRight; }
+
     //SET Functions
     public void SetIsOnGround(bool para) { this.IsOnGround = para; }
 
     public void SetHasDbJump(bool para) { this.HasDbJump = para; }
+
+    public void SetPrevStateIsWallSlide(bool para) { this.prevStateIsWallSlide = para; }
+
+    //HP Functions
+    public void IncreaseHP() { HP++; }
+
+    public void DecreaseHP() { HP--; }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -90,6 +105,8 @@ public class PlayerStateManager : BaseStateManager
     {
         this.state.ExitState();
         this.state = state;
+        if (state is WallSlideState)
+            prevStateIsWallSlide = true;
         this.state.EnterState(this);
     }
 
@@ -101,7 +118,10 @@ public class PlayerStateManager : BaseStateManager
         }
         else if (collision.collider.CompareTag("Trap"))
         {
-            HandleDeadState();
+            if (HP > 0)
+                ChangeState(gotHitState);
+            else
+                HandleDeadState();
         }
     }
 
@@ -132,17 +152,6 @@ public class PlayerStateManager : BaseStateManager
         IsOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
         IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
 
-        //Có chút vấn đề ở đoạn kéo theo thằng wall check khi quay trái
-
-        //Debug.Log("IsOG: " + IsOnGround);
-
-        //Vì change thẳng trong Manager luôn
-        //nên sẽ có TH: dù rời khỏi tường thì vẫn ở state wallSlide
-        /*if (IsWallTouch && !IsOnGround)
-        {
-            ChangeState(wallSlideState);
-        }*/
-
         if (rb.velocity.x > 0.1f && !isFacingRight)
         {
             FlippingSprite();
@@ -151,6 +160,13 @@ public class PlayerStateManager : BaseStateManager
         {
             FlippingSprite();
         }
+
+        //Debug.Log("FR: " + isFacingRight);
+        /*if (IsWallTouch)
+        {
+            Debug.Log("Normal: " + ray.normal.x);
+        }*/
+
     }
 
     private void OnDrawGizmos()
@@ -175,11 +191,10 @@ public class PlayerStateManager : BaseStateManager
 
     public void FlippingSprite()
     {
-        //Vẫn chưa lôi wallCheck theo đc ?@@
-        //Còn cách cũ thì chỉ đơn giản là lật sprite thôi
         isFacingRight = !isFacingRight;
         transform.Rotate(0, 180, 0);
 
+        //Cách cũ thì chỉ đơn giản là lật sprite thôi
         //Bỏ cách cũ
         /*if (dirX < 0)
             sprite.flipX = true;

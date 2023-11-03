@@ -9,7 +9,7 @@ public class JumpState : BaseState
         if (stateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.jump);
-            Debug.Log("Jump");
+            //Debug.Log("Jump");
         }
         HandleJump();
     }
@@ -41,7 +41,7 @@ public class JumpState : BaseState
     {
         playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetvY());
         playerStateManager.GetJumpSound().Play();
-        playerStateManager.SetIsOnGround(false);
+        //playerStateManager.SetIsOnGround(false);No need
     }
 
     private void UpdateHorizontalLogic()

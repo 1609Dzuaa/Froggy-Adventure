@@ -10,7 +10,7 @@ public class DoubleJumpState : BaseState
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.doubleJump);
         }
 
-        Debug.Log("DBJump");
+        //Debug.Log("DBJump");
         playerStateManager.SetHasDbJump(true);
         playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetvY() * 0.9f);
     }

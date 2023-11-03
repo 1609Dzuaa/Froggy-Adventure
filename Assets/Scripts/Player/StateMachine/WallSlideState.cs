@@ -8,7 +8,7 @@ public class WallSlideState : BaseState
         if (stateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.wallSlide);
-            Debug.Log("WS");
+            //Debug.Log("WS");
         }
         //playerStateManager.GetRigidBody2D().gravityScale = 0.5f;
         //Flip sprite khi chuyển từ state này sang state bất kì
@@ -49,7 +49,7 @@ public class WallSlideState : BaseState
         //nếu chạm đất thì change sang idle
         //nếu bấm S thì change sang nhảy
         //Prob here
-        if (playerStateManager.GetIsOnGround())
+        if (playerStateManager.GetIsOnGround() && playerStateManager.GetDirX() == 0)
             playerStateManager.ChangeState(playerStateManager.idleState);
         if (Input.GetKeyDown(KeyCode.S))
             playerStateManager.ChangeState(playerStateManager.jumpState);

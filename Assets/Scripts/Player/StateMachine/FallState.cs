@@ -8,16 +8,15 @@ public class FallState : BaseState
         if (_baseStateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.fall);
-            Debug.Log("Fall");
+            //Debug.Log("Fall");
         }
-        playerStateManager.SetIsOnGround(false); //Obviously!
+        //playerStateManager.SetIsOnGround(false); //Obviously! No need anymore!
     }
 
     public override void ExitState()
     {
         //từ fall sang run đang có chút vấn đề
         //Khi đang fall + đụng tường thì chuyển sang run trên tường đó :v => DONE ?
-        //Khi đang fall + đụng tường của MAP + đang giữ phím A thì mãi ở trạng thái Fall
     }
 
     public override void UpdateState()
