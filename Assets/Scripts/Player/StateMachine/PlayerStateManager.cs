@@ -150,7 +150,13 @@ public class PlayerStateManager : BaseStateManager
         state.UpdateState();
         GroundAndWallCheck();
         HandleFlipSprite();
-        Debug.Log("HP: " + HP);
+
+        //Big prob here:
+        //Đụng phải thì chỉ WT lúc đầu ???
+        //Đụng trái thì WT liên tục
+        //=>DONE! check trái phải để thêm bớt distance cho raycast
+        if (IsWallTouch)
+            Debug.Log("WT: " + IsWallTouch);
     }
 
     private void OnDrawGizmos()
@@ -209,7 +215,10 @@ public class PlayerStateManager : BaseStateManager
     private void GroundAndWallCheck()
     {
         IsOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
-        IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
+        if (isFacingRight)
+            IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, -wallCheckDistance, wallLayer);
+        else
+            IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
     }
 
     private void Reload()

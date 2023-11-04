@@ -37,6 +37,7 @@ public class WallSlideState : BaseState
             //thì => fall
             if (!playerStateManager.GetIsFacingRight() && playerStateManager.GetDirX() > 0
                 || playerStateManager.GetIsFacingRight() && playerStateManager.GetDirX() < 0)
+                //|| !playerStateManager.GetIsOnGround() && !playerStateManager.GetIsWallTouch())
                 playerStateManager.ChangeState(playerStateManager.fallState);
         }
     }

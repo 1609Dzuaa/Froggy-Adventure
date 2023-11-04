@@ -12,7 +12,7 @@ public class JumpState : BaseState
 
             if (playerStateManager.GetPrevStateIsWallSlide())
                 playerStateManager.FlipSpriteAfterWallSlide();
-            Debug.Log("Jump");
+            //Debug.Log("Jump");
         }
         HandleJump();
     }
