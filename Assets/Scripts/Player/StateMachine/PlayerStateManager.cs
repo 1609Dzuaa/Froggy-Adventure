@@ -21,8 +21,6 @@ public class PlayerStateManager : BaseStateManager
     private bool IsOnGround = false;
     private bool HasDbJump = false; //Cho phép DbJump 1 lần
     private bool IsWallTouch = false;
-    private int isLeft = 0; //hướng va chạm với Wall là trái
-    private int isRight = 0;
     private bool isFacingRight = true;
     private bool prevStateIsWallSlide = false;
     private int OrangeCount = 0;
@@ -35,6 +33,7 @@ public class PlayerStateManager : BaseStateManager
     [SerializeField] private float vX = 5f;
     [SerializeField] private float vY = 10.0f;
     [SerializeField] private float wallSlideSpeed = 2.0f;
+    [SerializeField] private float knockBackSpeed = 1.5f;
 
     [Header("Sound")]
     [SerializeField] private AudioSource jumpSound;
@@ -71,13 +70,11 @@ public class PlayerStateManager : BaseStateManager
 
     public bool GetIsWallTouch() { return this.IsWallTouch; }
 
-    public int GetLeft() { return this.isLeft; }
-
-    public int GetRight() { return this.isRight; }
-
     public bool GetPrevStateIsWallSlide() { return this.prevStateIsWallSlide; }
 
     public bool GetIsFacingRight() { return this.isFacingRight; }
+
+    public float GetKnockBackSpeed() { return this.knockBackSpeed; }
 
     //SET Functions
     public void SetIsOnGround(bool para) { this.IsOnGround = para; }
@@ -105,6 +102,8 @@ public class PlayerStateManager : BaseStateManager
     {
         this.state.ExitState();
         this.state = state;
+        //Vì SW là state đặc biệt(phải flip sprite ngược lại sau khi exit state)
+        //nên cần đoạn dưới để check
         if (state is WallSlideState)
             prevStateIsWallSlide = true;
         this.state.EnterState(this);
@@ -149,24 +148,9 @@ public class PlayerStateManager : BaseStateManager
     {
         HandleInput();
         state.UpdateState();
-        IsOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
-        IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
-
-        if (rb.velocity.x > 0.1f && !isFacingRight)
-        {
-            FlippingSprite();
-        }
-        else if (rb.velocity.x < -0.1f && isFacingRight)
-        {
-            FlippingSprite();
-        }
-
-        //Debug.Log("FR: " + isFacingRight);
-        /*if (IsWallTouch)
-        {
-            Debug.Log("Normal: " + ray.normal.x);
-        }*/
-
+        GroundAndWallCheck();
+        HandleFlipSprite();
+        Debug.Log("HP: " + HP);
     }
 
     private void OnDrawGizmos()
@@ -204,6 +188,30 @@ public class PlayerStateManager : BaseStateManager
         //Hàm này dùng để lật sprite theo chiều ngang
     }
 
+    public void FlipSpriteAfterWallSlide()
+    {
+        FlippingSprite();
+        prevStateIsWallSlide = false;
+    }
+
+    private void HandleFlipSprite()
+    {
+        if (rb.velocity.x > 0.1f && !isFacingRight)
+        {
+            FlippingSprite();
+        }
+        else if (rb.velocity.x < -0.1f && isFacingRight)
+        {
+            FlippingSprite();
+        }
+    }
+
+    private void GroundAndWallCheck()
+    {
+        IsOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
+        IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
+    }
+
     private void Reload()
     {
         SceneManager.LoadScene("Level 1");
@@ -230,25 +238,4 @@ public class PlayerStateManager : BaseStateManager
         HasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
     }
 
-    private void HandleCollideWall(Collision2D collision)
-    {
-        //Tạm cất hàm này, tìm cách wall slide hay hơn
-
-        /*HasDbJump = false;
-        Vector2 WallPoint = collision.GetContact(0).point;
-
-        //Quy chiếu: Left = -1, Right = 1; None = 0;
-        if (transform.position.x > WallPoint.x)
-        {
-            isLeft = 0;
-            isRight = 1;
-        }
-        if (transform.position.x < WallPoint.x)
-        {
-            isLeft = -1;
-            isRight = 0;
-        }
-
-        ChangeState(wallSlideState);*/
-    }
 }

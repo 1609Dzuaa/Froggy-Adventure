@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class GotHitState : BaseState
 {
@@ -9,6 +10,7 @@ public class GotHitState : BaseState
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.gotHit);
             //Debug.Log("GotHit");
         }
+        KnockBack();
         playerStateManager.DecreaseHP();
     }
 
@@ -25,5 +27,13 @@ public class GotHitState : BaseState
     public override void FixedUpdate()
     {
 
+    }
+
+    private void KnockBack()
+    {
+        if (playerStateManager.GetIsFacingRight())
+            playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * playerStateManager.GetKnockBackSpeed(), playerStateManager.GetRigidBody2D().velocity.y));
+        else
+            playerStateManager.GetRigidBody2D().AddForce(new Vector2(playerStateManager.GetKnockBackSpeed(), playerStateManager.GetRigidBody2D().velocity.y));
     }
 }

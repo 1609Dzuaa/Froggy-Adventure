@@ -13,9 +13,9 @@ public class IdleState : BaseState
             //Ta sẽ check nếu biến bool prev State là WS thì flip ngược lại
             //và set lại biến đó sau khi flip xong 
             if(playerStateManager.GetPrevStateIsWallSlide())
-                FlipSpriteAfterWallSlide();
+                playerStateManager.FlipSpriteAfterWallSlide();
             
-            //Debug.Log("Idle"); Keep this, use for debugging change state
+            //Debug.Log("Idle"); //Keep this, use for debugging change state
         }
     }
 
@@ -63,9 +63,4 @@ public class IdleState : BaseState
 
     }
 
-    private void FlipSpriteAfterWallSlide()
-    {
-        playerStateManager.FlippingSprite();
-        playerStateManager.SetPrevStateIsWallSlide(false);
-    }
 }

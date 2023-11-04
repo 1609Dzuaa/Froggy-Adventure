@@ -9,7 +9,10 @@ public class JumpState : BaseState
         if (stateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.jump);
-            //Debug.Log("Jump");
+
+            if (playerStateManager.GetPrevStateIsWallSlide())
+                playerStateManager.FlipSpriteAfterWallSlide();
+            Debug.Log("Jump");
         }
         HandleJump();
     }
@@ -33,6 +36,7 @@ public class JumpState : BaseState
             playerStateManager.ChangeState(playerStateManager.doubleJumpState);
         if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
             playerStateManager.ChangeState(playerStateManager.fallState);
+        //Prob here
         if (playerStateManager.GetIsWallTouch() && !playerStateManager.GetIsOnGround())
             playerStateManager.ChangeState(playerStateManager.wallSlideState);
     }
@@ -41,7 +45,6 @@ public class JumpState : BaseState
     {
         playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetvY());
         playerStateManager.GetJumpSound().Play();
-        //playerStateManager.SetIsOnGround(false);No need
     }
 
     private void UpdateHorizontalLogic()

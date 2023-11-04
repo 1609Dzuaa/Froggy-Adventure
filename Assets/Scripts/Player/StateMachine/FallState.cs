@@ -8,15 +8,16 @@ public class FallState : BaseState
         if (_baseStateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.fall);
+
+            if (playerStateManager.GetPrevStateIsWallSlide())
+                playerStateManager.FlipSpriteAfterWallSlide();
             //Debug.Log("Fall");
         }
-        //playerStateManager.SetIsOnGround(false); //Obviously! No need anymore!
     }
 
     public override void ExitState()
     {
-        //từ fall sang run đang có chút vấn đề
-        //Khi đang fall + đụng tường thì chuyển sang run trên tường đó :v => DONE ?
+        
     }
 
     public override void UpdateState()

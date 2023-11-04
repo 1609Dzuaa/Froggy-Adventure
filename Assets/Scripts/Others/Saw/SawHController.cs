@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SawHController : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class SawHController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //Để ý tag của thằng Saw
     }
 
     private void FixedUpdate()
