@@ -10,9 +10,8 @@ public class DoubleJumpState : BaseState
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.doubleJump);
         }
 
+        HandleDbJump();
         //Debug.Log("DBJump");
-        playerStateManager.SetHasDbJump(true);
-        playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetvY() * 0.9f);
     }
 
     public override void ExitState()
@@ -23,23 +22,33 @@ public class DoubleJumpState : BaseState
     public override void UpdateState()
     {
         UpdateHorizontalLogic();
-
-        if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
-            playerStateManager.ChangeState(playerStateManager.fallState);
-        if (playerStateManager.GetIsWallTouch() && !playerStateManager.GetIsOnGround())
-            playerStateManager.ChangeState(playerStateManager.wallSlideState);
+        UpdateVerticalLogic();
     }
 
     private void UpdateHorizontalLogic()
     {
         if (playerStateManager.GetDirX() != 0)
         {
-            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetvX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
+            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetSpeedX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
         }
+    }
+
+    private void UpdateVerticalLogic()
+    {
+        if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
+            playerStateManager.ChangeState(playerStateManager.fallState);
+        else if (playerStateManager.GetIsWallTouch() && !playerStateManager.GetIsOnGround())
+            playerStateManager.ChangeState(playerStateManager.wallSlideState);
     }
 
     public override void FixedUpdate()
     {
+        
+    }
 
+    private void HandleDbJump()
+    {
+        playerStateManager.SetHasDbJump(true);
+        playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetSpeedY() * 0.9f);
     }
 }

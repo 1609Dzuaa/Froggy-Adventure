@@ -18,7 +18,7 @@ public class RunState : BaseState
 
     public override void UpdateState()
     {
-        //UpdateHorizontalLogic();
+        UpdateHorizontalLogic();
         UpdateVerticalLogic();
     }
 
@@ -26,7 +26,7 @@ public class RunState : BaseState
     {
         if (playerStateManager.GetDirX() != 0)
         {
-            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetvX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
+            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetSpeedX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
         }
         else //X-direction = 0
         {

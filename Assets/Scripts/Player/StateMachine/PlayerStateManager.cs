@@ -29,10 +29,12 @@ public class PlayerStateManager : BaseStateManager
     [SerializeField] private Text txtScore;
     private static int HP = 4;
 
-    [Header("Velocity")]
-    [SerializeField] private float vX = 5f;
-    [SerializeField] private float vY = 10.0f;
+    [Header("Speed")]
+    [SerializeField] private float speedX = 5f;
+    [SerializeField] private float speedY = 10.0f;
     [SerializeField] private float wallSlideSpeed = 2.0f;
+    [SerializeField] private float wallJumpSpeedX;
+    [SerializeField] private float wallJumpSpeedY;
     [SerializeField] private float knockBackSpeed = 1.5f;
 
     [Header("Sound")]
@@ -60,9 +62,9 @@ public class PlayerStateManager : BaseStateManager
 
     public AudioSource GetJumpSound() { return this.jumpSound; }
 
-    public float GetvX() { return this.vX; }
+    public float GetSpeedX() { return this.speedX; }
 
-    public float GetvY() { return this.vY; }
+    public float GetSpeedY() { return this.speedY; }
 
     public float GetWallSlideSpeed() { return this.wallSlideSpeed; }
 
@@ -74,14 +76,20 @@ public class PlayerStateManager : BaseStateManager
 
     public bool GetIsFacingRight() { return this.isFacingRight; }
 
+    public float GetWallJumpSpeedX() { return this.wallJumpSpeedX; }
+
+    public float GetWallJumpSpeedY() { return this.wallJumpSpeedY; }
+
     public float GetKnockBackSpeed() { return this.knockBackSpeed; }
 
     //SET Functions
-    public void SetIsOnGround(bool para) { this.IsOnGround = para; }
+    //public void SetIsOnGround(bool para) { this.IsOnGround = para; }
 
     public void SetHasDbJump(bool para) { this.HasDbJump = para; }
 
-    public void SetPrevStateIsWallSlide(bool para) { this.prevStateIsWallSlide = para; }
+    //public void SetPrevStateIsWallSlide(bool para) { this.prevStateIsWallSlide = para; }
+
+    //public void SetIsFacingRight(bool para) { this.isFacingRight = para; }
 
     //HP Functions
     public void IncreaseHP() { HP++; }
@@ -149,14 +157,7 @@ public class PlayerStateManager : BaseStateManager
         HandleInput();
         state.UpdateState();
         GroundAndWallCheck();
-        HandleFlipSprite();
-
-        //Big prob here:
-        //Đụng phải thì chỉ WT lúc đầu ???
-        //Đụng trái thì WT liên tục
-        //=>DONE! check trái phải để thêm bớt distance cho raycast
-        if (IsWallTouch)
-            Debug.Log("WT: " + IsWallTouch);
+        HandleFlipSprite(); 
     }
 
     private void OnDrawGizmos()
@@ -183,14 +184,6 @@ public class PlayerStateManager : BaseStateManager
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(0, 180, 0);
-
-        //Cách cũ thì chỉ đơn giản là lật sprite thôi
-        //Bỏ cách cũ
-        /*if (dirX < 0)
-            sprite.flipX = true;
-        else if (dirX > 0)
-            sprite.flipX = false;*/
-
         //Hàm này dùng để lật sprite theo chiều ngang
     }
 
@@ -198,15 +191,16 @@ public class PlayerStateManager : BaseStateManager
     {
         FlippingSprite();
         prevStateIsWallSlide = false;
+        //Hàm này để xử lý việc lật sprite sau khi WS
     }
 
     private void HandleFlipSprite()
     {
-        if (rb.velocity.x > 0.1f && !isFacingRight)
+        if (dirX > 0f && !isFacingRight)
         {
             FlippingSprite();
         }
-        else if (rb.velocity.x < -0.1f && isFacingRight)
+        else if (dirX < 0f && isFacingRight)
         {
             FlippingSprite();
         }
