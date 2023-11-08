@@ -88,7 +88,7 @@ public class JumpState : BaseState
         if (playerStateManager.GetDirX() != 0 )//&& !playerStateManager.GetIsWallTouch())
         {
             //Debug.Log("Here");
-            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetSpeedX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
+            //playerStateManager.transform.position += new Vector3(playerStateManager.GetSpeedX() * playerStateManager.GetDirX(), playerStateManager.transform.position.y, playerStateManager.transform.position.z) * Time.deltaTime;
         }
     }
 

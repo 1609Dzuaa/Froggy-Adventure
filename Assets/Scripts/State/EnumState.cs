@@ -6,4 +6,6 @@ public class EnumState
     public enum EState
     { idle, run, jump, fall, wallSlide, doubleJump, gotHit }
 
+    public enum ERhinoState
+    { idle, run, wallHit, gotHit,}
 }

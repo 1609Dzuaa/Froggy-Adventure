@@ -13,6 +13,7 @@ public class BaseState
     //Mục đích:
     //Nhằm cho các state biến dùng chung để reference context class
     static protected PlayerStateManager playerStateManager;
+    static protected RhinoStateManager rhinoStateManager;
     protected BaseStateManager baseStateManager;
 
     public virtual void EnterState(BaseStateManager _baseStateManager) { }//playerStateManager = (PlayerStateManager)_baseStateManager; }
