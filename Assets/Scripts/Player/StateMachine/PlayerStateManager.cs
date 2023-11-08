@@ -35,11 +35,14 @@ public class PlayerStateManager : BaseStateManager
     [SerializeField] private float wallSlideSpeed = 2.0f;
     [SerializeField] private float wallJumpSpeedX;
     [SerializeField] private float wallJumpSpeedY;
-    [SerializeField] private float knockBackSpeed = 1.5f;
+
+    [Header("Force")]
+    [SerializeField] private float knockBackForce = 15f;
 
     [Header("Sound")]
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource collectSound;
+    [SerializeField] private AudioSource gotHitSound;
     [SerializeField] private AudioSource deadSound;
 
     [Header("Ground Check")]
@@ -62,6 +65,8 @@ public class PlayerStateManager : BaseStateManager
 
     public AudioSource GetJumpSound() { return this.jumpSound; }
 
+    public AudioSource GetGotHitSound() { return this.gotHitSound; }
+
     public float GetSpeedX() { return this.speedX; }
 
     public float GetSpeedY() { return this.speedY; }
@@ -80,7 +85,7 @@ public class PlayerStateManager : BaseStateManager
 
     public float GetWallJumpSpeedY() { return this.wallJumpSpeedY; }
 
-    public float GetKnockBackSpeed() { return this.knockBackSpeed; }
+    public float GetKnockBackForce() { return this.knockBackForce; }
 
     //SET Functions
     //public void SetIsOnGround(bool para) { this.IsOnGround = para; }
@@ -104,6 +109,13 @@ public class PlayerStateManager : BaseStateManager
         state = idleState;
         state.EnterState(this);
         //Để ý nếu kh có Friction thì nó sẽ bị trôi dù idle
+
+        //Parallax BG: |Origin + (Travel x Parallax)|
+        //Trong đó:
+        //Origin: Starting Position of Sprites ?
+        //Travel: The amount of The Camera has traveled
+        //Parallax: Const Value of that Layer
+        //(The more it farther, the bigger the Value is)
     }
 
     public override void ChangeState(BaseState state)
@@ -123,12 +135,12 @@ public class PlayerStateManager : BaseStateManager
         {
             HandleCollideGround();
         }
-        else if (collision.collider.CompareTag("Trap"))
+        else if (collision.collider.CompareTag("Trap") && state is not GotHitState)
         {
-            if (HP > 0)
+            //if (HP > 0)
                 ChangeState(gotHitState);
-            else
-                HandleDeadState();
+            //else
+               // HandleDeadState();
         }
     }
 
@@ -157,7 +169,8 @@ public class PlayerStateManager : BaseStateManager
         HandleInput();
         state.UpdateState();
         GroundAndWallCheck();
-        HandleFlipSprite(); 
+        HandleFlipSprite();
+        //Debug.Log("IsWT: " + IsWallTouch);
     }
 
     private void OnDrawGizmos()
@@ -218,6 +231,11 @@ public class PlayerStateManager : BaseStateManager
     private void Reload()
     {
         SceneManager.LoadScene("Level 1");
+    }
+
+    private void ChangeToIdle()
+    {
+        ChangeState(idleState);
     }
 
     private void HandleCollideItem(Collider2D collision)
