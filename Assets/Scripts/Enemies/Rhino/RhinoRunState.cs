@@ -7,13 +7,13 @@ public class RhinoRunState : BaseState
         if (_baseStateManager is RhinoStateManager)
         {
             rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.run);
-            //Debug.Log("Run");
+            Debug.Log("Run");
         }
     }
 
     public override void ExitState()
     {
-
+        
     }
 
     public override void UpdateState()

@@ -236,7 +236,6 @@ public class PlayerStateManager : BaseStateManager
     private void ChangeToIdle()
     {
         gotHitState.SetAllowUpdate(true);
-        //ChangeState(idleState);
     }
 
     private void HandleCollideItem(Collider2D collision)
