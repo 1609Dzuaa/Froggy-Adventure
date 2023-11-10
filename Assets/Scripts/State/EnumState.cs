@@ -7,5 +7,5 @@ public class EnumState
     { idle, run, jump, fall, wallSlide, doubleJump, gotHit }
 
     public enum ERhinoState
-    { idle, run, wallHit, gotHit,}
+    { idle, run, wallHit, gotHit, patrol }
 }

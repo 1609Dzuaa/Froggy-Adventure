@@ -234,10 +234,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 5
+  _warning: {fileID: 0}
+  spawnDistanceY: 1.5
   knockUpForce: 150
   knockLeftForce: 100
   playerCheck: {fileID: 8828819131329345006}
-  checkDistance: 50
+  checkDistance: 9
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
