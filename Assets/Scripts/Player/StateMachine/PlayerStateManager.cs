@@ -18,8 +18,8 @@ public class PlayerStateManager : BaseStateManager
 
     private float dirX, dirY;
     private Rigidbody2D rb;
-    private bool IsOnGround = false;
-    private bool HasDbJump = false; //Cho phép DbJump 1 lần
+    private bool isOnGround = false;
+    private bool hasDbJump = false; //Cho phép DbJump 1 lần
     private bool IsWallTouch = false;
     private bool isFacingRight = true;
     private bool prevStateIsWallSlide = false;
@@ -38,6 +38,7 @@ public class PlayerStateManager : BaseStateManager
 
     [Header("Force")]
     [SerializeField] private float knockBackForce = 15f;
+    [SerializeField] private float jumpOnEnemiesForce = 15f;
 
     [Header("Sound")]
     [SerializeField] private AudioSource jumpSound;
@@ -54,12 +55,16 @@ public class PlayerStateManager : BaseStateManager
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float wallCheckDistance;
 
+    [Header("Enemies Check")]
+    [SerializeField] private LayerMask enemiesLayer;
+    private bool isJumpOnEnemies = false;
+
     //GET Functions
     public float GetDirX() { return this.dirX; }
 
     public float GetDirY() { return this.dirY; }
 
-    public bool GetIsOnGround() { return this.IsOnGround; }
+    public bool GetIsOnGround() { return this.isOnGround; }
 
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
 
@@ -73,7 +78,7 @@ public class PlayerStateManager : BaseStateManager
 
     public float GetWallSlideSpeed() { return this.wallSlideSpeed; }
 
-    public bool GetHasDbJump() { return this.HasDbJump; }
+    public bool GetHasDbJump() { return this.hasDbJump; }
 
     public bool GetIsWallTouch() { return this.IsWallTouch; }
 
@@ -90,7 +95,7 @@ public class PlayerStateManager : BaseStateManager
     //SET Functions
     //public void SetIsOnGround(bool para) { this.IsOnGround = para; }
 
-    public void SetHasDbJump(bool para) { this.HasDbJump = para; }
+    public void SetHasDbJump(bool para) { this.hasDbJump = para; }
 
     //public void SetPrevStateIsWallSlide(bool para) { this.prevStateIsWallSlide = para; }
 
@@ -173,6 +178,12 @@ public class PlayerStateManager : BaseStateManager
         //Debug.Log("IsWT: " + IsWallTouch);
     }
 
+    private void FixedUpdate()
+    {
+        state.FixedUpdate();
+        HandleJumpOnEnemies();
+    }
+
     private void OnDrawGizmos()
     {
         //Draw Ground Check
@@ -180,11 +191,6 @@ public class PlayerStateManager : BaseStateManager
 
         //Draw Wall Check
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
-    }
-
-    private void FixedUpdate()
-    {
-        state.FixedUpdate();
     }
 
     private void HandleInput()
@@ -221,7 +227,8 @@ public class PlayerStateManager : BaseStateManager
 
     private void GroundAndWallCheck()
     {
-        IsOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
+        isOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
+        isJumpOnEnemies = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, enemiesLayer);
         if (isFacingRight)
             IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, -wallCheckDistance, wallLayer);
         else
@@ -255,8 +262,20 @@ public class PlayerStateManager : BaseStateManager
 
     private void HandleCollideGround()
     {
-        IsOnGround = true;
-        HasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
+        isOnGround = true;
+        hasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
     }
 
+    private void HandleJumpOnEnemies()
+    {
+        if (isJumpOnEnemies)
+        {
+            this.rb.AddForce(new Vector2(0f, jumpOnEnemiesForce));
+            isOnGround = true;
+            hasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
+        }
+        //Về cơ bản thì xử lý xong việc nhảy lên đầu enemies 
+        //nhưng vẫn còn lỗi có thể có nhiều lên bật lên do addforce
+        //do thoả ĐK quét OverlapCircle của enemies check
+    }
 }

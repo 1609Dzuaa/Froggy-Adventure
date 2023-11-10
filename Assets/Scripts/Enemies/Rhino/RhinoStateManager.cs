@@ -13,6 +13,10 @@ public class RhinoStateManager : BaseStateManager
     [Header("Speed")]
     [SerializeField] private float runSpeed = 5.0f;
 
+    [Header("Force")]
+    [SerializeField] private float knockUpForce = 5.0f;
+    [SerializeField] private float knockLeftForce = 5.0f;
+
     [Header("Player Check")]
     [SerializeField] private Transform playerCheck;
     [SerializeField] private float checkDistance = 50.0f;
@@ -41,6 +45,8 @@ public class RhinoStateManager : BaseStateManager
 
     public BoxCollider2D GetBoxCollider2D() { return this.collider; }
 
+    public Vector2 GetKnockForce() { return new Vector2(-1 * this.knockLeftForce, this.knockUpForce); }
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -57,8 +63,10 @@ public class RhinoStateManager : BaseStateManager
         state.UpdateState();
         DetectPlayer();
         DetectWall();
-        //Debug.Log("detected: " + hasDetectedPlayer);
+        //Debug.Log();
         //Xử lý thêm nếu bị Player đụng từ đằng sau thì quay lại tông Player
+        //Thêm sprite cảnh báo(vàng đen) nếu detected đc Player
+        //Nếu tông Player thì tắt collider để nó có thể chạy xuyên qua
     }
 
     private void FixedUpdate()
@@ -66,10 +74,26 @@ public class RhinoStateManager : BaseStateManager
         state.FixedUpdate();
     }
 
+    public override void ChangeState(BaseState state)
+    {
+        //Got Hit thì return 0 cho chuyển state nữa (Chết là hết)
+        if (this.state is RhinoGotHitState)
+            return;
+
+        this.state.ExitState();
+        this.state = state;
+        this.state.EnterState(this);
+        Debug.Log("Change");
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")
+        {
+            var player = collision.gameObject.GetComponent<PlayerStateManager>();
+            player.GetRigidBody2D().AddForce(new Vector2(0f, 700f));
             ChangeState(rhinoGotHitState);
+        }
     }
 
     private void OnDrawGizmos()
@@ -130,10 +154,21 @@ public class RhinoStateManager : BaseStateManager
         rhinoWallHitState.SetAllowUpdate();
     }
 
+    private void SetTrueGotHitUpdate()
+    {
+        rhinoGotHitState.SetTrueAllowUpdate();
+    }
+
     private void AllowChasingPlayer()
     {
         ChangeState(rhinoRunState);
         //Dùng để delay việc change state sau khi detected player và tông phải wall
+    }
+
+    public void DestroyItSelf()
+    {
+        Destroy(this.gameObject, 1f);
+        //Destroy sau khi chết, tránh lãng phí tài nguyên
     }
 
 }

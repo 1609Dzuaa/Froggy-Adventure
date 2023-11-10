@@ -1,7 +1,0 @@
-Kiểm tra lại các điều kiện cho nó đúng
-Build lại sao cho change các state mượt mà nhất
-
-solution cho việc flip sprite khi vừa wall slide xong
-ở manager đặt 1 biến check nếu state hiện tại là WS => khi enter state mới sau WS ta check biến đó:
-nếu đúng thì lật sprite và setIsFacingRight và set lại giá trị false cho biến check ở manager
-nếu 0 thì 0 làm gì
