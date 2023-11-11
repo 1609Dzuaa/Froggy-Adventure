@@ -10,7 +10,7 @@ public class RhinoRunState : BaseState
             //Dùng Instantiate tạo Prefab Warning
             rhinoStateManager.SpawnWarning();
 
-            //Debug.Log("Run");
+            Debug.Log("Run");
         }
     }
 

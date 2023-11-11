@@ -12,6 +12,7 @@ public class RhinoStateManager : BaseStateManager
     public RhinoPatrolState rhinoPatrolState = new();
 
     [Header("Speed")]
+    [SerializeField] private float patrolSpeed = 1.0f;
     [SerializeField] private float runSpeed = 5.0f;
 
     [Header("Warning")]
@@ -34,10 +35,15 @@ public class RhinoStateManager : BaseStateManager
     [SerializeField] LayerMask wallLayer;
     private bool hasCollideWall = false;
 
+    [Header("Patrol Field")]
+    [SerializeField] private float patrolDistance = 10.0f;
+    [SerializeField] private float restDuration = 1.0f; //Thời gian idle sau khi patrol xong
+
     //Private Field
     private Rigidbody2D rb;
     private bool isFacingRight = false;
     private new BoxCollider2D collider;
+    int changeRightDirection;
 
     //Public Func
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
@@ -46,9 +52,19 @@ public class RhinoStateManager : BaseStateManager
 
     public float GetRunSpeed() { return this.runSpeed; }
 
+    public float GetPatrolSpeed() { return this.patrolSpeed; }
+
+    public float GetPatrolDistance() { return this.patrolDistance; }
+
+    public float GetRestDuration() { return this.restDuration; }
+
     public bool GetHasDetectedPlayer() { return this.hasDetectedPlayer; }
 
     public BoxCollider2D GetBoxCollider2D() { return this.collider; }
+
+    //SetFunc
+
+    public void SetChangeRightDirection(int para) { this.changeRightDirection = para; } 
 
     public Vector2 GetKnockForce() { return new Vector2(-1 * this.knockLeftForce, this.knockUpForce); }
 
@@ -88,7 +104,7 @@ public class RhinoStateManager : BaseStateManager
         this.state.ExitState();
         this.state = state;
         this.state.EnterState(this);
-        Debug.Log("Change");
+        //Debug.Log("Change");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -125,7 +141,9 @@ public class RhinoStateManager : BaseStateManager
         else
             hasCollideWall = Physics2D.Raycast(new Vector2(wallCheck.position.x, wallCheck.position.y), Vector2.right, wallCheckDistance, wallLayer);
 
-        if (hasCollideWall)
+        if (hasCollideWall && state is RhinoPatrolState)
+            ChangeState(rhinoIdleState);
+        else if (hasCollideWall && state is not RhinoIdleState)
             ChangeState(rhinoWallHitState);
     }
 
@@ -164,10 +182,29 @@ public class RhinoStateManager : BaseStateManager
         rhinoGotHitState.SetTrueAllowUpdate();
     }
 
+    private void SetTruePatrolUpdate()
+    {
+        rhinoPatrolState.SetTrueAllowUpdate();
+    }
+
     private void AllowChasingPlayer()
     {
         ChangeState(rhinoRunState);
         //Dùng để delay việc change state sau khi detected player và tông phải wall
+    }
+
+    private void AllowPatrol()
+    {
+        HandleChangeDirection();
+        ChangeState(rhinoPatrolState);
+    }
+
+    private void HandleChangeDirection()
+    {
+        if (changeRightDirection == 1 && !GetIsFacingRight())
+            FlippingSprite();
+        else if (changeRightDirection == 0 && GetIsFacingRight())
+            FlippingSprite();
     }
 
     public void DestroyItSelf()

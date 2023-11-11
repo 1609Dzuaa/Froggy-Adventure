@@ -12,7 +12,8 @@ public class RhinoIdleState : BaseState
             rhinoStateManager = (RhinoStateManager)_baseStateManager;
             rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.idle);
             hasChangeState = false;
-            //Debug.Log("Idle"); //Keep this, use for debugging change state
+            rhinoStateManager.SetChangeRightDirection(Random.Range(0, 2));
+            Debug.Log("Idle"); //Keep this, use for debugging change state
         }
     }
 
@@ -34,6 +35,14 @@ public class RhinoIdleState : BaseState
             hasChangeState = true;
             //rhinoStateManager.SpawnWarning();
             rhinoStateManager.Invoke("AllowChasingPlayer", 0.5f); //Delay 0.5s
+        }
+        else if(!hasChangeState)
+        {
+            //Nếu 0 detect ra player thì patrol sau restDur (s)
+            //và random true false để đổi hướng patrol tiếp
+            hasChangeState = true;
+            //Debug.Log("Right?: " + changeRightDirection);
+            rhinoStateManager.Invoke("AllowPatrol", rhinoStateManager.GetRestDuration());
         }
     }
 
