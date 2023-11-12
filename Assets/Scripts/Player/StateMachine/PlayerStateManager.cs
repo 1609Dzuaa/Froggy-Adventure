@@ -140,7 +140,8 @@ public class PlayerStateManager : BaseStateManager
         {
             HandleCollideGround();
         }
-        else if (collision.collider.CompareTag("Trap") && state is not GotHitState)
+        else if (collision.collider.CompareTag("Trap") && state is not GotHitState
+            || collision.collider.CompareTag("Enemy") && state is not GotHitState)
         {
             //if (HP > 0)
                 ChangeState(gotHitState);

@@ -10,7 +10,7 @@ public class RhinoRunState : BaseState
             //Dùng Instantiate tạo Prefab Warning
             rhinoStateManager.SpawnWarning();
 
-            Debug.Log("Run");
+            //Debug.Log("Run");
         }
     }
 
@@ -21,7 +21,8 @@ public class RhinoRunState : BaseState
 
     public override void UpdateState()
     {
-        
+        if (rhinoStateManager.GetHasCollidedWall())
+            rhinoStateManager.ChangeState(rhinoStateManager.rhinoWallHitState);
     }
 
     void UpdateHorizontalLogic()

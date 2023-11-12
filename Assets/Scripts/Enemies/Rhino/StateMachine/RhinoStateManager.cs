@@ -26,6 +26,7 @@ public class RhinoStateManager : BaseStateManager
     [Header("Player Check")]
     [SerializeField] private Transform playerCheck;
     [SerializeField] private float checkDistance = 50.0f;
+    [SerializeField] private float chasingDelay = 0.25f;
     [SerializeField] LayerMask playerLayer;
     private bool hasDetectedPlayer = false;
 
@@ -33,7 +34,7 @@ public class RhinoStateManager : BaseStateManager
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckDistance = 3.0f;
     [SerializeField] LayerMask wallLayer;
-    private bool hasCollideWall = false;
+    private bool hasCollidedWall = false;
 
     [Header("Patrol Field")]
     [SerializeField] private float patrolDistance = 10.0f;
@@ -60,6 +61,10 @@ public class RhinoStateManager : BaseStateManager
 
     public bool GetHasDetectedPlayer() { return this.hasDetectedPlayer; }
 
+    public bool GetHasCollidedWall() { return this.hasCollidedWall; }
+
+    public float GetChasingDelay() { return this.chasingDelay; }
+
     public BoxCollider2D GetBoxCollider2D() { return this.collider; }
 
     //SetFunc
@@ -84,8 +89,8 @@ public class RhinoStateManager : BaseStateManager
         state.UpdateState();
         DetectPlayer();
         DetectWall();
-        //Debug.Log();
-        //Xử lý thêm nếu bị Player đụng từ đằng sau thì quay lại tông Player
+        //Debug.Log("Right?: " + changeRightDirection); //
+        //Xử lý thêm nếu bị Player đụng từ đằng sau thì quay lại tông Player (should we ?)
         //Thêm sprite cảnh báo(vàng đen) nếu detected đc Player
         //Nếu tông Player thì tắt collider để nó có thể chạy xuyên qua
     }
@@ -104,7 +109,6 @@ public class RhinoStateManager : BaseStateManager
         this.state.ExitState();
         this.state = state;
         this.state.EnterState(this);
-        //Debug.Log("Change");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -121,7 +125,10 @@ public class RhinoStateManager : BaseStateManager
     {
         Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x - checkDistance, playerCheck.position.y, playerCheck.position.z));
 
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x - wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
+        if (!isFacingRight)
+            Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x - wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
+        else
+            Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
     }
 
     private void DetectPlayer()
@@ -137,14 +144,9 @@ public class RhinoStateManager : BaseStateManager
     private void DetectWall()
     {
         if (!isFacingRight)
-            hasCollideWall = Physics2D.Raycast(new Vector2(wallCheck.position.x, wallCheck.position.y), Vector2.left, wallCheckDistance, wallLayer);
+            hasCollidedWall = Physics2D.Raycast(new Vector2(wallCheck.position.x, wallCheck.position.y), Vector2.left, wallCheckDistance, wallLayer);
         else
-            hasCollideWall = Physics2D.Raycast(new Vector2(wallCheck.position.x, wallCheck.position.y), Vector2.right, wallCheckDistance, wallLayer);
-
-        if (hasCollideWall && state is RhinoPatrolState)
-            ChangeState(rhinoIdleState);
-        else if (hasCollideWall && state is not RhinoIdleState)
-            ChangeState(rhinoWallHitState);
+            hasCollidedWall = Physics2D.Raycast(new Vector2(wallCheck.position.x, wallCheck.position.y), Vector2.right, wallCheckDistance, wallLayer);
     }
 
     private void DrawRayDetectPlayer()
@@ -193,10 +195,18 @@ public class RhinoStateManager : BaseStateManager
         //Dùng để delay việc change state sau khi detected player và tông phải wall
     }
 
-    private void AllowPatrol()
+    private void AllowPatrol1()
     {
-        HandleChangeDirection();
+        HandleChangeDirection(); //Random trái phải để chọn hướng patrol
         ChangeState(rhinoPatrolState);
+        //Hàm 1 thì có random chọn hướng để patrol
+    }
+
+    private void AllowPatrol2()
+    {
+        ChangeState(rhinoPatrolState);
+        //Hàm 2 thì đơn giản là patrol theo hướng của isFacingRight
+        //Dùng khi vừa đụng tường xong và muốn patrol theo hướng vừa flip sprite
     }
 
     private void HandleChangeDirection()
@@ -205,6 +215,7 @@ public class RhinoStateManager : BaseStateManager
             FlippingSprite();
         else if (changeRightDirection == 0 && GetIsFacingRight())
             FlippingSprite();
+        //Random change direction
     }
 
     public void DestroyItSelf()

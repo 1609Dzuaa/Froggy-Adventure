@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 8828819131753763193}
   m_Layer: 8
   m_Name: Rhino
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,6 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff2c74c0fab8e6e4e9db0b485a8709d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolSpeed: 1
   runSpeed: 5
   _warning: {fileID: 0}
   spawnDistanceY: 1.5
@@ -240,6 +241,7 @@ MonoBehaviour:
   knockLeftForce: 100
   playerCheck: {fileID: 8828819131329345006}
   checkDistance: 9
+  chasingDelay: 0.25
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -248,6 +250,8 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
+  patrolDistance: 10
+  restDuration: 1
 --- !u!61 &8828819131753763193
 BoxCollider2D:
   m_ObjectHideFlags: 0

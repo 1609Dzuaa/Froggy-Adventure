@@ -31,8 +31,8 @@ public class RhinoWallHitState : BaseState
         //Delay nhằm mục đích chạy hết animation WallHit
         if(allowUpdate)
         {
-            rhinoStateManager.ChangeState(rhinoStateManager.rhinoIdleState);
             rhinoStateManager.FlippingSprite();
+            rhinoStateManager.ChangeState(rhinoStateManager.rhinoIdleState);
         }
     }
 

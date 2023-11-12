@@ -55,12 +55,30 @@ public class RhinoPatrolState : BaseState
         if (rhinoStateManager.GetIsFacingRight())
         {
             if (rhinoStateManager.transform.position.x > rhinoStateManager.GetPatrolDistance() + startPos)
+            {
                 rhinoStateManager.ChangeState(rhinoStateManager.rhinoIdleState);
+                rhinoStateManager.rhinoIdleState.SetCanRdDirection(true);
+                //Debug.Log("ChangeFR");
+            }
+            else if(rhinoStateManager.GetHasCollidedWall())
+            {
+                rhinoStateManager.ChangeState(rhinoStateManager.rhinoIdleState);
+                rhinoStateManager.FlippingSprite();
+            }
         }
         else
         {
             if (rhinoStateManager.transform.position.x < startPos - rhinoStateManager.GetPatrolDistance())
+            {
                 rhinoStateManager.ChangeState(rhinoStateManager.rhinoIdleState);
+                rhinoStateManager.rhinoIdleState.SetCanRdDirection(true);
+                //Debug.Log("ChangeFL");
+            }
+            else if (rhinoStateManager.GetHasCollidedWall())
+            {
+                rhinoStateManager.ChangeState(rhinoStateManager.rhinoIdleState);
+                rhinoStateManager.FlippingSprite();
+            }
         }
     }
 }

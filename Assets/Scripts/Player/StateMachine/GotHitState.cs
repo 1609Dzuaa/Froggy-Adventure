@@ -49,12 +49,13 @@ public class GotHitState : BaseState
     {
         if (playerStateManager.GetIsFacingRight())
         {
-            playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * playerStateManager.GetKnockBackForce(), playerStateManager.GetRigidBody2D().velocity.y));
+            playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * playerStateManager.GetKnockBackForce(), 0f));
         }
         else
         {
-            playerStateManager.GetRigidBody2D().AddForce(new Vector2(playerStateManager.GetKnockBackForce(), playerStateManager.GetRigidBody2D().velocity.y));
+            playerStateManager.GetRigidBody2D().AddForce(new Vector2(playerStateManager.GetKnockBackForce(), 0f));
         }
+        //Debug.Log("Knock");
     }
 
     private void HandleGotHit()
@@ -64,8 +65,8 @@ public class GotHitState : BaseState
         playerStateManager.DecreaseHP();
         playerStateManager.GetGotHitSound().Play();
         playerStateManager.Invoke("ChangeToIdle", 0.48f);
-        //Why 0.35f ?
+        //Why 0.48f ?
         //Vì Animation GotHit có tổng thgian là 0.467s
-        //=> Gọi hàm change Idle sau .35s
+        //=> Gọi hàm change Idle sau .48s
     }
 }
