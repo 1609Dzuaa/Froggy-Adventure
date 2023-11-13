@@ -235,7 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolSpeed: 1
   runSpeed: 5
-  _warning: {fileID: 0}
+  _warning: {fileID: 77044475663832551, guid: 925f502cfa18a2e47a77d36a89c630a1, type: 3}
   spawnDistanceY: 1.5
   knockUpForce: 150
   knockLeftForce: 100
@@ -250,8 +250,8 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
-  patrolDistance: 10
-  restDuration: 1
+  patrolDistance: 5
+  restDuration: 1.5
 --- !u!61 &8828819131753763193
 BoxCollider2D:
   m_ObjectHideFlags: 0

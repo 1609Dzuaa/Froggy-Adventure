@@ -23,11 +23,20 @@ public class PlayerStateManager : BaseStateManager
     private bool IsWallTouch = false;
     private bool isFacingRight = true;
     private bool prevStateIsWallSlide = false;
+    private bool hasSpawnDust = false;
     private int OrangeCount = 0;
 
     //Should we put it here ?
     [SerializeField] private Text txtScore;
     private static int HP = 4;
+
+    [Header("Dust")]
+    [SerializeField] ParticleSystem dustPS;
+    private ParticleSystem.VelocityOverLifetimeModule dustVelocity;
+    ParticleSystem.MinMaxCurve rate;
+    //Simulation SPACE: Local/World:
+    //Chọn Local sẽ làm các hạt di chuyển "link" với local ở đây là vật chứa nó
+    //Chọn World sẽ giải phóng các hạt, cho phép chúng di chuyển mà 0 bị "link" với vật chứa nó
 
     [Header("Speed")]
     [SerializeField] private float speedX = 5f;
@@ -92,14 +101,18 @@ public class PlayerStateManager : BaseStateManager
 
     public float GetKnockBackForce() { return this.knockBackForce; }
 
-    //SET Functions
-    //public void SetIsOnGround(bool para) { this.IsOnGround = para; }
+    public ParticleSystem GetDustPS() { return this.dustPS; }
 
+    public int GetOrangeCount() { return this.OrangeCount; }
+
+    public AudioSource GetCollectSound() { return this.collectSound; }
+
+    public Text GetScoreText() { return this.txtScore; }
+
+    //SET Functions
     public void SetHasDbJump(bool para) { this.hasDbJump = para; }
 
-    //public void SetPrevStateIsWallSlide(bool para) { this.prevStateIsWallSlide = para; }
-
-    //public void SetIsFacingRight(bool para) { this.isFacingRight = para; }
+    public void IncreaseOrangeCount() { this.OrangeCount++; }
 
     //HP Functions
     public void IncreaseHP() { HP++; }
@@ -111,9 +124,9 @@ public class PlayerStateManager : BaseStateManager
     {
         base.Start();
         rb = GetComponent<Rigidbody2D>();
+        dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
         state = idleState;
         state.EnterState(this);
-        //Để ý nếu kh có Friction thì nó sẽ bị trôi dù idle
 
         //Parallax BG: |Origin + (Travel x Parallax)|
         //Trong đó:
@@ -152,10 +165,6 @@ public class PlayerStateManager : BaseStateManager
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Orange"))
-        {
-            HandleCollideItem(collision);
-        }
         if(collision.CompareTag("Platform"))
         {
             this.transform.SetParent(collision.gameObject.transform);
@@ -176,6 +185,9 @@ public class PlayerStateManager : BaseStateManager
         state.UpdateState();
         GroundAndWallCheck();
         HandleFlipSprite();
+        HandleDustVelocity();
+        SpawnDust();
+        
         //Debug.Log("IsWT: " + IsWallTouch);
     }
 
@@ -246,14 +258,6 @@ public class PlayerStateManager : BaseStateManager
         gotHitState.SetAllowUpdate(true);
     }
 
-    private void HandleCollideItem(Collider2D collision)
-    {
-        Destroy(collision.gameObject);
-        OrangeCount++;
-        txtScore.text = "Oranges:" + OrangeCount.ToString();
-        collectSound.Play();
-    }
-
     private void HandleDeadState()
     {
         anim.SetTrigger("dead");
@@ -278,5 +282,27 @@ public class PlayerStateManager : BaseStateManager
         //Về cơ bản thì xử lý xong việc nhảy lên đầu enemies 
         //nhưng vẫn còn lỗi có thể có nhiều lên bật lên do addforce
         //do thoả ĐK quét OverlapCircle của enemies check
+    }
+
+    private void SpawnDust()
+    {
+        if (isOnGround && !hasSpawnDust)
+        {
+            hasSpawnDust = true;
+            dustPS.Play();
+        }
+        else if (!isOnGround)
+            hasSpawnDust = false;
+        //Chạm đất thì Spawn Dust 1 lần
+    }
+
+    private void HandleDustVelocity()
+    {
+        if (isFacingRight)
+            dustVelocity.x = -0.3f;
+        else
+            dustVelocity.x = 0.3f;
+
+        //Nhược điểm lớn là nếu thay đổi velo ngoài Inspector phải vào đây sửa @@ 
     }
 }

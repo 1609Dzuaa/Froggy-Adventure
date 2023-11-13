@@ -10,7 +10,7 @@ public class JumpState : BaseState
         if (stateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.jump);
-
+            playerStateManager.GetDustPS().Play();
             HandleJump();
             //Nếu state trước là WS thì tức là đang WallJump
             if (playerStateManager.GetPrevStateIsWallSlide())

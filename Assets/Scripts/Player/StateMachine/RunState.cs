@@ -7,6 +7,7 @@ public class RunState : BaseState
         if (_baseStateManager is PlayerStateManager)
         {
             playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.run);
+            playerStateManager.GetDustPS().Play();
             //Debug.Log("Run");
         }
     }
