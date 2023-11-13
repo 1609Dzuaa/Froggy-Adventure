@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AppleController : MonoBehaviour
 {
+    [SerializeField] private Transform collectedEffect;
+
     //Jump higher when eat
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -13,6 +15,7 @@ public class AppleController : MonoBehaviour
             playerManagerScript.IncreaseOrangeCount();
             playerManagerScript.GetScoreText().text = "Oranges:" + playerManagerScript.GetOrangeCount().ToString();
             playerManagerScript.GetCollectSound().Play();
+            Instantiate(collectedEffect, transform.position, Quaternion.identity, null);
             Destroy(this.gameObject);
         }
     }

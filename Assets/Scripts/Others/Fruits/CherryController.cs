@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CherryController : MonoBehaviour
 {
+    [SerializeField] private Transform collectedEffect;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")
@@ -12,6 +14,7 @@ public class CherryController : MonoBehaviour
             playerManagerScript.IncreaseOrangeCount();
             playerManagerScript.GetScoreText().text = "Oranges:" + playerManagerScript.GetOrangeCount().ToString();
             playerManagerScript.GetCollectSound().Play();
+            Instantiate(collectedEffect, transform.position, Quaternion.identity, null);
             Destroy(this.gameObject);
         }
     }

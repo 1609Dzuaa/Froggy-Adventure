@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BananaController : MonoBehaviour
 {
+    [SerializeField] private Transform collectedEffect;
+
     //Untouchable for some second when eat ?
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -13,6 +15,7 @@ public class BananaController : MonoBehaviour
             playerManagerScript.IncreaseOrangeCount();
             playerManagerScript.GetScoreText().text = "Oranges:" + playerManagerScript.GetOrangeCount().ToString();
             playerManagerScript.GetCollectSound().Play();
+            Instantiate(collectedEffect, transform.position, Quaternion.identity, null);
             Destroy(this.gameObject);
         }
     }

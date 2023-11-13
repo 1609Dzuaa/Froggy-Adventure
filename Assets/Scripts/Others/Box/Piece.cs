@@ -15,7 +15,8 @@ public class Piece : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.AddForce(force);
+        if (rb != null)
+            rb.AddForce(force);
         Invoke("DestroyItSelf", time);
     }
 

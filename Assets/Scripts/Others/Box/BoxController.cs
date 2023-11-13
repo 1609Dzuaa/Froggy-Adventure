@@ -15,6 +15,7 @@ public class BoxController : MonoBehaviour
     [SerializeField] private Transform banana;
     [SerializeField] private Transform cherry;
     [SerializeField] private Transform orange;
+    [SerializeField] private Transform mushroom;
 
     [Header("Force Apply To Player")]
     [SerializeField] private float forceApply; //Force apply to player when jump on this
@@ -22,8 +23,9 @@ public class BoxController : MonoBehaviour
 
     [Header("Sound")]
     [SerializeField] private AudioSource brokeSound;
-    //Có chút vấn đề vì box tồn tại kh quá 1s nên brokeSound chạy kh hết clip
-    //=>Cắt bớt clip
+
+    [Header("Time")]
+    [SerializeField] private float delaySpawnPiece;
 
     //private BoxCollider2D box2D; need ?
     private Animator anim;
@@ -51,7 +53,7 @@ public class BoxController : MonoBehaviour
             var rbPlayer = collision.gameObject.GetComponent<PlayerStateManager>();
             rbPlayer.GetRigidBody2D().AddForce(new Vector2(0f, forceApply));
             isGotHit = true; //Mark this box has been hitted and make sure only applied force once
-            Invoke("AllowSpawnPiece", 0.2f);
+            Invoke("AllowSpawnPiece", delaySpawnPiece);
         }
     }
 
@@ -89,7 +91,7 @@ public class BoxController : MonoBehaviour
 
     private void SpawnGift()
     {
-        int randomGift = Random.Range(1, 5);
+        int randomGift = Random.Range(1, 6);
         switch (randomGift)
         {
             case 1:
@@ -107,6 +109,11 @@ public class BoxController : MonoBehaviour
             case 4:
                 Instantiate(orange, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
                 Debug.Log("O");
+                break;
+
+            case 5:
+                Instantiate(mushroom, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
+                Debug.Log("M");
                 break;
         }
     }

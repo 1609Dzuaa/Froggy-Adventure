@@ -27,13 +27,13 @@ public class RhinoStateManager : BaseStateManager
     [SerializeField] private Transform playerCheck;
     [SerializeField] private float checkDistance = 50.0f;
     [SerializeField] private float chasingDelay = 0.25f;
-    [SerializeField] LayerMask playerLayer;
+    [SerializeField] private LayerMask playerLayer;
     private bool hasDetectedPlayer = false;
 
     [Header("Wall Check")]
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckDistance = 3.0f;
-    [SerializeField] LayerMask wallLayer;
+    [SerializeField] private LayerMask wallLayer;
     private bool hasCollidedWall = false;
 
     [Header("Patrol Field")]
