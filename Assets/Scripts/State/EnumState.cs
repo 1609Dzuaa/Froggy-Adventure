@@ -8,4 +8,7 @@ public class EnumState
 
     public enum ERhinoState
     { idle, run, wallHit, gotHit, patrol }
+
+    public enum EMushroomState
+    { idle, walk, run, gotHit }
 }

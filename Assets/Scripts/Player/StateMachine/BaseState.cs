@@ -14,9 +14,10 @@ public class BaseState
     //Nhằm cho các state biến dùng chung để reference context class
     static protected PlayerStateManager playerStateManager;
     static protected RhinoStateManager rhinoStateManager;
+    static protected MushroomStateManager mushroomStateManager;
     protected BaseStateManager baseStateManager;
 
-    public virtual void EnterState(BaseStateManager _baseStateManager) { }//playerStateManager = (PlayerStateManager)_baseStateManager; }
+    public virtual void EnterState(BaseStateManager _baseStateManager) { }
 
     public virtual void ExitState() { }
 

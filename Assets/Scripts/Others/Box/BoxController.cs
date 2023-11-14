@@ -96,24 +96,24 @@ public class BoxController : MonoBehaviour
         {
             case 1:
                 Instantiate(apple, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                Debug.Log("A");
+                //Debug.Log("A");
                 break;
             case 2:
                 Instantiate(banana, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                Debug.Log("B");
+                //Debug.Log("B");
                 break;
             case 3:
                 Instantiate(cherry, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                Debug.Log("C");
+                //Debug.Log("C");
                 break;
             case 4:
                 Instantiate(orange, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                Debug.Log("O");
+                //Debug.Log("O");
                 break;
 
             case 5:
                 Instantiate(mushroom, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                Debug.Log("M");
+                //Debug.Log("M");
                 break;
         }
     }

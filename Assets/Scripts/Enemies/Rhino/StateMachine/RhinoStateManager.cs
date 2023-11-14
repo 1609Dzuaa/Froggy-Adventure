@@ -44,7 +44,7 @@ public class RhinoStateManager : BaseStateManager
     private Rigidbody2D rb;
     private bool isFacingRight = false;
     private new BoxCollider2D collider;
-    int changeRightDirection;
+    private int changeRightDirection;
 
     //Public Func
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
@@ -211,9 +211,9 @@ public class RhinoStateManager : BaseStateManager
 
     private void HandleChangeDirection()
     {
-        if (changeRightDirection == 1 && !GetIsFacingRight())
+        if (changeRightDirection == 1 && !isFacingRight)
             FlippingSprite();
-        else if (changeRightDirection == 0 && GetIsFacingRight())
+        else if (changeRightDirection == 0 && isFacingRight)
             FlippingSprite();
         //Random change direction
     }

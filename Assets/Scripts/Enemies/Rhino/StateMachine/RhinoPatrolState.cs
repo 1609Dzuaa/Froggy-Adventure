@@ -54,8 +54,12 @@ public class RhinoPatrolState : BaseState
     {
         if (rhinoStateManager.GetIsFacingRight())
         {
-            if (rhinoStateManager.transform.position.x > rhinoStateManager.GetPatrolDistance() + startPos)
+            if (rhinoStateManager.transform.position.x > rhinoStateManager.GetPatrolDistance() + startPos 
+                && !rhinoStateManager.GetHasCollidedWall())
             {
+                //Bổ sung thêm đk: !rhinoStateManager.GetHasCollidedWall()
+                //Vì có thể có TH: thoả đk if này và collide với wall nên vẫn có thể
+                //random direction đc
                 rhinoStateManager.ChangeState(rhinoStateManager.rhinoIdleState);
                 rhinoStateManager.rhinoIdleState.SetCanRdDirection(true);
                 //Debug.Log("ChangeFR");
@@ -68,7 +72,8 @@ public class RhinoPatrolState : BaseState
         }
         else
         {
-            if (rhinoStateManager.transform.position.x < startPos - rhinoStateManager.GetPatrolDistance())
+            if (rhinoStateManager.transform.position.x < startPos - rhinoStateManager.GetPatrolDistance()
+                && !rhinoStateManager.GetHasCollidedWall())
             {
                 rhinoStateManager.ChangeState(rhinoStateManager.rhinoIdleState);
                 rhinoStateManager.rhinoIdleState.SetCanRdDirection(true);
