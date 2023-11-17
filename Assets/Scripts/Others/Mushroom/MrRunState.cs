@@ -3,13 +3,13 @@
 public class MrRunState : BaseState
 {
     private bool allowUpdate = false;
+    private bool hasChangeState = false;
 
     public void SetTrueUpdateMrRunState() { this.allowUpdate = true; }
     public override void EnterState(BaseStateManager _baseStateManager)
     {
         if (_baseStateManager is MushroomStateManager)
         {
-            mushroomStateManager = (MushroomStateManager)_baseStateManager;
             mushroomStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.run);
             mushroomStateManager.Invoke("AllowUpdateMrRunState", 0.15f); //Delay việc Update trễ 1 khoảng ngắn
             //Nhằm tạo thgian lật sprite bỏ chạy và tránh thoả mãn đk dưới quá nhanh
@@ -20,16 +20,18 @@ public class MrRunState : BaseState
     public override void ExitState()
     {
         allowUpdate = false;
+        hasChangeState = false;
     }
 
     public override void UpdateState()
     {
         if (allowUpdate)
         {
-            if (!mushroomStateManager.GetIsDetected())
+            if (!mushroomStateManager.GetIsDetected() && !hasChangeState)
             {
-                if (mushroomStateManager.GetHasCollidedWall())
+                if (!mushroomStateManager.GetHasCollidedWall())
                     mushroomStateManager.mrIdleState.SetCanRdDirection(true);
+                hasChangeState = true;
                 mushroomStateManager.ChangeState(mushroomStateManager.mrIdleState);
             }
         }

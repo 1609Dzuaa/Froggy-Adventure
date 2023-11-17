@@ -8,7 +8,6 @@ public class MrWalkState : BaseState
     {
         if (_baseStateManager is MushroomStateManager)
         {
-            mushroomStateManager = (MushroomStateManager)_baseStateManager;
             mushroomStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.walk);
             entryTime = Time.time;
             //Debug.Log("Walk"); 
@@ -35,6 +34,7 @@ public class MrWalkState : BaseState
         }
         else if(mushroomStateManager.GetHasCollidedWall())
         {
+            //still prob still here
             hasChangeState = true;
             mushroomStateManager.ChangeState(mushroomStateManager.mrIdleState);
             mushroomStateManager.FlippingSprite();
