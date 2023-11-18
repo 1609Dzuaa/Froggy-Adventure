@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MrBaseState
+public abstract class MrBaseState
 {
     protected MrStateManager _mrStateManager;
 

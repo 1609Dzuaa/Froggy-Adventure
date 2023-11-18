@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RhinoBaseState 
+public abstract class RhinoBaseState 
 {
     protected RhinoStateManager _rhinoStateManager;
 

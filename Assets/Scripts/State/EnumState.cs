@@ -11,4 +11,7 @@ public class EnumState
 
     public enum EMushroomState
     { idle, walk, run, gotHit }
+
+    public enum EPlantState
+    { idle, attack, gotHit }
 }

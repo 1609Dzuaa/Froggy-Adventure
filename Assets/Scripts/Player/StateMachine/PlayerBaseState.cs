@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerBaseState
+public abstract class PlayerBaseState
 {
     //Lớp cơ sở, mình có thể điều hướng các states ở các state con
     //Hoặc ở lớp Manager
