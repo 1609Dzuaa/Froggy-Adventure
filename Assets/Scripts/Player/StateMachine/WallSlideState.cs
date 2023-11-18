@@ -1,16 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
-public class WallSlideState : BaseState
+public class WallSlideState : PlayerBaseState
 {
     private bool hasChangedState = false;
-    public override void EnterState(BaseStateManager stateManager)
+    public override void EnterState(PlayerStateManager playerStateManager)
     {
-        if (stateManager is PlayerStateManager)
-        {
-            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.wallSlide);
-            //Debug.Log("WS");
-        }
+        base.EnterState(playerStateManager);
+        _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.wallSlide);
+        //Debug.Log("WS");
         //Flip sprite khi chuyển từ state này sang state bất kì
         //Theo đúng chiều của nhân vật khi đang slide
         //Lỗi logic 1 chút ở đây là khi WS thì vector isFacingRight
@@ -37,20 +35,20 @@ public class WallSlideState : BaseState
 
     void UpdateHorizontalLogic()
     {
-        if (playerStateManager.GetDirX() != 0)
+        if (_playerStateManager.GetDirX() != 0)
         {
             //Hiểu đơn giản là 2 vector của directionX và facingRight trái dấu nhau
             //thì => fall
-            if (!playerStateManager.GetIsFacingRight() && playerStateManager.GetDirX() > 0
-                || playerStateManager.GetIsFacingRight() && playerStateManager.GetDirX() < 0)
+            if (!_playerStateManager.GetIsFacingRight() && _playerStateManager.GetDirX() > 0
+                || _playerStateManager.GetIsFacingRight() && _playerStateManager.GetDirX() < 0)
             {
-                playerStateManager.ChangeState(playerStateManager.fallState);
+                _playerStateManager.ChangeState(_playerStateManager.fallState);
                 hasChangedState = true;
             }
-            else if (!playerStateManager.GetIsFacingRight() && playerStateManager.GetDirX() < 0 && Input.GetKeyDown(KeyCode.S)
-                || playerStateManager.GetIsFacingRight() && playerStateManager.GetDirX() > 0 && Input.GetKeyDown(KeyCode.S))
+            else if (!_playerStateManager.GetIsFacingRight() && _playerStateManager.GetDirX() < 0 && Input.GetKeyDown(KeyCode.S)
+                || _playerStateManager.GetIsFacingRight() && _playerStateManager.GetDirX() > 0 && Input.GetKeyDown(KeyCode.S))
             {
-                playerStateManager.ChangeState(playerStateManager.jumpState);
+                _playerStateManager.ChangeState(_playerStateManager.jumpState);
                 hasChangedState = true;
             }
         }
@@ -66,27 +64,27 @@ public class WallSlideState : BaseState
 
         //Done: Quên mất lồng else vào không thì nó chạy hết :)), kh muốn lồng else 
         //thì return sau khi changeState luôn 
-        if (playerStateManager.GetIsOnGround() && playerStateManager.GetDirX() == 0)
+        if (_playerStateManager.GetIsOnGround() && _playerStateManager.GetDirX() == 0)
         {
-            playerStateManager.ChangeState(playerStateManager.idleState);
+            _playerStateManager.ChangeState(_playerStateManager.idleState);
             hasChangedState = true;
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            playerStateManager.ChangeState(playerStateManager.jumpState);
+            _playerStateManager.ChangeState(_playerStateManager.jumpState);
             //Nhảy trên tường gặp vấn đề cuối:
             //Giữ A/D sau khi trượt tường trái/phải 1 lúc sau đó bấm S thì 0 nhảy đc
             //Thả A/D sau khi trượt tường trái/phải 1 lúc sau đó bấm S thì mới nhảy đc
         }
-        else if (!playerStateManager.GetIsOnGround() && !playerStateManager.GetIsWallTouch()
-                && playerStateManager.GetRigidBody2D().velocity.y < -.1f)
+        else if (!_playerStateManager.GetIsOnGround() && !_playerStateManager.GetIsWallTouch()
+                && _playerStateManager.GetRigidBody2D().velocity.y < -.1f)
         {
-            playerStateManager.ChangeState(playerStateManager.fallState); //Trường hợp trượt hết tường mà vẫn fall
+            _playerStateManager.ChangeState(_playerStateManager.fallState); //Trường hợp trượt hết tường mà vẫn fall
             hasChangedState = true;
         }
         else if(!hasChangedState)//Prob here too: Vì bấm S ở hàm Horizontal rồi,
              //nó change state rồi nhưng xuống đây nó lại set lại v => dẫn đến rối
-            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, -1 * playerStateManager.GetWallSlideSpeed());
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, -1 * _playerStateManager.GetWallSlideSpeed());
     }
 
     public override void FixedUpdate()

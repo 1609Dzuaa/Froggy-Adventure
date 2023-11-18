@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
 
-public class DoubleJumpState : BaseState
+public class DoubleJumpState : PlayerBaseState
 {
     //Chỉ có thể double jump khi đã và đang jump || fall
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(PlayerStateManager playerStateManager)
     {
-        if (_baseStateManager is PlayerStateManager)
-        {
-            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.doubleJump);
-        }
+        base.EnterState(playerStateManager);
+        _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.doubleJump);
 
         HandleDbJump();
         //Debug.Log("DBJump");
@@ -27,18 +25,18 @@ public class DoubleJumpState : BaseState
 
     private void UpdateHorizontalLogic()
     {
-        if (playerStateManager.GetDirX() != 0)
+        if (_playerStateManager.GetDirX() != 0)
         {
-            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetSpeedX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
         }
     }
 
     private void UpdateVerticalLogic()
     {
-        if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
-            playerStateManager.ChangeState(playerStateManager.fallState);
-        else if (playerStateManager.GetIsWallTouch() && !playerStateManager.GetIsOnGround())
-            playerStateManager.ChangeState(playerStateManager.wallSlideState);
+        if (_playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
+            _playerStateManager.ChangeState(_playerStateManager.fallState);
+        else if (_playerStateManager.GetIsWallTouch() && !_playerStateManager.GetIsOnGround())
+            _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
     }
 
     public override void FixedUpdate()
@@ -48,7 +46,7 @@ public class DoubleJumpState : BaseState
 
     private void HandleDbJump()
     {
-        playerStateManager.SetHasDbJump(true);
-        playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetSpeedY() * 0.9f);
+        _playerStateManager.SetHasDbJump(true);
+        _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetSpeedY() * 0.9f);
     }
 }

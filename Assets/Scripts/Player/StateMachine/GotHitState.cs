@@ -1,19 +1,17 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
 
-public class GotHitState : BaseState
+public class GotHitState : PlayerBaseState
 {
     private bool allowUpdate = false;
 
     public void SetAllowUpdate(bool para) { this.allowUpdate = para; }
 
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(PlayerStateManager playerStateManager)
     {
-        if (_baseStateManager is PlayerStateManager)
-        {
-            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.gotHit);
-            //Debug.Log("GotHit");
-        }
+        base.EnterState(playerStateManager);
+        _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.gotHit);
+        //Debug.Log("GotHit");
         HandleGotHit();
         //Chú ý khi làm việc với Any State
         //Tắt Transition To Self ở đoạn nối Transition từ Any State tới State cụ thể
@@ -30,12 +28,12 @@ public class GotHitState : BaseState
         //Chỉ cho phép Update sau khi chạy xong animation Hit
         if(allowUpdate)
         {
-            if (playerStateManager.GetDirX() == 0)
-                playerStateManager.ChangeState(playerStateManager.idleState);
-            else if (playerStateManager.GetDirX() != 0)
-                playerStateManager.ChangeState(playerStateManager.runState);
+            if (_playerStateManager.GetDirX() == 0)
+                _playerStateManager.ChangeState(_playerStateManager.idleState);
+            else if (_playerStateManager.GetDirX() != 0)
+                _playerStateManager.ChangeState(_playerStateManager.runState);
             else if (Input.GetKeyDown(KeyCode.S))
-                playerStateManager.ChangeState(playerStateManager.jumpState);
+                _playerStateManager.ChangeState(_playerStateManager.jumpState);
         }
         //Debug.Log("Allow: " + allowUpdate);
     }
@@ -47,13 +45,13 @@ public class GotHitState : BaseState
 
     private void KnockBack()
     {
-        if (playerStateManager.GetIsFacingRight())
+        if (_playerStateManager.GetIsFacingRight())
         {
-            playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * playerStateManager.GetKnockBackForce(), 0f));
+            _playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * _playerStateManager.GetKnockBackForce(), 0f));
         }
         else
         {
-            playerStateManager.GetRigidBody2D().AddForce(new Vector2(playerStateManager.GetKnockBackForce(), 0f));
+            _playerStateManager.GetRigidBody2D().AddForce(new Vector2(_playerStateManager.GetKnockBackForce(), 0f));
         }
         //Debug.Log("Knock");
     }
@@ -62,9 +60,9 @@ public class GotHitState : BaseState
     {
         KnockBack();
         allowUpdate = false;
-        playerStateManager.DecreaseHP();
-        playerStateManager.GetGotHitSound().Play();
-        playerStateManager.Invoke("ChangeToIdle", 0.48f);
+        _playerStateManager.DecreaseHP();
+        _playerStateManager.GetGotHitSound().Play();
+        _playerStateManager.Invoke("ChangeToIdle", 0.48f);
         //Why 0.48f ?
         //Vì Animation GotHit có tổng thgian là 0.467s
         //=> Gọi hàm change Idle sau .48s

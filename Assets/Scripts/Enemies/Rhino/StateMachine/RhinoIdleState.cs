@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RhinoIdleState : BaseState
+public class RhinoIdleState : RhinoBaseState
 {
     bool isFirstSawPlayer = true; //Lần đầu thấy Player thì đuổi theo luôn, 0 cần delay
     bool hasChangeState = false; //Đảm bảo chỉ change state 1 lần duy nhất tránh việc
@@ -9,16 +9,13 @@ public class RhinoIdleState : BaseState
 
     public void SetCanRdDirection(bool para) { this.canRdDirection = para; }
 
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(RhinoStateManager rhinoStateManager)
     {
-        if (_baseStateManager is RhinoStateManager)
-        {
-            rhinoStateManager = (RhinoStateManager)_baseStateManager;
-            rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.idle);
-            hasChangeState = false;
-            rhinoStateManager.SetChangeRightDirection(Random.Range(0, 2));
-            //Debug.Log("Idle"); //Keep this, use for debugging change state
-        }
+        base.EnterState(rhinoStateManager);
+        _rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.idle);
+        hasChangeState = false;
+        _rhinoStateManager.SetChangeRightDirection(Random.Range(0, 2));
+        //Debug.Log("Idle"); //Keep this, use for debugging change state
     }
 
     public override void ExitState()
@@ -28,31 +25,31 @@ public class RhinoIdleState : BaseState
 
     public override void UpdateState()
     {
-        if (rhinoStateManager.GetHasDetectedPlayer() && isFirstSawPlayer &&!hasChangeState)
+        if (_rhinoStateManager.GetHasDetectedPlayer() && isFirstSawPlayer &&!hasChangeState)
         {
             isFirstSawPlayer = false;
             hasChangeState = true;
             //rhinoStateManager.SpawnWarning();
-            rhinoStateManager.ChangeState(rhinoStateManager.rhinoRunState);
+            _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoRunState);
         }
-        else if (rhinoStateManager.GetHasDetectedPlayer() && !hasChangeState)
+        else if (_rhinoStateManager.GetHasDetectedPlayer() && !hasChangeState)
         {
             hasChangeState = true;
             //rhinoStateManager.SpawnWarning();
-            rhinoStateManager.Invoke("AllowChasingPlayer", rhinoStateManager.GetChasingDelay()); //Delay 0.3s
+            _rhinoStateManager.Invoke("AllowChasingPlayer", _rhinoStateManager.GetChasingDelay()); //Delay 0.3s
         }
         else if(!hasChangeState && canRdDirection)
         {
             //Nếu 0 detect ra player và 0 đụng tường thì patrol sau restDur (s)
             //và random true false để đổi hướng patrol tiếp
             hasChangeState = true;
-            rhinoStateManager.Invoke("AllowPatrol1", rhinoStateManager.GetRestDuration());
+            _rhinoStateManager.Invoke("AllowPatrol1", _rhinoStateManager.GetRestDuration());
         }
         else if(!hasChangeState) //Can't Random Direction to patrol
         {
             //Patrol theo hướng mặt (0 random)
             hasChangeState = true;
-            rhinoStateManager.Invoke("AllowPatrol2", rhinoStateManager.GetRestDuration());
+            _rhinoStateManager.Invoke("AllowPatrol2", _rhinoStateManager.GetRestDuration());
         }
     }
 

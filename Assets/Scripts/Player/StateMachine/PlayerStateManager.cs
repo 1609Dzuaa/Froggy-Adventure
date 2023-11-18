@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 
-public class PlayerStateManager : BaseStateManager
+public class PlayerStateManager : MonoBehaviour
 {
     //PlayerStateManager - Context Class, Use to pass DATA to each State
+    private PlayerBaseState _state;
     public IdleState idleState = new IdleState();
     public RunState runState = new RunState();
     public JumpState jumpState = new JumpState();
@@ -18,6 +19,7 @@ public class PlayerStateManager : BaseStateManager
 
     private float dirX, dirY;
     private Rigidbody2D rb;
+    private Animator anim;
     private bool isOnGround = false;
     private bool hasDbJump = false; //Cho phép DbJump 1 lần
     private bool IsWallTouch = false;
@@ -77,6 +79,8 @@ public class PlayerStateManager : BaseStateManager
 
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
 
+    public Animator GetAnimator() { return this.anim; }
+
     public AudioSource GetJumpSound() { return this.jumpSound; }
 
     public AudioSource GetGotHitSound() { return this.gotHitSound; }
@@ -120,13 +124,13 @@ public class PlayerStateManager : BaseStateManager
     public void DecreaseHP() { HP--; }
 
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
-        state = idleState;
-        state.EnterState(this);
+        _state = idleState;
+        _state.EnterState(this);
 
         //Parallax BG: |Origin + (Travel x Parallax)|
         //Trong đó:
@@ -136,15 +140,15 @@ public class PlayerStateManager : BaseStateManager
         //(The more it farther, the bigger the Value is)
     }
 
-    public override void ChangeState(BaseState state)
+    public void ChangeState(PlayerBaseState state)
     {
-        this.state.ExitState();
-        this.state = state;
+        this._state.ExitState();
+        this._state = state;
         //Vì SW là state đặc biệt(phải flip sprite ngược lại sau khi exit state)
         //nên cần đoạn dưới để check
         if (state is WallSlideState)
             prevStateIsWallSlide = true;
-        this.state.EnterState(this);
+        this._state.EnterState(this);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -153,8 +157,8 @@ public class PlayerStateManager : BaseStateManager
         {
             HandleCollideGround();
         }
-        else if (collision.collider.CompareTag("Trap") && state is not GotHitState
-            || collision.collider.CompareTag("Enemy") && state is not GotHitState)
+        else if (collision.collider.CompareTag("Trap") && _state is not GotHitState
+            || collision.collider.CompareTag("Enemy") && _state is not GotHitState)
         {
             //if (HP > 0)
                 ChangeState(gotHitState);
@@ -182,7 +186,7 @@ public class PlayerStateManager : BaseStateManager
     void Update()
     {
         HandleInput();
-        state.UpdateState();
+        _state.UpdateState();
         GroundAndWallCheck();
         HandleFlipSprite();
         HandleDustVelocity();
@@ -193,7 +197,7 @@ public class PlayerStateManager : BaseStateManager
 
     private void FixedUpdate()
     {
-        state.FixedUpdate();
+        _state.FixedUpdate();
         HandleJumpOnEnemies();
     }
 

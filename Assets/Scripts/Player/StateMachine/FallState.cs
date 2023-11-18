@@ -1,18 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-public class FallState : BaseState
+public class FallState : PlayerBaseState
 {
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(PlayerStateManager playerStateManager)
     {
-        if (_baseStateManager is PlayerStateManager)
-        {
-            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.fall);
+        base.EnterState(playerStateManager);
+        _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.fall);
 
-            if (playerStateManager.GetPrevStateIsWallSlide())
-                playerStateManager.FlipSpriteAfterWallSlide();
-            //Debug.Log("Fall");
-        }
+        if (_playerStateManager.GetPrevStateIsWallSlide())
+            _playerStateManager.FlipSpriteAfterWallSlide();
+        //Debug.Log("Fall");
     }
 
     public override void ExitState()
@@ -27,24 +25,24 @@ public class FallState : BaseState
         //So we check does it greater or smaller than a very small value
 
         //Nếu vận tốc 2 trục rất nhỏ thì coi như đang Idle
-        if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) < 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
-            playerStateManager.ChangeState(playerStateManager.idleState);
+        if (Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < 0.1f && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
+            _playerStateManager.ChangeState(_playerStateManager.idleState);
         //Nếu vận tốc trục x lớn hơn .1f và trục y rất nhỏ
         //và đang OnGround thì
         //chuyển sang state Run
         //Prob here ?
-        else if (Math.Abs(playerStateManager.GetRigidBody2D().velocity.x) > 0.1f && Math.Abs(playerStateManager.GetRigidBody2D().velocity.y) < 0.1f && playerStateManager.GetIsOnGround())
-            playerStateManager.ChangeState(playerStateManager.runState);
-        else if (playerStateManager.GetIsWallTouch() && !playerStateManager.GetIsOnGround())
-            playerStateManager.ChangeState(playerStateManager.wallSlideState);
+        else if (Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) > 0.1f && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < 0.1f && _playerStateManager.GetIsOnGround())
+            _playerStateManager.ChangeState(_playerStateManager.runState);
+        else if (_playerStateManager.GetIsWallTouch() && !_playerStateManager.GetIsOnGround())
+            _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
         //Cho phép lúc Fall có thể Double Jump đc
-        else if (Input.GetKeyDown(KeyCode.S) && !playerStateManager.GetHasDbJump())
-            playerStateManager.ChangeState(playerStateManager.doubleJumpState);
+        else if (Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetHasDbJump())
+            _playerStateManager.ChangeState(_playerStateManager.doubleJumpState);
     }
 
     void UpdateHorizontalLogic()
     {
-        playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetSpeedX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
+        _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 
     public override void FixedUpdate()

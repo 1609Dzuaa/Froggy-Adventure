@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 
-public class RhinoRunState : BaseState
+public class RhinoRunState : RhinoBaseState
 {
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(RhinoStateManager rhinoStateManager)
     {
-        if (_baseStateManager is RhinoStateManager)
-        {
-            rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.run);
-            //Dùng Instantiate tạo Prefab Warning
-            rhinoStateManager.SpawnWarning();
+        base.EnterState(rhinoStateManager);
+        _rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.run);
+        //Dùng Instantiate tạo Prefab Warning
+        rhinoStateManager.SpawnWarning();
 
-            //Debug.Log("Run");
-        }
+        //Debug.Log("Run");
     }
 
     public override void ExitState()
@@ -21,16 +19,16 @@ public class RhinoRunState : BaseState
 
     public override void UpdateState()
     {
-        if (rhinoStateManager.GetHasCollidedWall())
-            rhinoStateManager.ChangeState(rhinoStateManager.rhinoWallHitState);
+        if (_rhinoStateManager.GetHasCollidedWall())
+            _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoWallHitState);
     }
 
     void UpdateHorizontalLogic()
     {
-        if (rhinoStateManager.GetIsFacingRight())
-            rhinoStateManager.GetRigidBody2D().velocity = new Vector2(rhinoStateManager.GetRunSpeed(), rhinoStateManager.GetRigidBody2D().velocity.y);
+        if (_rhinoStateManager.GetIsFacingRight())
+            _rhinoStateManager.GetRigidBody2D().velocity = new Vector2(_rhinoStateManager.GetRunSpeed(), _rhinoStateManager.GetRigidBody2D().velocity.y);
         else
-            rhinoStateManager.GetRigidBody2D().velocity = new Vector2(-1 * rhinoStateManager.GetRunSpeed(), rhinoStateManager.GetRigidBody2D().velocity.y);
+            _rhinoStateManager.GetRigidBody2D().velocity = new Vector2(-1 * _rhinoStateManager.GetRunSpeed(), _rhinoStateManager.GetRigidBody2D().velocity.y);
     }
 
     public override void FixedUpdate()

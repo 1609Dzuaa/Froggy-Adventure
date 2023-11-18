@@ -1,22 +1,19 @@
 ﻿using UnityEngine;
 
-public class IdleState : BaseState
+public class IdleState : PlayerBaseState
 {
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(PlayerStateManager playerStateManager)
     {
-        if (_baseStateManager is PlayerStateManager)
-        {
-            playerStateManager = (PlayerStateManager)_baseStateManager;
-            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.idle);
-            
-            //State WS sẽ có đặc biệt chút là sẽ flip sprite ngược với isFacingRight
-            //Ta sẽ check nếu biến bool prev State là WS thì flip ngược lại
-            //và set lại biến đó sau khi flip xong 
-            if(playerStateManager.GetPrevStateIsWallSlide())
-                playerStateManager.FlipSpriteAfterWallSlide();
-            
-            //Debug.Log("Idle"); //Keep this, use for debugging change state
-        }
+        base.EnterState(playerStateManager);
+        _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.idle);
+
+        //State WS sẽ có đặc biệt chút là sẽ flip sprite ngược với isFacingRight
+        //Ta sẽ check nếu biến bool prev State là WS thì flip ngược lại
+        //và set lại biến đó sau khi flip xong 
+        if (_playerStateManager.GetPrevStateIsWallSlide())
+            _playerStateManager.FlipSpriteAfterWallSlide();
+
+        //Debug.Log("Idle"); //Keep this, use for debugging change state
     }
 
     public override void ExitState()
@@ -33,28 +30,28 @@ public class IdleState : BaseState
     void UpdateHorizontalLogic()
     {
         //Hướng X khác 0 tức là đang di chuyển || dash
-        if (playerStateManager.GetDirX() != 0)
+        if (_playerStateManager.GetDirX() != 0)
         {
-            playerStateManager.ChangeState(playerStateManager.runState);
+            _playerStateManager.ChangeState(_playerStateManager.runState);
         }
     }
 
     void UpdateVerticalLogic()
     {
         //Hướng Y khác 0 tức là đang nhảy hoặc rơi
-        if (playerStateManager.GetDirY() < 0) //Có thể để != 0 cho tổng quát ?
+        if (_playerStateManager.GetDirY() < 0) //Có thể để != 0 cho tổng quát ?
         {
-            if (playerStateManager.GetIsOnGround())
-                playerStateManager.ChangeState(playerStateManager.jumpState);
+            if (_playerStateManager.GetIsOnGround())
+                _playerStateManager.ChangeState(_playerStateManager.jumpState);
         }
-        else if (!playerStateManager.GetIsOnGround())
+        else if (!_playerStateManager.GetIsOnGround())
         {
             //ĐK cũ có vấn đề: Lúc WS chạm đất đứng yên thì Idle 1 lúc r Fall r mới Idle
             //ĐK cũ: (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
             //ĐK mới: Nếu DirectionY == 0 tức ng chơi 0 tác động lên trục Y và
             //0 chạm đất thì chuyển qua Fall
 
-            playerStateManager.ChangeState(playerStateManager.fallState);
+            _playerStateManager.ChangeState(_playerStateManager.fallState);
         }
     }
 

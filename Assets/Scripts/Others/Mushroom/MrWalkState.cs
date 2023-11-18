@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 
-public class MrWalkState : BaseState
+public class MrWalkState : MrBaseState
 {
     private bool hasChangeState = false;
     private float entryTime; //đánh dấu thgian bắt đầu state
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(MrStateManager mrStateManager)
     {
-        if (_baseStateManager is MushroomStateManager)
-        {
-            mushroomStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.walk);
-            entryTime = Time.time;
-            //Debug.Log("Walk"); 
-        }
+        base.EnterState(mrStateManager);
+        _mrStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.walk);
+        entryTime = Time.time;
+        //Debug.Log("Walk"); 
     }
 
     public override void ExitState()
@@ -21,32 +19,32 @@ public class MrWalkState : BaseState
 
     public override void UpdateState()
     {
-        if (mushroomStateManager.GetHasDetectedPlayer() && !hasChangeState)
+        if (_mrStateManager.GetHasDetectedPlayer() && !hasChangeState)
         {
             hasChangeState = true;
-            mushroomStateManager.Invoke("AllowRunFromPlayer", 0.2f);
+            _mrStateManager.Invoke("AllowRunFromPlayer", _mrStateManager.GetRunDelay());
         }
-        else if (Time.time - entryTime >= mushroomStateManager.GetWalkDuration() && !hasChangeState && !mushroomStateManager.GetHasCollidedWall())
+        else if (Time.time - entryTime >= _mrStateManager.GetWalkDuration() && !hasChangeState && !_mrStateManager.GetHasCollidedWall())
         {
             hasChangeState = true;
-            mushroomStateManager.mrIdleState.SetCanRdDirection(true);
-            mushroomStateManager.ChangeState(mushroomStateManager.mrIdleState);
+            _mrStateManager.mrIdleState.SetCanRdDirection(true);
+            _mrStateManager.ChangeState(_mrStateManager.mrIdleState);
         }
-        else if(mushroomStateManager.GetHasCollidedWall())
+        else if(_mrStateManager.GetHasCollidedWall())
         {
             //still prob still here
             hasChangeState = true;
-            mushroomStateManager.ChangeState(mushroomStateManager.mrIdleState);
-            mushroomStateManager.FlippingSprite();
+            _mrStateManager.ChangeState(_mrStateManager.mrIdleState);
+            _mrStateManager.FlippingSprite();
         }
     }
 
     public override void FixedUpdate()
     {
-        if (mushroomStateManager.GetIsFacingRight())
-            mushroomStateManager.GetRigidBody2D().velocity = new Vector2(mushroomStateManager.GetWalkSpeed(), mushroomStateManager.GetRigidBody2D().velocity.y);
+        if (_mrStateManager.GetIsFacingRight())
+            _mrStateManager.GetRigidBody2D().velocity = new Vector2(_mrStateManager.GetWalkSpeed(), _mrStateManager.GetRigidBody2D().velocity.y);
         else
-            mushroomStateManager.GetRigidBody2D().velocity = new Vector2(-mushroomStateManager.GetWalkSpeed(), mushroomStateManager.GetRigidBody2D().velocity.y);
+            _mrStateManager.GetRigidBody2D().velocity = new Vector2(-_mrStateManager.GetWalkSpeed(), _mrStateManager.GetRigidBody2D().velocity.y);
     }
 
 }

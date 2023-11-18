@@ -1,26 +1,24 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
 
-public class JumpState : BaseState
+public class JumpState : PlayerBaseState
 {
     //Considering Coyote Time
     private bool hasChangedState = false;
-    public override void EnterState(BaseStateManager stateManager)
+    public override void EnterState(PlayerStateManager playerStateManager)
     {
-        if (stateManager is PlayerStateManager)
+        base.EnterState(playerStateManager);
+        playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.jump);
+        playerStateManager.GetDustPS().Play();
+        HandleJump();
+        //Nếu state trước là WS thì tức là đang WallJump
+        if (playerStateManager.GetPrevStateIsWallSlide())
         {
-            playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EState.jump);
-            playerStateManager.GetDustPS().Play();
-            HandleJump();
-            //Nếu state trước là WS thì tức là đang WallJump
-            if (playerStateManager.GetPrevStateIsWallSlide())
-            {
-                playerStateManager.FlipSpriteAfterWallSlide();
-            }
-            //Debug.Log("Jump");
-            //cung` dau: WS, JUMP, JUMP, WS
-            hasChangedState = false;
+            playerStateManager.FlipSpriteAfterWallSlide();
         }
+        //Debug.Log("Jump");
+        //cung` dau: WS, JUMP, JUMP, WS
+        hasChangedState = false;
     }
 
     public override void ExitState()
@@ -41,19 +39,19 @@ public class JumpState : BaseState
         //Press S While Jump => Double Jump
         if (Input.GetKeyDown(KeyCode.S))
         {
-            playerStateManager.ChangeState(playerStateManager.doubleJumpState);
+            _playerStateManager.ChangeState(_playerStateManager.doubleJumpState);
             hasChangedState = true;
         }
-        else if (playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
+        else if (_playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
         {
             //Debug.Log("Change here: " + playerStateManager.GetRigidBody2D().velocity.y);
-            playerStateManager.ChangeState(playerStateManager.fallState);
+            _playerStateManager.ChangeState(_playerStateManager.fallState);
             hasChangedState = true;
         }
         //Still Prob Here
-        else if (playerStateManager.GetIsWallTouch() && !playerStateManager.GetIsOnGround())
+        else if (_playerStateManager.GetIsWallTouch() && !_playerStateManager.GetIsOnGround())
         {
-            playerStateManager.ChangeState(playerStateManager.wallSlideState);
+            _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
             hasChangedState = true;
         }
     }
@@ -61,23 +59,23 @@ public class JumpState : BaseState
     private void HandleJump()
     {
         //Nếu nhảy khi đang trượt tường thì nhảy xéo
-        if (!playerStateManager.GetPrevStateIsWallSlide())
-            playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetRigidBody2D().velocity.x, playerStateManager.GetSpeedY());
+        if (!_playerStateManager.GetPrevStateIsWallSlide())
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetSpeedY());
         else
         {
-            if (playerStateManager.GetIsFacingRight())
+            if (_playerStateManager.GetIsFacingRight())
             {
-                playerStateManager.GetRigidBody2D().velocity = new Vector2(-1 * playerStateManager.GetWallJumpSpeedX(), playerStateManager.GetWallJumpSpeedY());
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(-1 * _playerStateManager.GetWallJumpSpeedX(), _playerStateManager.GetWallJumpSpeedY());
                 //Vì lúc trượt tường thì chưa set lại IsFR nên ở đây bắt buộc phải nhân -1
                 //Debug.Log("FR");
             }
             else
             {
-                playerStateManager.GetRigidBody2D().velocity = new Vector2(playerStateManager.GetWallJumpSpeedX(), playerStateManager.GetWallJumpSpeedY());
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetWallJumpSpeedX(), _playerStateManager.GetWallJumpSpeedY());
                 //Debug.Log("vX, vY: " + playerStateManager.GetRigidBody2D().velocity.x +", "+ playerStateManager.GetRigidBody2D().velocity.y);
             }
         }
-        playerStateManager.GetJumpSound().Play();
+        _playerStateManager.GetJumpSound().Play();
     }
 
     private void UpdateHorizontalLogic()
@@ -85,10 +83,10 @@ public class JumpState : BaseState
         //Prob here:
         //Khi bay nhưng điều hướng A||D thì lại chui vào đây mất
         //Do hàm FLip after WS khiến WallCheck bị lật ngược lại dẫn đến thế này
-        if (playerStateManager.GetDirX() != 0 )//&& !playerStateManager.GetIsWallTouch())
+        if (_playerStateManager.GetDirX() != 0 )//&& !playerStateManager.GetIsWallTouch())
         {
             //Debug.Log("Here");
-            playerStateManager.GetRigidBody2D().velocity = new Vector3(playerStateManager.GetSpeedX() * playerStateManager.GetDirX(), playerStateManager.GetRigidBody2D().velocity.y);
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
         }
     }
 

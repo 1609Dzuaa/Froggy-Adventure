@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MrIdleState : BaseState
+public class MrIdleState : MrBaseState
 {
     private bool hasDetectedPlayer = false; //Gác cổng của Run, đảm bảo
     //chỉ chang state 1 lần duy nhất và ưu tiên change sang Run ở state này
@@ -11,17 +11,13 @@ public class MrIdleState : BaseState
 
     public void SetCanRdDirection(bool para) { this.canRdDirection = para; }
 
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(MrStateManager mrStateManager)
     {
-        if (_baseStateManager is MushroomStateManager)
-        {
-            mushroomStateManager = (MushroomStateManager)_baseStateManager;
-            mushroomStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.idle);
-            //hasChangeState = false;
-            mushroomStateManager.SetChangeRightDirection(Random.Range(0, 2));
-            mushroomStateManager.GetRigidBody2D().velocity = new Vector2(0f, 0f); //Khiến nó dừng hoàn toàn, kh bị di chuyển thêm 1 đoạn ngắn
-            //Debug.Log("Idle"); //Keep this, use for debugging change state
-        }
+        base.EnterState(mrStateManager);
+        _mrStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.idle);
+        _mrStateManager.SetChangeRightDirection(Random.Range(0, 2));
+        _mrStateManager.GetRigidBody2D().velocity = new Vector2(0f, 0f); //Khiến nó dừng hoàn toàn, kh bị di chuyển thêm 1 đoạn ngắn
+        //Debug.Log("Idle"); //Keep this, use for debugging change state
     }
 
     public override void ExitState()
@@ -37,21 +33,21 @@ public class MrIdleState : BaseState
     {
         //Lạm dụng Invoke khiến Update 0 đc thực thi làm cho mushroom cứng đơ
         //trong khoảng thgian chờ sau khi Invoke đc gọi
-        if (mushroomStateManager.GetHasDetectedPlayer() && !hasDetectedPlayer)
+        if (_mrStateManager.GetHasDetectedPlayer() && !hasDetectedPlayer)
         {
             hasDetectedPlayer = true; //Bật cờ
             hasChangeState = true; //ĐK để chuyển sang Run thì 0 quan tâm thg này lắm
             //Bật nó để báo cho mấy đk dưới 0 đc phép chuyển nữa
             //Xoá các hàm đc Invoke trc đó, ưu tiên state Run
-            mushroomStateManager.CancelInvoke();
-            mushroomStateManager.Invoke("AllowRunFromPlayer", mushroomStateManager.GetRunDelay());
+            _mrStateManager.CancelInvoke();
+            _mrStateManager.Invoke("AllowRunFromPlayer", _mrStateManager.GetRunDelay());
         }
-        /*else if (mushroomStateManager.GetHasCollidedWall() && !hasChangeState)
+        /*else if (MrStateManager.GetHasCollidedWall() && !hasChangeState)
         {
             //Need to check again !
             //hasChangeState = true;
-            mushroomStateManager.FlippingSprite();
-            mushroomStateManager.Invoke("AllowWalk2", mushroomStateManager.GetRestDuration());
+            MrStateManager.FlippingSprite();
+            MrStateManager.Invoke("AllowWalk2", MrStateManager.GetRestDuration());
             //Thêm ĐK này vì vẫn có thể có TH hết thgian walk nhưng lại đụng tường
             //xảy ra tình trạng vẫn có thể random hướng walk 
         }*/
@@ -60,13 +56,13 @@ public class MrIdleState : BaseState
             //Nếu 0 detect ra player và 0 đụng tường thì Walk sau restDur (s)
             //và random true false để đổi hướng Walk tiếp
             hasChangeState = true;
-            mushroomStateManager.Invoke("AllowWalk1", mushroomStateManager.GetRestDuration());
+            _mrStateManager.Invoke("AllowWalk1", _mrStateManager.GetRestDuration());
         }
         else if (!hasChangeState) //Can't Random Direction to Walk
         {
             //Walk theo hướng mặt (0 random)
             hasChangeState = true;
-            mushroomStateManager.Invoke("AllowWalk2", mushroomStateManager.GetRestDuration());
+            _mrStateManager.Invoke("AllowWalk2", _mrStateManager.GetRestDuration());
         }
     }
 

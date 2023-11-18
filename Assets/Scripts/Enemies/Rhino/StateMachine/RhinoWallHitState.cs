@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RhinoWallHitState : BaseState
+public class RhinoWallHitState : RhinoBaseState
 {
     private bool allowUpdate = false;
     private bool hasHitWall = false;
@@ -9,16 +9,14 @@ public class RhinoWallHitState : BaseState
 
     public void SetAllowUpdate() { this.allowUpdate = true; }
 
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(RhinoStateManager rhinoStateManager)
     {
-        if (_baseStateManager is RhinoStateManager)
-        {
-            rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.wallHit);
-            allowUpdate = false;
-            hasHitWall = true;
-            rhinoStateManager.Invoke("SetTrueWallHitUpdate", 0.5f);
-            //Debug.Log("WH"); 
-        }
+        base.EnterState(rhinoStateManager);
+        _rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.wallHit);
+        allowUpdate = false;
+        hasHitWall = true;
+        _rhinoStateManager.Invoke("SetTrueWallHitUpdate", 0.5f);
+        //Debug.Log("WH"); 
     }
 
     public override void ExitState()
@@ -31,8 +29,8 @@ public class RhinoWallHitState : BaseState
         //Delay nhằm mục đích chạy hết animation WallHit
         if(allowUpdate)
         {
-            rhinoStateManager.FlippingSprite();
-            rhinoStateManager.ChangeState(rhinoStateManager.rhinoIdleState);
+            _rhinoStateManager.FlippingSprite();
+            _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoIdleState);
         }
     }
 

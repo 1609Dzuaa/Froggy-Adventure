@@ -1,22 +1,20 @@
 ﻿using UnityEngine;
 
-public class MrGotHitState : BaseState
+public class MrGotHitState : MrBaseState
 {
     private bool allowUpdate = false;
 
     public void SetTrueAllowUpdate() { this.allowUpdate = true; }
 
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(MrStateManager mrStateManager)
     {
-        if (_baseStateManager is MushroomStateManager)
-        {
-            mushroomStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.gotHit);
-            mushroomStateManager.GetRigidBody2D().velocity = new Vector2(0f, 0f); //Cố định vị trí
-            KnockUpAndLeft();
-            mushroomStateManager.GetBoxCollider2D().enabled = false;
-            mushroomStateManager.Invoke("SetTrueGotHitUpdate", mushroomStateManager.GetGotHitDuration());
-            //Debug.Log("GotHit"); 
-        }
+        base.EnterState(mrStateManager);
+        _mrStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.gotHit);
+        _mrStateManager.GetRigidBody2D().velocity = new Vector2(0f, 0f); //Cố định vị trí
+        KnockUpAndLeft();
+        _mrStateManager.GetBoxCollider2D().enabled = false;
+        _mrStateManager.Invoke("SetTrueGotHitUpdate", _mrStateManager.GetGotHitDuration());
+        //Debug.Log("GotHit"); 
     }
 
     public override void ExitState()
@@ -28,7 +26,7 @@ public class MrGotHitState : BaseState
     {
         if (allowUpdate)
         {
-            mushroomStateManager.DestroyItSelf();
+            _mrStateManager.DestroyItSelf();
         }
     }
 
@@ -39,7 +37,7 @@ public class MrGotHitState : BaseState
 
     private void KnockUpAndLeft()
     {
-        mushroomStateManager.GetRigidBody2D().AddForce(mushroomStateManager.GetKnockForce());
+        _mrStateManager.GetRigidBody2D().AddForce(_mrStateManager.GetKnockForce());
         //Debug.Log("Knock");
     }
 

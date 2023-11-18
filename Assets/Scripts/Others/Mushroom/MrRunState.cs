@@ -1,20 +1,18 @@
 ﻿using UnityEngine;
 
-public class MrRunState : BaseState
+public class MrRunState : MrBaseState
 {
     private bool allowUpdate = false;
     private bool hasChangeState = false;
 
     public void SetTrueUpdateMrRunState() { this.allowUpdate = true; }
-    public override void EnterState(BaseStateManager _baseStateManager)
+    public override void EnterState(MrStateManager mrStateManager)
     {
-        if (_baseStateManager is MushroomStateManager)
-        {
-            mushroomStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.run);
-            mushroomStateManager.Invoke("AllowUpdateMrRunState", 0.15f); //Delay việc Update trễ 1 khoảng ngắn
-            //Nhằm tạo thgian lật sprite bỏ chạy và tránh thoả mãn đk dưới quá nhanh
-            //Debug.Log("Run");
-        }
+        base.EnterState(mrStateManager);
+        _mrStateManager.GetAnimator().SetInteger("state", (int)EnumState.EMushroomState.run);
+        _mrStateManager.Invoke("AllowUpdateMrRunState", 0.15f); //Delay việc Update trễ 1 khoảng ngắn
+        //Nhằm tạo thgian lật sprite bỏ chạy và tránh thoả mãn đk dưới quá nhanh
+        //Debug.Log("Run");
     }
 
     public override void ExitState()
@@ -27,27 +25,27 @@ public class MrRunState : BaseState
     {
         if (allowUpdate)
         {
-            if (!mushroomStateManager.GetIsDetected() && !hasChangeState)
+            if (!_mrStateManager.GetIsDetected() && !hasChangeState)
             {
-                if (!mushroomStateManager.GetHasCollidedWall())
+                if (!_mrStateManager.GetHasCollidedWall())
                 {
                     //Debug.Log("Can RD");
-                    mushroomStateManager.mrIdleState.SetCanRdDirection(true);
+                    _mrStateManager.mrIdleState.SetCanRdDirection(true);
                 }
                 else
-                    mushroomStateManager.FlippingSprite();
+                    _mrStateManager.FlippingSprite();
                 hasChangeState = true;
-                mushroomStateManager.ChangeState(mushroomStateManager.mrIdleState);
+                _mrStateManager.ChangeState(_mrStateManager.mrIdleState);
             }
         }
     }
 
     public override void FixedUpdate()
     {
-        if (mushroomStateManager.GetIsFacingRight())
-            mushroomStateManager.GetRigidBody2D().velocity = new Vector2(mushroomStateManager.GetRunSpeed(), mushroomStateManager.GetRigidBody2D().velocity.y);
+        if (_mrStateManager.GetIsFacingRight())
+            _mrStateManager.GetRigidBody2D().velocity = new Vector2(_mrStateManager.GetRunSpeed(), _mrStateManager.GetRigidBody2D().velocity.y);
         else
-            mushroomStateManager.GetRigidBody2D().velocity = new Vector2(-mushroomStateManager.GetRunSpeed(), mushroomStateManager.GetRigidBody2D().velocity.y);
+            _mrStateManager.GetRigidBody2D().velocity = new Vector2(-_mrStateManager.GetRunSpeed(), _mrStateManager.GetRigidBody2D().velocity.y);
     }
 
 }

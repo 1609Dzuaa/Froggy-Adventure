@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
-public class RhinoStateManager : BaseStateManager
+public class RhinoStateManager : MonoBehaviour
 {
+    private RhinoBaseState _state;
     public RhinoIdleState rhinoIdleState = new();
     public RhinoRunState rhinoRunState = new();
     public RhinoWallHitState rhinoWallHitState = new();
@@ -42,12 +43,15 @@ public class RhinoStateManager : BaseStateManager
 
     //Private Field
     private Rigidbody2D rb;
+    private Animator anim;
     private bool isFacingRight = false;
     private new BoxCollider2D collider;
     private int changeRightDirection;
 
     //Public Func
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
+
+    public Animator GetAnimator() { return this.anim; }
 
     public bool GetIsFacingRight() { return this.isFacingRight; }
 
@@ -74,19 +78,19 @@ public class RhinoStateManager : BaseStateManager
     public Vector2 GetKnockForce() { return new Vector2(-1 * this.knockLeftForce, this.knockUpForce); }
 
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         collider = GetComponent<BoxCollider2D>();
-        state = rhinoIdleState;
-        state.EnterState(this);
+        _state = rhinoIdleState;
+        _state.EnterState(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        state.UpdateState();
+        _state.UpdateState();
         DetectPlayer();
         DetectWall();
         //Debug.Log("Right?: " + changeRightDirection); //
@@ -97,18 +101,18 @@ public class RhinoStateManager : BaseStateManager
 
     private void FixedUpdate()
     {
-        state.FixedUpdate();
+        _state.FixedUpdate();
     }
 
-    public override void ChangeState(BaseState state)
+    public void ChangeState(RhinoBaseState state)
     {
         //Got Hit thì return 0 cho chuyển state nữa (Chết là hết)
-        if (this.state is RhinoGotHitState)
+        if (this._state is RhinoGotHitState)
             return;
 
-        this.state.ExitState();
-        this.state = state;
-        this.state.EnterState(this);
+        this._state.ExitState();
+        this._state = state;
+        this._state.EnterState(this);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

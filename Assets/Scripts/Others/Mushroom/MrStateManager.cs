@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MushroomStateManager : BaseStateManager
+public class MrStateManager : MonoBehaviour
 {
     //Sinh vật vô hại, tương tự như nấm nhỏ trong HK :)
     //Làm 1 cái Ray check player dài từ trái qua phải luôn
     //Với các GameObject có từ 4 states trở lên thì dùng StateManager để quản lý
-
+    private MrBaseState _state;
     public MrIdleState mrIdleState = new();
     public MrWalkState mrWalkState = new();
     public MrRunState mrRunState = new();
@@ -44,6 +44,7 @@ public class MushroomStateManager : BaseStateManager
     [SerializeField] private float gotHitDuration; //Khoảng thgian GotHit trước khi bị destroy hẳn
 
     private Rigidbody2D rb;
+    private Animator anim;
     private BoxCollider2D boxCollider;
     private bool isFacingRight = false;
     private int changeRightDirection;
@@ -77,31 +78,33 @@ public class MushroomStateManager : BaseStateManager
 
     public Rigidbody2D GetRigidBody2D() { return rb; }
 
+    public Animator GetAnimator() { return this.anim; }
+
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
-        state = mrIdleState;
-        state.EnterState(this);
+        _state = mrIdleState;
+        _state.EnterState(this);
     }
 
-    public override void ChangeState(BaseState state)
+    public void ChangeState(MrBaseState state)
     {
         //Got Hit thì return 0 cho chuyển state nữa (Chết là hết)
-        if (this.state is MrGotHitState)
+        if (this._state is MrGotHitState)
             return;
 
-        this.state.ExitState();
-        this.state = state;
-        this.state.EnterState(this);
+        this._state.ExitState();
+        this._state = state;
+        this._state.EnterState(this);
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        state.UpdateState();
+        _state.UpdateState();
         DetectWall();
         DetectPlayer();
         //Debug.Log("FR: " + isFacingRight);
@@ -113,7 +116,7 @@ public class MushroomStateManager : BaseStateManager
 
     private void FixedUpdate()
     {
-        state.FixedUpdate();
+        _state.FixedUpdate();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
