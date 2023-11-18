@@ -30,7 +30,12 @@ public class MrRunState : BaseState
             if (!mushroomStateManager.GetIsDetected() && !hasChangeState)
             {
                 if (!mushroomStateManager.GetHasCollidedWall())
+                {
+                    //Debug.Log("Can RD");
                     mushroomStateManager.mrIdleState.SetCanRdDirection(true);
+                }
+                else
+                    mushroomStateManager.FlippingSprite();
                 hasChangeState = true;
                 mushroomStateManager.ChangeState(mushroomStateManager.mrIdleState);
             }

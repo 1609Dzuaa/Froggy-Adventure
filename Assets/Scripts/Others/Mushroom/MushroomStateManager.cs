@@ -104,7 +104,11 @@ public class MushroomStateManager : BaseStateManager
         state.UpdateState();
         DetectWall();
         DetectPlayer();
-        //Debug.Log("CollidedWall: " + wallCheck.position.x);
+        //Debug.Log("FR: " + isFacingRight);
+        //if (hasCollidedWall)
+            //Debug.Log("CollidedWall: " + hasCollidedWall);
+        //Do cách đặt Wall check dẫn đến việc hoạt động 0 như ý muốn(Ray chọc xuyên layer Ground)
+        //Solution: Kéo wall check lui về gần tâm object, chỉnh distanceCheck để ray lớn hơn độ dài nửa object 1 xíu
     }
 
     private void FixedUpdate()
