@@ -49,7 +49,7 @@ public class PlayerStateManager : MonoBehaviour
 
     [Header("Force")]
     [SerializeField] private float knockBackForce = 15f;
-    [SerializeField] private float jumpOnEnemiesForce = 15f;
+    [SerializeField] private Vector2 jumpOnEnemiesForce;
 
     [Header("Sound")]
     [SerializeField] private AudioSource jumpSound;
@@ -66,9 +66,9 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float wallCheckDistance;
 
-    [Header("Enemies Check")]
+    /*[Header("Enemies Check")]
     [SerializeField] private LayerMask enemiesLayer;
-    private bool isJumpOnEnemies = false;
+    private bool isJumpOnEnemies = false;*/
 
     //GET Functions
     public float GetDirX() { return this.dirX; }
@@ -104,6 +104,8 @@ public class PlayerStateManager : MonoBehaviour
     public float GetWallJumpSpeedY() { return this.wallJumpSpeedY; }
 
     public float GetKnockBackForce() { return this.knockBackForce; }
+
+    public Vector2 GetJumpOnEnemiesForce() { return this.jumpOnEnemiesForce; }
 
     public ParticleSystem GetDustPS() { return this.dustPS; }
 
@@ -191,14 +193,12 @@ public class PlayerStateManager : MonoBehaviour
         HandleFlipSprite();
         HandleDustVelocity();
         SpawnDust();
-        
-        //Debug.Log("IsWT: " + IsWallTouch);
     }
 
     private void FixedUpdate()
     {
         _state.FixedUpdate();
-        HandleJumpOnEnemies();
+        //Debug.Log("velo Y: " + rb.velocity.y);
     }
 
     private void OnDrawGizmos()
@@ -245,7 +245,6 @@ public class PlayerStateManager : MonoBehaviour
     private void GroundAndWallCheck()
     {
         isOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
-        isJumpOnEnemies = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, enemiesLayer);
         if (isFacingRight)
             IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, -wallCheckDistance, wallLayer);
         else
@@ -273,19 +272,6 @@ public class PlayerStateManager : MonoBehaviour
     {
         isOnGround = true;
         hasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
-    }
-
-    private void HandleJumpOnEnemies()
-    {
-        if (isJumpOnEnemies)
-        {
-            this.rb.AddForce(new Vector2(0f, jumpOnEnemiesForce));
-            isOnGround = true;
-            hasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
-        }
-        //Về cơ bản thì xử lý xong việc nhảy lên đầu enemies 
-        //nhưng vẫn còn lỗi có thể có nhiều lên bật lên do addforce
-        //do thoả ĐK quét OverlapCircle của enemies check
     }
 
     private void SpawnDust()

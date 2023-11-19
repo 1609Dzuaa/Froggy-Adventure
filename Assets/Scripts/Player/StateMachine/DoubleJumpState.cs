@@ -19,11 +19,10 @@ public class DoubleJumpState : PlayerBaseState
 
     public override void UpdateState()
     {
-        UpdateHorizontalLogic();
         UpdateVerticalLogic();
     }
 
-    private void UpdateHorizontalLogic()
+    private void UpdateHorizontalPhysics()
     {
         if (_playerStateManager.GetDirX() != 0)
         {
@@ -41,7 +40,7 @@ public class DoubleJumpState : PlayerBaseState
 
     public override void FixedUpdate()
     {
-        
+        UpdateHorizontalPhysics();
     }
 
     private void HandleDbJump()

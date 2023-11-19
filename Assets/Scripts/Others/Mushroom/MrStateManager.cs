@@ -124,8 +124,8 @@ public class MrStateManager : MonoBehaviour
         if (collision.gameObject.name == "Player" && !hasGotHit)
         {
             hasGotHit = true;
-            var playerStateManager = collision.gameObject.GetComponent<PlayerStateManager>();
-            playerStateManager.GetRigidBody2D().AddForce(new Vector2(0f, 700f));
+            PlayerStateManager pSM = collision.GetComponent<PlayerStateManager>();
+            pSM.GetRigidBody2D().AddForce(pSM.GetJumpOnEnemiesForce());
             ChangeState(mrGotHitState);
         }
     }

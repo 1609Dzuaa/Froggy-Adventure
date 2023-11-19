@@ -6,7 +6,7 @@ public class PlantIdleState : PlantBaseState
     {
         base.EnterState(plantStateManager);
         _plantStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlantState.idle);
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
     }
 
     public override void ExitState()

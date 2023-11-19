@@ -47,6 +47,7 @@ public class RhinoStateManager : MonoBehaviour
     private bool isFacingRight = false;
     private new BoxCollider2D collider;
     private int changeRightDirection;
+    private bool hasGotHit = false;
 
     //Public Func
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
@@ -117,10 +118,11 @@ public class RhinoStateManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player")
+        if (collision.name == "Player" && !hasGotHit)
         {
-            var player = collision.gameObject.GetComponent<PlayerStateManager>();
-            player.GetRigidBody2D().AddForce(new Vector2(0f, 700f));
+            hasGotHit = true;
+            PlayerStateManager pSM = collision.GetComponent<PlayerStateManager>();
+            pSM.GetRigidBody2D().AddForce(pSM.GetJumpOnEnemiesForce());
             ChangeState(rhinoGotHitState);
         }
     }

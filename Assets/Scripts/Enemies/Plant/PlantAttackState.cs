@@ -6,7 +6,7 @@ public class PlantAttackState : PlantBaseState
     {
         base.EnterState(plantStateManager);
         _plantStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlantState.attack);
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
     }
 
     public override void ExitState()

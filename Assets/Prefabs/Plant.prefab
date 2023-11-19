@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1006303768328941985}
   - component: {fileID: 1006303768328941984}
   - component: {fileID: 1006303768328941991}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1006303768328941987
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -124,7 +124,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.20435333, y: -0.28094482}
+  m_Offset: {x: 0.20435333, y: -0.2944765}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -135,7 +135,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5921059, y: 1.9226379}
+  m_Size: {x: 1.5921059, y: 1.8955746}
   m_EdgeRadius: 0
 --- !u!61 &1006303768328941985
 BoxCollider2D:
@@ -150,7 +150,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.20134354, y: 0.6448345}
+  m_Offset: {x: 0.2110101, y: 0.6666517}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -161,7 +161,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2676811, y: 0.28646088}
+  m_Size: {x: 1.3772361, y: 0.2575512}
   m_EdgeRadius: 0
 --- !u!95 &1006303768328941984
 Animator:
@@ -201,8 +201,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  bullet: {fileID: 0}
-  bulletSpeed: 0
+  bullet: {fileID: 3972120368183892189, guid: d5bd51591c44bd945bfdec6b3d539063, type: 3}
+  degreeEachRotation: 1
+  timeEachRotate: 0.1
 --- !u!1 &1006303769964934688
 GameObject:
   m_ObjectHideFlags: 0

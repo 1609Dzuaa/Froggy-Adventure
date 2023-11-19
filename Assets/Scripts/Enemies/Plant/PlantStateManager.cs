@@ -14,7 +14,11 @@ public class PlantStateManager : MonoBehaviour
 
     [Header("Bullet")]
     [SerializeField] private Transform bullet;
-    [SerializeField] private float bulletSpeed;
+
+    //Rotate sprite after got hit
+    [Header("Rotation")]
+    [SerializeField] private float degreeEachRotation;
+    [SerializeField] private float timeEachRotate;
 
     private PlantBaseState _state;
     public PlantIdleState plantIdleState = new();
@@ -23,7 +27,8 @@ public class PlantStateManager : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
-    private bool isFacingRight = false;
+    private new BoxCollider2D collider2D;
+    private bool hasGotHit = false;
 
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
 
@@ -31,10 +36,15 @@ public class PlantStateManager : MonoBehaviour
 
     public bool GetHasDetectedPlayer() { return this.hasDetectedPlayer; }
 
+    public float GetTimeEachRotate() { return this.timeEachRotate; }
+
+    public float GetDegreeEachRotation() {  return this.degreeEachRotation; }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        collider2D = GetComponent<BoxCollider2D>();
         _state = plantIdleState;
         _state.EnterState(this);
     }
@@ -57,45 +67,49 @@ public class PlantStateManager : MonoBehaviour
 
     private void DetectPlayer()
     {
-        if (!isFacingRight)
-            hasDetectedPlayer = Physics2D.Raycast(new Vector2(playerCheck.position.x, playerCheck.position.y), Vector2.left, checkDistance, playerLayer);
-        else
-            hasDetectedPlayer = Physics2D.Raycast(new Vector2(playerCheck.position.x, playerCheck.position.y), Vector2.right, checkDistance, playerLayer);
-
+        hasDetectedPlayer = Physics2D.Raycast(new Vector2(playerCheck.position.x, playerCheck.position.y), Vector2.left, checkDistance, playerLayer);
         DrawRayDetectPlayer();
     }
 
     private void DrawRayDetectPlayer()
     {
         if (hasDetectedPlayer)
-        {
-            if (!isFacingRight)
-                Debug.DrawRay(playerCheck.position, Vector2.left * checkDistance, Color.red);
-            else
-                Debug.DrawRay(playerCheck.position, Vector2.right * checkDistance, Color.red);
-        }
+            Debug.DrawRay(playerCheck.position, Vector2.left * checkDistance, Color.red);
         else
-        {
-            if (!isFacingRight)
-                Debug.DrawRay(playerCheck.position, Vector2.left * checkDistance, Color.green);
-            else
-                Debug.DrawRay(playerCheck.position, Vector2.right * checkDistance, Color.green);
-        }
-    }
-
-    public void FlippingSprite()
-    {
-        //Maybe here
-        isFacingRight = !isFacingRight;
-        transform.Rotate(0, 180, 0);
-        //Hàm này dùng để lật sprite theo chiều ngang
+            Debug.DrawRay(playerCheck.position, Vector2.left * checkDistance, Color.green);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "Player")
+        if (collision.name == "Player" && !hasGotHit)
         {
+            hasGotHit = true; //Make sure only trigger and addforce once
+            PlayerStateManager pSM = collision.GetComponent<PlayerStateManager>();
+            //Vấn đề là nếu jump và fall bthg lên đầu enemy thì addforce hoạt động tốt
+            //Còn nếu Dbjump và fall lên đầu enemy thì addforce chỉ nhích đc 1 tí
+            //Do Dbjump => Try AddForce when jump ?
+            pSM.GetRigidBody2D().AddForce(pSM.GetJumpOnEnemiesForce());
             ChangeState(plantGotHitState);
         }    
+    }
+
+    //Event Func in Attack Animation
+    private void SpawnBullet()
+    {
+        //Cho th bullet nhận th này làm parent, tự đo ra đc các số dưới
+        Vector3 spawnPos = new Vector3(transform.position.x - 1.34f, transform.position.y + 0.15f, transform.position.z);
+        Instantiate(bullet, spawnPos, Quaternion.identity, null);
+    }
+
+    //Event Func in Attack Animation
+    private void HandleGotHit()
+    {
+        collider2D.enabled = false;
+        Invoke("SelfDestroy", 1.5f);
+    }
+
+    private void SelfDestroy()
+    {
+        Destroy(this.gameObject);
     }
 }

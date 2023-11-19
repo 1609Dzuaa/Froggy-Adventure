@@ -20,12 +20,11 @@ public class FallState : PlayerBaseState
 
     public override void UpdateState()
     {
-        UpdateHorizontalLogic();
         //Because the velocity value will not always exactly equal 0
         //So we check does it greater or smaller than a very small value
 
-        //Nếu vận tốc 2 trục rất nhỏ thì coi như đang Idle
-        if (Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < 0.1f && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < 0.1f)
+        //Nếu vận tốc 2 trục rất nhỏ VÀ đang trên nền thì coi như đang Idle
+        if (Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < 0.1f && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < 0.1f && _playerStateManager.GetIsOnGround())
             _playerStateManager.ChangeState(_playerStateManager.idleState);
         //Nếu vận tốc trục x lớn hơn .1f và trục y rất nhỏ
         //và đang OnGround thì
@@ -40,13 +39,13 @@ public class FallState : PlayerBaseState
             _playerStateManager.ChangeState(_playerStateManager.doubleJumpState);
     }
 
-    void UpdateHorizontalLogic()
+    void UpdateHorizontalPhysics()
     {
         _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 
     public override void FixedUpdate()
     {
-
+        UpdateHorizontalPhysics();
     }
 }
