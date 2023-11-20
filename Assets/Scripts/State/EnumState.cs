@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class EnumState
+﻿public class EnumState
 {
     //Tạo các enum của State để gán giá trị tương ứng cho Animations
     public enum EPlayerState
@@ -14,4 +12,7 @@ public class EnumState
 
     public enum EPlantState
     { idle, attack, gotHit }
+
+    public enum EBatState
+    { sleep, idle, ceilIn, ceilOut, fly, gotHit, chase, retreat }
 }

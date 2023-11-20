@@ -16,7 +16,7 @@ public class PlantStateManager : MonoBehaviour
     [SerializeField] private Transform bullet;
 
     //Rotate sprite after got hit
-    [Header("Rotation")]
+    [Header("Z Rotation When Dead")]
     [SerializeField] private float degreeEachRotation;
     [SerializeField] private float timeEachRotate;
 
