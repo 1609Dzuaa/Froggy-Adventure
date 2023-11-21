@@ -7,7 +7,7 @@ public class BatStateManager : MonoBehaviour
     //Tạo effect sáng tối để có chỗ để mấy con này trong chỗ ánh sáng thấp
     //Nếu đi xa quá đến chỗ có ánh sáng mạnh thì quay đầu về ngủ
     //Match Bat's logic :)
-    //Còn xác định Range phát hiện player
+    //Vẫn còn bug con bat có thể đè player xuyên qua map :v
 
     private BatBaseState _state;
     public BatSleepState batSleepState = new();
@@ -23,28 +23,51 @@ public class BatStateManager : MonoBehaviour
     [SerializeField] private Transform player; //Dùng để xác định và đuổi theo player
     [SerializeField] private Transform sleepPos; //Dùng để xác định và về chỗ ngủ
 
-    [Header("Left Right Boundaries")]
+    [Header("Boundaries")]
     [SerializeField] private Transform maxPointLeft;
     [SerializeField] private Transform maxPointRight;
+    [SerializeField] private float attackRange; //trigger bat's chase state
+
+    [Header("Parent")]
+    [SerializeField] private GameObject parent; //Lấy parent của con bat để Destroy
+
+    //Rotate sprite after got hit
+    [Header("Z Rotation When Dead")]
+    [SerializeField] private float degreeEachRotation;
+    [SerializeField] private float timeEachRotate;
 
     [Header("Speed")]
+    [SerializeField] private Vector2 flySpeed;
     [SerializeField] private float chaseSpeed;
 
     [Header("Time")]
     [SerializeField] private float sleepTime;
+    [SerializeField] private float flyTime;
     [SerializeField] private float restTime;
 
     public Rigidbody2D GetRigidBody2D() { return this.rb; }
 
     public Animator GetAnimator() { return this.anim; }
 
+    public CapsuleCollider2D GetCapsuleCollider2D() { return this.collider2D; }
+
     public float GetSleepTime() { return this.sleepTime; }
+
+    public float GetFlyTime() { return this.flyTime; }
 
     public float GetRestTime() { return this.restTime; }
 
+    public Vector2 GetFlySpeed() { return this.flySpeed; }
+
     public float GetChaseSpeed() { return this.chaseSpeed; }
 
+    public float GetTimeEachRotate() { return this.timeEachRotate; }
+
+    public float GetDegreeEachRotation() { return this.degreeEachRotation; }
+
     public bool GetIsFacingRight() { return this.isFacingRight; }
+
+    public float GetAttackRange() { return this.attackRange; }
 
     public Transform GetPlayer() { return this.player; }
 
@@ -56,13 +79,16 @@ public class BatStateManager : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
+    private new CapsuleCollider2D collider2D;
     private bool isFacingRight = false;
+    private bool hasGotHit = false;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        collider2D = GetComponent<CapsuleCollider2D>();
         _state = batSleepState;
         _state.EnterState(this);
     }
@@ -76,6 +102,17 @@ public class BatStateManager : MonoBehaviour
     private void FixedUpdate()
     {
         _state.FixedUpdate();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.name == "Player" && !hasGotHit)
+        {
+            hasGotHit = true;
+            var pSM = collision.gameObject.GetComponent<PlayerStateManager>();
+            pSM.GetRigidBody2D().AddForce(pSM.GetJumpOnEnemiesForce());
+            ChangState(batGotHitState);
+        }
     }
 
     public void ChangState(BatBaseState state)
@@ -103,6 +140,12 @@ public class BatStateManager : MonoBehaviour
     public void Sleep()
     {
         ChangState(batSleepState);
+    }
+
+    //Got Hit Animation's Event
+    public void SelfDestroy()
+    {
+        Destroy(parent);
     }
 
     public void FlipLeft()
