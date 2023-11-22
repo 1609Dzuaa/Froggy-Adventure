@@ -188,7 +188,7 @@ public class PlayerStateManager : MonoBehaviour
     void Update()
     {
         HandleInput();
-        _state.UpdateState();
+        _state.Update();
         GroundAndWallCheck();
         HandleFlipSprite();
         HandleDustVelocity();

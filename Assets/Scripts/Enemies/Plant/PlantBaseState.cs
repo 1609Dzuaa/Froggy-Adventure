@@ -8,7 +8,7 @@ public abstract class PlantBaseState
 
     public virtual void ExitState() { }
 
-    public virtual void UpdateState() { }
+    public virtual void Update() { }
 
     public virtual void FixedUpdate() { }
 }

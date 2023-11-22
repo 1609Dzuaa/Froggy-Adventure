@@ -17,7 +17,7 @@ public class DoubleJumpState : PlayerBaseState
         
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         UpdateVerticalLogic();
     }

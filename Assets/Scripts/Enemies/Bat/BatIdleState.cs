@@ -21,7 +21,7 @@ public class BatIdleState : BatBaseState
         allowUpdate = false;
     }
 
-    public override void UpdateState() 
+    public override void Update() 
     {
         if(allowUpdate)
         {

@@ -18,7 +18,7 @@ public class PlantGotHitState : PlantBaseState
 
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if(Time.time - lastRotateTime >= _plantStateManager.GetTimeEachRotate())
         {

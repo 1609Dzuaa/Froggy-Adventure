@@ -23,7 +23,7 @@ public class RhinoIdleState : RhinoBaseState
         canRdDirection = false;
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if (_rhinoStateManager.GetHasDetectedPlayer() && isFirstSawPlayer &&!hasChangeState)
         {

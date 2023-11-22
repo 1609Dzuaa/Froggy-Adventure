@@ -23,7 +23,7 @@ public class GotHitState : PlayerBaseState
 
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         //Chỉ cho phép Update sau khi chạy xong animation Hit
         if(allowUpdate)

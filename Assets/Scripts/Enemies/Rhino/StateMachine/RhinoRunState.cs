@@ -17,7 +17,7 @@ public class RhinoRunState : RhinoBaseState
         
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if (_rhinoStateManager.GetHasCollidedWall())
             _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoWallHitState);

@@ -13,7 +13,7 @@ public class BatSleepState : BatBaseState
 
     public override void ExitState() { }
 
-    public override void UpdateState() 
+    public override void Update() 
     {
         if (Time.time - entryTime >= _batStateManager.GetSleepTime())
             _batStateManager.ChangState(_batStateManager.batCeilOutState);

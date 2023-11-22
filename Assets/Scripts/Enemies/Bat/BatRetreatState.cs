@@ -11,7 +11,7 @@ public class BatRetreatState : BatBaseState
 
     public override void ExitState() { }
 
-    public override void UpdateState() 
+    public override void Update() 
     {
         _batStateManager.transform.position = Vector2.MoveTowards(_batStateManager.transform.position, _batStateManager.GetSleepPos().position, _batStateManager.GetChaseSpeed() * Time.deltaTime);
         if (Vector2.Distance(_batStateManager.transform.position,_batStateManager.GetSleepPos().position) < 0.1f)

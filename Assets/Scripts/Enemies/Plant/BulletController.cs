@@ -10,6 +10,10 @@ public class BulletController : MonoBehaviour
     [Header("Time")]
     [SerializeField] private float existTime;
 
+    [Header("Pieces")]
+    [SerializeField] private Transform piece1;
+    [SerializeField] private Transform piece2;
+
     private Rigidbody2D rb;
     private float entryTime;
     // Start is called before the first frame update
@@ -35,8 +39,14 @@ public class BulletController : MonoBehaviour
     {
         if(collision.collider.name == "Player")
         {
-            //Spawn lá hoặc effect gì đấy
+            SpawnBulletPieces();
             Destroy(this.gameObject);
         }
+    }
+
+    private void SpawnBulletPieces()
+    {
+        Instantiate(piece1, transform.position, Quaternion.identity, null);
+        Instantiate(piece2, transform.position, Quaternion.identity, null);
     }
 }

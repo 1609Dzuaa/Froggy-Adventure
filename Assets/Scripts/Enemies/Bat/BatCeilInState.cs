@@ -11,7 +11,7 @@ public class BatCeilInState : BatBaseState
 
     public override void ExitState() { }
 
-    public override void UpdateState() { }
+    public override void Update() { }
 
     public override void FixedUpdate() { }
 }

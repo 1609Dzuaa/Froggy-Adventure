@@ -16,7 +16,7 @@ public class RhinoStateManager : MonoBehaviour
     [SerializeField] private float patrolSpeed = 1.0f;
     [SerializeField] private float runSpeed = 5.0f;
 
-    [Header("Warning")]
+    [Header("Spawn Warning")]
     [SerializeField] private GameObject _warning;
     [SerializeField] private float spawnDistanceY;
 
@@ -91,7 +91,7 @@ public class RhinoStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _state.UpdateState();
+        _state.Update();
         DetectPlayer();
         DetectWall();
         //Debug.Log("Right?: " + changeRightDirection); //

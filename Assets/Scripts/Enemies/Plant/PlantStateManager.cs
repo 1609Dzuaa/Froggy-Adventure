@@ -52,7 +52,7 @@ public class PlantStateManager : MonoBehaviour
     void Update()
     {
         DetectPlayer();
-        _state.UpdateState();
+        _state.Update();
     }
 
     public void ChangeState(PlantBaseState state)

@@ -29,7 +29,7 @@ public class MrIdleState : MrBaseState
         //Kh đụng tường và hết thgian walk
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         //Lạm dụng Invoke khiến Update 0 đc thực thi làm cho mushroom cứng đơ
         //trong khoảng thgian chờ sau khi Invoke đc gọi

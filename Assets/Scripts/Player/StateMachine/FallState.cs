@@ -18,7 +18,7 @@ public class FallState : PlayerBaseState
         
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         //Because the velocity value will not always exactly equal 0
         //So we check does it greater or smaller than a very small value

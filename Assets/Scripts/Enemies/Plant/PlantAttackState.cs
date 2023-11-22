@@ -14,7 +14,7 @@ public class PlantAttackState : PlantBaseState
 
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if (!_plantStateManager.GetHasDetectedPlayer())
             _plantStateManager.ChangeState(_plantStateManager.plantIdleState);

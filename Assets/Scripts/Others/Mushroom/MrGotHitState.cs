@@ -22,7 +22,7 @@ public class MrGotHitState : MrBaseState
 
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if (allowUpdate)
         {

@@ -9,7 +9,7 @@ public abstract class MrBaseState
 
     public virtual void ExitState() { }
 
-    public virtual void UpdateState() { }
+    public virtual void Update() { }
 
     public virtual void FixedUpdate() { }
 }

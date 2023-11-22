@@ -25,7 +25,7 @@ public class BatFlyState : BatBaseState
         hasFlip = false;
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         //Tính khcach từ bat đến player để check ở dưới
         distance = Vector2.Distance(_batStateManager.transform.position, _batStateManager.GetPlayer().position);

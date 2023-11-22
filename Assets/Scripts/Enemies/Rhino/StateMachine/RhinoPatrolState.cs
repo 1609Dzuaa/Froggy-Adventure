@@ -24,7 +24,7 @@ public class RhinoPatrolState : RhinoBaseState
 
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if(allowUpdate)
         {

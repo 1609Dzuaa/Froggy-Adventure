@@ -96,7 +96,7 @@ public class BatStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _state.UpdateState();
+        _state.Update();
     }
 
     private void FixedUpdate()

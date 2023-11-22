@@ -104,7 +104,7 @@ public class MrStateManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        _state.UpdateState();
+        _state.Update();
         DetectWall();
         DetectPlayer();
         //Debug.Log("FR: " + isFacingRight);

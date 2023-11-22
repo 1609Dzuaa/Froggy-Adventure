@@ -15,4 +15,7 @@
 
     public enum EBatState
     { sleep, idle, ceilIn, ceilOut, fly, gotHit, chase, retreat }
+
+    public enum EGeckoState
+    { idle, patrol, attack, gotHit, hide  }
 }

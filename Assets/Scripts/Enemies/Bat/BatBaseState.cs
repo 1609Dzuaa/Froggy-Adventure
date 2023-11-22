@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BatBaseState 
+public abstract class BatBaseState 
 {
     protected BatStateManager _batStateManager;
 
@@ -8,7 +8,7 @@ public class BatBaseState
 
     public virtual void ExitState() { }
 
-    public virtual void UpdateState() { }
+    public virtual void Update() { }
 
     public virtual void FixedUpdate() { }
 }

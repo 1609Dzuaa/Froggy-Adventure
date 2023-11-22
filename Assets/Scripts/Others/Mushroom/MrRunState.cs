@@ -21,7 +21,7 @@ public class MrRunState : MrBaseState
         hasChangeState = false;
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if (allowUpdate)
         {

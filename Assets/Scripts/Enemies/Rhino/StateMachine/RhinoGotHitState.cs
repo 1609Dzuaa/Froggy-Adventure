@@ -22,7 +22,7 @@ public class RhinoGotHitState : RhinoBaseState
 
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if (allowUpdate)
         {

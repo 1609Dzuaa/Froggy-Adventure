@@ -22,7 +22,7 @@ public class WallSlideState : PlayerBaseState
         
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         UpdateHorizontalLogic(); //Xong đây nó lại set Velo ở else khiến cho 0 bay đc
         if (hasChangedState)

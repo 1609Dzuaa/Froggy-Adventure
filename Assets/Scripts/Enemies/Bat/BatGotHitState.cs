@@ -16,7 +16,7 @@ public class BatGotHitState : BatBaseState
 
     public override void ExitState() { }
 
-    public override void UpdateState() 
+    public override void Update() 
     {
         if (Time.time - lastRotateTime >= _batStateManager.GetTimeEachRotate())
         {

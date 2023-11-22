@@ -17,7 +17,7 @@ public class MrWalkState : MrBaseState
         hasChangeState = false;
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if (_mrStateManager.GetHasDetectedPlayer() && !hasChangeState)
         {

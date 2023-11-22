@@ -26,7 +26,7 @@ public class JumpState : PlayerBaseState
 
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         UpdateJumpLogic();
         if (hasChangedState) 

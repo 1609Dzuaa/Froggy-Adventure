@@ -24,7 +24,7 @@ public class RhinoWallHitState : RhinoBaseState
         hasHitWall = false;
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         //Delay nhằm mục đích chạy hết animation WallHit
         if(allowUpdate)
