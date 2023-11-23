@@ -12,8 +12,9 @@ public class PlantStateManager : MonoBehaviour
     [SerializeField] private LayerMask playerLayer;
     private bool hasDetectedPlayer = false;
 
-    [Header("Bullet")]
-    [SerializeField] private Transform bullet;
+    [Header("Bullet & Shoot Pos")]
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private Transform shootPosition;
 
     //Rotate sprite after got hit
     [Header("Z Rotation When Dead")]
@@ -29,8 +30,7 @@ public class PlantStateManager : MonoBehaviour
     private Animator anim;
     private new BoxCollider2D collider2D;
     private bool hasGotHit = false;
-
-    public Rigidbody2D GetRigidBody2D() { return this.rb; }
+    private bool isFacingRight = false;
 
     public Animator GetAnimator() { return this.anim; }
 
@@ -40,11 +40,19 @@ public class PlantStateManager : MonoBehaviour
 
     public float GetDegreeEachRotation() {  return this.degreeEachRotation; }
 
+    private void Awake()
+    {
+        //Đụng sau
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         collider2D = GetComponent<BoxCollider2D>();
+        if (transform.rotation.eulerAngles.y == 180f)
+            isFacingRight = true;
+        //Debug.Log("IfR: " + transform.right);
         _state = plantIdleState;
         _state.EnterState(this);
     }
@@ -53,6 +61,7 @@ public class PlantStateManager : MonoBehaviour
     {
         DetectPlayer();
         _state.Update();
+        //Debug.Log("IFR: " + isFacingRight);
     }
 
     public void ChangeState(PlantBaseState state)
@@ -67,16 +76,19 @@ public class PlantStateManager : MonoBehaviour
 
     private void DetectPlayer()
     {
-        hasDetectedPlayer = Physics2D.Raycast(new Vector2(playerCheck.position.x, playerCheck.position.y), Vector2.left, checkDistance, playerLayer);
+        if (!isFacingRight)
+            hasDetectedPlayer = Physics2D.Raycast(new Vector2(playerCheck.position.x, playerCheck.position.y), Vector2.left, checkDistance, playerLayer);
+        else
+            hasDetectedPlayer = Physics2D.Raycast(new Vector2(playerCheck.position.x, playerCheck.position.y), Vector2.right, checkDistance, playerLayer);
         DrawRayDetectPlayer();
     }
 
     private void DrawRayDetectPlayer()
     {
         if (hasDetectedPlayer)
-            Debug.DrawRay(playerCheck.position, Vector2.left * checkDistance, Color.red);
+            Debug.DrawRay(playerCheck.position, -1 * transform.right * checkDistance, Color.red);
         else
-            Debug.DrawRay(playerCheck.position, Vector2.left * checkDistance, Color.green);
+            Debug.DrawRay(playerCheck.position, -1 * transform.right * checkDistance, Color.green);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -96,9 +108,16 @@ public class PlantStateManager : MonoBehaviour
     //Event Func in Attack Animation
     private void SpawnBullet()
     {
-        //Cho th bullet nhận th này làm parent, tự đo ra đc các số dưới
-        Vector3 spawnPos = new Vector3(transform.position.x - 1.34f, transform.position.y + 0.15f, transform.position.z);
-        Instantiate(bullet, spawnPos, Quaternion.identity, null);
+        //Xài cách này tha hồ điều chỉnh ngoài Inspector, hạn chế hard - coded
+
+        //Mỗi lần bắn, tạo 1 viên đạn mới và set hướng cho nó
+        //= chính hướng mặt hiện tại của cây(để điều chỉnh vector vận tốc)
+        //Cách cũ: Instantiate(bullet, shootPosition.position, transform.rotation);
+        //Là mình chỉ tạo bản sao của cái bullet(lúc này isDirectionRight của nó 
+        //mặc định là false) dẫn đến việc vector vận tốc của bullet hđ 0 như ý
+        GameObject _bullet;
+        _bullet = Instantiate(bullet, shootPosition.position, transform.rotation);
+        _bullet.GetComponent<BulletController>().SetIsDirectionRight(isFacingRight);
     }
 
     //Event Func in Attack Animation

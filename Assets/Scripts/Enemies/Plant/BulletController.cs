@@ -10,12 +10,17 @@ public class BulletController : MonoBehaviour
     [Header("Time")]
     [SerializeField] private float existTime;
 
-    [Header("Pieces")]
+    [Header("Pieces & Position")]
     [SerializeField] private Transform piece1;
     [SerializeField] private Transform piece2;
+    [SerializeField] private Transform piece1Position;
+    [SerializeField] private Transform piece2Position;
 
     private Rigidbody2D rb;
     private float entryTime;
+    private bool isDirectionRight = false;
+
+    public void SetIsDirectionRight(bool para) { this.isDirectionRight = para; }
     // Start is called before the first frame update
     void Start()
     {
@@ -31,13 +36,20 @@ public class BulletController : MonoBehaviour
             //Spawn lá hoặc effect gì đấy
             Destroy(this.gameObject);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDirectionRight)
+            rb.velocity = new Vector2(bulletSpeed, 0f);
         else
-            rb.velocity = new Vector2(bulletSpeed, 0f); 
+            rb.velocity = new Vector2(-bulletSpeed, 0f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.name == "Player")
+        //Có nên thử cho nó damage allies của mình || box ?
+        if(collision.collider.name == "Player" || collision.collider.CompareTag("Ground"))
         {
             SpawnBulletPieces();
             Destroy(this.gameObject);
@@ -46,7 +58,7 @@ public class BulletController : MonoBehaviour
 
     private void SpawnBulletPieces()
     {
-        Instantiate(piece1, transform.position, Quaternion.identity, null);
-        Instantiate(piece2, transform.position, Quaternion.identity, null);
+        Instantiate(piece1, piece1Position.position, Quaternion.identity, null);
+        Instantiate(piece2, piece2Position.position, Quaternion.identity, null);
     }
 }
