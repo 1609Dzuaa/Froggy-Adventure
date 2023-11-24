@@ -11,8 +11,8 @@ public class BulletController : MonoBehaviour
     [SerializeField] private float existTime;
 
     [Header("Pieces & Position")]
-    [SerializeField] private Transform piece1;
-    [SerializeField] private Transform piece2;
+    [SerializeField] private GameObject piece1;
+    [SerializeField] private GameObject piece2;
     [SerializeField] private Transform piece1Position;
     [SerializeField] private Transform piece2Position;
 
@@ -58,7 +58,10 @@ public class BulletController : MonoBehaviour
 
     private void SpawnBulletPieces()
     {
-        Instantiate(piece1, piece1Position.position, Quaternion.identity, null);
-        Instantiate(piece2, piece2Position.position, Quaternion.identity, null);
+        GameObject[] pieces = new GameObject[2];
+        pieces[0] = Instantiate(piece1, piece1Position.position, Quaternion.identity, null);
+        pieces[1] = Instantiate(piece2, piece2Position.position, Quaternion.identity, null);
+        for (int i = 0; i < pieces.Length; i++)
+            pieces[i].GetComponent<BulletPieceController>().SetIsShotFromRight(isDirectionRight);
     }
 }

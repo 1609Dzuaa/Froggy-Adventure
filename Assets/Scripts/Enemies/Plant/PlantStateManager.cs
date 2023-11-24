@@ -42,7 +42,7 @@ public class PlantStateManager : MonoBehaviour
 
     private void Awake()
     {
-        //Đụng sau
+        
     }
 
     void Start()

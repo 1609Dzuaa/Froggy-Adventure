@@ -31,6 +31,7 @@ public class RhinoStateManager : MonoBehaviour
     [SerializeField] private LayerMask playerLayer;
     private bool hasDetectedPlayer = false;
 
+    //Nên thêm giới hạn trái phải thay vì phụ thuộc vào địa hình
     [Header("Wall Check")]
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckDistance = 3.0f;

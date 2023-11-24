@@ -18,4 +18,7 @@
 
     public enum EGeckoState
     { idle, patrol, attack, gotHit, hide  }
+
+    public enum EBunnyState
+    { idle, patrol, jump, fall, gotHit }
 }
