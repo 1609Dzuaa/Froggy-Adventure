@@ -3,9 +3,10 @@
 public class RhinoWallHitState : RhinoBaseState
 {
     private bool allowUpdate = false;
-    private bool hasHitWall = false;
 
-    public bool GetHasHitWall() { return this.hasHitWall; }
+    //Detect Player đôi lúc bị chậm(Detected nhưng chưa chuyển state)
+    //Đâm tường thì 0 cho random
+    //Vấn đề ở đoạn flip sprite min, max Point
 
     public void SetAllowUpdate() { this.allowUpdate = true; }
 
@@ -14,14 +15,14 @@ public class RhinoWallHitState : RhinoBaseState
         base.EnterState(rhinoStateManager);
         _rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.wallHit);
         allowUpdate = false;
-        hasHitWall = true;
-        _rhinoStateManager.Invoke("SetTrueWallHitUpdate", 0.5f);
+        _rhinoStateManager.rhinoPatrolState.SetHasJustHitWall(true);
+        _rhinoStateManager.rhinoPatrolState.SetCanRdDirection(false); //Đụng tường thì 0 cho Rd hướng ở patrol
         //Debug.Log("WH"); 
     }
 
     public override void ExitState()
     {
-        hasHitWall = false;
+        
     }
 
     public override void Update()

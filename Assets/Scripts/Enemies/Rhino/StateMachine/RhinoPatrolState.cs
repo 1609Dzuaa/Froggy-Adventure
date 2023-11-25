@@ -2,45 +2,64 @@
 
 public class RhinoPatrolState : RhinoBaseState
 {
-    private float startPos = 0;
-    private bool allowUpdate = false;
-    public void SetTrueAllowUpdate() { this.allowUpdate = true; }
+    private float entryTime;
+    private bool allowUpdateState = false; //Delay trễ xíu để chạy animation
+    private bool hasChangeDirection = false; //Đảm bảo chỉ flip 1 lần
+    private bool canRdDirection = true;
+    private bool hasJustHitWall = false; //Hitwall thì 0 cho Rd hướng
+    private int changeLeftOrRightDirection; //0: Left; 1: Right
 
+    public void SetTrueAllowUpdate() { this.allowUpdateState = true; }
+
+    public void SetCanRdDirection(bool para) { this.canRdDirection = para; }
+
+    public void SetHasJustHitWall(bool para) { this.hasJustHitWall = para; }
+
+    //CanRdDirection = false <=> vừa flip ở state này xong
     public override void EnterState(RhinoStateManager rhinoStateManager)
     {
         base.EnterState(rhinoStateManager);
         _rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.patrol);
-        startPos = _rhinoStateManager.transform.position.x;
-        allowUpdate = false;
-        _rhinoStateManager.Invoke("SetTruePatrolUpdate", 0.3f); //call get func instead of hard-coding
-        //Delay 1 khoảng 0.3s sau khi vào state patrol để
-        //tránh tình trạng quay mặt rồi run ngay lập tức!
-        //Patrol animation is actually the same as Run animation but at a half frame-rate lower:)
+        allowUpdateState = false;
+        entryTime = Time.time;
+        if (canRdDirection)
+            HandleRandomChangeDirection();
         //Debug.Log("Patrol");
     }
 
     public override void ExitState()
     {
-
+        hasChangeDirection = false;
     }
 
     public override void Update()
     {
-        if(allowUpdate)
+        CheckChangeDirection();
+        if (allowUpdateState)
         {
             if (_rhinoStateManager.GetHasDetectedPlayer())
+            {
+                hasJustHitWall = false;
                 _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoRunState);
-            else
-                CheckWhetherNeedRest();
+            }
+            else if (Time.time - entryTime >= _rhinoStateManager.GetPatrolTime())
+            {
+                //Nếu đổi hướng vì chạm min, max r thì 0 cho phép random
+                if (!hasChangeDirection)
+                    canRdDirection = true;
+                hasJustHitWall = false;
+                _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoIdleState);
+            }
         }
     }
 
     public override void FixedUpdate()
     {
-        UpdateHorizontalLogic();
+        UpdatePhysicsHorizontal();
+        //Debug.Log("Can Rd: " + canRdDirection);
     }
 
-    private void UpdateHorizontalLogic()
+    private void UpdatePhysicsHorizontal()
     {
         if (_rhinoStateManager.GetIsFacingRight())
             _rhinoStateManager.GetRigidBody2D().velocity = new Vector2(_rhinoStateManager.GetPatrolSpeed(), _rhinoStateManager.GetRigidBody2D().velocity.y);
@@ -48,40 +67,32 @@ public class RhinoPatrolState : RhinoBaseState
             _rhinoStateManager.GetRigidBody2D().velocity = new Vector2(-1 * _rhinoStateManager.GetPatrolSpeed(), _rhinoStateManager.GetRigidBody2D().velocity.y);
     }
 
-    private void CheckWhetherNeedRest()
+    private void CheckChangeDirection()
     {
-        if (_rhinoStateManager.GetIsFacingRight())
+        if (_rhinoStateManager.transform.position.x > _rhinoStateManager.GetMaxPointRight().position.x
+            && !hasChangeDirection && !hasJustHitWall 
+            || _rhinoStateManager.transform.position.x < _rhinoStateManager.GetMaxPointLeft().position.x 
+            && !hasChangeDirection && !hasJustHitWall)
         {
-            if (_rhinoStateManager.transform.position.x > _rhinoStateManager.GetPatrolDistance() + startPos 
-                && !_rhinoStateManager.GetHasCollidedWall())
-            {
-                //Bổ sung thêm đk: !rhinoStateManager.GetHasCollidedWall()
-                //Vì có thể có TH: thoả đk if này và collide với wall nên vẫn có thể
-                //random direction đc
-                _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoIdleState);
-                _rhinoStateManager.rhinoIdleState.SetCanRdDirection(true);
-                //Debug.Log("ChangeFR");
-            }
-            else if(_rhinoStateManager.GetHasCollidedWall())
-            {
-                _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoIdleState);
-                _rhinoStateManager.FlippingSprite();
-            }
+            hasChangeDirection = true;
+            canRdDirection = false;
+            _rhinoStateManager.FlippingSprite();
         }
-        else
-        {
-            if (_rhinoStateManager.transform.position.x < startPos - _rhinoStateManager.GetPatrolDistance()
-                && !_rhinoStateManager.GetHasCollidedWall())
-            {
-                _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoIdleState);
-                _rhinoStateManager.rhinoIdleState.SetCanRdDirection(true);
-                //Debug.Log("ChangeFL");
-            }
-            else if (_rhinoStateManager.GetHasCollidedWall())
-            {
-                _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoIdleState);
-                _rhinoStateManager.FlippingSprite();
-            }
-        }
+        //Check nếu đi quá giới hạn trái/phải và CHƯA đổi hướng ở state này
+        //Thì lật sprite đổi hướng
+        //Thêm ĐK hasJustHitWall vì lúc Hitwall thì hiển nhiên x > x min/max
+    }
+
+    private void HandleRandomChangeDirection()
+    {
+        changeLeftOrRightDirection = Random.Range(0, 2);
+        if (changeLeftOrRightDirection == 1 && !_rhinoStateManager.GetIsFacingRight())
+            _rhinoStateManager.FlippingSprite();
+        else if (changeLeftOrRightDirection == 0 && _rhinoStateManager.GetIsFacingRight())
+            _rhinoStateManager.FlippingSprite();
+        //Random change direction
+        //Các TH 0 thể Rd:
+        //Vừa tông vào wall => bắt buộc phải flip và patrol hướng ngược lại vs tường
+        //Vừa flip vì vượt quá min, max boundaries
     }
 }

@@ -32,15 +32,24 @@ public class RhinoStateManager : MonoBehaviour
     private bool hasDetectedPlayer = false;
 
     //Nên thêm giới hạn trái phải thay vì phụ thuộc vào địa hình
+    //Khi Chase Player thì disable 2 th này ?
+    [Header("Boundaries")]
+    [SerializeField] private Transform maxPointLeft;
+    [SerializeField] private Transform maxPointRight;
+
     [Header("Wall Check")]
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckDistance = 3.0f;
     [SerializeField] private LayerMask wallLayer;
     private bool hasCollidedWall = false;
 
-    [Header("Patrol Field")]
-    [SerializeField] private float patrolDistance = 10.0f;
-    [SerializeField] private float restDuration = 1.0f; //Thời gian idle sau khi patrol xong
+    [Header("Time")]
+    [SerializeField] private float patrolTime;
+    [SerializeField] private float restTime = 1.0f; //Thời gian idle sau khi patrol xong
+    [SerializeField] private float restDelay; //Thgian delay idle sau khi 0 detect player lúc run
+
+    [Header("Parent")]
+    [SerializeField] private GameObject rhinoParent; //Use to Destroy
 
     //Private Field
     private Rigidbody2D rb;
@@ -61,9 +70,9 @@ public class RhinoStateManager : MonoBehaviour
 
     public float GetPatrolSpeed() { return this.patrolSpeed; }
 
-    public float GetPatrolDistance() { return this.patrolDistance; }
+    public float GetPatrolTime() { return this.patrolTime; }
 
-    public float GetRestDuration() { return this.restDuration; }
+    public float GetRestTime() { return this.restTime; }
 
     public bool GetHasDetectedPlayer() { return this.hasDetectedPlayer; }
 
@@ -71,11 +80,13 @@ public class RhinoStateManager : MonoBehaviour
 
     public float GetChasingDelay() { return this.chasingDelay; }
 
+    public float GetRestDelay() { return this.restDelay; }
+
     public BoxCollider2D GetBoxCollider2D() { return this.collider; }
 
-    //SetFunc
+    public Transform GetMaxPointLeft() { return this.maxPointLeft; }
 
-    public void SetChangeRightDirection(int para) { this.changeRightDirection = para; } 
+    public Transform GetMaxPointRight() { return this.maxPointRight; }
 
     public Vector2 GetKnockForce() { return new Vector2(-1 * this.knockLeftForce, this.knockUpForce); }
 
@@ -95,6 +106,8 @@ public class RhinoStateManager : MonoBehaviour
         _state.Update();
         DetectPlayer();
         DetectWall();
+        //if(detectedPlayer && state is not Run)
+        //=>Change Run && CancelInvoke
         //Debug.Log("Right?: " + changeRightDirection); //
         //Xử lý thêm nếu bị Player đụng từ đằng sau thì quay lại tông Player (should we ?)
         //Thêm sprite cảnh báo(vàng đen) nếu detected đc Player
@@ -126,16 +139,6 @@ public class RhinoStateManager : MonoBehaviour
             pSM.GetRigidBody2D().AddForce(pSM.GetJumpOnEnemiesForce());
             ChangeState(rhinoGotHitState);
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x - checkDistance, playerCheck.position.y, playerCheck.position.z));
-
-        if (!isFacingRight)
-            Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x - wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
-        else
-            Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
     }
 
     private void DetectPlayer()
@@ -181,53 +184,42 @@ public class RhinoStateManager : MonoBehaviour
         //Hàm này dùng để lật sprite theo chiều ngang
     }
 
+    //Event của Wall Hit Animation
     private void SetTrueWallHitUpdate()
     {
         rhinoWallHitState.SetAllowUpdate();
+        //Mục đích chỉ là cho chạy hết animation r mới cho update ở state WH
     }
 
+    //Event của GotHit Animation
     private void SetTrueGotHitUpdate()
     {
         rhinoGotHitState.SetTrueAllowUpdate();
     }
-
+    
+    //Event của Patrol Animation
     private void SetTruePatrolUpdate()
     {
         rhinoPatrolState.SetTrueAllowUpdate();
+        //Delay 1 khoảng ngắn sau khi vào state patrol để
+        //tránh tình trạng quay mặt rồi run ngay lập tức!
     }
 
+    //Dùng để Invoke khi detected player
     private void AllowChasingPlayer()
     {
         ChangeState(rhinoRunState);
         //Dùng để delay việc change state sau khi detected player và tông phải wall
     }
 
-    private void AllowPatrol1()
+    private void ChangeToIdle()
     {
-        HandleChangeDirection(); //Random trái phải để chọn hướng patrol
-        ChangeState(rhinoPatrolState);
-        //Hàm 1 thì có random chọn hướng để patrol
-    }
-
-    private void AllowPatrol2()
-    {
-        ChangeState(rhinoPatrolState);
-        //Hàm 2 thì đơn giản là patrol theo hướng của isFacingRight
-        //Dùng khi vừa đụng tường xong và muốn patrol theo hướng vừa flip sprite
-    }
-
-    private void HandleChangeDirection()
-    {
-        if (changeRightDirection == 1 && !isFacingRight)
-            FlippingSprite();
-        else if (changeRightDirection == 0 && isFacingRight)
-            FlippingSprite();
-        //Random change direction
+        ChangeState(rhinoIdleState);
     }
 
     public void DestroyItSelf()
     {
-        Destroy(this.gameObject, 1f);
+        Destroy(rhinoParent, 1f);
         //Destroy sau khi chết, tránh lãng phí tài nguyên
     }
 
