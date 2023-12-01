@@ -1,23 +1,17 @@
 ﻿using UnityEngine;
 
-public class RhinoWallHitState : RhinoBaseState
+public class RhinoWallHitState : MEnemiesBaseState
 {
-    private bool allowUpdate = false;
+    private bool _allowUpdate = false;
+    private RhinoManager _rhinoManager;
 
-    //Detect Player đôi lúc bị chậm(Detected nhưng chưa chuyển state)
-    //Đâm tường thì 0 cho random
-    //Vấn đề ở đoạn flip sprite min, max Point
+    public void SetAllowUpdate() { this._allowUpdate = true; }
 
-    public void SetAllowUpdate() { this.allowUpdate = true; }
-
-    public override void EnterState(RhinoStateManager rhinoStateManager)
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(rhinoStateManager);
-        _rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.wallHit);
-        allowUpdate = false;
-        _rhinoStateManager.rhinoPatrolState.SetHasJustHitWall(true);
-        _rhinoStateManager.rhinoPatrolState.SetCanRdDirection(false); //Đụng tường thì 0 cho Rd hướng ở patrol
-        //Debug.Log("WH"); 
+        base.EnterState(charactersManager);
+        //_rhinoManager.Animator.SetInteger("state", EnumState.EMEnemiesState.)
+        _rhinoManager = (RhinoManager)charactersManager;
     }
 
     public override void ExitState()
@@ -28,15 +22,18 @@ public class RhinoWallHitState : RhinoBaseState
     public override void Update()
     {
         //Delay nhằm mục đích chạy hết animation WallHit
-        if(allowUpdate)
-        {
-            _rhinoStateManager.FlippingSprite();
-            _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoIdleState);
-        }
+        if(_allowUpdate)
+            HandleAfterHitWall();
     }
 
     public override void FixedUpdate()
     {
 
+    }
+
+    private void HandleAfterHitWall()
+    {
+        _rhinoManager.FlippingSprite();
+        _rhinoManager.ChangeState(_rhinoManager.MEnemiesIdleState);
     }
 }

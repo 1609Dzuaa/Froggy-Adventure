@@ -26,7 +26,7 @@ public class RhinoRunState : RhinoBaseState
             hasChangedState = true;
             //Xoá Invoke func vì có thể đã invoke Idle ở dưới nhưng lại đâm tường ở đây
             _rhinoStateManager.CancelInvoke();
-            _rhinoStateManager.ChangeState(_rhinoStateManager.rhinoWallHitState);
+            //_rhinoStateManager.ChangeState(_rhinoStateManager.rhinoWallHitState);
         }
         else if(!_rhinoStateManager.GetHasDetectedPlayer() && !hasChangedState)
         {

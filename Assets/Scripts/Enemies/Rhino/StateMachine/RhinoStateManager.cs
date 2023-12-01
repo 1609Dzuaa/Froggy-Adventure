@@ -46,7 +46,7 @@ public class RhinoStateManager : MonoBehaviour
     [Header("Time")]
     [SerializeField] private float patrolTime;
     [SerializeField] private float restTime = 1.0f; //Thời gian idle sau khi patrol xong
-    [SerializeField] private float restDelay; //Thgian delay idle sau khi 0 detect player lúc run
+    [SerializeField] private float restDelay; //Thgian delay idle sau khi 0 detect player lúc run (để nó chạy thêm 1 tí)
 
     [Header("Parent")]
     [SerializeField] private GameObject rhinoParent; //Use to Destroy
@@ -78,7 +78,7 @@ public class RhinoStateManager : MonoBehaviour
 
     public bool GetHasCollidedWall() { return this.hasCollidedWall; }
 
-    public float GetChasingDelay() { return this.chasingDelay; }
+    public float GetChasingDelay() { return this.chasingDelay; } //Mục đích tránh chase ngay lập tức
 
     public float GetRestDelay() { return this.restDelay; }
 

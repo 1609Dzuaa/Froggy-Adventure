@@ -39,9 +39,9 @@ public class MrStateManager : MonoBehaviour
 
     [Header("Time")]
     [SerializeField] private float restDuration;
-    [SerializeField] private float walkDuration; //Sao kh dùng Time cho con Rhino :?
+    [SerializeField] private float walkDuration;
     [SerializeField] private float runDelay;
-    [SerializeField] private float gotHitDuration; //Khoảng thgian GotHit trước khi bị destroy hẳn
+    [SerializeField] private float gotHitDuration; //Kh cần, tạo cái func allow update vứt ngoài Animation's Event
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -88,6 +88,7 @@ public class MrStateManager : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         _state = mrIdleState;
         _state.EnterState(this);
+        //Physics2D.IgnoreCollision()
     }
 
     public void ChangeState(MrBaseState state)

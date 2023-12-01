@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -6661791246625722510}
   m_Layer: 6
   m_Name: Box
-  m_TagString: Ground
+  m_TagString: Box
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
   banana: {fileID: 459109964652750509, guid: 943e9e0b35196dc4480f30f0ba6b6811, type: 3}
   cherry: {fileID: 1886694591926022908, guid: a9f2bcec74951c74f9d6d0e9775b281f, type: 3}
   orange: {fileID: 8789338497670952432, guid: 8ce84c6cb5c1497489fbd912b6016442, type: 3}
-  mushroom: {fileID: 3324338685047011419, guid: 324863796341c724a99f9cc9423d2cfe, type: 3}
+  mushroom: {fileID: 9220492531936805988, guid: 324863796341c724a99f9cc9423d2cfe, type: 3}
   forceApply: 800
   brokeSound: {fileID: -6661791246625722510}
   delaySpawnPiece: 0.4
@@ -196,9 +196,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 50af86a828032d44bac804cde0ffb5cf, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 164fe02bc0b1aea48a43d6d9212b1e55, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.315
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

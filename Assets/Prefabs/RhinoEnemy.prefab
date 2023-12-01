@@ -142,7 +142,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &3584382382226803674
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -243,14 +243,14 @@ MonoBehaviour:
   maxPointLeft: {fileID: 3584382382384770270}
   maxPointRight: {fileID: 3584382383472850186}
   wallCheck: {fileID: 3584382381735670605}
-  wallCheckDistance: 0.4
+  wallCheckDistance: 0.5
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
   patrolTime: 2
   restTime: 2
-  restDelay: 0.5
-  rhinoParent: {fileID: 0}
+  restDelay: 0.8
+  rhinoParent: {fileID: 3584382382242328641}
 --- !u!1 &3584382382242328641
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,7 +309,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3584382382384770269}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9, y: 0, z: 0}
+  m_LocalPosition: {x: -11.28, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -371,7 +371,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3584382383472850185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9, y: 0, z: 0}
+  m_LocalPosition: {x: 8.61, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -160,7 +160,8 @@ public class PlayerStateManager : MonoBehaviour
             HandleCollideGround();
         }
         else if (collision.collider.CompareTag("Trap") && _state is not GotHitState
-            || collision.collider.CompareTag("Enemy") && _state is not GotHitState)
+            || collision.collider.CompareTag("Enemy") && _state is not GotHitState
+            || collision.collider.CompareTag("Bullet") && _state is not GotHitState)
         {
             //if (HP > 0)
                 ChangeState(gotHitState);
@@ -193,6 +194,7 @@ public class PlayerStateManager : MonoBehaviour
         HandleFlipSprite();
         HandleDustVelocity();
         SpawnDust();
+        //Debug.Log("dirY: " + dirY);
     }
 
     private void FixedUpdate()

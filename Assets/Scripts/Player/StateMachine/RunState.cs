@@ -17,38 +17,54 @@ public class RunState : PlayerBaseState
 
     public override void Update()
     {
-        UpdateHorizontalLogic();
-        UpdateVerticalLogic();
+        LogicUpdate();
     }
 
-    void UpdateHorizontalLogic()
+    private void LogicUpdate()
+    {
+        if (CheckIfIdle())
+            _playerStateManager.ChangeState(_playerStateManager.idleState);
+        else if (CheckIfJump())
+            _playerStateManager.ChangeState(_playerStateManager.jumpState);
+        else if (CheckIfFall())
+            _playerStateManager.ChangeState(_playerStateManager.fallState);
+    }
+
+    private bool CheckIfIdle()
+    {
+        if (_playerStateManager.GetDirX() == 0)
+            return true;
+        return false;
+    }
+
+    private bool CheckIfJump()
+    {
+        //Phải OnGround thì mới cho nhảy
+        if (_playerStateManager.GetDirY() < 0 && _playerStateManager.GetIsOnGround())
+            return true;
+        return false;
+    }
+
+    private bool CheckIfFall()
+    {
+        if (!_playerStateManager.GetIsOnGround())
+            return true;
+        return false;
+        //Idle => Fall có thể là đứng yên, bị 1 vật khác
+        //tác dụng lực vào đẩy rơi xuống dưới
+    }
+
+    void PhysicsUpdate()
     {
         if (_playerStateManager.GetDirX() != 0)
         {
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
         }
-        else //X-direction = 0
-        {
-            _playerStateManager.ChangeState(_playerStateManager.idleState);
-        }
-    }
-
-    void UpdateVerticalLogic()
-    {
-        //Hướng Y khác 0 tức là đang nhảy hoặc rơi
-        if (_playerStateManager.GetDirY() < 0)
-        {
-            if (_playerStateManager.GetIsOnGround())
-                _playerStateManager.ChangeState(_playerStateManager.jumpState);
-        }
-        else if (_playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
-        {
-            _playerStateManager.ChangeState(_playerStateManager.fallState);
-        }
+        //Like function's name. Only update things related to Physics
     }
 
     public override void FixedUpdate()
     {
-        UpdateHorizontalLogic();
+        PhysicsUpdate();
     }
 }

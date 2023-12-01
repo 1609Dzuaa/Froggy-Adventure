@@ -120,7 +120,7 @@ public class PlantStateManager : MonoBehaviour
         _bullet.GetComponent<BulletController>().SetIsDirectionRight(isFacingRight);
     }
 
-    //Event Func in Attack Animation
+    //Event Func in GH Animation
     private void HandleGotHit()
     {
         collider2D.enabled = false;

@@ -4,6 +4,9 @@
     public enum EPlayerState
     { idle, run, jump, fall, wallSlide, doubleJump, gotHit }
 
+    public enum EMEnemiesState
+    { idle, patrol, attack, gotHit }
+
     public enum ERhinoState
     { idle, run, wallHit, gotHit, patrol }
 

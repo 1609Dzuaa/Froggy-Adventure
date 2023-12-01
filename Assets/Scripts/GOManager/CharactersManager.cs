@@ -1,0 +1,36 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CharactersManager : GameObjectManager
+{
+    protected bool _isFacingRight = false;
+    protected Rigidbody2D _rb;
+
+    public bool GetIsFacingRight() { return this._isFacingRight; }
+
+    public Rigidbody2D GetRigidbody2D() { return this._rb; }
+
+    protected CharacterBaseState _state;
+
+    // Start is called before the first frame update
+    protected override void Start()
+    {
+        base.Start(); //Lấy anim từ GObjManager
+        _rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void ChangeState(CharacterBaseState state)
+    {
+        _state.ExitState();
+        _state = state;
+        _state.EnterState(this);
+    }
+
+    public void FlippingSprite()
+    {
+        _isFacingRight = !_isFacingRight;
+        transform.Rotate(0, 180, 0);
+        //Hàm này dùng để lật sprite theo chiều ngang
+    }
+}

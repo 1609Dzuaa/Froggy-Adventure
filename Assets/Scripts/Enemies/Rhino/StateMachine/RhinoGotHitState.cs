@@ -10,9 +10,7 @@ public class RhinoGotHitState : RhinoBaseState
     {
         base.EnterState(rhinoStateManager);
         _rhinoStateManager.GetAnimator().SetInteger("state", (int)EnumState.ERhinoState.gotHit);
-        _rhinoStateManager.GetRigidBody2D().velocity = Vector2.zero; //Cố định vị trí
-        KnockUpAndLeft();
-        _rhinoStateManager.GetBoxCollider2D().enabled = false;
+        HandleBeforeDestroy();
         //Debug.Log("GotHit"); 
     }
 
@@ -39,5 +37,12 @@ public class RhinoGotHitState : RhinoBaseState
     {
         _rhinoStateManager.GetRigidBody2D().AddForce(_rhinoStateManager.GetKnockForce());
         //Debug.Log("Knock");
+    }
+
+    protected void HandleBeforeDestroy()
+    {
+        _rhinoStateManager.GetRigidBody2D().velocity = Vector2.zero; //Cố định vị trí
+        KnockUpAndLeft();
+        _rhinoStateManager.GetBoxCollider2D().enabled = false;
     }
 }

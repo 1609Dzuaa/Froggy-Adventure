@@ -20,6 +20,7 @@ public class BoxController : MonoBehaviour
     [Header("Force Apply To Player")]
     [SerializeField] private float forceApply; //Force apply to player when jump on this
     //Có bug(?) khi nhảy lên box và bấm nhảy tiếp thì bật rất cao! @@
+    //Chỉnh lại sound
 
     [Header("Sound")]
     [SerializeField] private AudioSource brokeSound;
@@ -36,7 +37,6 @@ public class BoxController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //box2D = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
     }
 
@@ -52,6 +52,18 @@ public class BoxController : MonoBehaviour
         {
             var rbPlayer = collision.gameObject.GetComponent<PlayerStateManager>();
             rbPlayer.GetRigidBody2D().AddForce(new Vector2(0f, forceApply));
+            isGotHit = true; //Mark this box has been hitted and make sure only applied force once
+            Invoke("AllowSpawnPiece", delaySpawnPiece);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Bullet"))
+        {
+            var bulletCtrl = collision.gameObject.GetComponent<BulletController>();
+            bulletCtrl.SpawnBulletPieces();
+            Destroy(bulletCtrl.gameObject);
             isGotHit = true; //Mark this box has been hitted and make sure only applied force once
             Invoke("AllowSpawnPiece", delaySpawnPiece);
         }

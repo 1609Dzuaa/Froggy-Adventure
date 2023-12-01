@@ -56,7 +56,7 @@ public class BulletController : MonoBehaviour
         }
     }
 
-    private void SpawnBulletPieces()
+    public void SpawnBulletPieces()
     {
         GameObject[] pieces = new GameObject[2];
         pieces[0] = Instantiate(piece1, piece1Position.position, Quaternion.identity, null);

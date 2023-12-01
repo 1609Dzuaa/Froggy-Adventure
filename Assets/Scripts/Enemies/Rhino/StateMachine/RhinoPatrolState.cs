@@ -7,7 +7,7 @@ public class RhinoPatrolState : RhinoBaseState
     private bool hasChangeDirection = false; //Đảm bảo chỉ flip 1 lần
     private bool canRdDirection = true;
     private bool hasJustHitWall = false; //Hitwall thì 0 cho Rd hướng
-    private int changeLeftOrRightDirection; //0: Left; 1: Right
+    private int rdLeftRight; //0: Left; 1: Right
 
     public void SetTrueAllowUpdate() { this.allowUpdateState = true; }
 
@@ -85,10 +85,10 @@ public class RhinoPatrolState : RhinoBaseState
 
     private void HandleRandomChangeDirection()
     {
-        changeLeftOrRightDirection = Random.Range(0, 2);
-        if (changeLeftOrRightDirection == 1 && !_rhinoStateManager.GetIsFacingRight())
+        rdLeftRight = Random.Range(0, 2);
+        if (rdLeftRight == 1 && !_rhinoStateManager.GetIsFacingRight())
             _rhinoStateManager.FlippingSprite();
-        else if (changeLeftOrRightDirection == 0 && _rhinoStateManager.GetIsFacingRight())
+        else if (rdLeftRight == 0 && _rhinoStateManager.GetIsFacingRight())
             _rhinoStateManager.FlippingSprite();
         //Random change direction
         //Các TH 0 thể Rd:

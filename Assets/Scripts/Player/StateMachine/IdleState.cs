@@ -23,11 +23,40 @@ public class IdleState : PlayerBaseState
 
     public override void Update()
     {
-        UpdateHorizontalLogic();
-        UpdateVerticalLogic();
+        if (CheckIfRun())
+            _playerStateManager.ChangeState(_playerStateManager.runState);
+        else if (CheckIfJump())
+            _playerStateManager.ChangeState(_playerStateManager.jumpState);
+        else if (CheckIfFall())
+            _playerStateManager.ChangeState(_playerStateManager.fallState);
+        /*UpdateHorizontalLogic();
+        UpdateVerticalLogic();*/
     }
 
-    void UpdateHorizontalLogic()
+    private bool CheckIfRun()
+    {
+        if (_playerStateManager.GetDirX() != 0 && _playerStateManager.GetIsOnGround())
+            return true;
+        return false;
+    }
+
+    private bool CheckIfJump()
+    {
+        if (_playerStateManager.GetDirY() < 0 && _playerStateManager.GetIsOnGround())
+            return true;
+        return false;
+    }
+
+    private bool CheckIfFall()
+    {
+        if (_playerStateManager.GetDirY() == 0 && !_playerStateManager.GetIsOnGround())
+            return true;
+        return false;
+        //Idle => Fall có thể là đứng yên, bị 1 vật khác
+        //tác dụng lực vào đẩy rơi xuống dưới
+    }
+
+    /*void UpdateHorizontalLogic()
     {
         //Hướng X khác 0 tức là đang di chuyển || dash
         if (_playerStateManager.GetDirX() != 0)
@@ -53,7 +82,7 @@ public class IdleState : PlayerBaseState
 
             _playerStateManager.ChangeState(_playerStateManager.fallState);
         }
-    }
+    }*/
 
     public override void FixedUpdate()
     {
