@@ -6,11 +6,10 @@ using UnityEngine;
 
 public class MEnemiesManager : EnemiesManager, IMoveable
 {
-    public List<MEnemiesBaseState> ListState = new();
     private MEnemiesIdleState _mEnemiesIdleState = new();
-    public MEnemiesPatrolState _mEnemiesPatrolState = new();
-    public MEnemiesAttackState _mEnemiesAttackState = new();
-    public MEnemiesGotHitState _mEnemiesGotHitState = new();
+    private MEnemiesPatrolState _mEnemiesPatrolState = new();
+    private MEnemiesAttackState _mEnemiesAttackState = new();
+    private MEnemiesGotHitState _mEnemiesGotHitState = new();
 
     [Header("Boundaries")]
     [SerializeField] protected Transform _boundaryLeft;
@@ -25,11 +24,11 @@ public class MEnemiesManager : EnemiesManager, IMoveable
     [Header("Time")]
     [SerializeField] protected float _restTime;
     [SerializeField] protected float _patrolTime;
-    [SerializeField] protected float _chaseDelayTime;
+    [SerializeField] protected float _attackDelay;
 
     [Header("Speed")]
-    [SerializeField] protected Vector2 _patrolSpeed;
-    [SerializeField] protected Vector2 _chaseSpeed;
+    [SerializeField] protected float _patrolSpeed;
+    [SerializeField] protected float _chaseSpeed;
 
     [Header("Parent")]
     [SerializeField] protected GameObject _parent;
@@ -41,7 +40,7 @@ public class MEnemiesManager : EnemiesManager, IMoveable
     
     public MEnemiesPatrolState MEnemiesPatrolState { get { return _mEnemiesPatrolState;} }
 
-    public MEnemiesAttackState MEnemiesAttackState { get { return _mEnemiesAttackState;} }
+    public MEnemiesAttackState MEnemiesAttackState { get { return _mEnemiesAttackState; } set { _mEnemiesAttackState = value; } }
 
     public MEnemiesGotHitState MEnemiesGotHitState { get { return _mEnemiesGotHitState; } }
 
@@ -49,24 +48,19 @@ public class MEnemiesManager : EnemiesManager, IMoveable
 
     public float GetPatrolTime() { return this._patrolTime; }
 
-    public float GetChaseDelayTime() { return this._chaseDelayTime; }
+    public float GetAttackDelay() { return this._attackDelay; }
 
     public bool HasCollidedWall { get { return this._hasCollidedWall; } }
 
-    public Vector2 GetPatrolSpeed() { return this._patrolSpeed; }
+    public float GetPatrolSpeed() { return this._patrolSpeed; }
 
-    public Vector2 GetChaseSpeed() { return this._chaseSpeed; }
+    public float GetChaseSpeed() { return this._chaseSpeed; }
 
     public Collider2D Collider2D { get { return _collider; } }
 
-    private void Awake()
-    {
-        var myEnumMemberCount = Enum.GetNames(typeof(EnumState.EMEnemiesState)).Length;
+    public Transform BoundaryLeft { get { return _boundaryLeft; } }
 
-        for (int i = 0; i < myEnumMemberCount; i++)
-            ListState.Add(_mEnemiesIdleState); 
-
-    }
+    public Transform BoundaryRight { get { return _boundaryRight; } }
 
     //Các lớp sau muốn mở rộng hàm Start, Update,... thì nhớ gọi base.Start(),... trong hàm Start của chính nó
     //Còn 0 implement gì thêm thì 0 cần làm gì, nó tự động đc gọi trong đây ngay cả khi là private
@@ -94,12 +88,12 @@ public class MEnemiesManager : EnemiesManager, IMoveable
 
 
     //Call this in Patrol State
-    public void Move(Vector2 velo)
+    public void Move(float velo)
     {
         if (_isFacingRight)
-            this._rb.velocity = velo;
+            this._rb.velocity = new Vector2(velo, _rb.velocity.y);
         else
-            this._rb.velocity = new Vector2(-velo.x, velo.y);
+            this._rb.velocity = new Vector2(-velo, _rb.velocity.y);
     }
 
     private void DetectPlayer()
@@ -138,18 +132,16 @@ public class MEnemiesManager : EnemiesManager, IMoveable
         }
     }
 
-    //Event của Idle & Patrol Animation
-    private void AllowAttack()
+    //Hàm này dùng để Invoke khi detect ra Player
+    private void AllowAttackPlayer()
     {
-        if (_state is MEnemiesIdleState)
-            _mEnemiesIdleState.AllowAttack();
-        else if (_state is MEnemiesPatrolState)
-            _mEnemiesPatrolState.AllowAttack();
-        //Delay 1 khoảng ngắn sau khi vào state để
-        //tránh tình trạng quay mặt rồi attack ngay lập tức!
+        ChangeState(_mEnemiesAttackState);
+        Debug.Log("Called");
+        //Nhằm delay việc chuyển state Attack 
+        //Tạo cảm giác enemies phản ứng rồi attack chứ 0 phải attack ngay lập tức
     }
 
-    //Dùng để Invoke trong state Attack nếu 0 thấy player
+    //Dùng để Invoke trong state Attack nếu 0 detect ra player ở sau lưng
     private void ChangeToIdle()
     {
         ChangeState(_mEnemiesIdleState);

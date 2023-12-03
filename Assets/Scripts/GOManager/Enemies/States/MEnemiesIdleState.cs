@@ -3,9 +3,7 @@
 public class MEnemiesIdleState : MEnemiesBaseState
 {
     protected float _entryTime;
-    protected bool _allowAttack;
-
-    public void AllowAttack() { _allowAttack = true; }
+    protected bool _hasChangedState;
 
     public override void EnterState(CharactersManager charactersManager)
     {
@@ -20,17 +18,37 @@ public class MEnemiesIdleState : MEnemiesBaseState
 
     public override void ExitState() 
     {
-        _allowAttack = false;
+        _hasChangedState = false;
     }
 
     public override void Update()
     {
-        if (Time.time - _entryTime >= _mEnemiesManager.GetRestTime())
-            _mEnemiesManager.ChangeState(_mEnemiesManager._mEnemiesPatrolState);
-        else if (_mEnemiesManager.HasDetectedPlayer && _allowAttack)
-            _mEnemiesManager.ChangeState(_mEnemiesManager._mEnemiesAttackState);
+        if (CheckIfCanPatrol())
+            _mEnemiesManager.ChangeState(_mEnemiesManager.MEnemiesPatrolState);
+        else if (CheckIfCanAttack())
+            _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());
         //Debug.Log("Update");
-    } 
+    }
+
+    protected bool CheckIfCanPatrol()
+    {
+        if (Time.time - _entryTime >= _mEnemiesManager.GetRestTime() && !_hasChangedState)
+        {
+            _hasChangedState = true;
+            return true;
+        }
+        return false;
+    }
+
+    protected bool CheckIfCanAttack()
+    {
+        if (_mEnemiesManager.HasDetectedPlayer && !_hasChangedState)
+        {
+            _hasChangedState = true;
+            return true;
+        }
+        return false;
+    }
 
     public override void FixedUpdate() { }
 }

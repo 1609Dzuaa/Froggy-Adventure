@@ -8,10 +8,10 @@
     { idle, patrol, attack, gotHit }
 
     public enum ERhinoState
-    { idle, run, wallHit, gotHit, patrol }
+    { idle, patrol, attack, gotHit, wallHit }
 
     public enum EMushroomState
-    { idle, walk, run, gotHit }
+    { idle, patrol, attack, gotHit }
 
     public enum EPlantState
     { idle, attack, gotHit }
