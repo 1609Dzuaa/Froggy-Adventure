@@ -1,11 +1,14 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class BatRetreatState : BatBaseState
+public class BatRetreatState : MEnemiesBaseState
 {
-    public override void EnterState(BatStateManager batStateManager)
+    private BatManager _batManager;
+
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(batStateManager);
-        _batStateManager.GetAnimator().SetInteger("state", (int)EnumState.EBatState.retreat);
+        base.EnterState(charactersManager);
+        _batManager = (BatManager)charactersManager;
+        _batManager.Animator.SetInteger("state", (int)EnumState.BatState.retreat);
         Debug.Log("Rt");
     }
 
@@ -13,9 +16,19 @@ public class BatRetreatState : BatBaseState
 
     public override void Update() 
     {
-        _batStateManager.transform.position = Vector2.MoveTowards(_batStateManager.transform.position, _batStateManager.GetSleepPos().position, _batStateManager.GetChaseSpeed() * Time.deltaTime);
-        if (Vector2.Distance(_batStateManager.transform.position,_batStateManager.GetSleepPos().position) < 0.1f)
-            _batStateManager.ChangState(_batStateManager.batCeilInState);
+        //Cập nhật vị trí bay về
+        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.SleepPos.position, _batManager.GetChaseSpeed() * Time.deltaTime);
+
+        if (CheckIfBackHome(_batManager.transform.position, _batManager.SleepPos.position))
+            _batManager.ChangeState(_batManager.BatCeilInState);
+    }
+
+    private bool CheckIfBackHome(Vector2 batPos, Vector2 sleepPos)
+    {
+        if (Vector2.Distance(batPos, sleepPos) < 0.1f)
+            return true;
+        return false;
+        //Check nếu vị trí vừa đc cập nhật có RẤT GẦN với vị trí ngủ kh
     }
 
     public override void FixedUpdate() { }

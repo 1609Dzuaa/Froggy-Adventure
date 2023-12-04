@@ -21,7 +21,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.patrol);
         _entryTime = Time.time;
-        Debug.Log("PT: " + _canRdDirection);
+        //Debug.Log("PT: " + _canRdDirection);
         if (_canRdDirection)
             HandleRandomChangeDirection();
         //Debug.Log("patrol");
@@ -50,7 +50,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         if (CheckIfCanRest())
             _mEnemiesManager.ChangeState(_mEnemiesManager.MEnemiesIdleState);
         else if (CheckIfCanAttack())
-            _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());//_mEnemiesManager.ChangeState(_mEnemiesManager.MEnemiesAttackState);
+            _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());
         else if (CheckIfCanChangeDirection())
         {
             _hasChangeDirection = true;
@@ -98,7 +98,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         _mEnemiesManager.Move(_mEnemiesManager.GetPatrolSpeed());
     }
 
-    protected void HandleRandomChangeDirection()
+    protected virtual void HandleRandomChangeDirection()
     {
         _rdLeftRight = Random.Range(0, 2);
         if (_rdLeftRight == 1 && !_mEnemiesManager.GetIsFacingRight())

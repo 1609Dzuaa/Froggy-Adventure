@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class BatGotHitState : BatBaseState
+public class BatGotHitState : MEnemiesGotHitState
 {
     private float Zdegree = 0f;
     private float lastRotateTime;
+    private BatManager _batManager;
 
-    public override void EnterState(BatStateManager batStateManager)
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(batStateManager);
-        _batStateManager.GetAnimator().SetInteger("state", (int)EnumState.EBatState.gotHit);
-        _batStateManager.GetCapsuleCollider2D().enabled = false;
-        _batStateManager.GetRigidBody2D().bodyType = RigidbodyType2D.Dynamic;
+        base.EnterState(charactersManager);
+        _batManager = (BatManager)charactersManager;
+        _batManager.GetRigidbody2D().bodyType = RigidbodyType2D.Dynamic;
         lastRotateTime = Time.time;
     }
 
@@ -18,10 +18,10 @@ public class BatGotHitState : BatBaseState
 
     public override void Update() 
     {
-        if (Time.time - lastRotateTime >= _batStateManager.GetTimeEachRotate())
+        if (Time.time - lastRotateTime >= _batManager.TimeEachRotate)
         {
-            Zdegree -= _batStateManager.GetDegreeEachRotation();
-            _batStateManager.transform.Rotate(0f, 0f, Zdegree);
+            Zdegree -= _batManager.DegreeEachRotation;
+            _batManager.transform.Rotate(0f, 0f, Zdegree);
             lastRotateTime = Time.time;
         }
     }

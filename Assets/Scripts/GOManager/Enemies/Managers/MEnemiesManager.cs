@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MEnemiesManager : EnemiesManager, IMoveable
+public class MEnemiesManager : EnemiesManager
 {
     private MEnemiesIdleState _mEnemiesIdleState = new();
     private MEnemiesPatrolState _mEnemiesPatrolState = new();
@@ -32,17 +32,17 @@ public class MEnemiesManager : EnemiesManager, IMoveable
 
     [Header("Parent")]
     [SerializeField] protected GameObject _parent;
-    private Collider2D _collider;
+    protected Collider2D _collider;
 
     //Public Field
 
     public MEnemiesIdleState MEnemiesIdleState { get { return _mEnemiesIdleState; } }
     
-    public MEnemiesPatrolState MEnemiesPatrolState { get { return _mEnemiesPatrolState;} }
+    public MEnemiesPatrolState MEnemiesPatrolState { get { return _mEnemiesPatrolState;} set { _mEnemiesPatrolState = value; } }
 
     public MEnemiesAttackState MEnemiesAttackState { get { return _mEnemiesAttackState; } set { _mEnemiesAttackState = value; } }
 
-    public MEnemiesGotHitState MEnemiesGotHitState { get { return _mEnemiesGotHitState; } }
+    public MEnemiesGotHitState MEnemiesGotHitState { get { return _mEnemiesGotHitState; } set { _mEnemiesGotHitState = value; } }
 
     public float GetRestTime() { return this._restTime; }
 
@@ -96,7 +96,7 @@ public class MEnemiesManager : EnemiesManager, IMoveable
             this._rb.velocity = new Vector2(-velo, _rb.velocity.y);
     }
 
-    private void DetectPlayer()
+    protected virtual void DetectPlayer()
     {
         if (!_isFacingRight)
             _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _checkDistance, _playerLayer);
@@ -106,7 +106,7 @@ public class MEnemiesManager : EnemiesManager, IMoveable
         DrawRayDetectPlayer();
     }
 
-    private void DetectWall()
+    protected void DetectWall()
     {
         if (!_isFacingRight)
             _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.left, _wallCheckDistance, _wallLayer);
@@ -114,7 +114,7 @@ public class MEnemiesManager : EnemiesManager, IMoveable
             _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.right, _wallCheckDistance, _wallLayer);
     }
 
-    private void DrawRayDetectPlayer()
+    protected void DrawRayDetectPlayer()
     {
         if (_hasDetectedPlayer)
         {
@@ -133,18 +133,21 @@ public class MEnemiesManager : EnemiesManager, IMoveable
     }
 
     //Hàm này dùng để Invoke khi detect ra Player
-    private void AllowAttackPlayer()
+    protected virtual void AllowAttackPlayer()
     {
         ChangeState(_mEnemiesAttackState);
-        Debug.Log("Called");
+        //Debug.Log("Called");
         //Nhằm delay việc chuyển state Attack 
         //Tạo cảm giác enemies phản ứng rồi attack chứ 0 phải attack ngay lập tức
     }
 
-    //Dùng để Invoke trong state Attack nếu 0 detect ra player ở sau lưng
-    private void ChangeToIdle()
+    protected virtual void ChangeToIdle()
     {
         ChangeState(_mEnemiesIdleState);
+        //Dùng để Invoke trong state Attack nếu 0 detect ra player
+        //Với Mushroom thì 0 detect ra ở sau lưng
+        //Với Rhino thì 0 detect ra trước mặt
+        //Với Bat thì là Event của Animation CeilOut
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)

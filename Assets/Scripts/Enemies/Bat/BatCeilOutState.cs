@@ -1,19 +1,26 @@
 using UnityEngine;
 
-public class BatCeilOutState : BatBaseState
+public class BatCeilOutState : MEnemiesBaseState
 {
-    public override void EnterState(BatStateManager batStateManager)
+    private bool _allowIdle;
+    private BatManager _batManager;
+
+    public bool AllowIdle { set { _allowIdle = value; } }
+
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(batStateManager);
-        _batStateManager.GetAnimator().SetInteger("state", (int)EnumState.EBatState.ceilOut);
+        base.EnterState(charactersManager);
+        _batManager = (BatManager)charactersManager;
+        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.BatState.ceilOut);
         Debug.Log("CO");
     }
 
-    public override void ExitState() { }
+    public override void ExitState() { _allowIdle = false; }
 
     public override void Update() 
-    { 
-
+    {
+        if (_allowIdle)
+            _batManager.ChangeState(_batManager.BatIdleState);
     }
 
     public override void FixedUpdate() { }

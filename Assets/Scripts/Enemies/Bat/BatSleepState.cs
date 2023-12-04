@@ -1,13 +1,17 @@
+using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 
-public class BatSleepState : BatBaseState
+public class BatSleepState : MEnemiesBaseState
 {
-    private float entryTime;
-    public override void EnterState(BatStateManager batStateManager) 
+    private float _entryTime;
+    private BatManager _batManager;
+
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(batStateManager);
-        _batStateManager.GetAnimator().SetInteger("state", (int)EnumState.EBatState.sleep);
-        entryTime = Time.time;
+        base.EnterState(charactersManager);
+        _batManager = (BatManager)charactersManager;
+        _batManager.Animator.SetInteger("state", (int)EnumState.BatState.sleep);
+        _entryTime = Time.time;
         Debug.Log("Sleep");
     }
 
@@ -15,8 +19,15 @@ public class BatSleepState : BatBaseState
 
     public override void Update() 
     {
-        if (Time.time - entryTime >= _batStateManager.GetSleepTime())
-            _batStateManager.ChangState(_batStateManager.batCeilOutState);
+        if (CheckIfOverSleepTime())
+            _batManager.ChangeState(_batManager.BatCeilOutState);
+    }
+
+    private bool CheckIfOverSleepTime()
+    {
+        if (Time.time - _entryTime >= _batManager.SleepTime)
+            return true;
+        return false;
     }
 
     public override void FixedUpdate() { }

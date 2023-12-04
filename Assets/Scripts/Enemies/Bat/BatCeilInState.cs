@@ -1,12 +1,16 @@
 using UnityEngine;
 
-public class BatCeilInState : BatBaseState
+public class BatCeilInState : MEnemiesBaseState
 {
-    public override void EnterState(BatStateManager batStateManager)
+    private BatManager _batManager;
+
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(batStateManager);
-        _batStateManager.GetAnimator().SetInteger("state", (int)EnumState.EBatState.ceilIn);
-        Debug.Log("Ceil In");
+        base.EnterState(charactersManager);
+        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.BatState.ceilIn);
+        _batManager = (BatManager)charactersManager;
+        _batManager.BatPatrolState.AllowBackToSleepPos = false;
+        Debug.Log("CI");
     }
 
     public override void ExitState() { }
