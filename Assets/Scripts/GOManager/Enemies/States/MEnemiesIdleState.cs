@@ -13,7 +13,7 @@ public class MEnemiesIdleState : MEnemiesBaseState
         _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.idle);
         _mEnemiesManager.GetRigidbody2D().velocity = Vector2.zero;
         _entryTime = Time.time;
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
     }
 
     public override void ExitState() 
@@ -40,7 +40,7 @@ public class MEnemiesIdleState : MEnemiesBaseState
         return false;
     }
 
-    protected bool CheckIfCanAttack()
+    protected virtual bool CheckIfCanAttack()
     {
         if (_mEnemiesManager.HasDetectedPlayer && !_hasChangedState)
         {

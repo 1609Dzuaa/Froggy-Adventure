@@ -1,4 +1,3 @@
-using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 
 public class BatSleepState : MEnemiesBaseState
@@ -10,7 +9,7 @@ public class BatSleepState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
-        _batManager.Animator.SetInteger("state", (int)EnumState.BatState.sleep);
+        _batManager.Animator.SetInteger("state", (int)EnumState.EBatState.sleep);
         _entryTime = Time.time;
         Debug.Log("Sleep");
     }

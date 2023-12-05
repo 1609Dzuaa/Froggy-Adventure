@@ -9,7 +9,7 @@ public class BatAttackState : MEnemiesAttackState
     {
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
-        _batManager.Animator.SetInteger("state", (int)EnumState.BatState.attack);
+        _batManager.Animator.SetInteger("state", (int)EnumState.EBatState.attack);
         //Debug.Log("Attack");
     }
 

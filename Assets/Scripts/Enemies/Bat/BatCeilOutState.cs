@@ -11,7 +11,7 @@ public class BatCeilOutState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
-        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.BatState.ceilOut);
+        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EBatState.ceilOut);
         Debug.Log("CO");
     }
 

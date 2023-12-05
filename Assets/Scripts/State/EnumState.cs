@@ -10,18 +10,15 @@
     public enum ERhinoState
     { idle, patrol, attack, gotHit, wallHit }
 
-    public enum BatState
+    public enum EBatState
     { idle, patrol, attack, gotHit, sleep, ceilIn, ceilOut, retreat }
 
-    public enum EBatState
-    { sleep, idle, ceilIn, ceilOut, fly, gotHit, chase, retreat }
+    public enum EBunnyState
+    { idle, patrol, attackJump, gotHit, attackFall }
 
     public enum EPlantState
     { idle, attack, gotHit }
 
     public enum EGeckoState
     { idle, patrol, attack, gotHit, hide  }
-
-    public enum EBunnyState
-    { idle, patrol, jump, fall, gotHit }
 }

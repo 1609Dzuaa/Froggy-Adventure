@@ -18,7 +18,7 @@ public class BatPatrolState : MEnemiesPatrolState
         //Nếu 0 muốn phải convert thằng manager chung thì cân nhắc thêm tham số Manager cho function chung
         _batManager = (BatManager)charactersManager;
         _entryTime = Time.time;
-        _batManager.Animator.SetInteger("state", (int)EnumState.BatState.patrol);
+        _batManager.Animator.SetInteger("state", (int)EnumState.EBatState.patrol);
         _randomDirection = Random.Range(0, 4); //random bay 4 hướng ?, dùng switch case
     }
 

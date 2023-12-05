@@ -7,7 +7,7 @@ public class BatCeilInState : MEnemiesBaseState
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
-        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.BatState.ceilIn);
+        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EBatState.ceilIn);
         _batManager = (BatManager)charactersManager;
         _batManager.BatPatrolState.AllowBackToSleepPos = false;
         Debug.Log("CI");

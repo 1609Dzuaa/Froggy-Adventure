@@ -61,15 +61,16 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     protected bool CheckIfCanRest()
     {
-        if (Time.time - _entryTime >= _mEnemiesManager.GetPatrolTime() && !_hasChangedState)
+        if (Time.time - _entryTime >= _mEnemiesManager.GetPatrolTime() && !_hasChangedState && !_mEnemiesManager.HasDetectedPlayer)
         {
             _hasChangedState = true;
             return true;
         }
         return false;
+        //Thêm đk: !_mEnemiesManager.HasDetectedPlayer vì có thể giây cuối idle
     }
 
-    protected bool CheckIfCanAttack()
+    protected virtual bool CheckIfCanAttack()
     {
         if (_mEnemiesManager.HasDetectedPlayer && !_hasChangedState)
         {

@@ -8,7 +8,7 @@ public class BatRetreatState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
-        _batManager.Animator.SetInteger("state", (int)EnumState.BatState.retreat);
+        _batManager.Animator.SetInteger("state", (int)EnumState.EBatState.retreat);
         Debug.Log("Rt");
     }
 

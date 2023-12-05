@@ -1,34 +1,42 @@
 using UnityEngine;
 
-public class BunnyIdleState : BunnyBaseState
+public class BunnyIdleState : MEnemiesIdleState
 {
-    private bool hasChangedState = false;
-    private float entryTime;
+    private BunnyManager _bunnyManager;
 
-    public override void EnterState(BunnyStateManager bunnyStateManager)
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(bunnyStateManager);
-        _bunnyStateManager.GetAnimator().SetInteger("state", (int)EnumState.EBunnyState.idle);
-        _bunnyStateManager.GetRigidBody2D().velocity = Vector2.zero;
-        entryTime = Time.time;
+        base.EnterState(charactersManager);
+        _bunnyManager = (BunnyManager)charactersManager;
     }
 
-    public override void ExitState() { hasChangedState = false; }
-
-    public override void Update() 
+    public override void ExitState()
     {
-        if (_bunnyStateManager.GetHasDetectPlayer() && !hasChangedState)
-        {
-            hasChangedState = true;
-            _bunnyStateManager.Invoke("JumpDelay", _bunnyStateManager.GetJumpDelay());
-        }
-        else if(Time.time - entryTime >= _bunnyStateManager.GetRestTime())
-        {
-            hasChangedState = true;
-            _bunnyStateManager.ChangeState(_bunnyStateManager.bunnyPatrolState);
-        }
+        base.ExitState();
     }
 
-    public override void FixedUpdate() { }
+    public override void Update()
+    {
+        if (CheckIfCanPatrol())
+            _bunnyManager.ChangeState(_bunnyManager.BunnyPatrolState);
+        else if (CheckIfCanAttack())
+            _bunnyManager.Invoke("AllowAttackPlayer", _bunnyManager.GetAttackDelay());
+    }
 
+    protected override bool CheckIfCanAttack()
+    {
+        if (_bunnyManager.HasDetectedPlayer && !_hasChangedState
+            || _bunnyManager.IsPlayerBackWard && !_hasChangedState)
+        {
+            _hasChangedState = true;
+            if (_bunnyManager.IsPlayerBackWard) _bunnyManager.FlippingSprite();
+            return true;
+        }
+        return false;
+    }
+
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
 }
