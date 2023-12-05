@@ -16,6 +16,9 @@
     public enum EBunnyState
     { idle, patrol, attackJump, gotHit, attackFall }
 
+    public enum ESnailState
+    { idle, patrol, attack, gotHit, shellHit}
+
     public enum EPlantState
     { idle, attack, gotHit }
 

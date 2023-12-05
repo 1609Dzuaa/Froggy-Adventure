@@ -8,6 +8,7 @@ public class WallSlideState : PlayerBaseState
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.wallSlide);
+        //_playerStateManager.SetIsFacingRight(!_playerStateManager.GetIsFacingRight())
         //Debug.Log("WS");
         //Flip sprite khi chuyển từ state này sang state bất kì
         //Theo đúng chiều của nhân vật khi đang slide
@@ -72,6 +73,7 @@ public class WallSlideState : PlayerBaseState
         else if (Input.GetKeyDown(KeyCode.S))
         {
             _playerStateManager.ChangeState(_playerStateManager.jumpState);
+            hasChangedState = true;
             //Nhảy trên tường gặp vấn đề cuối:
             //Giữ A/D sau khi trượt tường trái/phải 1 lúc sau đó bấm S thì 0 nhảy đc
             //Thả A/D sau khi trượt tường trái/phải 1 lúc sau đó bấm S thì mới nhảy đc

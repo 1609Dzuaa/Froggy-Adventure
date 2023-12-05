@@ -20,6 +20,7 @@ public class PlayerStateManager : MonoBehaviour
     private float dirX, dirY;
     private Rigidbody2D rb;
     private Animator anim;
+    private RaycastHit2D wallHit;
     private bool isOnGround = false;
     private bool hasDbJump = false; //Cho phép DbJump 1 lần
     private bool IsWallTouch = false;
@@ -115,10 +116,14 @@ public class PlayerStateManager : MonoBehaviour
 
     public Text GetScoreText() { return this.txtScore; }
 
+    public RaycastHit2D WallHit { get { return this.wallHit; } }
+
     //SET Functions
     public void SetHasDbJump(bool para) { this.hasDbJump = para; }
 
     public void IncreaseOrangeCount() { this.OrangeCount++; }
+
+    public void SetIsFacingRight(bool para) { this.isFacingRight = para; }
 
     //HP Functions
     public void IncreaseHP() { HP++; }
@@ -200,7 +205,15 @@ public class PlayerStateManager : MonoBehaviour
     private void FixedUpdate()
     {
         _state.FixedUpdate();
-        //Debug.Log("velo Y: " + rb.velocity.y);
+        if (isFacingRight)
+            Debug.Log(Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer).normal.x);
+        else
+            Debug.Log(Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, wallLayer).normal.x);
+        //Debug.Log("iFR: " + isFacingRight);
+        //Unity Docs:
+        //If a hit starts occuring inside a collider, the collision normal is
+        //the OPPOSITE direction of the line/ray query.
+        //Giữ A va trái thì normalX = 1 (với isFr = false)
     }
 
     private void OnDrawGizmos()
@@ -209,7 +222,10 @@ public class PlayerStateManager : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
 
         //Draw Wall Check
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
+        if (isFacingRight)
+            Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
+        else
+            Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x - wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
     }
 
     private void HandleInput()
@@ -248,9 +264,15 @@ public class PlayerStateManager : MonoBehaviour
     {
         isOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
         if (isFacingRight)
-            IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, -wallCheckDistance, wallLayer);
-        else
+        {
             IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
+            wallHit = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
+        }
+        else
+        {
+            IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, wallLayer);
+            wallHit = Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, wallLayer);
+        }
     }
 
     private void Reload()
