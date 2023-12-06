@@ -3,11 +3,11 @@
 public class JumpState : PlayerBaseState
 {
     //Considering Coyote Time
-    private float _xStart;
-    private float _nWall;
-    private float _disableStart;
+    //Nếu state trước là Run có hitwall thì 0 cho WS
+    //Còn nếu state trước là Run nhưng 0 hitwall thì cho phép
+    private bool _isRunStateHitWall;
 
-    public float NWall { set { _nWall = value; } }
+    public bool IsRunStateHitWall { set { _isRunStateHitWall = value; } }
 
     public override void EnterState(PlayerStateManager playerStateManager)
     {
@@ -15,16 +15,12 @@ public class JumpState : PlayerBaseState
         _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.jump);
         _playerStateManager.GetDustPS().Play();
         HandleJump();
-        //Nếu state trước là WS thì tức là đang WallJump
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        _xStart = _playerStateManager.transform.position.x;
-        Debug.Log("Jump: " + _nWall);
-        _disableStart = Time.time;
-        //cung` dau: WS, JUMP, JUMP, WS
+        Debug.Log("Jump");
     }
 
-    public override void ExitState() { _nWall = 0; }
+    public override void ExitState() { _isRunStateHitWall = false; }
 
     public override void Update()
     {
@@ -53,7 +49,9 @@ public class JumpState : PlayerBaseState
 
     private bool CheckIfCanWallSlide()
     {
-        if (_playerStateManager.GetIsWallTouch()) 
+        if (_playerStateManager.GetIsWallTouch() 
+            && _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f
+            && !_isRunStateHitWall) 
         { 
             //Debug.Log("ws here"); 
             return true; 

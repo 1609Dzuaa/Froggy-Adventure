@@ -10,7 +10,9 @@ public class FallState : PlayerBaseState
 
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        //Debug.Log("Fall");
+        Debug.Log("Fall");
+        //Lỗi fall khi đang trượt hết tường mà dirX != nxWall thì bị kẹt luôn ở cái wall đó
+        //DONE!~
     }
 
     public override void ExitState() { }
@@ -28,6 +30,7 @@ public class FallState : PlayerBaseState
             _playerStateManager.ChangeState(_playerStateManager.doubleJumpState);
         else if (CheckIfCanWallSlide())
             _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
+        //Debug.Log("Im still here");
     }
 
     private bool CheckIfCanIdle()
@@ -57,7 +60,7 @@ public class FallState : PlayerBaseState
 
     private bool CheckIfCanWallSlide()
     {
-        if (_playerStateManager.GetIsWallTouch() && !_playerStateManager.GetIsOnGround())
+        if (_playerStateManager.GetIsWallTouch() && _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f)
             return true;
         return false;
     }
@@ -67,11 +70,6 @@ public class FallState : PlayerBaseState
         //Vì bị ngu nên ở code cũ nhân thằng Speed với DirX mà 0 check DirX != 0 nên
         //Nhảy đáp từ tường xuống Ground trông đéo được mượt :D
         if (_playerStateManager.GetDirX() != 0)
-        {
-            if (_playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x > 1f && _playerStateManager.GetIsWallTouch()
-                || !_playerStateManager.GetIsWallTouch())
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
-            //&& _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x > 1f &&
-        }
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 }

@@ -7,11 +7,11 @@ public class WallSlideState : PlayerBaseState
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.wallSlide);
-        //Debug.Log("WS");
+        Debug.Log("WS");
         //Flip sprite khi chuyển từ state này sang state bất kì
         //Theo đúng chiều của nhân vật khi đang slide
-        //Còn lỗi nữa là khi ở RẤT GẦN Wall và pháp tuyến x của Wall trái dấu isFacingRight
-        //Thì khi jump sẽ tự động flip sprite
+        //Lỗi khi đè dirX khiến nó != nxWall dẫn đến loạn State
+        //DONE!~
         
     }
 
@@ -45,7 +45,7 @@ public class WallSlideState : PlayerBaseState
 
     private bool CheckIfCanWallJump()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsOnGround())
             return true;
         return false;
     }
@@ -58,7 +58,7 @@ public class WallSlideState : PlayerBaseState
         //Tại sao 0 ss normal.x == dirX ?
         //=>Vì nhấn dirX nó (Tăng/Giảm Dần) từ 0 -> 1 hoặc -1
         if (_playerStateManager.WallHit.normal.x * _playerStateManager.GetDirX() > 0 
-            && !Input.GetKeyDown(KeyCode.S)
+            && !Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsOnGround()
             || !_playerStateManager.GetIsOnGround() && !_playerStateManager.GetIsWallTouch() 
             && _playerStateManager.GetRigidBody2D().velocity.y < -.1f)
             return true;

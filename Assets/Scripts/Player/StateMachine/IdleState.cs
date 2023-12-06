@@ -13,7 +13,7 @@ public class IdleState : PlayerBaseState
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
 
-        //Debug.Log("Idle"); //Keep this, use for debugging change state
+        Debug.Log("Idle"); //Keep this, use for debugging change state
     }
 
     public override void ExitState() { }

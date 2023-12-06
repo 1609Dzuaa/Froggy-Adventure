@@ -7,7 +7,7 @@ public class RunState : PlayerBaseState
         base.EnterState(playerStateManager);
         playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
-        //Debug.Log("Run");
+        Debug.Log("Run");
     }
 
     public override void ExitState() { }
@@ -22,7 +22,10 @@ public class RunState : PlayerBaseState
         if (CheckIfIdle())
             _playerStateManager.ChangeState(_playerStateManager.idleState);
         else if (CheckIfJump())
+        {
+            _playerStateManager.jumpState.IsRunStateHitWall = _playerStateManager.GetIsWallTouch();
             _playerStateManager.ChangeState(_playerStateManager.jumpState);
+        }
         else if (CheckIfFall())
             _playerStateManager.ChangeState(_playerStateManager.fallState);
     }
