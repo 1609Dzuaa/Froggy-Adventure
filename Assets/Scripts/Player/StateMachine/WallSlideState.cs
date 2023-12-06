@@ -12,7 +12,8 @@ public class WallSlideState : PlayerBaseState
         //Theo đúng chiều của nhân vật khi đang slide
         //Lỗi khi đè dirX khiến nó != nxWall dẫn đến loạn State
         //DONE!~
-        
+        //WS còn vài chỗ lăn tăn nhỏ nữa nhưng chắc thế này là đủ ^^
+        //Sau cần thiết thì record fix sau
     }
 
     public override void ExitState() { }

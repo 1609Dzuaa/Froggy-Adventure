@@ -24,18 +24,22 @@ public class JumpState : PlayerBaseState
 
     public override void Update()
     {
+        //Đè dirX + S + S trong lúc Jump sẽ switch sang WallJump
+        //(tương đồng với cơ chế Jump + WallJump trong Hollow Knight)
         if (CheckIfCanDbJump())
             _playerStateManager.ChangeState(_playerStateManager.doubleJumpState);
         else if (CheckIfCanFall())
             _playerStateManager.ChangeState(_playerStateManager.fallState);
         else if (CheckIfCanWallSlide())
             _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
+        else if (CheckIfCanWallJump())
+            _playerStateManager.ChangeState(_playerStateManager.wallJumpState);
     }
 
     private bool CheckIfCanDbJump()
     {
-        //Press S While Jump => Double Jump
-        if (Input.GetKeyDown(KeyCode.S))
+        //Press S While Jump and not touching wall => Double Jump
+        if (Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsWallTouch())
            return true;
         return false;
     }
@@ -49,13 +53,18 @@ public class JumpState : PlayerBaseState
 
     private bool CheckIfCanWallSlide()
     {
-        if (_playerStateManager.GetIsWallTouch() 
+        if (_playerStateManager.GetIsWallTouch()
             && _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f
-            && !_isRunStateHitWall) 
-        { 
-            //Debug.Log("ws here"); 
-            return true; 
-        }
+            && !_isRunStateHitWall)
+            return true;
+        return false;
+    }
+
+    private bool CheckIfCanWallJump()
+    {
+        //Đè dirX (run) va vào tường + nhấn S lúc đang Jump (current State) thì switch sang WallJump
+        if (_playerStateManager.GetIsWallTouch() && Input.GetKeyDown(KeyCode.S) && _isRunStateHitWall)
+            return true;
         return false;
     }
 
