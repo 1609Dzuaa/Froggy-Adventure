@@ -10,10 +10,7 @@ public class RunState : PlayerBaseState
         //Debug.Log("Run");
     }
 
-    public override void ExitState()
-    {
-
-    }
+    public override void ExitState() { }
 
     public override void Update()
     {
@@ -54,17 +51,9 @@ public class RunState : PlayerBaseState
         //tác dụng lực vào đẩy rơi xuống dưới
     }
 
-    void PhysicsUpdate()
-    {
-        if (_playerStateManager.GetDirX() != 0)
-        {
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
-        }
-        //Like function's name. Only update things related to Physics
-    }
-
     public override void FixedUpdate()
     {
-        PhysicsUpdate();
+        if (_playerStateManager.GetDirX() != 0)
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 }

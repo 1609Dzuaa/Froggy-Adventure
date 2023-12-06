@@ -2,7 +2,7 @@
 {
     //Tạo các enum của State để gán giá trị tương ứng cho Animations
     public enum EPlayerState
-    { idle, run, jump, fall, wallSlide, doubleJump, gotHit }
+    { idle, run, jump, fall, wallSlide, doubleJump, gotHit, wallJump }
 
     public enum EMEnemiesState
     { idle, patrol, attack, gotHit }

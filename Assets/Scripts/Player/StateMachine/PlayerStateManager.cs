@@ -16,6 +16,7 @@ public class PlayerStateManager : MonoBehaviour
     public DoubleJumpState doubleJumpState = new DoubleJumpState();
     public WallSlideState wallSlideState = new WallSlideState();
     public GotHitState gotHitState = new GotHitState();
+    public WallJumpState wallJumpState = new();
 
     private float dirX, dirY;
     private Rigidbody2D rb;
@@ -67,9 +68,13 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float wallCheckDistance;
 
-    /*[Header("Enemies Check")]
-    [SerializeField] private LayerMask enemiesLayer;
-    private bool isJumpOnEnemies = false;*/
+    [Header("Time")]
+    //Là khoảng thgian mà mình disable directionX ở state WallJump
+    //Mục đích cho nó nhảy hướng ra phía đối diện cái wall vừa đu
+    //Mà 0 bị ảnh hưởng bởi input directionX
+    [SerializeField] private float _disableTime;
+
+    public float DisableTime { get { return this._disableTime; } }
 
     //GET Functions
     public float GetDirX() { return this.dirX; }
@@ -122,8 +127,6 @@ public class PlayerStateManager : MonoBehaviour
     public void SetHasDbJump(bool para) { this.hasDbJump = para; }
 
     public void IncreaseOrangeCount() { this.OrangeCount++; }
-
-    public void SetIsFacingRight(bool para) { this.isFacingRight = para; }
 
     //HP Functions
     public void IncreaseHP() { HP++; }
@@ -199,16 +202,16 @@ public class PlayerStateManager : MonoBehaviour
         HandleFlipSprite();
         HandleDustVelocity();
         SpawnDust();
-        //Debug.Log("dirY: " + dirY);
+        //Debug.Log("dirX: " + dirX);
     }
 
     private void FixedUpdate()
     {
         _state.FixedUpdate();
-        if (isFacingRight)
+        /*if (isFacingRight)
             Debug.Log(Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer).normal.x);
         else
-            Debug.Log(Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, wallLayer).normal.x);
+            Debug.Log(Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, wallLayer).normal.x);*/
         //Debug.Log("iFR: " + isFacingRight);
         //Unity Docs:
         //If a hit starts occuring inside a collider, the collision normal is
@@ -236,27 +239,51 @@ public class PlayerStateManager : MonoBehaviour
 
     public void FlippingSprite()
     {
-        isFacingRight = !isFacingRight;
-        transform.Rotate(0, 180, 0);
+        //ĐK check if:
+        //Vì khi WallJump, ta muốn sprite giữ nguyên ở hướng WallSlide 1 khoảng DisableTime
+        //Nên chỉ cho lật sprite khi hết DisableTime(IsEndDisable)
+        if(_state is WallJumpState)
+        {
+            if(wallJumpState.IsEndDisable)
+            {
+                isFacingRight = !isFacingRight;
+                transform.Rotate(0, 180, 0);
+            }
+        }
+        else
+        {
+            isFacingRight = !isFacingRight;
+            transform.Rotate(0, 180, 0);
+        }
         //Hàm này dùng để lật sprite theo chiều ngang
     }
 
     public void FlipSpriteAfterWallSlide()
     {
-        FlippingSprite();
+        //FlippingSprite();
+        isFacingRight = !isFacingRight;
+        transform.Rotate(0, 180, 0);
         prevStateIsWallSlide = false;
+        //Debug.Log("Here");
         //Hàm này để xử lý việc lật sprite sau khi WS
     }
 
     private void HandleFlipSprite()
     {
-        if (dirX > 0f && !isFacingRight)
+        //Tại sao thêm ĐK !IsWallTouch
+        //Vì sprites Wall Slide bị ngược + lười chỉnh :v
+        //Và vì sau khi WallSlide xong thì sprite phải được
+        //lật ngược cho phù hợp 
+        if(!IsWallTouch)
         {
-            FlippingSprite();
-        }
-        else if (dirX < 0f && isFacingRight)
-        {
-            FlippingSprite();
+            if (dirX > 0f && !isFacingRight)
+            {
+                FlippingSprite();
+            }
+            else if (dirX < 0f && isFacingRight)
+            {
+                FlippingSprite();
+            }
         }
     }
 
