@@ -9,20 +9,13 @@ public class SnailShellHitState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _snailManager = (SnailManager)charactersManager;
         _snailManager.Animator.SetInteger("state", (int)EnumState.ESnailState.shellHit);
+        _snailManager.HealthPoint -= 1;
+        _snailManager.SetHasGotHit(false);
     }
 
-    public override void ExitState()
-    {
-        base.ExitState();
-    }
+    public override void ExitState() { }
 
-    public override void Update()
-    {
-        base.Update();
-    }
+    public override void Update() { }
 
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
-    }
+    public override void FixedUpdate() { }
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class SnailPatrolState : MEnemiesPatrolState
 {
@@ -24,6 +23,10 @@ public class SnailPatrolState : MEnemiesPatrolState
         if (CheckIfCanMoveVertical())
         {
             _canMoveVertical = !_canMoveVertical;
+            if (_canMoveVertical)
+                _snailManager.GetRigidbody2D().bodyType = RigidbodyType2D.Kinematic;
+            else
+                _snailManager.GetRigidbody2D().bodyType = RigidbodyType2D.Dynamic;
             //_snailManager.transform.rotation = Quaternion.Euler(0, 0, -90f);
             _snailManager.transform.Rotate(0, 0, -90f);
         }
@@ -37,8 +40,6 @@ public class SnailPatrolState : MEnemiesPatrolState
             _hasChangeDirection = true;
             _snailManager.FlippingSprite();
         }
-        //Debug.Log("Collided Wall: " + _snailManager.HasCollidedWall);
-        //base.Update();
     }
 
     private bool CheckIfCanMoveVertical()
@@ -64,7 +65,6 @@ public class SnailPatrolState : MEnemiesPatrolState
             else
                 _snailManager.GetRigidbody2D().velocity = new Vector2(0f, -_snailManager.GetPatrolSpeed());
         }
-
     }
 
 }

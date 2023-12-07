@@ -7,7 +7,7 @@ public class WallSlideState : PlayerBaseState
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.wallSlide);
-        Debug.Log("WS");
+        //Debug.Log("WS");
         //Flip sprite khi chuyển từ state này sang state bất kì
         //Theo đúng chiều của nhân vật khi đang slide
         //Lỗi khi đè dirX khiến nó != nxWall dẫn đến loạn State
@@ -16,6 +16,7 @@ public class WallSlideState : PlayerBaseState
         //Sau cần thiết thì record fix sau
         //Vẫn còn lỗi nếu isFr != nxWall và bấm S lần đầu sẽ Jump nhưng lúc Jump đó bấm S tiếp
         //thì 0 change state khác đc @@
+        //WS vẫn còn bug bên wall trái ?
     }
 
     public override void ExitState() { }

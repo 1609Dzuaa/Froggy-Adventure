@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SnailAttackState : MEnemiesAttackState
 {
@@ -20,7 +18,12 @@ public class SnailAttackState : MEnemiesAttackState
 
     public override void Update()
     {
-        base.Update();
+        //Sometimes, prob here:D
+        if (!_snailManager.HasDetectedPlayer)
+            _snailManager.Invoke("ChangeToIdle", _snailManager.DelayIdleTime);
+        else
+            _snailManager.CancelInvoke();
+        //base.Update();
     }
 
     public override void FixedUpdate()

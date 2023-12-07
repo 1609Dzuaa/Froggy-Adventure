@@ -17,7 +17,7 @@ public class JumpState : PlayerBaseState
         HandleJump();
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        Debug.Log("Jump");
+        //Debug.Log("Jump");
     }
 
     public override void ExitState() { _isRunStateHitWall = false; }

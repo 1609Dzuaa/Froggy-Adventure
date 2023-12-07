@@ -63,6 +63,8 @@ public class MEnemiesManager : EnemiesManager
 
     public Transform BoundaryRight { get { return _boundaryRight; } }
 
+    public void SetHasGotHit(bool para) { this._hasGotHit = para; }
+
     //Các lớp sau muốn mở rộng hàm Start, Update,... thì nhớ gọi base.Start(),... trong hàm Start của chính nó
     //Còn 0 implement gì thêm thì 0 cần làm gì, nó tự động đc gọi trong đây ngay cả khi là private
     protected override void Start()
@@ -115,7 +117,7 @@ public class MEnemiesManager : EnemiesManager
             _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.right, _wallCheckDistance, _wallLayer);
     }
 
-    protected void DrawRayDetectPlayer()
+    protected virtual void DrawRayDetectPlayer()
     {
         if (_hasDetectedPlayer)
         {
@@ -157,7 +159,7 @@ public class MEnemiesManager : EnemiesManager
         {
             _hasGotHit = true;
             var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.GetRigidBody2D().AddForce(playerScript.GetJumpOnEnemiesForce());
+            playerScript.GetRigidBody2D().AddForce(playerScript.GetJumpOnEnemiesForce(), ForceMode2D.Impulse);
             ChangeState(_mEnemiesGotHitState);
         }
     }
