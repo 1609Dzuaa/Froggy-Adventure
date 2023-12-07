@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class MEnemiesManager : EnemiesManager
 {
+    //MEnemies <-> MoveableEnemies
     private MEnemiesIdleState _mEnemiesIdleState = new();
     private MEnemiesPatrolState _mEnemiesPatrolState = new();
     private MEnemiesAttackState _mEnemiesAttackState = new();
@@ -88,7 +89,7 @@ public class MEnemiesManager : EnemiesManager
 
 
     //Call this in Patrol State
-    public void Move(float velo)
+    public virtual void Move(float velo)
     {
         if (_isFacingRight)
             this._rb.velocity = new Vector2(velo, _rb.velocity.y);
@@ -106,7 +107,7 @@ public class MEnemiesManager : EnemiesManager
         DrawRayDetectPlayer();
     }
 
-    protected void DetectWall()
+    protected virtual void DetectWall()
     {
         if (!_isFacingRight)
             _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.left, _wallCheckDistance, _wallLayer);

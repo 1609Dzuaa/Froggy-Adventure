@@ -14,6 +14,8 @@ public class WallSlideState : PlayerBaseState
         //DONE!~
         //WS còn vài chỗ lăn tăn nhỏ nữa nhưng chắc thế này là đủ ^^
         //Sau cần thiết thì record fix sau
+        //Vẫn còn lỗi nếu isFr != nxWall và bấm S lần đầu sẽ Jump nhưng lúc Jump đó bấm S tiếp
+        //thì 0 change state khác đc @@
     }
 
     public override void ExitState() { }
