@@ -36,12 +36,20 @@ public class NMEnemiesManager : EnemiesManager
         //Debug.Log("update");
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.name == "Player" && !_hasGotHit)
+        {
+            _hasGotHit = true;
+            var playerScript = collision.GetComponent<PlayerStateManager>();
+            playerScript.GetRigidBody2D().AddForce(playerScript.GetJumpOnEnemiesForce(), ForceMode2D.Impulse);
+            ChangeState(_nmEnemiesGotHitState);
+        }
+    }
+
     protected virtual void AllowAttackPlayer()
     {
         ChangeState(_nmEnemiesAttackState);
-        //Debug.Log("Called");
-        //Nhằm delay việc chuyển state Attack 
-        //Tạo cảm giác enemies phản ứng rồi attack chứ 0 phải attack ngay lập tức
     }
 
     private void SelfDestroy()

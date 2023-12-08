@@ -9,14 +9,13 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _nmEnemiesManager.Animator.SetInteger("state", (int)EnumState.ENMEnemiesState.gotHit);
+        _nmEnemiesManager.Collider2D.enabled = false;
         lastRotateTime = Time.time;
+        ApplyForce();
         //Debug.Log("GH");
     }
 
-    public override void ExitState()
-    {
-
-    }
+    public override void ExitState() { }
 
     public override void Update()
     {
@@ -26,5 +25,10 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
             _nmEnemiesManager.transform.Rotate(0f, 0f, Zdegree);
             lastRotateTime = Time.time;
         }
+    }
+
+    protected void ApplyForce()
+    {
+        _nmEnemiesManager.GetRigidbody2D().AddForce(_nmEnemiesManager.KnockForce, ForceMode2D.Impulse);
     }
 }
