@@ -197,15 +197,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f9c2797dfdc1c4d8b75eed38fa06a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCheck: {fileID: 1006303769964934695}
-  checkDistance: 20
-  playerLayer:
+  _playerCheck: {fileID: 1006303769964934695}
+  _checkDistance: 10
+  _playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  bullet: {fileID: 3972120368183892188, guid: d5bd51591c44bd945bfdec6b3d539063, type: 3}
-  shootPosition: {fileID: 152046509195764373}
+  _knockForce: {x: 0, y: 150}
+  _attackDelay: 0.15
   degreeEachRotation: 1
   timeEachRotate: 0.1
+  _bullet: {fileID: 3972120368183892188, guid: d5bd51591c44bd945bfdec6b3d539063, type: 3}
+  _shootPosition: {fileID: 152046509195764373}
 --- !u!1 &1006303769964934688
 GameObject:
   m_ObjectHideFlags: 0

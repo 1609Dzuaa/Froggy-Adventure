@@ -22,7 +22,7 @@ public class GeckoStateManager : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckDistance = 3.0f;
     [SerializeField] private LayerMask wallLayer;
-    private bool hasCollidedWall = false;
+    //private bool hasCollidedWall = false;
 
     [Header("Teleport Distance")] //
     [SerializeField] float teleDistance;

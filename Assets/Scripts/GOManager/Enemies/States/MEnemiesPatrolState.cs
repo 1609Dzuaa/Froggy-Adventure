@@ -80,7 +80,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         return false;
     }
 
-    protected bool CheckIfCanChangeDirection()
+    protected virtual bool CheckIfCanChangeDirection()
     {
         //recheck
         if (_mEnemiesManager.transform.position.x >= _mEnemiesManager.BoundaryRight.position.x && !_hasChangeDirection && !_hasJustHitWall

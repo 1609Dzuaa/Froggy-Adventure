@@ -20,6 +20,12 @@ public class CharactersManager : GameObjectManager
         _rb = GetComponent<Rigidbody2D>();
     }
 
+    protected virtual void Update()
+    {
+        if (_state != null)
+            _state.Update();
+    }
+
     public void ChangeState(CharacterBaseState state)
     {
         _state.ExitState();

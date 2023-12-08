@@ -45,7 +45,7 @@ public class BunnyManager : MEnemiesManager
     {
         _anim = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<Collider2D>();
+        _collider2D = GetComponent<Collider2D>();
         _state = _bunnyIdleState;
         _state.EnterState(this);
         MEnemiesGotHitState = _bunnyGotHitState;

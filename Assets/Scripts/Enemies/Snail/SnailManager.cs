@@ -6,8 +6,14 @@ public class SnailManager : MEnemiesManager
 {
     //Kill this enemy x times to unlock WallSlide Skill
     //Khi chui vào vỏ thì trâu hơn bthg x _healthPoint lần (Mặc định bthg đạp lên trên vỏ 1 lần là chết)
+    //Hiện tại ốc mới chỉ flip và di chuyển lên chỗ có wall th
+    //Cân nhắc lật 90 độ dương trục z với địa hình vuông góc 0 phải wall 
     [Header("Health Point")]
     [SerializeField] private int _healthPoint;
+
+    [Header("Ground Check")]
+    [SerializeField] private Transform _groundCheck;
+    //private bool _hasDetectedGround;
 
     [Header("Detect Player2")]
     //Khoảng cách mình muốn nó detect Player
@@ -26,6 +32,8 @@ public class SnailManager : MEnemiesManager
     private SnailShellHitState _snailShellHitState = new();
     private SnailGotHitState _snailGotHitState = new();
     private float _distanceToPlayer;
+
+    //public bool HasDetectedGround { get { return _hasDetectedGround; } }
 
     public float HealthPoint { get { return _healthPoint; } set { _healthPoint = (int)value; } }
 
@@ -51,7 +59,7 @@ public class SnailManager : MEnemiesManager
         _rb = GetComponent<Rigidbody2D>();
         _state = _snailIdleState;
         _state.EnterState(this);
-        _collider = GetComponent<Collider2D>();
+        _collider2D = GetComponent<Collider2D>();
     }
 
     protected override void Update()
@@ -59,8 +67,10 @@ public class SnailManager : MEnemiesManager
         _state.Update();
         DetectPlayer();
         DetectWall();
+        //DetectGround();
         DrawRayDetectPlayer();
         DrawRayDetectWall();
+        //Debug.Log("Ground: " + _hasDetectedGround);
         //Debug.Log("HP: " + _healthPoint);
         //Coi lại min/max boundaries cho sên :v
     }
@@ -104,12 +114,6 @@ public class SnailManager : MEnemiesManager
         }
     }
 
-    protected override void ChangeToIdle()
-    {
-        ChangeState(_snailIdleState);
-        _hasGotHit = false;
-    }
-
     private void DrawRayDetectWall()
     {
         //Move vertical thì chỉnh left/right thành 2 vector up/down
@@ -127,6 +131,36 @@ public class SnailManager : MEnemiesManager
             else
                 Debug.DrawRay(_wallCheck.position, Vector2.right * _wallCheckDistance, Color.green);
         }
+    }
+
+    /*private void DetectGround()
+    {
+        //_hasDetectedGround = Physics2D.Raycast(new Vector2(_groundCheck.position.x, _groundCheck.position.y), Vector2.down, _wallCheckDistance, _wallLayer);
+        //Move vertical thì chỉnh left/right thành 2 vector up/down
+        if(!_snailPatrolState.CanMoveVertical)
+        {
+            //if (!_isFacingRight)
+                _hasDetectedGround = Physics2D.Raycast(new Vector2(_groundCheck.position.x, _groundCheck.position.y), Vector2.down, _wallCheckDistance, _wallLayer);
+            Debug.DrawRay(_groundCheck.position, Vector2.down * _wallCheckDistance, Color.red);
+
+            //else
+            //_hasDetectedGround = Physics2D.Raycast(new Vector2(_groundCheck.position.x, _groundCheck.position.y), Vector2.right, _wallCheckDistance, _wallLayer);
+        }
+        else
+        {
+            //if (!_isFacingRight)
+                _hasDetectedGround = Physics2D.Raycast(new Vector2(_groundCheck.position.x, _groundCheck.position.y), Vector2.right, _wallCheckDistance, _wallLayer);
+            Debug.DrawRay(_groundCheck.position, Vector2.right * _wallCheckDistance, Color.red);
+
+            //else
+            //_hasDetectedGround = Physics2D.Raycast(new Vector2(_groundCheck.position.x, _groundCheck.position.y), Vector2.down, _wallCheckDistance, _wallLayer);
+        }
+    }*/
+
+    protected override void ChangeToIdle()
+    {
+        ChangeState(_snailIdleState);
+        _hasGotHit = false;
     }
 
     protected override void FixedUpdate()

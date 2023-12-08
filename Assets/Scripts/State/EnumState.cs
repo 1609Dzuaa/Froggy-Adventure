@@ -7,6 +7,9 @@
     public enum EMEnemiesState
     { idle, patrol, attack, gotHit }
 
+    public enum ENMEnemiesState
+    { idle, attack, gotHit }
+
     public enum ERhinoState
     { idle, patrol, attack, gotHit, wallHit }
 
@@ -18,6 +21,9 @@
 
     public enum ESnailState
     { idle, patrol, attack, gotHit, shellHit}
+
+    public enum EHedgehogState
+    { idle, spikeIn, spikeOut, spikeIdle, gotHit }
 
     public enum EPlantState
     { idle, attack, gotHit }

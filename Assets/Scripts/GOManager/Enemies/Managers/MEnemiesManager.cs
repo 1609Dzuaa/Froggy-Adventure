@@ -25,7 +25,6 @@ public class MEnemiesManager : EnemiesManager
     [Header("Time")]
     [SerializeField] protected float _restTime;
     [SerializeField] protected float _patrolTime;
-    [SerializeField] protected float _attackDelay;
 
     [Header("Speed")]
     [SerializeField] protected float _patrolSpeed;
@@ -33,7 +32,6 @@ public class MEnemiesManager : EnemiesManager
 
     [Header("Parent")]
     [SerializeField] protected GameObject _parent;
-    protected Collider2D _collider;
 
     //Public Field
 
@@ -49,15 +47,11 @@ public class MEnemiesManager : EnemiesManager
 
     public float GetPatrolTime() { return this._patrolTime; }
 
-    public float GetAttackDelay() { return this._attackDelay; }
-
     public bool HasCollidedWall { get { return this._hasCollidedWall; } }
 
     public float GetPatrolSpeed() { return this._patrolSpeed; }
 
     public float GetChaseSpeed() { return this._chaseSpeed; }
-
-    public Collider2D Collider2D { get { return _collider; } }
 
     public Transform BoundaryLeft { get { return _boundaryLeft; } }
 
@@ -72,15 +66,12 @@ public class MEnemiesManager : EnemiesManager
         base.Start(); //Lấy anim, rb từ EnemiesManager
         _state = _mEnemiesIdleState;
         _state.EnterState(this);
-        _collider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+    protected override void Update()
     {
-        _state.Update();
-        DetectPlayer();
-        DetectWall();
+        base.Update(); //Đã bao gồm việc Update state và detect Player trong đây
     }
 
     protected virtual void FixedUpdate()
@@ -99,40 +90,12 @@ public class MEnemiesManager : EnemiesManager
             this._rb.velocity = new Vector2(-velo, _rb.velocity.y);
     }
 
-    protected virtual void DetectPlayer()
-    {
-        if (!_isFacingRight)
-            _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _checkDistance, _playerLayer);
-        else
-            _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _checkDistance, _playerLayer);
-
-        DrawRayDetectPlayer();
-    }
-
     protected virtual void DetectWall()
     {
         if (!_isFacingRight)
             _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.left, _wallCheckDistance, _wallLayer);
         else
             _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.right, _wallCheckDistance, _wallLayer);
-    }
-
-    protected virtual void DrawRayDetectPlayer()
-    {
-        if (_hasDetectedPlayer)
-        {
-            if (!_isFacingRight)
-                Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.red);
-            else
-                Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.red);
-        }
-        else
-        {
-            if (!_isFacingRight)
-                Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.green);
-            else
-                Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.green);
-        }
     }
 
     //Hàm này dùng để Invoke khi detect ra Player
