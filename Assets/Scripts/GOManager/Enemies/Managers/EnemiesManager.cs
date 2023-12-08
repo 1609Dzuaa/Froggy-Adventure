@@ -31,7 +31,7 @@ public abstract class EnemiesManager : CharactersManager
         _collider2D = GetComponent<Collider2D>();
         if (transform.rotation.eulerAngles.y == 180f)
             _isFacingRight = true;
-        Debug.Log("IfR: " + _isFacingRight);
+        //Debug.Log("IfR: " + _isFacingRight);
     }
 
     protected override void Update()

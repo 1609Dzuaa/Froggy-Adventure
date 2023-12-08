@@ -17,7 +17,7 @@ public class NMEnemiesManager : EnemiesManager
 
     public float GetDegreeEachRotation() { return this.degreeEachRotation; }
 
-    public NMEnemiesIdleState NMEnemiesIdleState { get { return _nmEnemiesIdleState; } }
+    public NMEnemiesIdleState NMEnemiesIdleState { get { return _nmEnemiesIdleState; } set { _nmEnemiesIdleState = value; } }
 
     public NMEnemiesAttackState NMEnemiesAttackState { get { return _nmEnemiesAttackState; } }
 
@@ -36,7 +36,7 @@ public class NMEnemiesManager : EnemiesManager
         //Debug.Log("update");
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.name == "Player" && !_hasGotHit)
         {

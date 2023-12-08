@@ -8,7 +8,7 @@ public class NMEnemiesIdleState : NMEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _nmEnemiesManager.Animator.SetInteger("state", (int)EnumState.ENMEnemiesState.idle);
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
     }
 
     public override void ExitState() { _hasChangedState = false; }
