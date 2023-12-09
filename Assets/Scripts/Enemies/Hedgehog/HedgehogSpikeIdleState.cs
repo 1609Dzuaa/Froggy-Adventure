@@ -10,6 +10,7 @@ public class HedgehogSpikeIdleState : NMEnemiesBaseState
         base.EnterState(charactersManager);
         _hedgehogManager = (HedgehogManager)charactersManager;
         _hedgehogManager.Animator.SetInteger("state", (int)EnumState.EHedgehogState.spikeIdle);
+        _hedgehogManager.getBoxCollider2D.size += _hedgehogManager.getSizeIncrease;
     }
 
     public override void ExitState()

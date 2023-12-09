@@ -10,6 +10,12 @@ public abstract class EnemiesManager : CharactersManager
     [SerializeField] protected LayerMask _playerLayer;
     [SerializeField] protected Vector2 _knockForce; //Knock Force khi bị hit
     [SerializeField] protected float _attackDelay;
+
+    //Rotate sprite after got hit
+    [Header("Z Rotation When Dead")]
+    [SerializeField] protected float degreeEachRotation;
+    [SerializeField] protected float timeEachRotate;
+
     protected bool _hasDetectedPlayer;
     protected bool _hasGotHit; //Đánh dấu bị Hit, tránh Trigger nhiều lần
     protected Collider2D _collider2D;
@@ -19,10 +25,13 @@ public abstract class EnemiesManager : CharactersManager
 
     public float GetAttackDelay() { return this._attackDelay; }
 
+    public float GetTimeEachRotate() { return this.timeEachRotate; }
+
+    public float GetDegreeEachRotation() { return this.degreeEachRotation; }
+
     public bool HasDetectedPlayer { get { return _hasDetectedPlayer; } }
 
-    public Collider2D Collider2D { get { return _collider2D; } }
-
+    public Collider2D Collider2D { get { return _collider2D; } set { _collider2D = value; } }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -32,22 +41,24 @@ public abstract class EnemiesManager : CharactersManager
         if (transform.rotation.eulerAngles.y == 180f)
             _isFacingRight = true;
         //Debug.Log("IfR: " + _isFacingRight);
+        
     }
 
     protected override void Update()
     {
         base.Update();
-        DetectPlayer(); //Enemies nào thì cũng phải DetectPlayer, cho vào đây là hợp lý
+        DetectedPlayer(); //Enemies nào thì cũng phải DetectPlayer, cho vào đây là hợp lý
+        DrawRayDetectPlayer();
     }
 
-    protected virtual void DetectPlayer()
+    protected virtual bool DetectedPlayer()
     {
         if (!_isFacingRight)
             _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _checkDistance, _playerLayer);
         else
             _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _checkDistance, _playerLayer);
 
-        DrawRayDetectPlayer();
+        return _hasDetectedPlayer;
     }
 
     protected virtual void DrawRayDetectPlayer()

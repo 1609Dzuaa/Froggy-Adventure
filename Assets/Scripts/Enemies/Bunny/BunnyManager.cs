@@ -11,11 +11,6 @@ public class BunnyManager : MEnemiesManager
     [Header("JumpHeight")]
     [SerializeField] private float _jumpHeight;
 
-    //Rotate sprite after got hit
-    [Header("Z Rotation When Dead")]
-    [SerializeField] private float _degreeEachRotation;
-    [SerializeField] private float _timeEachRotate;
-
     private BunnyIdleState _bunnyIdleState = new();
     private BunnyPatrolState _bunnyPatrolState = new();
     private BunnyAttackJumpState _bunnyAtkJumpState = new();
@@ -32,10 +27,6 @@ public class BunnyManager : MEnemiesManager
     public BunnyAttackJumpState BunnyAttackJumpState { get { return this._bunnyAtkJumpState; } }
 
     public BunnyAttackFallState BunnyAttackFallState { get { return this._bunnyAtkFallState; } }
-
-    public float DegreeEachRotation { get { return this._degreeEachRotation; } }
-
-    public float TimeEachRotate { get { return this._timeEachRotate; } }
 
     public bool IsPlayerBackWard { get { return this._isPlayerBackward; } }
 
@@ -74,9 +65,9 @@ public class BunnyManager : MEnemiesManager
         ChangeState(_bunnyAtkJumpState);
     }
 
-    protected override void DetectPlayer()
+    protected override bool DetectedPlayer()
     {
-        base.DetectPlayer();
+        return base.DetectedPlayer();
     }
 
     private void BackwardCheck()

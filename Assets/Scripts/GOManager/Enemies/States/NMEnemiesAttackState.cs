@@ -14,7 +14,7 @@ public class NMEnemiesAttackState : NMEnemiesBaseState
     public override void Update() 
     {
         if (!_nmEnemiesManager.HasDetectedPlayer)
-            _nmEnemiesManager.ChangeState(_nmEnemiesManager.NMEnemiesIdleState);
+            _nmEnemiesManager.ChangeState(_nmEnemiesManager.getNMEnemiesIdleState);
     }
 
     public override void FixedUpdate() { }

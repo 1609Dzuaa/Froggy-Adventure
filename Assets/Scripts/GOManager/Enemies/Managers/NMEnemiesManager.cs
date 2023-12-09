@@ -4,24 +4,15 @@ using UnityEngine;
 
 public class NMEnemiesManager : EnemiesManager
 {
-    //Rotate sprite after got hit
-    [Header("Z Rotation When Dead")]
-    [SerializeField] private float degreeEachRotation;
-    [SerializeField] private float timeEachRotate;
-
     private NMEnemiesIdleState _nmEnemiesIdleState = new();
     private NMEnemiesAttackState _nmEnemiesAttackState = new();
     private NMEnemiesGotHitState _nmEnemiesGotHitState = new();
 
-    public float GetTimeEachRotate() { return this.timeEachRotate; }
+    public NMEnemiesIdleState getNMEnemiesIdleState { get { return _nmEnemiesIdleState; } set { _nmEnemiesIdleState = value; } }
 
-    public float GetDegreeEachRotation() { return this.degreeEachRotation; }
+    public NMEnemiesAttackState getNMEnemiesAttackState { get { return _nmEnemiesAttackState; } }
 
-    public NMEnemiesIdleState NMEnemiesIdleState { get { return _nmEnemiesIdleState; } set { _nmEnemiesIdleState = value; } }
-
-    public NMEnemiesAttackState NMEnemiesAttackState { get { return _nmEnemiesAttackState; } }
-
-    public NMEnemiesGotHitState NMEnemiesGotHitState { get { return _nmEnemiesGotHitState; } }
+    public NMEnemiesGotHitState getNMEnemiesGotHitState { get { return _nmEnemiesGotHitState; } }
 
     protected override void Start()
     {

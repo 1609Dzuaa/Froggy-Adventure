@@ -19,7 +19,7 @@ public class SnailManager : MEnemiesManager
     //Khoảng cách mình muốn nó detect Player
     [SerializeField] private float _detectRange;
     //Khoảng thgian mình muốn ốc thực sự chui ra sau khi 0 detect Player ở gần
-    [SerializeField] private float _delayIdleTime;
+    [SerializeField] private float _idleDelay;
 
     //Rotate sprite after got hit
     [Header("Z Rotation When Dead")]
@@ -37,7 +37,7 @@ public class SnailManager : MEnemiesManager
 
     public float HealthPoint { get { return _healthPoint; } set { _healthPoint = (int)value; } }
 
-    public float DelayIdleTime { get { return _delayIdleTime; } }
+    public float DelayIdleTime { get { return _idleDelay; } }
 
     public float DegreeEachRotation { get { return _degreeEachRotation; } }
 
@@ -65,7 +65,7 @@ public class SnailManager : MEnemiesManager
     protected override void Update()
     {
         _state.Update();
-        DetectPlayer();
+        DetectedPlayer();
         DetectWall();
         //DetectGround();
         DrawRayDetectPlayer();
@@ -75,13 +75,14 @@ public class SnailManager : MEnemiesManager
         //Coi lại min/max boundaries cho sên :v
     }
 
-    protected override void DetectPlayer()
+    protected override bool DetectedPlayer()
     {
         _distanceToPlayer = Vector2.Distance(transform.position, _playerCheck.position);
         if (_distanceToPlayer <= _detectRange)
             _hasDetectedPlayer = true;
         else
             _hasDetectedPlayer = false;
+        return _hasDetectedPlayer;
     }
 
     protected override void DrawRayDetectPlayer()

@@ -8,15 +8,24 @@ public class HedgehogManager : NMEnemiesManager
     [Header("Time")]
     [SerializeField] private float _spikeInDelay;
 
-    private HedgehogIdleState _hedgehogIdleState = new(); //thừa, sửa sau
+    [Header("Collider2D")]
+    [SerializeField] private Vector2 _sizeIncrease;
+
     private HedgehogSpikeIdleState _hedgehogSpikeIdle = new();
+    private BoxCollider2D _boxCollider2D;
+    private Vector2 _prevCollider2DSize;
 
     public float SpikeInDelay { get { return _spikeInDelay; } }
 
+    public Vector2 getSizeIncrease { get { return _sizeIncrease; } }
+
+    public BoxCollider2D getBoxCollider2D { get { return _boxCollider2D; } }
+
     protected override void Start()
     {
-        NMEnemiesIdleState = _hedgehogIdleState;
         base.Start();
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+        //Muốn chỉnh collider trục y thì cần chỉnh thêm offset
     }
 
     protected override void Update()
@@ -26,6 +35,7 @@ public class HedgehogManager : NMEnemiesManager
 
     private void ChangeToSpikeIdle()
     {
+        _prevCollider2DSize = _boxCollider2D.size;
         ChangeState(_hedgehogSpikeIdle);
         //Event func của animation SpikeOut
     }
@@ -38,13 +48,14 @@ public class HedgehogManager : NMEnemiesManager
 
     private void ChangeToIdle()
     {
-        ChangeState(NMEnemiesIdleState);
+        ChangeState(getNMEnemiesIdleState);
+        _boxCollider2D.size = _prevCollider2DSize;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         //Chỉ giết đc <=> 0 mọc gai
-        if (_state is HedgehogIdleState)
+        if (_state is NMEnemiesIdleState)
             base.OnTriggerEnter2D(collision);
     }
 }

@@ -65,7 +65,7 @@ public class BatManager : MEnemiesManager
     protected override void Update()
     {
         _state.Update();
-        DetectPlayer();
+        DetectedPlayer();
         //DetectWall();
     }
 
@@ -79,13 +79,14 @@ public class BatManager : MEnemiesManager
         base.OnTriggerEnter2D(collision);
     }
 
-    protected override void DetectPlayer()
+    protected override bool DetectedPlayer()
     {
         _distanceToPlayer = Vector2.Distance(transform.position, _playerCheck.position);
         if (_distanceToPlayer <= _attackRange)
             _hasDetectedPlayer = true;
         else
-            _hasDetectedPlayer = false; 
+            _hasDetectedPlayer = false;
+        return _hasDetectedPlayer;
     }
 
     public void FlipLeft()

@@ -18,9 +18,9 @@ public class BunnyGotHitState : MEnemiesGotHitState
 
     public override void Update()
     {
-        if (Time.time - lastRotateTime >= _bunnyManager.TimeEachRotate)
+        if (Time.time - lastRotateTime >= _bunnyManager.GetTimeEachRotate())
         {
-            Zdegree -= _bunnyManager.DegreeEachRotation;
+            Zdegree -= _bunnyManager.GetDegreeEachRotation();
             _bunnyManager.transform.Rotate(0f, 0f, Zdegree);
             lastRotateTime = Time.time;
         }
