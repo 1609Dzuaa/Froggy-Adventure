@@ -21,6 +21,11 @@ public class HedgehogManager : NMEnemiesManager
 
     public BoxCollider2D getBoxCollider2D { get { return _boxCollider2D; } }
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     protected override void Start()
     {
         base.Start();

@@ -14,10 +14,15 @@ public class RhinoManager : MEnemiesManager
 
     public float RestDelay { get { return this._restDelay; } }
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {
-        base.Start(); //Lấy anim, rb, chỉnh 1st state là Idle
+        base.Start();
         MEnemiesAttackState = _rhinoAttackState;
     }
 

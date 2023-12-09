@@ -10,6 +10,11 @@ public class PlantManager : NMEnemiesManager
     [SerializeField] private GameObject _bullet;
     [SerializeField] private Transform _shootPosition;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     protected override void Start()
     {
         base.Start();

@@ -14,6 +14,11 @@ public class NMEnemiesManager : EnemiesManager
 
     public NMEnemiesGotHitState getNMEnemiesGotHitState { get { return _nmEnemiesGotHitState; } }
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     protected override void Start()
     {
         base.Start();

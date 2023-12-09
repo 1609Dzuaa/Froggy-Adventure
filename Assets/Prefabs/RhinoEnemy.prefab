@@ -415,6 +415,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _knockForce: {x: 50, y: 200}
+  _attackDelay: 0.2
+  degreeEachRotation: 0
+  timeEachRotate: 0
   _boundaryLeft: {fileID: 2824499467931228720}
   _boundaryRight: {fileID: 2824499468068120466}
   _wallCheck: {fileID: 2824499469317318312}
@@ -424,7 +427,6 @@ MonoBehaviour:
     m_Bits: 64
   _restTime: 2
   _patrolTime: 2
-  _attackDelay: 0.2
   _patrolSpeed: 2
   _chaseSpeed: 5
   _parent: {fileID: 2824499469113538296}

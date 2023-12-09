@@ -51,12 +51,13 @@ public class BatManager : MEnemiesManager
 
     public BatRetreatState BatRetreatState { get { return _batRetreatState; } }
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     protected override void Start()
     {
-        //base.Start();
-        _anim = GetComponent<Animator>();
-        _rb = GetComponent<Rigidbody2D>();
-        _collider2D = GetComponent<Collider2D>();
         _state = _batSleepState;
         _state.EnterState(this);
         MEnemiesGotHitState = _batGotHitState; //convert chứ 0 nó lại xài state GotHit chung

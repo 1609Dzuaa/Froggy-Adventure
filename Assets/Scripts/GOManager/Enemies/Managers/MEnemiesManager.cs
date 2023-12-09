@@ -59,11 +59,16 @@ public class MEnemiesManager : EnemiesManager
 
     public void SetHasGotHit(bool para) { this._hasGotHit = para; }
 
+    protected override void Awake()
+    {
+        base.Awake(); //Lấy anim, rb từ EnemiesManager
+    }
+
     //Các lớp sau muốn mở rộng hàm Start, Update,... thì nhớ gọi base.Start(),... trong hàm Start của chính nó
     //Còn 0 implement gì thêm thì 0 cần làm gì, nó tự động đc gọi trong đây ngay cả khi là private
     protected override void Start()
     {
-        base.Start(); //Lấy anim, rb từ EnemiesManager
+        base.Start();
         _state = _mEnemiesIdleState;
         _state.EnterState(this);
     }

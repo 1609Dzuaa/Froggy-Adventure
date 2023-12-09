@@ -13,11 +13,16 @@ public class CharactersManager : GameObjectManager
 
     protected CharacterBaseState _state;
 
+    protected override void Awake()
+    {
+        base.Awake(); //Lấy anim từ GObjManager
+        _rb = GetComponent<Rigidbody2D>();
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {
-        base.Start(); //Lấy anim từ GObjManager
-        _rb = GetComponent<Rigidbody2D>();
+        
     }
 
     protected virtual void Update()

@@ -13,10 +13,7 @@ public class MEnemiesAttackState : MEnemiesBaseState
         //Debug.Log("Attack");
     }
 
-    public override void ExitState()
-    {
-        
-    }
+    public override void ExitState() { }
 
     public override void Update()
     {
@@ -42,7 +39,10 @@ public class MEnemiesAttackState : MEnemiesBaseState
         //Base Attack will be chasing Player
         //Any Attack State derived from this class can ovveride this func
         //to perform Different Attack
-        _mEnemiesManager.GetRigidbody2D().velocity = new Vector2(_mEnemiesManager.GetChaseSpeed(), _mEnemiesManager.GetRigidbody2D().velocity.y);
+        if (_mEnemiesManager.GetIsFacingRight())
+            _mEnemiesManager.GetRigidbody2D().velocity = new Vector2(_mEnemiesManager.GetChaseSpeed(), _mEnemiesManager.GetRigidbody2D().velocity.y);
+        else
+            _mEnemiesManager.GetRigidbody2D().velocity = new Vector2(-_mEnemiesManager.GetChaseSpeed(), _mEnemiesManager.GetRigidbody2D().velocity.y);
     }
 
 }
