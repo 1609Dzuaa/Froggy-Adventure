@@ -20,6 +20,7 @@ public class BatPatrolState : MEnemiesPatrolState
         _entryTime = Time.time;
         _batManager.Animator.SetInteger("state", (int)EnumState.EBatState.patrol);
         _randomDirection = Random.Range(0, 4); //random bay 4 hướng ?, dùng switch case
+        //Bỏ random kiểu Int switch sang random float đc 1 lượng offset đem * với velo.y
     }
 
     public override void ExitState()
@@ -56,22 +57,22 @@ public class BatPatrolState : MEnemiesPatrolState
             case 0:
                 if (_batManager.GetIsFacingRight())
                     _batManager.FlipLeft();
-                _batManager.transform.position += new Vector3(-1 * _batManager.GetPatrolSpeed(), _batManager.GetPatrolSpeed(), 0f) * Time.deltaTime;
+                _batManager.transform.position += new Vector3(-1 * _batManager.GetPatrolSpeed().x, _batManager.GetPatrolSpeed().y, 0f) * Time.deltaTime;
                 break;
             case 1:
                 if (!_batManager.GetIsFacingRight())
                     _batManager.FlipRight();
-                _batManager.transform.position += new Vector3(_batManager.GetPatrolSpeed(), _batManager.GetPatrolSpeed(), 0f) * Time.deltaTime;
+                _batManager.transform.position += new Vector3(_batManager.GetPatrolSpeed().x, _batManager.GetPatrolSpeed().y, 0f) * Time.deltaTime;
                 break;
             case 2:
                 if (_batManager.GetIsFacingRight())
                     _batManager.FlipLeft();
-                _batManager.transform.position += new Vector3(-1 * _batManager.GetPatrolSpeed(), -1 * _batManager.GetPatrolSpeed(), 0f) * Time.deltaTime;
+                _batManager.transform.position += new Vector3(-1 * _batManager.GetPatrolSpeed().x, -1 * _batManager.GetPatrolSpeed().y, 0f) * Time.deltaTime;
                 break;
             case 3:
                 if (!_batManager.GetIsFacingRight())
                     _batManager.FlipRight();
-                _batManager.transform.position += new Vector3(_batManager.GetPatrolSpeed(), -1 * _batManager.GetPatrolSpeed(), 0f) * Time.deltaTime;
+                _batManager.transform.position += new Vector3(_batManager.GetPatrolSpeed().x, -1 * _batManager.GetPatrolSpeed().y, 0f) * Time.deltaTime;
                 break;
         }
 
@@ -87,7 +88,7 @@ public class BatPatrolState : MEnemiesPatrolState
             HandleFlipSprite();
 
         //_maxDistance = Mathf.Sqrt(_batManager.GetPatrolSpeed() * _batManager.GetPatrolSpeed().x + _batManager.GetPatrolSpeed().y * _batManager.GetPatrolSpeed().y);
-        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.SleepPos.position, _batManager.GetPatrolSpeed() * Time.deltaTime);
+        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.SleepPos.position, _batManager.GetPatrolSpeed().x * Time.deltaTime);
         if(CheckCanCeilIn())
             _batManager.ChangeState(_batManager.BatCeilInState);
         //Xử lý việc bay về chỗ ngủ và chuyển trạng thái Ceil In

@@ -97,7 +97,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     public override void FixedUpdate()
     {
-        _mEnemiesManager.Move(_mEnemiesManager.GetPatrolSpeed());
+        _mEnemiesManager.Move(_mEnemiesManager.GetPatrolSpeed().x);
     }
 
     protected virtual void HandleRandomChangeDirection()

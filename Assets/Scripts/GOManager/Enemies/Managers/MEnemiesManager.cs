@@ -27,8 +27,8 @@ public class MEnemiesManager : EnemiesManager
     [SerializeField] protected float _patrolTime;
 
     [Header("Speed")]
-    [SerializeField] protected float _patrolSpeed;
-    [SerializeField] protected float _chaseSpeed;
+    [SerializeField] protected Vector2 _patrolSpeed;
+    [SerializeField] protected Vector2 _chaseSpeed;
 
     [Header("Parent")]
     [SerializeField] protected GameObject _parent;
@@ -49,9 +49,9 @@ public class MEnemiesManager : EnemiesManager
 
     public bool HasCollidedWall { get { return this._hasCollidedWall; } }
 
-    public float GetPatrolSpeed() { return this._patrolSpeed; }
+    public Vector2 GetPatrolSpeed() { return this._patrolSpeed; }
 
-    public float GetChaseSpeed() { return this._chaseSpeed; }
+    public Vector2 GetChaseSpeed() { return this._chaseSpeed; }
 
     public Transform BoundaryLeft { get { return _boundaryLeft; } }
 

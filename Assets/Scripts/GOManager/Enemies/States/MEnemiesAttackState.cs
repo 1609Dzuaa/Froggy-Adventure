@@ -42,9 +42,9 @@ public class MEnemiesAttackState : MEnemiesBaseState
         //Any Attack State derived from this class can ovveride this func
         //to perform Different Attack
         if (_mEnemiesManager.GetIsFacingRight())
-            _mEnemiesManager.GetRigidbody2D().velocity = new Vector2(_mEnemiesManager.GetChaseSpeed(), _mEnemiesManager.GetRigidbody2D().velocity.y);
+            _mEnemiesManager.GetRigidbody2D().velocity = new Vector2(_mEnemiesManager.GetChaseSpeed().x, _mEnemiesManager.GetRigidbody2D().velocity.y);
         else
-            _mEnemiesManager.GetRigidbody2D().velocity = new Vector2(-_mEnemiesManager.GetChaseSpeed(), _mEnemiesManager.GetRigidbody2D().velocity.y);
+            _mEnemiesManager.GetRigidbody2D().velocity = new Vector2(-_mEnemiesManager.GetChaseSpeed().x, _mEnemiesManager.GetRigidbody2D().velocity.y);
     }
 
 }
