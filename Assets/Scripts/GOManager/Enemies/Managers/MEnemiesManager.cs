@@ -93,6 +93,7 @@ public class MEnemiesManager : EnemiesManager
             this._rb.velocity = new Vector2(velo, _rb.velocity.y);
         else
             this._rb.velocity = new Vector2(-velo, _rb.velocity.y);
+        //Debug.Log("Move");
     }
 
     protected virtual void DetectWall()

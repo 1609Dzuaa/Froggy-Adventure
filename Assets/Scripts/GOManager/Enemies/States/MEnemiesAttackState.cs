@@ -18,6 +18,7 @@ public class MEnemiesAttackState : MEnemiesBaseState
     public override void Update()
     {
         LogicUpdate();
+        Debug.Log("Base Update");
     }
 
     private void LogicUpdate()
@@ -32,6 +33,7 @@ public class MEnemiesAttackState : MEnemiesBaseState
     public override void FixedUpdate()
     {
         Attack();
+        Debug.Log("Fixed");
     }
 
     protected virtual void Attack()

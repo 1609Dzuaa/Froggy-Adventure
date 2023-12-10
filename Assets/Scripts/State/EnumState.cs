@@ -25,6 +25,9 @@
     public enum EHedgehogState
     { idle, spikeOut, gotHit, spikeIn, spikeIdle }
 
+    public enum EBeeState
+    { idle, patrol, attack, gotHit }
+
     public enum EGeckoState
     { idle, patrol, attack, gotHit, hide  }
 }

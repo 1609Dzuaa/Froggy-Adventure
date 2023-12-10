@@ -9,9 +9,9 @@ public class MEnemiesPatrolState : MEnemiesBaseState
     protected bool _hasJustHitWall = false; //Hitwall thì 0 cho Rd hướng
     protected int _rdLeftRight; //0: Left; 1: Right
 
-    //public bool HasJustHitWall { get { return _hasJustHitWall; } }
-
     public void SetCanRdDirection(bool para) { this._canRdDirection = para; }
+
+    public void SetHasChangeDirection(bool para) { _hasChangeDirection = para; }
 
     //Mọi quái moveable cần func dưới, mục đích đụng tường thì 0 cho rd direction 
     public void SetHasJustHitWall(bool para) { this._hasJustHitWall = para; }
@@ -21,16 +21,16 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.patrol);
         _entryTime = Time.time;
-        //Debug.Log("PT: " + _canRdDirection);
         if (_canRdDirection)
             HandleRandomChangeDirection();
-        //Debug.Log("patrol");
+        //Debug.Log("Patrol");
     }
 
     public override void ExitState()
     {
-        //Check trước khi rời state:
+        //Check trước khi rời state cho lần enter state Patrol tới:
         //Nếu đụng min, max r thì lần patrol tiếp 0 đc random
+        //Debug.Log("PTExitHasChangeDir: " + _hasChangeDirection);
         if (_hasChangeDirection)
             _canRdDirection = false;
         else
@@ -43,6 +43,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
     public override void Update()
     {
         LogicUpdate();
+        //Debug.Log("Pt");
     }
 
     protected virtual void LogicUpdate()
