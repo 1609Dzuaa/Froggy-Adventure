@@ -43,6 +43,11 @@ public class Dialog : MonoBehaviour
         if (!_started) 
             return;
 
+        //Cố định, đéo cho quay khi parent quay :)
+        //0 có 2 dòng dưới thì khi quay phải text sẽ bị ngược
+        if (_dialogText.transform.eulerAngles.y > 0f)
+            _dialogText.transform.eulerAngles = Vector3.zero;
+
         //Chờ Player tương tác (Nhấn Space)
         if (_isWait && Input.GetKeyDown(KeyCode.Space))
         {

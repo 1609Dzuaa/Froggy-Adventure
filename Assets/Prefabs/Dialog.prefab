@@ -73,12 +73,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: efd390ab13603454a8b117c941c539a0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 219afd0f29ce4c7418ba6e6a863a432f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 5.3333335, y: 5.3333335}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -119,8 +119,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.5}
-  m_SizeDelta: {x: 4.6277, y: 2.0488}
+  m_AnchoredPosition: {x: 0.0153, y: 0.5004}
+  m_SizeDelta: {x: 4.3184, y: 1.8279}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5974956396923830138
 MeshRenderer:
@@ -306,10 +306,10 @@ MonoBehaviour:
   _indicator: {fileID: 5974956397902285047}
   _dialogText: {fileID: 5974956396923830137}
   _dialog:
-  - Aduvip
-  - 123
+  - A ... frog ?!!!
+  - What are you doing here ?
   - zzz
-  _writingSpeed: 0.03
+  _writingSpeed: 0.02
 --- !u!1 &5974956397902285047
 GameObject:
   m_ObjectHideFlags: 0
