@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BeeManager : MEnemiesManager
 {
+    //Xài prefab Bee thì chỉ định 3 phần min/max + Nest
     //Only Chase & Attack Player if he comes too close to the Nest
     [Header("Nest")]
     [SerializeField] private Transform _beeNest;
@@ -56,15 +57,14 @@ public class BeeManager : MEnemiesManager
     {
         _state = _beeIdleState;
         _state.EnterState(this);
+        MEnemiesGotHitState = _beeGotHitState;
     }
 
     protected override void Update()
     {
         _state.Update();
         DetectedPlayer();
-        Debug.Log("IFR: " + _isFacingRight);
-        /*if (_hasDetectedPlayer)
-            Debug.Log("Too close");*/
+        //Debug.Log("IFR: " + _isFacingRight);
     }
 
     protected override void FixedUpdate()
@@ -77,9 +77,6 @@ public class BeeManager : MEnemiesManager
         //Viết như này thì nhanh hơn
         //Nhớ gọi func :v
         return _hasDetectedPlayer = Vector2.Distance(_playerCheck.position, _beeNest.position) <= _triggerAttackRange;
-        /*if (Vector2.Distance(_playerCheck.position, _beeNest.position) <= _triggerAttackRange)
-            return true;
-        return false;*/
     }
 
     private void OnDrawGizmos()
@@ -90,11 +87,12 @@ public class BeeManager : MEnemiesManager
 
     public void SpawnBullet()
     {
-        Instantiate(_bullet, transform.position, Quaternion.identity);
+        Instantiate(_bullet, _shootPos.position, Quaternion.identity);
     }
 
     public void AllowUpdateAttackState()
     {
         _beeAttackState.SetAllowUpdate(true);
+        //Delay việc update ở state shoot nếu 0 sẽ bị loạn state
     }
 }
