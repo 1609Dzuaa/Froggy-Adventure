@@ -12,6 +12,8 @@ public class NPCManagers : CharactersManager
 
     protected bool _hasDetectedPlayer;
 
+    public Transform PlayerRef { get { return _playerRef; } }
+
     public bool HasDetectedPlayer { get { return _hasDetectedPlayer; } }
 
     protected override void Awake()

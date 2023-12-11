@@ -14,7 +14,7 @@ public class GhostWanderState : CharacterBaseState
         base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger("state", (int)EnumState.EGhostState.wander);
-        Debug.Log("Can Rd: " + _canRd);
+        //Debug.Log("Can Rd: " + _canRd);
         if (_canRd)
             HandleRandomLeftRightDirection();
         _entryTime = Time.time;

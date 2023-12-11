@@ -9,6 +9,8 @@ public class GhostTalkState : CharacterBaseState
         base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger("state", (int)EnumState.EGhostState.appear);
+        _ghostManager.GetRigidbody2D().velocity = Vector2.zero;
+        HandleInteractWithPlayer();
         Debug.Log("Talk");
     }
 
@@ -20,6 +22,15 @@ public class GhostTalkState : CharacterBaseState
     public override void Update()
     {
         base.Update();
+    }
+
+    private void HandleInteractWithPlayer()
+    {
+        var playerScript = _ghostManager.PlayerRef.GetComponent<PlayerStateManager>();
+        if (_ghostManager.GetIsFacingRight() == playerScript.GetIsFacingRight())
+            _ghostManager.FlippingSprite();
+
+        _ghostManager.GetDialog().StartDialog();
     }
 
     public override void FixedUpdate()

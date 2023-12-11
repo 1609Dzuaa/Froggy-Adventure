@@ -16,6 +16,8 @@ public class GhostManager : NPCManagers
     [SerializeField] private Transform _leftBound;
     [SerializeField] private Transform _rightBound;
 
+    [SerializeField] private Dialog _dialog;
+
     private GhostAppearState _ghostAppearState = new();
     private GhostIdleState _ghostIdleState = new();
     private GhostWanderState _ghostWanderState = new();
@@ -33,6 +35,8 @@ public class GhostManager : NPCManagers
     public Transform LeftBound { get { return _leftBound; } }
 
     public Transform RightBound { get { return _rightBound; } }
+
+    public Dialog GetDialog() { return _dialog; }
 
     public GhostAppearState GetGhostAppearState() { return _ghostAppearState; }
 
@@ -59,7 +63,14 @@ public class GhostManager : NPCManagers
     protected override void Update()
     {
         base.Update();
-        Debug.Log("Can Talk: " + _hasDetectedPlayer);
+        if (_hasDetectedPlayer && Input.GetKeyDown(KeyCode.T))
+            ChangeState(_ghostTalkState);
+
+        _dialog.ToggleIndicator(_hasDetectedPlayer);
+
+        if (!_hasDetectedPlayer)
+            _dialog.EndDialog();
+        //Debug.Log("Can Talk: " + _hasDetectedPlayer);
     }
 
     private void FixedUpdate()
