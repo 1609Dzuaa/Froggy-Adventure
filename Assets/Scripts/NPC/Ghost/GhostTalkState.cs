@@ -11,7 +11,7 @@ public class GhostTalkState : CharacterBaseState
         _ghostManager.Animator.SetInteger("state", (int)EnumState.EGhostState.appear);
         _ghostManager.GetRigidbody2D().velocity = Vector2.zero;
         HandleInteractWithPlayer();
-        Debug.Log("Talk");
+        //Debug.Log("Talk");
     }
 
     public override void ExitState()

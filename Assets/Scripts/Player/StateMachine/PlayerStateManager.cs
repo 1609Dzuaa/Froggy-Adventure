@@ -127,8 +127,6 @@ public class PlayerStateManager : MonoBehaviour
     //SET Functions
     public void SetHasDbJump(bool para) { this.hasDbJump = para; }
 
-    public bool IsInteractWithNPC { set { _isInteractWithNPC = value; } }
-
     public void IncreaseOrangeCount() { this.OrangeCount++; }
 
     //HP Functions
@@ -211,11 +209,6 @@ public class PlayerStateManager : MonoBehaviour
     private void FixedUpdate()
     {
         _state.FixedUpdate();
-        /*if (isFacingRight)
-            Debug.Log(Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer).normal.x);
-        else
-            Debug.Log(Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, wallLayer).normal.x);*/
-        //Debug.Log("iFR: " + isFacingRight);
         //Unity Docs:
         //If a hit starts occuring inside a collider, the collision normal is
         //the OPPOSITE direction of the line/ray query.

@@ -64,10 +64,15 @@ public class GhostManager : NPCManagers
     protected override void Update()
     {
         base.Update();
+
         if (_hasDetectedPlayer && Input.GetKeyDown(KeyCode.T))
             ChangeState(_ghostTalkState);
 
         _dialog.ToggleIndicator(_hasDetectedPlayer);
+
+        //Nếu đã bắt đầu Thoại và chưa đến đoạn chờ thì tắt Indicator
+        if (_dialog.Started && !_dialog.IsWaiting)
+            _dialog.ToggleIndicator(false);
 
         if (!_hasDetectedPlayer)
             _dialog.EndDialog();

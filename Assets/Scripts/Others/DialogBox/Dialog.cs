@@ -15,15 +15,19 @@ public class Dialog : MonoBehaviour
     [SerializeField] private GameObject _window; //Hộp chứa Thoại
     [SerializeField] private GameObject _indicator; //Chỉ dẫn ("Press ... to start conversation")
     [SerializeField] private TMP_Text _dialogText; //Ô Thoại
+    [SerializeField] private TMP_Text _indicatorText; //Ô Chỉ Dẫn
     [SerializeField] private List<string> _dialog; //Thoại
+    [SerializeField] private List<string> _indicatorString;
     [SerializeField] private float _writingSpeed; //Tốc độ viết Thoại
 
     private int _rowIndex; //Chỉ số hàng
     private int _charIndex; //Chỉ số char trong string
     private bool _started; //Biến đánh dấu đã bắt đầu Thoại
-    private bool _isWait; //Biến đánh dấu chờ Player tương tác
+    private bool _isWaiting; //Biến đánh dấu chờ Player tương tác
 
     public bool Started { get { return _started; } }
+
+    public bool IsWaiting { get { return _isWaiting; } }
 
     private void Awake()
     {
@@ -35,25 +39,27 @@ public class Dialog : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+        //Render chỉ dẫn đầu tiên
+        _indicatorText.text = _indicatorString[0];
     }
 
     // Update is called once per frame
     void Update()
     {
+        _indicatorText.transform.eulerAngles = Vector3.zero;
         //Chỉ khi bắt đầu Thoại thì mới Update
         if (!_started) 
             return;
 
         //Cố định, đéo cho quay khi parent quay :)
         //0 có 2 dòng dưới thì khi quay phải text sẽ bị ngược
-        if (_dialogText.transform.eulerAngles.y > 0f)
+        //if (_dialogText.transform.eulerAngles.y > 0f)
             _dialogText.transform.eulerAngles = Vector3.zero;
 
         //Chờ Player tương tác (Nhấn Space)
-        if (_isWait && Input.GetKeyDown(KeyCode.Space))
+        if (_isWaiting && Input.GetKeyDown(KeyCode.Space))
         {
-            _isWait = false; //0 phải đợi nữa
+            _isWaiting = false; //0 phải đợi nữa
             _rowIndex++; //Xuống hàng kế tiếp
             
             //Check hàng hiện tại chưa vượt quá hàng thực tế thì bắt đầu Thoại hàng kế tiếp
@@ -91,6 +97,8 @@ public class Dialog : MonoBehaviour
 
     public void EndDialog()
     {
+        //Trả lại chỉ dẫn ban đầu khi end Thoại
+        _indicatorText.text = _indicatorString[0];
         _started = false;
         StopAllCoroutines();
         ToggleWindow(false);
@@ -136,6 +144,11 @@ public class Dialog : MonoBehaviour
         if (_charIndex < currentDialog.Length)
             StartCoroutine(Writing());
         else
-            _isWait = true;
+        {
+            _indicatorText.text = string.Empty;
+            _indicatorText.text = _indicatorString[1]; //Render chỉ dẫn thứ 2
+            ToggleIndicator(true);
+            _isWaiting = true;
+        }
     }
 }

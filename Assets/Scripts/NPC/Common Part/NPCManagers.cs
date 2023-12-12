@@ -5,6 +5,9 @@ using UnityEngine;
 public class NPCManagers : CharactersManager
 {
     //Xử lý thêm nếu Player tiếp chuyện thì tự động bước ra chỗ trước mặt NPC
+    //Có vấn đề ở Prefab Dialog
+    //Bắt buộc phải xử lý vấn đề ở trên nếu 0 sẽ có vài TH:
+    //Player che mất Indicator || ngược lại
 
     [Header("Range")]
     [SerializeField] protected float _triggerConversationRange;
@@ -13,6 +16,8 @@ public class NPCManagers : CharactersManager
     [SerializeField] protected Transform _playerRef;
 
     protected bool _hasDetectedPlayer;
+
+    public float TriggerConversationRange { get { return _triggerConversationRange; } }
 
     public Transform PlayerRef { get { return _playerRef; } }
 
