@@ -28,6 +28,7 @@ public class PlayerStateManager : MonoBehaviour
     private bool isFacingRight = true;
     private bool prevStateIsWallSlide = false;
     private bool hasSpawnDust = false;
+    private bool _isInteractWithNPC;
     private int OrangeCount = 0;
 
     //Should we put it here ?
@@ -125,6 +126,8 @@ public class PlayerStateManager : MonoBehaviour
 
     //SET Functions
     public void SetHasDbJump(bool para) { this.hasDbJump = para; }
+
+    public bool IsInteractWithNPC { set { _isInteractWithNPC = value; } }
 
     public void IncreaseOrangeCount() { this.OrangeCount++; }
 

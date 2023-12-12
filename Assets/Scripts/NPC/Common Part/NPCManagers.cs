@@ -1,9 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NPCManagers : CharactersManager
 {
+    //Xử lý thêm nếu Player tiếp chuyện thì tự động bước ra chỗ trước mặt NPC
+
     [Header("Range")]
     [SerializeField] protected float _triggerConversationRange;
 
@@ -44,6 +46,5 @@ public class NPCManagers : CharactersManager
             Debug.DrawLine(transform.position, _playerRef.position, Color.red);
         else
             Debug.DrawLine(transform.position, _playerRef.position, Color.green);
-
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GhostManager : NPCManagers
 {
+    //Vẫn còn bug đi quá min @@?
     [Header("Time")]
     [SerializeField] private float _disappearTime;
     [SerializeField] private float _restTime;

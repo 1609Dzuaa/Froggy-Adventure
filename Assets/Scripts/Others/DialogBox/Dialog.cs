@@ -23,6 +23,8 @@ public class Dialog : MonoBehaviour
     private bool _started; //Biến đánh dấu đã bắt đầu Thoại
     private bool _isWait; //Biến đánh dấu chờ Player tương tác
 
+    public bool Started { get { return _started; } }
+
     private void Awake()
     {
         //Khởi động thì tắt Hộp lẫn Indicator
@@ -115,7 +117,7 @@ public class Dialog : MonoBehaviour
     IEnumerator Writing()
     {
         //Cú pháp dưới sẽ làm hàm Writing đợi sau _writingSpeed
-        yield return new WaitForSeconds(_writingSpeed); 
+        yield return new WaitForSeconds(_writingSpeed);
 
         //Gán chuỗi hộp thoại hiện tại vào biến currentDialog
         string currentDialog = _dialog[_rowIndex];
@@ -126,17 +128,13 @@ public class Dialog : MonoBehaviour
         //Tăng chỉ số của char
         _charIndex++;
 
-        //Đợi trong _writingSpeed (s)
-        yield return new WaitForSeconds(_writingSpeed);
-
         //Check chỉ số char mà CHƯA vượt quá mảng Thoại hàng hiện tại
         //thì đợi trong _writingSpeed (s) để vẽ chữ cái tiếp
         //Còn 0 thì đánh dấu đợi Player tương tác
+
+        //Là đệ quy với ĐK dừng ở dưới:
         if (_charIndex < currentDialog.Length)
-        {
-            yield return new WaitForSeconds(_writingSpeed);
             StartCoroutine(Writing());
-        }
         else
             _isWait = true;
     }
