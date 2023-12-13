@@ -7,7 +7,7 @@ public class RunState : PlayerBaseState
         base.EnterState(playerStateManager);
         playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
-        //Debug.Log("Run");
+        Debug.Log("Run, Interact? :" + _playerStateManager.IsInteractingWithNPC);
     }
 
     public override void ExitState() { }
@@ -15,19 +15,34 @@ public class RunState : PlayerBaseState
     public override void Update()
     {
         LogicUpdate();
+        //Debug.Log("Updateee");
     }
 
     private void LogicUpdate()
     {
-        if (CheckIfIdle())
-            _playerStateManager.ChangeState(_playerStateManager.idleState);
-        else if (CheckIfJump())
+        if (!_playerStateManager.IsInteractingWithNPC)
         {
-            _playerStateManager.jumpState.IsRunStateHitWall = _playerStateManager.GetIsWallTouch();
-            _playerStateManager.ChangeState(_playerStateManager.jumpState);
+            if (CheckIfIdle())
+            {
+                _playerStateManager.ChangeState(_playerStateManager.idleState);
+                Debug.Log("Idle Over Here");
+            }
+            else if (CheckIfJump())
+            {
+                _playerStateManager.jumpState.IsRunStateHitWall = _playerStateManager.GetIsWallTouch();
+                _playerStateManager.ChangeState(_playerStateManager.jumpState);
+            }
+            else if (CheckIfFall())
+                _playerStateManager.ChangeState(_playerStateManager.fallState);
         }
-        else if (CheckIfFall())
-            _playerStateManager.ChangeState(_playerStateManager.fallState);
+        else if (_playerStateManager.IsInteractingWithNPC)
+        {
+            if (Mathf.Abs(_playerStateManager.transform.position.x - _playerStateManager.InteractPosition.x) < 0.1f)
+            {
+                _playerStateManager.ChangeState(_playerStateManager.idleState);
+                Debug.Log("Idle here");
+            }
+        }
     }
 
     private bool CheckIfIdle()
@@ -58,5 +73,12 @@ public class RunState : PlayerBaseState
     {
         if (_playerStateManager.GetDirX() != 0)
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+        else if (_playerStateManager.IsInteractingWithNPC)
+        {
+            if(_playerStateManager.GetIsFacingRight())
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            else
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(-_playerStateManager.GetSpeedX(), _playerStateManager.GetRigidBody2D().velocity.y);
+        }
     }
 }

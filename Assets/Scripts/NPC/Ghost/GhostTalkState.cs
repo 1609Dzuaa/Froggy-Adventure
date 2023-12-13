@@ -23,68 +23,39 @@ public class GhostTalkState : CharacterBaseState
     {
         //Đéo tiếp chuyện nữa thì trả về Idle State
         if (!_ghostManager.GetDialog().Started)
+        {
+            var playerScript = _ghostManager.PlayerRef.GetComponent<PlayerStateManager>();
+            playerScript.IsInteractingWithNPC = false;
             _ghostManager.ChangeState(_ghostManager.GetGhostIdleState());
+        }
     }
 
     private void HandleInteractWithPlayer()
     {
         var playerScript = _ghostManager.PlayerRef.GetComponent<PlayerStateManager>();
 
-        HandleFlippingSpriteIfSameSide(playerScript);
+        //Tương tự bên Player, Raycast 0 phát hiện Player thì flip ngược lại
+        //(Vì chỉ xét 2 hướng trái phải)
+        if (!_ghostManager.HasDetectedPlayer)
+            _ghostManager.FlippingSprite();
 
-        HandleFlipingSpriteIfOppositeSide(playerScript);
+        //Sau khi đã có hướng NPC thì dựa vào đó để xác định vị trí muốn Player đứng để bắt đầu hội thoại
+        if (_ghostManager.GetIsFacingRight())
+            _ghostManager.ConversationPos = new Vector2(_ghostManager.transform.position.x + _ghostManager.AdjustConversationRange, _ghostManager.transform.parent.position.y);
+        else
+            _ghostManager.ConversationPos = new Vector2(_ghostManager.transform.position.x - _ghostManager.AdjustConversationRange, _ghostManager.transform.parent.position.y);
+
+        Debug.Log("Ghost Pos: " + _ghostManager.transform.position);
+        Debug.Log("pos: " + _ghostManager.ConversationPos);
+
+        //Gán vị trí cần di chuyển cho Player
+        playerScript.InteractPosition = _ghostManager.ConversationPos;
+
+        //Đánh dấu đang tương tác với NPC, lock change state
+        playerScript.IsInteractingWithNPC = true;
 
         //Lấy và bắt đầu Thoại
         _ghostManager.GetDialog().StartDialog();
-    }
-
-    private void HandleFlippingSpriteIfSameSide(PlayerStateManager playerScript)
-    {
-        //TH 2 thằng cùng hướng:
-        //Nếu cùng face right thì:
-        //Vị trí x thằng nào lớn hơn thì flip thằng đó ngược lại
-        //Cùng face left thì: 
-        //Vị trí x thằng nào nhỏ hơn thì flip thằng đó ngược lại
-
-        if (_ghostManager.GetIsFacingRight() && playerScript.GetIsFacingRight())
-        {
-            if (_ghostManager.transform.position.x > playerScript.transform.position.x)
-                _ghostManager.FlippingSprite();
-            else if (_ghostManager.transform.position.x < playerScript.transform.position.x)
-                playerScript.FlippingSprite();
-        }
-        else if (!_ghostManager.GetIsFacingRight() && !playerScript.GetIsFacingRight())
-        {
-            if (_ghostManager.transform.position.x > playerScript.transform.position.x)
-                playerScript.FlippingSprite();
-            else if (_ghostManager.transform.position.x < playerScript.transform.position.x)
-                _ghostManager.FlippingSprite();
-        }
-    }
-
-    private void HandleFlipingSpriteIfOppositeSide(PlayerStateManager playerScript)
-    {
-        //TH 2 thằng ngược hướng:
-        //Nếu NPC face right và vị trí x lớn hơn Player thì flip 2 thằng
-        //Nếu NPC face left và vị trí x nhỏ hơn Player thì flip 2 thằng
-        //Các TH ngược hướng còn lại thì đéo flip
-
-        if (_ghostManager.GetIsFacingRight() && !playerScript.GetIsFacingRight())
-        {
-            if(_ghostManager.transform.position.x > playerScript.transform.position.x)
-            {
-                _ghostManager.FlippingSprite();
-                playerScript.FlippingSprite();
-            }
-        }
-        else if(!_ghostManager.GetIsFacingRight() && playerScript.GetIsFacingRight())
-        {
-            if (_ghostManager.transform.position.x < playerScript.transform.position.x)
-            {
-                _ghostManager.FlippingSprite();
-                playerScript.FlippingSprite();
-            }
-        }
     }
 
     public override void FixedUpdate()

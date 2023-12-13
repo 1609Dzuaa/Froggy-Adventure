@@ -6,14 +6,12 @@ public class IdleState : PlayerBaseState
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.idle);
+        _playerStateManager.GetRigidBody2D().velocity = Vector2.zero; //Cố định vị trí
 
-        //State WS sẽ có đặc biệt chút là sẽ flip sprite ngược với isFacingRight
-        //Ta sẽ check nếu biến bool prev State là WS thì flip ngược lại
-        //và set lại biến đó sau khi flip xong 
-        if (_playerStateManager.GetPrevStateIsWallSlide())
-            _playerStateManager.FlipSpriteAfterWallSlide();
+        HandleIfInteractWithNPC();
+        HandleIfPrevStateWallSlide();
 
-        //Debug.Log("Idle"); //Keep this, use for debugging change state
+        Debug.Log("Idle"); //Keep this, use for debugging change state
     }
 
     public override void ExitState() { }
@@ -49,6 +47,23 @@ public class IdleState : PlayerBaseState
         return false;
         //Idle => Fall có thể là đứng yên, bị 1 vật khác
         //tác dụng lực vào đẩy rơi xuống dưới
+    }
+
+    private void HandleIfInteractWithNPC()
+    {
+        //Nếu đang tương tác với NPC thì flip sprite về hướng NPC
+        if (_playerStateManager.IsInteractingWithNPC)
+            if (!_playerStateManager.HasDetectedNPC)
+                _playerStateManager.FlippingSprite();
+    }
+
+    private void HandleIfPrevStateWallSlide()
+    {
+        //State WS sẽ có đặc biệt chút là sẽ flip sprite ngược với isFacingRight
+        //Ta sẽ check nếu biến bool prev State là WS thì flip ngược lại
+        //và set lại biến đó sau khi flip xong 
+        if (_playerStateManager.GetPrevStateIsWallSlide())
+            _playerStateManager.FlipSpriteAfterWallSlide();
     }
 
     public override void FixedUpdate() { }

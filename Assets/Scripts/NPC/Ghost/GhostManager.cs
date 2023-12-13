@@ -5,6 +5,8 @@ using UnityEngine;
 public class GhostManager : NPCManagers
 {
     //Vẫn còn bug đi quá min @@?
+    //Vẫn còn bug interact giữa Player và NPC @: Player di chuyển vô định
+
     [Header("Time")]
     [SerializeField] private float _disappearTime;
     [SerializeField] private float _restTime;
@@ -17,6 +19,10 @@ public class GhostManager : NPCManagers
     [SerializeField] private Transform _leftBound;
     [SerializeField] private Transform _rightBound;
 
+    [Header("Gizmos Radius")]
+    [SerializeField] private float _gizmosRadius;
+
+    [Header("Dialog")]
     [SerializeField] private Dialog _dialog;
 
     private GhostAppearState _ghostAppearState = new();
@@ -64,17 +70,23 @@ public class GhostManager : NPCManagers
     protected override void Update()
     {
         base.Update();
+        if (_isFacingRight)
+            _conversationPos = new Vector2(transform.position.x + _adjustConversationRange, transform.parent.position.y);
+        else
+            _conversationPos = new Vector2(transform.position.x - _adjustConversationRange, transform.parent.position.y);
 
-        if (_hasDetectedPlayer && Input.GetKeyDown(KeyCode.T))
+        //Debug.Log("Pos: " + transform.localPosition);
+
+        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T))
             ChangeState(_ghostTalkState);
 
-        _dialog.ToggleIndicator(_hasDetectedPlayer);
+        _dialog.ToggleIndicator(_isPlayerNearBy);
 
         //Nếu đã bắt đầu Thoại và chưa đến đoạn chờ thì tắt Indicator
         if (_dialog.Started && !_dialog.IsWaiting)
             _dialog.ToggleIndicator(false);
 
-        if (!_hasDetectedPlayer)
+        if (!_isPlayerNearBy)
             _dialog.EndDialog();
         //Debug.Log("Can Talk: " + _hasDetectedPlayer);
     }
@@ -90,9 +102,14 @@ public class GhostManager : NPCManagers
         //Event của animation Appear
     }
 
-    protected override bool DetectedPlayer()
+    protected override bool IsPlayerNearBy()
     {
-        return _hasDetectedPlayer = Vector2.Distance(transform.position, _playerRef.position) <= _triggerConversationRange && _state is not GhostDisappearState;
+        return _isPlayerNearBy = Vector2.Distance(transform.position, _playerRef.position) <= _triggerConversationRange && _state is not GhostDisappearState;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(ConversationPos, _gizmosRadius);
     }
 
 }

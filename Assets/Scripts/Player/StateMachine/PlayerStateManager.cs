@@ -28,7 +28,11 @@ public class PlayerStateManager : MonoBehaviour
     private bool isFacingRight = true;
     private bool prevStateIsWallSlide = false;
     private bool hasSpawnDust = false;
-    private bool _isInteractWithNPC;
+    private bool _isInteractingWithNPC;
+    private bool _hasChange;
+    private bool _hasFlip;
+    private bool _hasDetectedNPC;
+    private Vector2 _InteractPosition;
     private int OrangeCount = 0;
 
     //Should we put it here ?
@@ -69,6 +73,11 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float wallCheckDistance;
 
+    [Header("NPC Check")]
+    [SerializeField] private Transform _npcCheck;
+    [SerializeField] private LayerMask _npcLayer;
+    [SerializeField] private float _npcCheckDistance;
+
     [Header("Time")]
     //Là khoảng thgian mà mình disable directionX ở state WallJump
     //Mục đích cho nó nhảy hướng ra phía đối diện cái wall vừa đu
@@ -106,6 +115,8 @@ public class PlayerStateManager : MonoBehaviour
 
     public bool GetIsFacingRight() { return this.isFacingRight; }
 
+    public bool IsInteractingWithNPC { get { return _isInteractingWithNPC; } set { _isInteractingWithNPC = value; } }
+
     public float GetWallJumpSpeedX() { return this.wallJumpSpeedX; }
 
     public float GetWallJumpSpeedY() { return this.wallJumpSpeedY; }
@@ -124,8 +135,12 @@ public class PlayerStateManager : MonoBehaviour
 
     public RaycastHit2D WallHit { get { return this.wallHit; } }
 
+    public bool HasDetectedNPC { get { return _hasDetectedNPC; } }
+
     //SET Functions
     public void SetHasDbJump(bool para) { this.hasDbJump = para; }
+
+    public Vector2 InteractPosition { get { return _InteractPosition; } set { _InteractPosition = value; } }
 
     public void IncreaseOrangeCount() { this.OrangeCount++; }
 
@@ -153,6 +168,12 @@ public class PlayerStateManager : MonoBehaviour
 
     public void ChangeState(PlayerBaseState state)
     {
+        if (_isInteractingWithNPC && state is not RunState && state is not IdleState)
+        {
+            Debug.Log("Return here!");
+            return;
+        }
+
         this._state.ExitState();
         this._state = state;
         //Vì SW là state đặc biệt(phải flip sprite ngược lại sau khi exit state)
@@ -197,6 +218,21 @@ public class PlayerStateManager : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log("detected NPC: " + _hasDetectedNPC);
+        NPCCheck();
+        DrawRayDetectNPC();
+
+        if (_isInteractingWithNPC)
+        {
+            UpdateInteractWithNPC();
+            return;
+        }
+        else
+        {
+            _hasChange = false;
+            _hasFlip = false;
+        }
+
         HandleInput();
         _state.Update();
         GroundAndWallCheck();
@@ -204,6 +240,38 @@ public class PlayerStateManager : MonoBehaviour
         HandleDustVelocity();
         SpawnDust();
         //Debug.Log("dirX: " + dirX);
+    }
+
+    private void UpdateInteractWithNPC()
+    {
+        //Tương tác với NPC thì chỉ xử lý 2 state là Idle và Run
+        if (IsInteractingWithNPC && !_hasFlip)
+        {
+            _hasFlip = true;
+            if (isFacingRight)
+            {
+                if (transform.position.x > InteractPosition.x)
+                {
+                    FlippingSprite();
+                    Debug.Log("Flip to Left");
+                }
+            }
+            else
+            {
+                if (transform.position.x < InteractPosition.x)
+                {
+                    FlippingSprite();
+                    Debug.Log("Flip to Right");
+                }
+            }
+        }
+        if(!_hasChange)
+        {
+            _hasChange = true;
+            Debug.Log("Change");
+            ChangeState(runState);
+        }    
+        _state.Update();
     }
 
     private void FixedUpdate()
@@ -295,6 +363,32 @@ public class PlayerStateManager : MonoBehaviour
         {
             IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, wallLayer);
             wallHit = Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, wallLayer);
+        }
+    }
+
+    private void NPCCheck()
+    {
+        if(isFacingRight)
+            _hasDetectedNPC = Physics2D.Raycast(_npcCheck.position, Vector2.right, _npcCheckDistance, _npcLayer);
+        else
+            _hasDetectedNPC = Physics2D.Raycast(_npcCheck.position, Vector2.left, _npcCheckDistance, _npcLayer);
+    }
+
+    private void DrawRayDetectNPC()
+    {
+        if(!_hasDetectedNPC)
+        {
+            if (isFacingRight)
+                Debug.DrawRay(_npcCheck.position, Vector2.right * _npcCheckDistance, Color.green);
+            else
+                Debug.DrawRay(_npcCheck.position, Vector2.left * _npcCheckDistance, Color.green);
+        }
+        else
+        {
+            if (isFacingRight)
+                Debug.DrawRay(_npcCheck.position, Vector2.right * _npcCheckDistance, Color.red);
+            else
+                Debug.DrawRay(_npcCheck.position, Vector2.left * _npcCheckDistance, Color.red);
         }
     }
 
