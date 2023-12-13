@@ -6,7 +6,6 @@ public class NPCManagers : CharactersManager
 {
     //Xử lý thêm nếu Player tiếp chuyện thì tự động bước ra chỗ trước mặt NPC
     //Có vấn đề ở Prefab Dialog
-    //Xử lý xong, còn vấn đề nếu Player 0 chịu
 
     [Header("Range")]
     [SerializeField] protected float _triggerConversationRange;

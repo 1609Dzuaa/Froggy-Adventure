@@ -5,7 +5,8 @@ using UnityEngine;
 public class GhostManager : NPCManagers
 {
     //Vẫn còn bug đi quá min @@?
-    //Vẫn còn bug interact giữa Player và NPC @: Player di chuyển vô định
+    //Vẫn còn hiện tượng Player né mặt Ghost ? (Do vị trí Player ~ Talk Posistion)
+    //Xử lý xong! Về Ghost thì tránh bố trí mấy chỗ vướng, làm kẹt Player
 
     [Header("Time")]
     [SerializeField] private float _disappearTime;
@@ -75,9 +76,9 @@ public class GhostManager : NPCManagers
         else
             _conversationPos = new Vector2(transform.position.x - _adjustConversationRange, transform.parent.position.y);
 
-        //Debug.Log("Pos: " + transform.localPosition);
-
-        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T))
+        //Thêm ĐK Player OnGround thì mới cho phép bắt đầu xl
+        var playerScript = _playerRef.GetComponent<PlayerStateManager>();
+        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround())
             ChangeState(_ghostTalkState);
 
         _dialog.ToggleIndicator(_isPlayerNearBy);
@@ -104,7 +105,9 @@ public class GhostManager : NPCManagers
 
     protected override bool IsPlayerNearBy()
     {
-        return _isPlayerNearBy = Vector2.Distance(transform.position, _playerRef.position) <= _triggerConversationRange && _state is not GhostDisappearState;
+        var playerScript = _playerRef.GetComponent<PlayerStateManager>();
+        return _isPlayerNearBy = Vector2.Distance(transform.position, _playerRef.position) <= _triggerConversationRange 
+            && _state is not GhostDisappearState && playerScript.GetIsOnGround();
     }
 
     private void OnDrawGizmos()

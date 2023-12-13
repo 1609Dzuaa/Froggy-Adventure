@@ -168,11 +168,9 @@ public class PlayerStateManager : MonoBehaviour
 
     public void ChangeState(PlayerBaseState state)
     {
+        //Khi tương tác với NPC chỉ cho change giữa 2 state là Run và Idle
         if (_isInteractingWithNPC && state is not RunState && state is not IdleState)
-        {
-            Debug.Log("Return here!");
             return;
-        }
 
         this._state.ExitState();
         this._state = state;

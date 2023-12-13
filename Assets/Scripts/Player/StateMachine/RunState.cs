@@ -2,15 +2,17 @@
 
 public class RunState : PlayerBaseState
 {
+    private bool _hasChanged;
+
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
         playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
-        Debug.Log("Run, Interact? :" + _playerStateManager.IsInteractingWithNPC);
+        //Debug.Log("Run, Interact? :" + _playerStateManager.IsInteractingWithNPC);
     }
 
-    public override void ExitState() { }
+    public override void ExitState() { _hasChanged = false; }
 
     public override void Update()
     {
@@ -35,10 +37,11 @@ public class RunState : PlayerBaseState
             else if (CheckIfFall())
                 _playerStateManager.ChangeState(_playerStateManager.fallState);
         }
-        else if (_playerStateManager.IsInteractingWithNPC)
+        else if (_playerStateManager.IsInteractingWithNPC && !_hasChanged)
         {
-            if (Mathf.Abs(_playerStateManager.transform.position.x - _playerStateManager.InteractPosition.x) < 0.1f)
+            if (Mathf.Abs(_playerStateManager.transform.position.x - _playerStateManager.InteractPosition.x) < 0.05f)
             {
+                _hasChanged = true;
                 _playerStateManager.ChangeState(_playerStateManager.idleState);
                 Debug.Log("Idle here");
             }
@@ -71,11 +74,14 @@ public class RunState : PlayerBaseState
 
     public override void FixedUpdate()
     {
-        if (_playerStateManager.GetDirX() != 0)
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
-        else if (_playerStateManager.IsInteractingWithNPC)
+        if (!_playerStateManager.IsInteractingWithNPC)
         {
-            if(_playerStateManager.GetIsFacingRight())
+            if (_playerStateManager.GetDirX() != 0)
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+        }
+        else
+        {
+            if (_playerStateManager.GetIsFacingRight())
                 _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX(), _playerStateManager.GetRigidBody2D().velocity.y);
             else
                 _playerStateManager.GetRigidBody2D().velocity = new Vector2(-_playerStateManager.GetSpeedX(), _playerStateManager.GetRigidBody2D().velocity.y);

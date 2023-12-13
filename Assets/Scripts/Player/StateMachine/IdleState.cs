@@ -11,23 +11,28 @@ public class IdleState : PlayerBaseState
         HandleIfInteractWithNPC();
         HandleIfPrevStateWallSlide();
 
-        Debug.Log("Idle"); //Keep this, use for debugging change state
+        //Debug.Log("Idle"); //Keep this, use for debugging change state
     }
 
     public override void ExitState() { }
 
     public override void Update()
     {
-        if (CheckIfRun())
-            _playerStateManager.ChangeState(_playerStateManager.runState);
-        else if (CheckIfJump())
-            _playerStateManager.ChangeState(_playerStateManager.jumpState);
-        else if (CheckIfFall())
-            _playerStateManager.ChangeState(_playerStateManager.fallState);
+        //Chỉ Update State này khi 0 tương tác với NPC, tránh bị loạn state
+        if(!_playerStateManager.IsInteractingWithNPC)
+        {
+            if (CheckIfRun())
+                _playerStateManager.ChangeState(_playerStateManager.runState);
+            else if (CheckIfJump())
+                _playerStateManager.ChangeState(_playerStateManager.jumpState);
+            else if (CheckIfFall())
+                _playerStateManager.ChangeState(_playerStateManager.fallState);
+        }
     }
 
     private bool CheckIfRun()
     {
+        //Interacting NPC Prob here
         if (_playerStateManager.GetDirX() != 0 && _playerStateManager.GetIsOnGround())
             return true;
         return false;

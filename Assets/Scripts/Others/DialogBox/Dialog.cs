@@ -53,8 +53,7 @@ public class Dialog : MonoBehaviour
 
         //Cố định, đéo cho quay khi parent quay :)
         //0 có 2 dòng dưới thì khi quay phải text sẽ bị ngược
-        //if (_dialogText.transform.eulerAngles.y > 0f)
-            _dialogText.transform.eulerAngles = Vector3.zero;
+        _dialogText.transform.eulerAngles = Vector3.zero;
 
         //Chờ Player tương tác (Nhấn Space)
         if (_isWaiting && Input.GetKeyDown(KeyCode.Space))
@@ -62,7 +61,8 @@ public class Dialog : MonoBehaviour
             _isWaiting = false; //0 phải đợi nữa
             _rowIndex++; //Xuống hàng kế tiếp
             
-            //Check hàng hiện tại chưa vượt quá hàng thực tế thì bắt đầu Thoại hàng kế tiếp
+            //Check hàng hiện tại CHƯA vượt quá hàng thực tế thì
+            //bắt đầu Thoại hàng kế tiếp
             //Còn 0 thì kết thúc Thoại
             if (_rowIndex < _dialog.Count)
                 GetDialog(_rowIndex);
@@ -131,6 +131,7 @@ public class Dialog : MonoBehaviour
         string currentDialog = _dialog[_rowIndex];
 
         //Render Thoại(Render từng chữ) lên màn hình
+        //if(_rowIndex > _dialog.)
         _dialogText.text += currentDialog[_charIndex];
 
         //Tăng chỉ số của char
