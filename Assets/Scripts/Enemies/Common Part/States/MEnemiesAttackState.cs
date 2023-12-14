@@ -18,7 +18,7 @@ public class MEnemiesAttackState : MEnemiesBaseState
     public override void Update()
     {
         LogicUpdate();
-        Debug.Log("Base Update");
+        //Debug.Log("Base Update");
     }
 
     private void LogicUpdate()

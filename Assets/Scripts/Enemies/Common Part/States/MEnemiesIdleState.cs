@@ -27,7 +27,7 @@ public class MEnemiesIdleState : MEnemiesBaseState
             _mEnemiesManager.ChangeState(_mEnemiesManager.MEnemiesPatrolState);
         else if (CheckIfCanAttack())
             _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());
-        Debug.Log("Update");
+        //Debug.Log("Update");
     }
 
     protected bool CheckIfCanPatrol()

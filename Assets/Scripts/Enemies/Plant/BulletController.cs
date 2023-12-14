@@ -38,7 +38,7 @@ public class BulletController : MonoBehaviour
         if (Time.time - _entryTime >= _existTime)
         {
             //Spawn lá hoặc effect gì đấy
-            Debug.Log("Time Out");
+            //Debug.Log("Time Out");
             Destroy(this.gameObject);
         }
     }
