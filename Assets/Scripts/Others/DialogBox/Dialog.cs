@@ -135,7 +135,7 @@ public class Dialog : MonoBehaviour
         _dialogText.text += currentDialog[_charIndex];
 
         //Tăng chỉ số của char
-        _charIndex++;
+        ++_charIndex;
 
         //Check chỉ số char mà CHƯA vượt quá mảng Thoại hàng hiện tại
         //thì đợi trong _writingSpeed (s) để vẽ chữ cái tiếp

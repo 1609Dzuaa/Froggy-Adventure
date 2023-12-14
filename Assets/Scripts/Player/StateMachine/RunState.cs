@@ -2,22 +2,19 @@
 
 public class RunState : PlayerBaseState
 {
-    private bool _hasChanged;
-
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
         playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
-        //Debug.Log("Run, Interact? :" + _playerStateManager.IsInteractingWithNPC);
+        Debug.Log("Run");
     }
 
-    public override void ExitState() { _hasChanged = false; }
+    public override void ExitState() { }
 
     public override void Update()
     {
         LogicUpdate();
-        //Debug.Log("Updateee");
     }
 
     private void LogicUpdate()
@@ -25,10 +22,7 @@ public class RunState : PlayerBaseState
         if (!_playerStateManager.IsInteractingWithNPC)
         {
             if (CheckIfIdle())
-            {
                 _playerStateManager.ChangeState(_playerStateManager.idleState);
-                Debug.Log("Idle Over Here");
-            }
             else if (CheckIfJump())
             {
                 _playerStateManager.jumpState.IsRunStateHitWall = _playerStateManager.GetIsWallTouch();
@@ -37,14 +31,11 @@ public class RunState : PlayerBaseState
             else if (CheckIfFall())
                 _playerStateManager.ChangeState(_playerStateManager.fallState);
         }
-        else if (_playerStateManager.IsInteractingWithNPC && !_hasChanged)
+        else
         {
-            if (Mathf.Abs(_playerStateManager.transform.position.x - _playerStateManager.InteractPosition.x) < 0.05f)
-            {
-                _hasChanged = true;
+            //Vì thực sự để so hiệu x = 0 thì rất khó => sử dụng hằng số với giá trị rất nhỏ
+            if (Mathf.Abs(_playerStateManager.transform.position.x - _playerStateManager.InteractPosition.x) < GameConstants.STARTCONVERSATIONRANGE)
                 _playerStateManager.ChangeState(_playerStateManager.idleState);
-                Debug.Log("Idle here");
-            }
         }
     }
 

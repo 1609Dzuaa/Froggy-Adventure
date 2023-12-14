@@ -45,8 +45,8 @@ public class GhostTalkState : CharacterBaseState
         else
             _ghostManager.ConversationPos = new Vector2(_ghostManager.transform.position.x - _ghostManager.AdjustConversationRange, _ghostManager.transform.parent.position.y);
 
-        Debug.Log("Ghost Pos: " + _ghostManager.transform.position);
-        Debug.Log("pos: " + _ghostManager.ConversationPos);
+        //Debug.Log("Ghost Pos: " + _ghostManager.transform.position);
+        //Debug.Log("pos: " + _ghostManager.ConversationPos);
 
         //Gán vị trí cần di chuyển cho Player
         playerScript.InteractPosition = _ghostManager.ConversationPos;

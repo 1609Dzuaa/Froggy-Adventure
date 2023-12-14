@@ -216,7 +216,6 @@ public class PlayerStateManager : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log("detected NPC: " + _hasDetectedNPC);
         NPCCheck();
         DrawRayDetectNPC();
 
@@ -248,7 +247,7 @@ public class PlayerStateManager : MonoBehaviour
             _hasFlip = true;
             if (isFacingRight)
             {
-                if (transform.position.x > InteractPosition.x)
+                if (transform.position.x > InteractPosition.x + GameConstants.STARTCONVERSATIONRANGE)
                 {
                     FlippingSprite();
                     Debug.Log("Flip to Left");
@@ -256,7 +255,7 @@ public class PlayerStateManager : MonoBehaviour
             }
             else
             {
-                if (transform.position.x < InteractPosition.x)
+                if (transform.position.x < InteractPosition.x - GameConstants.STARTCONVERSATIONRANGE)
                 {
                     FlippingSprite();
                     Debug.Log("Flip to Right");
@@ -266,10 +265,17 @@ public class PlayerStateManager : MonoBehaviour
         if(!_hasChange)
         {
             _hasChange = true;
-            Debug.Log("Change");
-            ChangeState(runState);
+            //Debug.Log("Change");
+            Invoke("ChangeToRun", GameConstants.DELAYPLAYERRUNSTATE);
         }    
         _state.Update();
+    }
+
+    private void ChangeToRun()
+    {
+        //Dùng để Invoke Delay sang RunState khi tương tác với NPC
+        //Tránh TH như mushroom, flip quá nhanh dẫn đến thoả mãn đk quá nhanh
+        ChangeState(runState);
     }
 
     private void FixedUpdate()

@@ -11,7 +11,7 @@ public class IdleState : PlayerBaseState
         HandleIfInteractWithNPC();
         HandleIfPrevStateWallSlide();
 
-        //Debug.Log("Idle"); //Keep this, use for debugging change state
+        Debug.Log("Idle, Interact: " + _playerStateManager.IsInteractingWithNPC); //Keep this, use for debugging change state
     }
 
     public override void ExitState() { }
@@ -59,7 +59,10 @@ public class IdleState : PlayerBaseState
         //Nếu đang tương tác với NPC thì flip sprite về hướng NPC
         if (_playerStateManager.IsInteractingWithNPC)
             if (!_playerStateManager.HasDetectedNPC)
+            {
                 _playerStateManager.FlippingSprite();
+                Debug.Log("!Detected, Must Flip");
+            }
     }
 
     private void HandleIfPrevStateWallSlide()
