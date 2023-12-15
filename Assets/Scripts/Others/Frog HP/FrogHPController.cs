@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FrogHPController : MonoBehaviour
+public class FrogHPController : MonoBehaviour //Tạo class Item
 {
     [Header("Parent")]
     [SerializeField] private GameObject _parent;
@@ -13,6 +13,9 @@ public class FrogHPController : MonoBehaviour
 
     [Header("Speed")]
     [SerializeField] private float _speedY;
+
+    [Header("Collected Effect")]
+    [SerializeField] private Transform _collectedEffect;
 
     // Update is called once per frame
     void Update()
@@ -34,9 +37,11 @@ public class FrogHPController : MonoBehaviour
     {
         if(collision.name == "Player")
         {
-            Destroy(_parent);
+            Instantiate(_collectedEffect, transform.position, Quaternion.identity);
             var playerScript = collision.GetComponent<PlayerStateManager>();
             playerScript.IncreaseHP();
+            playerScript.GetCollectHPSound().Play();
+            Destroy(_parent);
         }
     }
 }

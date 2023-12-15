@@ -2,42 +2,58 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxController : MonoBehaviour
+public class BoxController : GameObjectManager
 {
-    [Header("Break Piece")]
-    [SerializeField] private Transform brPiece1;
-    [SerializeField] private Transform brPiece2;
-    [SerializeField] private Transform brPiece3;
-    [SerializeField] private Transform brPiece4;
+    [Header("Type")]
+    [Range(1,3)]
+    [SerializeField] private int _boxType;
 
+    [Header("Break Piece")]
+    [SerializeField] private Transform _brPiece1;
+    [SerializeField] private Transform _brPiece2;
+    [SerializeField] private Transform _brPiece3;
+    [SerializeField] private Transform _brPiece4;
+
+    [Header("Pieces Position")]
+    [SerializeField] private Transform _pos1;
+    [SerializeField] private Transform _pos2;
+    [SerializeField] private Transform _pos3;
+    [SerializeField] private Transform _pos4;
+
+    //Box type 1 thì có 5 loại gift, type 3 khó phá nhất thì cho HP
     [Header("Mystery Gift")] //Random 1 trong các gift sau - có thể thêm enemy nhỏ
-    [SerializeField] private Transform apple;
-    [SerializeField] private Transform banana;
-    [SerializeField] private Transform cherry;
-    [SerializeField] private Transform orange;
-    [SerializeField] private Transform mushroom;
+    [SerializeField] private Transform _apple;
+    [SerializeField] private Transform _banana;
+    [SerializeField] private Transform _cherry;
+    [SerializeField] private Transform _orange;
+    [SerializeField] private Transform _mushroom;
+    [SerializeField] private Transform _hp;
 
     [Header("Force Apply To Player")]
-    [SerializeField] private float forceApply; //Force apply to player when jump on this
+    [SerializeField] private float _forceApply; //Force apply to player when jump on this
     //Có bug(?) khi nhảy lên box và bấm nhảy tiếp thì bật rất cao! @@
     //Chỉnh lại sound
 
     [Header("Sound")]
-    [SerializeField] private AudioSource brokeSound;
+    [SerializeField] private AudioSource _brokeSound;
+    [SerializeField] private AudioSource _gotHitSound;
 
     [Header("Time")]
-    [SerializeField] private float delaySpawnPiece;
+    [SerializeField] private float _delaySpawnPiece;
 
-    //private BoxCollider2D box2D; need ?
-    private Animator anim;
-    private bool isGotHit = false;
-    private bool allowSpawnPiece = false;
-    private bool hasSpawnPiece = false;
+    private bool _isGotHit = false;
+    private bool _allowSpawnPiece = false;
+    private bool _hasSpawnPiece = false;
+    private int _healthPoint;
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void Awake()
     {
-        anim = GetComponent<Animator>();
+        base.Awake();
+    }
+
+    protected override void Start()
+    {
+        _healthPoint = _boxType;
     }
 
     // Update is called once per frame
@@ -48,12 +64,19 @@ public class BoxController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player" && !isGotHit)
+        if (collision.gameObject.name == "Player" && !_isGotHit)
         {
+            _healthPoint--;
             var rbPlayer = collision.gameObject.GetComponent<PlayerStateManager>();
-            rbPlayer.GetRigidBody2D().AddForce(new Vector2(0f, forceApply));
-            isGotHit = true; //Mark this box has been hitted and make sure only applied force once
-            Invoke("AllowSpawnPiece", delaySpawnPiece);
+            rbPlayer.GetRigidBody2D().AddForce(new Vector2(0f, _forceApply));
+            _isGotHit = true; //Mark this box has been hitted and make sure only applied force once
+            if (_healthPoint == 0)
+            {
+                Invoke("AllowSpawnPiece", _delaySpawnPiece);
+                _brokeSound.Play();
+            }
+            else
+                _gotHitSound.Play();
         }
     }
 
@@ -64,70 +87,83 @@ public class BoxController : MonoBehaviour
             var bulletCtrl = collision.gameObject.GetComponent<BulletController>();
             bulletCtrl.SpawnBulletPieces();
             Destroy(bulletCtrl.gameObject);
-            isGotHit = true; //Mark this box has been hitted and make sure only applied force once
-            Invoke("AllowSpawnPiece", delaySpawnPiece);
+            _isGotHit = true; //Mark this box has been hitted and make sure only applied force once
+            Invoke("AllowSpawnPiece", _delaySpawnPiece);
         }
     }
 
     private void AnimationController()
     {
-        if (isGotHit)
+        if (_isGotHit)
         {
-            brokeSound.Play();
-            anim.SetTrigger("GotHit");
-            isGotHit = false;
+            _anim.SetTrigger("GotHit");
+            _isGotHit = false;
         }
-        if (allowSpawnPiece && !hasSpawnPiece)
+        if (_allowSpawnPiece && !_hasSpawnPiece)
         {
             SpawnPiece();
-            SpawnGift();
+            SpawnGift(_boxType);
             Destroy(this.gameObject);
         }
     }
 
     private void AllowSpawnPiece()
     {
-        allowSpawnPiece = true;
+        _allowSpawnPiece = true;
+        //Event của animation GotHit
     }
 
     private void SpawnPiece()
     {
-        hasSpawnPiece = true;
+        _hasSpawnPiece = true;
 
-        Instantiate(brPiece1, new Vector3(transform.position.x - .35f, transform.position.y + .33f, transform.position.z), Quaternion.identity, null);
-        Instantiate(brPiece2, new Vector3(transform.position.x + .25f, transform.position.y + .33f, transform.position.z), Quaternion.identity, null);
-        Instantiate(brPiece3, new Vector3(transform.position.x - .35f, transform.position.y - .33f, transform.position.z), Quaternion.identity, null);
-        Instantiate(brPiece4, new Vector3(transform.position.x + .25f, transform.position.y - .33f, transform.position.z), Quaternion.identity, null);
+        Instantiate(_brPiece1, _pos1.position, Quaternion.identity, null);
+        Instantiate(_brPiece2, _pos2.position, Quaternion.identity, null);
+        Instantiate(_brPiece3, _pos3.position, Quaternion.identity, null);
+        Instantiate(_brPiece4, _pos4.position, Quaternion.identity, null);
         //Chú ý tham số cuối của hàm này, pass null nếu 0 muốn piece nhận thằng box làm parent :D
     }
 
-    private void SpawnGift()
+    private void SpawnGift(int type)
     {
-        int randomGift = Random.Range(1, 6);
-        switch (randomGift)
+        if (type == 1)
         {
-            case 1:
-                Instantiate(apple, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                //Debug.Log("A");
-                break;
-            case 2:
-                Instantiate(banana, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                //Debug.Log("B");
-                break;
-            case 3:
-                Instantiate(cherry, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                //Debug.Log("C");
-                break;
-            case 4:
-                Instantiate(orange, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                //Debug.Log("O");
-                break;
+            int randomGift = Random.Range(1, 6);
+            switch (randomGift)
+            {
+                case 1:
+                    Instantiate(_apple, transform.position, Quaternion.identity, null);
+                    //Debug.Log("A");
+                    break;
+                case 2:
+                    Instantiate(_banana, transform.position, Quaternion.identity, null);
+                    //Debug.Log("B");
+                    break;
+                case 3:
+                    Instantiate(_cherry, transform.position, Quaternion.identity, null);
+                    //Debug.Log("C");
+                    break;
+                case 4:
+                    Instantiate(_orange, transform.position, Quaternion.identity, null);
+                    //Debug.Log("O");
+                    break;
 
-            case 5:
-                Instantiate(mushroom, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity, null);
-                //Debug.Log("M");
-                break;
+                case 5:
+                    Instantiate(_mushroom, transform.position, Quaternion.identity, null);
+                    //Debug.Log("M");
+                    break;
+            }
         }
+        else if (type == 3)
+            Instantiate(_hp, transform.position, Quaternion.identity, null);
     }
 
+
+    private void SetBackIdle()
+    {
+        if (_healthPoint != 0)
+        {
+            _anim.SetTrigger("Idle");
+        }
+    }
 }

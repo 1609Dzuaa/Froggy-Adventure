@@ -61,6 +61,7 @@ public class PlayerStateManager : MonoBehaviour
     [Header("Sound")]
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource collectSound;
+    [SerializeField] private AudioSource _collectHPSound;
     [SerializeField] private AudioSource gotHitSound;
     [SerializeField] private AudioSource deadSound;
 
@@ -130,6 +131,8 @@ public class PlayerStateManager : MonoBehaviour
     public int GetOrangeCount() { return this.OrangeCount; }
 
     public AudioSource GetCollectSound() { return this.collectSound; }
+
+    public AudioSource GetCollectHPSound() { return this._collectHPSound; }
 
     public Text GetScoreText() { return this.txtScore; }
 
@@ -236,7 +239,7 @@ public class PlayerStateManager : MonoBehaviour
         HandleFlipSprite();
         HandleDustVelocity();
         SpawnDust();
-        Debug.Log("HP: " + HP);
+        //Debug.Log("HP: " + HP);
     }
 
     private void UpdateInteractWithNPC()
