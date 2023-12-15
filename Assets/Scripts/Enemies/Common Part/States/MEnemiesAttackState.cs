@@ -33,7 +33,7 @@ public class MEnemiesAttackState : MEnemiesBaseState
     public override void FixedUpdate()
     {
         Attack();
-        Debug.Log("Fixed");
+        //Debug.Log("Fixed");
     }
 
     protected virtual void Attack()

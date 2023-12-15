@@ -38,6 +38,7 @@ public class NMEnemiesManager : EnemiesManager
         {
             _hasGotHit = true;
             var playerScript = collision.GetComponent<PlayerStateManager>();
+            playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
             playerScript.GetRigidBody2D().AddForce(playerScript.GetJumpOnEnemiesForce(), ForceMode2D.Impulse);
             ChangeState(_nmEnemiesGotHitState);
         }

@@ -23,7 +23,7 @@ public class PlayerStateManager : MonoBehaviour
     private Animator anim;
     private RaycastHit2D wallHit;
     private bool isOnGround = false;
-    private bool hasDbJump = false; //Cho phép DbJump 1 lần
+    private bool _canDbJump = false; //Cho phép DbJump 1 lần
     private bool IsWallTouch = false;
     private bool isFacingRight = true;
     private bool prevStateIsWallSlide = false;
@@ -107,7 +107,7 @@ public class PlayerStateManager : MonoBehaviour
 
     public float GetWallSlideSpeed() { return this.wallSlideSpeed; }
 
-    public bool GetHasDbJump() { return this.hasDbJump; }
+    public bool GetCanDbJump() { return this._canDbJump; }
 
     public bool GetIsWallTouch() { return this.IsWallTouch; }
 
@@ -138,7 +138,7 @@ public class PlayerStateManager : MonoBehaviour
     public bool HasDetectedNPC { get { return _hasDetectedNPC; } }
 
     //SET Functions
-    public void SetHasDbJump(bool para) { this.hasDbJump = para; }
+    public void SetCanDbJump(bool para) { this._canDbJump = para; }
 
     public Vector2 InteractPosition { get { return _InteractPosition; } set { _InteractPosition = value; } }
 
@@ -416,7 +416,7 @@ public class PlayerStateManager : MonoBehaviour
     private void HandleCollideGround()
     {
         isOnGround = true;
-        hasDbJump = false; //Player chạm đất thì mới cho DbJump tiếp
+        _canDbJump = true; //Player chạm đất thì mới cho DbJump tiếp
     }
 
     private void SpawnDust()

@@ -28,6 +28,9 @@
     public enum EGhostState
     { appear, idle, wander, disappear, gotHit }
 
+    public enum EPigState
+    { idle, patrol, attackGreen, gotHitGreen, attackRed,  gotHitRed }
+
     public enum EGeckoState
     { idle, patrol, attack, gotHit, hide  }
 }

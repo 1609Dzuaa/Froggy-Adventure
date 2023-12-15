@@ -45,7 +45,7 @@ public class DoubleJumpState : PlayerBaseState
 
     private void HandleDbJump()
     {
-        _playerStateManager.SetHasDbJump(true);
+        _playerStateManager.SetCanDbJump(false);
         _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetSpeedY() * 0.9f);
     }
 }

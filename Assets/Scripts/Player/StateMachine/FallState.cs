@@ -53,7 +53,7 @@ public class FallState : PlayerBaseState
     private bool CheckIfCanDbJump()
     {
         //Cho phép lúc Fall có thể Double Jump đc
-        if (Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetHasDbJump()) 
+        if (Input.GetKeyDown(KeyCode.S) && _playerStateManager.GetCanDbJump()) 
             return true;
         return false;
     }
