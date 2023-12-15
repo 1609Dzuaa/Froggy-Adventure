@@ -1,25 +1,23 @@
 using UnityEngine;
 
-public class GeckoIdleState : GeckoBaseState
+public class GeckoIdleState : MEnemiesIdleState
 {
-    private float entryTime;
+    private GeckoManager _geckoManager;
 
-    public override void EnterState(GeckoStateManager geckoStateManager)
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(geckoStateManager);
-        _geckoStateManager.GetAnimator().SetInteger("state", (int)EnumState.EGeckoState.idle);
-        entryTime = Time.time;
-        //Debug.Log("Idle");
+        base.EnterState(charactersManager);
+        _geckoManager = (GeckoManager)charactersManager;
     }
 
     public override void ExitState() { }
 
     public override void Update()
     {
-        if (Time.time - entryTime >= _geckoStateManager.GetRestTime())
-            _geckoStateManager.ChangeState(_geckoStateManager.geckoPatrolState);
-        else if (_geckoStateManager.GetHasDetectPlayer())
-            _geckoStateManager.ChangeState(_geckoStateManager.geckoHideState);
+        if (Time.time - _entryTime >= _geckoManager.GetRestTime())
+            _geckoManager.ChangeState(_geckoManager.GetGeckoPatrolState());
+        else if (_geckoManager.HasDetectedPlayer)
+            _geckoManager.ChangeState(_geckoManager.GetGeckoHideState());
     }
 
     public override void FixedUpdate() { }

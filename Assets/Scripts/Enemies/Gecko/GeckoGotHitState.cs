@@ -1,12 +1,10 @@
 using UnityEngine;
 
-public class GeckoGotHitState : GeckoBaseState
+public class GeckoGotHitState : MEnemiesGotHitState
 {
-    public override void EnterState(GeckoStateManager geckoStateManager)
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(geckoStateManager);
-        geckoStateManager.GetAnimator().SetInteger("state", (int)EnumState.EGeckoState.gotHit);
-        //Debug.Log("GH");
+        base.EnterState(charactersManager);
     }
 
     public override void ExitState() { }

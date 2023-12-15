@@ -1,54 +1,30 @@
-using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 
-public class GeckoPatrolState : GeckoBaseState
+public class GeckoPatrolState : MEnemiesPatrolState
 {
-    private float entryTime;
-    private bool hasChangeState = false;
-    private int randomDirection;
+    private GeckoManager _geckoManager;
 
-    public override void EnterState(GeckoStateManager geckoStateManager)
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(geckoStateManager);
-        geckoStateManager.GetAnimator().SetInteger("state", (int)EnumState.EGeckoState.patrol);
-        entryTime = Time.time;
-        randomDirection = Random.Range(0, 2);
-        hasChangeState = false;
-        //Debug.Log("Pt");
+        base.EnterState(charactersManager);
+        _geckoManager = (GeckoManager)charactersManager;
     }
 
-    public override void ExitState() { }
+    public override void ExitState()
+    {
+        base.ExitState();
+    }
 
     public override void Update()
     {
-        if (Time.time - entryTime >= _geckoStateManager.GetPatrolTime())
-        {
-            _geckoStateManager.ChangeState(_geckoStateManager.geckoIdleState);
-            hasChangeState = true;
-        }
-        else if (_geckoStateManager.GetHasDetectPlayer())
-        {
-            _geckoStateManager.ChangeState(_geckoStateManager.geckoHideState);
-            hasChangeState = true;
-        }
+        if (Time.time - _entryTime >= _geckoManager.GetRestTime())
+            _geckoManager.ChangeState(_geckoManager.GetGeckoIdleState());
+        else if (_geckoManager.HasDetectedPlayer)
+            _geckoManager.ChangeState(_geckoManager.GetGeckoHideState());
     }
 
     public override void FixedUpdate()
     {
-        if (!hasChangeState)
-        {
-            if (randomDirection > 0)
-            {
-                if (!_geckoStateManager.GetIsFacingRight())
-                    _geckoStateManager.FlippingSprite();
-                _geckoStateManager.GetRigidBody2D().velocity = new Vector2(_geckoStateManager.GetPatrolSpeed(), _geckoStateManager.GetRigidBody2D().velocity.y);
-            }
-            else
-            {
-                if (_geckoStateManager.GetIsFacingRight())
-                    _geckoStateManager.FlippingSprite();
-                _geckoStateManager.GetRigidBody2D().velocity = new Vector2(-1 * _geckoStateManager.GetPatrolSpeed(), _geckoStateManager.GetRigidBody2D().velocity.y);
-            }
-        }
+        base.FixedUpdate();
     }
 }

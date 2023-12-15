@@ -1,15 +1,16 @@
 using UnityEngine;
 
-public class GeckoAttackState : GeckoBaseState
+public class GeckoAttackState : MEnemiesAttackState
 {
-    public override void EnterState(GeckoStateManager geckoStateManager)
+    private GeckoManager _geckoManager;
+
+    public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(geckoStateManager);
-        geckoStateManager.GetAnimator().SetInteger("state", (int)EnumState.EGeckoState.attack);
-        //Debug.Log("Attack");
+        base.EnterState(charactersManager);
+        _geckoManager = (GeckoManager)charactersManager;
     }
 
-    public override void ExitState() { }
+    public override void ExitState() { _geckoManager.GetBoxCollider2D().enabled = false; }
 
     public override void Update()
     {
