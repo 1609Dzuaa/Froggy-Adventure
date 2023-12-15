@@ -236,7 +236,7 @@ public class PlayerStateManager : MonoBehaviour
         HandleFlipSprite();
         HandleDustVelocity();
         SpawnDust();
-        //Debug.Log("dirX: " + dirX);
+        Debug.Log("HP: " + HP);
     }
 
     private void UpdateInteractWithNPC()
