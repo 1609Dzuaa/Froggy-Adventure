@@ -8,7 +8,7 @@ public class GeckoManager : MEnemiesManager
     //Đối với các sprite có size khác bthg trong 1 sprite sheet thì điều chỉnh pivot
     //trong Sprite Editor của sprite đó
     //https://www.reddit.com/r/Unity2D/comments/2qtnzm/animating_sprites_of_different_sizes/
-    //Có bug khi vụt Player thì bị tác vướng cái box collider chính mình nên bị văng ra @@
+    //Xong bug
 
     [Header("Teleport Distance")]
     [SerializeField] private float _teleDistance;
@@ -16,12 +16,14 @@ public class GeckoManager : MEnemiesManager
     [Header("Player Reference")]
     [SerializeField] private Transform _playerRef;
 
+    [Header("Damage Range")]
+    [SerializeField] private Vector2 _damageRange;
+
     private GeckoIdleState _geckoIdleState = new();
     private GeckoPatrolState _geckoPatrolState = new();
     private GeckoHideState _geckoHideState = new();
     private GeckoAttackState _geckoAttackState = new();
     private GeckoGotHitState _geckoGotHitState = new();
-    private BoxCollider2D _boxCollider;
 
     public GeckoIdleState GetGeckoIdleState() { return _geckoIdleState; }
 
@@ -33,19 +35,15 @@ public class GeckoManager : MEnemiesManager
 
     public GeckoGotHitState GetGeckoGotHitState() { return _geckoGotHitState; }
 
-    public BoxCollider2D GetBoxCollider2D() { return _boxCollider; }
-
     protected override void Awake()
     {
         base.Awake();
-        _boxCollider = GetComponent<BoxCollider2D>();
     }
 
     protected override void Start()
     {
         _state = _geckoIdleState;
         _state.EnterState(this);
-        _boxCollider.enabled = false;
     }
 
     protected override void Update()
@@ -72,10 +70,14 @@ public class GeckoManager : MEnemiesManager
                 newPos = new Vector3(_playerRef.position.x + _teleDistance, transform.position.y, 0f);
         }
         else
-            newPos = transform.position + Vector3.zero;
+        {
+            if (_isFacingRight)
+                newPos = new Vector3(_playerRef.position.x - _teleDistance, transform.position.y, 0f);
+            else
+                newPos = new Vector3(_playerRef.position.x + _teleDistance, transform.position.y, 0f);
+        }
 
-        //Teleport
-        transform.position = Vector2.Lerp(transform.position, newPos, 1f);
+        transform.position = newPos;
     }
 
     private void CheckAfterAttacked()
@@ -90,7 +92,22 @@ public class GeckoManager : MEnemiesManager
 
     private void EnableDamagePlayer()
     {
-        _boxCollider.enabled = true;
+        if (Physics2D.OverlapBox(transform.position, _damageRange, 0f, _playerLayer))
+        {
+            //Vì thằng Overlap nó check cả 2 hướng trái/phải Gecko nên thêm đk dưới
+            //để tránh việc dù Player ở sau lưng Gecko lúc nó attack
+            //nhưng vẫn dính đòn
+            if(_hasDetectedPlayer)
+            {
+                var playerScript = _playerRef.GetComponent<PlayerStateManager>();
+                playerScript.ChangeState(playerScript.gotHitState);
+                if (_isFacingRight)
+                    playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetKnockBackForce(), 0f));
+                else
+                    playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetKnockBackForce(), 0f));
+                //Debug.Log("Damage");
+            }
+        }
 
         //Cũng là Event của animation Attack lúc vụt lưỡi
     }
@@ -100,6 +117,11 @@ public class GeckoManager : MEnemiesManager
         ChangeState(_geckoAttackState);
 
         //Event của animation Hide
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, _damageRange);
     }
 
 }

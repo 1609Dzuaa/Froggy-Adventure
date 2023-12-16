@@ -10,7 +10,7 @@ public class GeckoAttackState : MEnemiesAttackState
         _geckoManager = (GeckoManager)charactersManager;
     }
 
-    public override void ExitState() { _geckoManager.GetBoxCollider2D().enabled = false; }
+    public override void ExitState() { }
 
     public override void Update()
     {

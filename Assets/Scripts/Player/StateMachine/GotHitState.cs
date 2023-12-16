@@ -54,11 +54,11 @@ public class GotHitState : PlayerBaseState
             _playerStateManager.GetRigidBody2D().AddForce(new Vector2(_playerStateManager.GetKnockBackForce(), 0f));
         }
         //Debug.Log("Knock");
+        //Chỉnh lại Func này: hướng addForce
     }
 
     private void HandleGotHit()
     {
-        KnockBack();
         allowUpdate = false;
         _playerStateManager.DecreaseHP();
         _playerStateManager.GetGotHitSound().Play();

@@ -9,16 +9,10 @@ public class GeckoHideState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _geckoManager = (GeckoManager)charactersManager;
         _geckoManager.Animator.SetInteger("state", (int)EnumState.EGeckoState.hide);
-        //Tắt box tránh bị Player va phải lúc hide cũng như chuyển sang kinematic
-        //_geckoManager.Collider2D.enabled = false;
-        //_geckoManager.GetRigidbody2D().bodyType = RigidbodyType2D.Kinematic;
+        //Thêm Spawn effect khi Hide
     }
 
-    public override void ExitState()
-    {
-        _geckoManager.Collider2D.enabled = true;
-        _geckoManager.GetRigidbody2D().bodyType = RigidbodyType2D.Dynamic;
-    }
+    public override void ExitState() { }
 
     public override void Update() { }
 

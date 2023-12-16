@@ -194,7 +194,6 @@ GameObject:
   - component: {fileID: 6166327868938373765}
   - component: {fileID: 6166327868938373763}
   - component: {fileID: 6166327868938373761}
-  - component: {fileID: 6166327868938373774}
   - component: {fileID: 6166327868938373775}
   m_Layer: 0
   m_Name: Gecko
@@ -365,32 +364,7 @@ MonoBehaviour:
   _parent: {fileID: 6166327868640575860}
   _teleDistance: 3.5
   _playerRef: {fileID: 0}
---- !u!61 &6166327868938373774
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6166327868938373766}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -2.683051, y: -0.13902187}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.0625, y: 1.9375}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.9339008, y: 0.30919075}
-  m_EdgeRadius: 0
+  _damageRange: {x: 8.5, y: 0.5}
 --- !u!61 &6166327868938373775
 BoxCollider2D:
   m_ObjectHideFlags: 0

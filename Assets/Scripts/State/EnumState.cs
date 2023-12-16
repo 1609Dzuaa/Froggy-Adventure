@@ -1,6 +1,10 @@
 ﻿public class EnumState
 {
     //Tạo các enum của State để gán giá trị tương ứng cho Animations
+
+    //Sử dụng Dictionary với key là các Enum để bindings KEY
+    //https://stackoverflow.com/questions/70252468/how-does-the-command-pattern-solve-the-problem-of-hard-wired-commands-requests
+
     public enum EPlayerState
     { idle, run, jump, fall, wallSlide, doubleJump, gotHit, wallJump }
 

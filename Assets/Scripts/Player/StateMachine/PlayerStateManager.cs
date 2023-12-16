@@ -190,10 +190,9 @@ public class PlayerStateManager : MonoBehaviour
         {
             HandleCollideGround();
         }
-        else if (collision.collider.CompareTag("Trap") && _state is not GotHitState
-            || collision.collider.CompareTag("Enemy") && _state is not GotHitState
-            || collision.collider.CompareTag("Bullet") && _state is not GotHitState)
+        else if (collision.collider.CompareTag("Trap") && _state is not GotHitState)
         {
+            //Enemies/Trap sẽ áp lực vào Player theo hướng của nó chứ 0 phải của Player
             //if (HP > 0)
                 ChangeState(gotHitState);
             //else

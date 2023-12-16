@@ -58,6 +58,19 @@ public abstract class EnemiesManager : CharactersManager
         DrawRayDetectPlayer();
     }
 
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.name == "Player")
+        {
+            var playerScript = collision.collider.GetComponent<PlayerStateManager>();
+            playerScript.ChangeState(playerScript.gotHitState);
+            if (_isFacingRight)
+                playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetKnockBackForce(), 0f));
+            else
+                playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetKnockBackForce(), 0f));
+        }
+    }
+
     protected virtual bool DetectedPlayer()
     {
         if (!_isFacingRight)
