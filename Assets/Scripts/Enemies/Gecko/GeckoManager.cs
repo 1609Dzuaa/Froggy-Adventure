@@ -124,4 +124,10 @@ public class GeckoManager : MEnemiesManager
         Gizmos.DrawWireCube(transform.position, _damageRange);
     }
 
+    public IEnumerator Hide()
+    {
+        yield return new WaitForSeconds(_attackDelay);
+
+        ChangeState(_geckoHideState);
+    }
 }

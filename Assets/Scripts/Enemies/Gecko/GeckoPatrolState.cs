@@ -3,7 +3,7 @@ using UnityEngine;
 public class GeckoPatrolState : MEnemiesPatrolState
 {
     private GeckoManager _geckoManager;
-
+    
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
@@ -17,10 +17,21 @@ public class GeckoPatrolState : MEnemiesPatrolState
 
     public override void Update()
     {
-        if (Time.time - _entryTime >= _geckoManager.GetRestTime())
+        if (Time.time - _entryTime >= _geckoManager.GetRestTime() && !_hasChangedState)
+        {
+            _hasChangedState = true;
             _geckoManager.ChangeState(_geckoManager.GetGeckoIdleState());
-        else if (_geckoManager.HasDetectedPlayer)
-            _geckoManager.ChangeState(_geckoManager.GetGeckoHideState());
+        }
+        else if (_geckoManager.HasDetectedPlayer && !_hasChangedState)
+        {
+            _hasChangedState = true;
+            _geckoManager.StartCoroutine(_geckoManager.Hide());
+        }
+        else if (CheckIfCanChangeDirection())
+        {
+            _hasChangeDirection = true;
+            _mEnemiesManager.FlippingSprite();
+        }
     }
 
     public override void FixedUpdate()

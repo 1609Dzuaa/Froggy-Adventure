@@ -238,7 +238,7 @@ public class PlayerStateManager : MonoBehaviour
         HandleFlipSprite();
         HandleDustVelocity();
         SpawnDust();
-        //Debug.Log("HP: " + HP);
+        //Debug.Log("iOG: " + isOnGround);
     }
 
     private void UpdateInteractWithNPC()
