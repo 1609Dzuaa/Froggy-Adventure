@@ -1,27 +1,27 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GotHitState : PlayerBaseState
 {
     private bool allowUpdate = false;
+    private bool _isHitByTrap; //Nếu bị hit bởi Traps thì mới AddForce dựa vào hướng mặt của Player
 
     public void SetAllowUpdate(bool para) { this.allowUpdate = para; }
 
-    public override void EnterState(PlayerStateManager playerStateManager)
+    public bool IsHitByTrap { set { _isHitByTrap = value; } }
+
+ public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.gotHit);
-        //Debug.Log("GotHit");
         HandleGotHit();
+        //Debug.Log("GotHit");
+
         //Chú ý khi làm việc với Any State
         //Tắt Transition To Self ở đoạn nối Transition từ Any State tới State cụ thể
         //Tránh bị đứng ngay frame đầu tiên
     }
 
-    public override void ExitState()
-    {
-
-    }
+    public override void ExitState() { _isHitByTrap = false; }
 
     public override void Update()
     {
@@ -38,27 +38,21 @@ public class GotHitState : PlayerBaseState
         //Debug.Log("Allow: " + allowUpdate);
     }
 
-    public override void FixedUpdate()
-    {
-
-    }
+    public override void FixedUpdate() { }
 
     private void KnockBack()
     {
         if (_playerStateManager.GetIsFacingRight())
-        {
             _playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * _playerStateManager.GetKnockBackForce(), 0f));
-        }
         else
-        {
             _playerStateManager.GetRigidBody2D().AddForce(new Vector2(_playerStateManager.GetKnockBackForce(), 0f));
-        }
-        //Debug.Log("Knock");
-        //Chỉnh lại Func này: hướng addForce
+        Debug.Log("Knock");
     }
 
     private void HandleGotHit()
     {
+        if (_isHitByTrap)
+            KnockBack();
         allowUpdate = false;
         _playerStateManager.DecreaseHP();
         _playerStateManager.GetGotHitSound().Play();

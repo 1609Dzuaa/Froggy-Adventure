@@ -9,8 +9,8 @@ public class FireManager : MonoBehaviour
         if (collision.name == "Player")
         {
             var playerScript = collision.GetComponent<PlayerStateManager>();
+            playerScript.gotHitState.IsHitByTrap = true;
             playerScript.ChangeState(playerScript.gotHitState);
-            playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetKnockBackForce(), 0f));
         }
     }
 }

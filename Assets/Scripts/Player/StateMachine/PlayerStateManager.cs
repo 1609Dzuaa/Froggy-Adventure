@@ -37,7 +37,11 @@ public class PlayerStateManager : MonoBehaviour
 
     //Should we put it here ?
     [SerializeField] private Text txtScore;
-    private static int HP = 4;
+
+    //Đạt được nhiều thành tựu thì mới tăng thêm maxHP
+    [Header("HP")]
+    [SerializeField] private int _HP;
+    [SerializeField] private int _maxHP;
 
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
@@ -140,6 +144,10 @@ public class PlayerStateManager : MonoBehaviour
 
     public bool HasDetectedNPC { get { return _hasDetectedNPC; } }
 
+    public int GetHP() { return _HP; }
+
+    public int GetMaxHP() { return _maxHP; }
+
     //SET Functions
     public void SetCanDbJump(bool para) { this._canDbJump = para; }
 
@@ -148,9 +156,9 @@ public class PlayerStateManager : MonoBehaviour
     public void IncreaseOrangeCount() { this.OrangeCount++; }
 
     //HP Functions
-    public void IncreaseHP() { HP++; }
+    public void IncreaseHP() { if (_HP < _maxHP) _HP++; }
 
-    public void DecreaseHP() { HP--; }
+    public void DecreaseHP() { _HP--; }
 
     // Start is called before the first frame update
     private void Start()
@@ -193,10 +201,11 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.collider.CompareTag("Trap") && _state is not GotHitState)
         {
             //Enemies/Trap sẽ áp lực vào Player theo hướng của nó chứ 0 phải của Player
-            //if (HP > 0)
+            if (_HP > 0)
+            {
+                gotHitState.IsHitByTrap = true;
                 ChangeState(gotHitState);
-            //else
-               // HandleDeadState();
+            }
         }
     }
 
