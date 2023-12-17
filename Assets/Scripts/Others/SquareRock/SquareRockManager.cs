@@ -6,7 +6,9 @@ public class SquareRockManager : GameObjectManager
 {
     //SqrRock sẽ di chuyển chậm lúc mới hitwall, sau đó nhanh lên
     //Nó 0 dmg Player nhưng nếu Player bị ép vào wall thì sẽ bị chịu dmg
-    //Có nên cho v nhanh dần theo delta time ?
+    //Lý giải việc RbBodyType là Kinematic nhưng 0 va chạm với TilemapCollider2D:
+    //https://forum.unity.com/threads/tilemap-collider-not-working-with-kinematic-object.1000029/
+    //=>Solution: giữ nguyên RbBodyType là Dynamic và set grav scale về 0
 
     [Header("Boundaries Check")]
     [SerializeField] private Transform _leftCheck;
@@ -22,13 +24,15 @@ public class SquareRockManager : GameObjectManager
     [SerializeField] private float _movementSpeed;
 
     [Header("Time")]
-    [SerializeField] private float _delayBackToBlink;
-    [SerializeField] private float _delayMoveFast;
+    [SerializeField] private float _timeEachScale;
 
     [Header("Constant")]
-    [SerializeField] private float _lowSpeedConstant;
+    [SerializeField] private float _scaleFactorEachDeltaTime; //Muốn tăng bao nhiêu mỗi delta time
 
     private Rigidbody2D _rb;
+    private float _entryTime; //bộ đếm thgian
+    private float _scaleFactor; //hệ số scale speed
+    private float _tempSpeed; //biến speed để set trong FixedUpdate
     private bool _isHitLeft;
     private bool _isHitRight;
     private bool _isHitTop;
@@ -37,7 +41,6 @@ public class SquareRockManager : GameObjectManager
     private bool _isMovingRight;
     private bool _isMovingTop;
     private bool _isMovingBottom;
-    private bool _allowMoveFast;
 
     protected override void Awake()
     {
@@ -49,34 +52,31 @@ public class SquareRockManager : GameObjectManager
     {
         base.Start();
         _isMovingLeft = true;
-        StartCoroutine(AllowMoveFast());
+        _entryTime = Time.time;
+        _scaleFactor = 0;
+        _rb.gravityScale = 0f; //Tránh nếu bị set nhầm ngoài Inspector
     }
 
-   private void Update()
+    private void Update()
    {
         WallCheck();
+        HandleScaleSpeed();
         DrawRay();
-        HandleAnimation();
+        HandleAnimationAndLogic();
         //Debug.Log("IsMV L, R, T, B: " + _isMovingLeft + ", " + _isMovingRight + ", " + _isMovingTop + ", " + _isMovingBottom);
-   }
+    }
 
     private void FixedUpdate()
     {
-        float tempSpeed;
-        if (!_allowMoveFast)
-            tempSpeed = _movementSpeed * _lowSpeedConstant;
-        else
-            tempSpeed = _movementSpeed;
-
-        if (_isMovingLeft)
-            _rb.velocity = new Vector2(-tempSpeed, 0f);
-        else if (_isMovingRight)
-            _rb.velocity = new Vector2(tempSpeed, 0f);
-        else if (_isMovingTop)
-            _rb.velocity = new Vector2(0f, tempSpeed);
-        else if (_isMovingBottom)
-            _rb.velocity = new Vector2(0f, -tempSpeed);
-        Debug.Log("velo: " + _rb.velocity);
+            if (_isMovingLeft)
+                _rb.velocity = new Vector2(-_tempSpeed, 0f);
+            else if (_isMovingRight)
+                _rb.velocity = new Vector2(_tempSpeed, 0f);
+            else if (_isMovingTop)
+                _rb.velocity = new Vector2(0f, _tempSpeed);
+            else if (_isMovingBottom)
+                _rb.velocity = new Vector2(0f, -_tempSpeed);
+        //Debug.Log("velo: " + _rb.velocity);
     }
 
     private void WallCheck()
@@ -86,10 +86,7 @@ public class SquareRockManager : GameObjectManager
         else if (_isMovingRight)
             _isHitRight = Physics2D.Raycast(_rightCheck.position, Vector2.right, _checkDistance, _wallLayer);
         else if (_isMovingTop)
-        {
             _isHitTop = Physics2D.Raycast(_topCheck.position, Vector2.up, _checkDistance, _wallLayer);
-            //Debug.Log("Here, hitTop, hitLeft: " + _isHitTop + ", " + _isHitLeft);
-        }
         else if (_isMovingBottom)
             _isHitBottom = Physics2D.Raycast(_bottomCheck.position, Vector2.down, _checkDistance, _wallLayer);
     }
@@ -102,7 +99,7 @@ public class SquareRockManager : GameObjectManager
         Debug.DrawRay(_bottomCheck.position, Vector2.down * _checkDistance, Color.green);
     }
 
-    private void HandleAnimation()
+    private void HandleAnimationAndLogic()
     {
         if (_isHitLeft && !_isMovingTop)
         {
@@ -110,9 +107,8 @@ public class SquareRockManager : GameObjectManager
             _isHitLeft = false;
             _isMovingTop = true;
             _isMovingLeft = _isMovingRight = _isMovingBottom = false;
-            _allowMoveFast = false;
-            StartCoroutine(AllowMoveFast());
-            //3 thang con lai false
+            _entryTime = Time.time;
+            _scaleFactor = 0;
         }
         else if (_isHitRight && !_isMovingBottom)
         {
@@ -120,8 +116,8 @@ public class SquareRockManager : GameObjectManager
             _isHitRight = false;
             _isMovingBottom = true;
             _isMovingLeft = _isMovingRight = _isMovingTop = false;
-            _allowMoveFast = false;
-            StartCoroutine(AllowMoveFast());
+            _entryTime = Time.time;
+            _scaleFactor = 0;
         }
         else if (_isHitTop && !_isMovingRight)
         {
@@ -129,8 +125,8 @@ public class SquareRockManager : GameObjectManager
             _isHitTop = false;
             _isMovingRight = true;
             _isMovingLeft = _isMovingTop = _isMovingBottom = false;
-            _allowMoveFast = false;
-            StartCoroutine(AllowMoveFast());
+            _entryTime = Time.time;
+            _scaleFactor = 0;
         }
         else if (_isHitBottom && !_isMovingLeft)
         {
@@ -138,24 +134,28 @@ public class SquareRockManager : GameObjectManager
             _isHitBottom = false;
             _isMovingLeft = true;
             _isMovingTop = _isMovingRight = _isMovingBottom = false;
-            _allowMoveFast = false;
-            StartCoroutine(AllowMoveFast());
+            _entryTime = Time.time;
+            _scaleFactor = 0;
         }
     }
 
-    private IEnumerator BackToBlinkAnimation()
+    private void HandleScaleSpeed()
     {
-        yield return new WaitForSeconds(_delayBackToBlink);
-
-        _anim.SetTrigger("Blink");
-        //Event của LTRB Hit animation
+        if (Time.time - _entryTime >= _timeEachScale)
+        {
+            _entryTime = Time.time;
+            _scaleFactor += _scaleFactorEachDeltaTime;
+        }
+        if (_scaleFactor > 1.0f)
+            _scaleFactor = 1.0f;
+        _tempSpeed = _movementSpeed * _scaleFactor;
+        //Scale vận tốc theo delta time thay vì set 1 phát luôn như cũ
     }
 
-    private IEnumerator AllowMoveFast()
+    private void BackToBlinkAnimation()
     {
-        yield return new WaitForSeconds(_delayMoveFast);
-
-        _allowMoveFast = true;
+        _anim.SetTrigger("Blink");
+        //Event của LTRB Hit animation
     }
 
 }
