@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class NPCManagers : CharactersManager
 {
+    //NPC vẫn còn bug ẩn khi Player ấn T thì chạy vô định ?@@
     //Xử lý thêm nếu Player tiếp chuyện thì tự động bước ra chỗ trước mặt NPC
-    //Có vấn đề ở Prefab Dialog
+    //Học cách bố cục Dialog cũng như Indicator (Font, ...)
 
     [Header("Range")]
     [SerializeField] protected float _triggerConversationRange;
@@ -20,6 +21,10 @@ public class NPCManagers : CharactersManager
 
     [Header("Dialog")]
     [SerializeField] protected Dialog _dialog;
+    [SerializeField] protected int _startIndex; //Chỉ số row trong hộp thoại mà mình muốn bắt đầu
+
+    [Header("Gizmos Radius")]
+    [SerializeField] protected float _gizmosRadius;
 
     protected NPCIdleState _npcIdleState = new();
     protected NPCTalkState _npcTalkState = new();
@@ -40,6 +45,8 @@ public class NPCManagers : CharactersManager
 
     public Dialog GetDialog() { return _dialog; }
 
+    public int GetStartIndex() { return _startIndex; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -57,6 +64,7 @@ public class NPCManagers : CharactersManager
         base.Update();
         IsPlayerNearBy();
         DetectPlayerByRay();
+        UpdateConversationPosition();
         DrawLineDetectPlayer();
         HandleDialogAndIndicator();
     }
@@ -84,7 +92,7 @@ public class NPCManagers : CharactersManager
             Debug.DrawLine(transform.position, _playerRef.position, Color.green);
     }
 
-    protected void HandleDialogAndIndicator()
+    protected virtual void HandleDialogAndIndicator()
     {
         _dialog.ToggleIndicator(_isPlayerNearBy);
 
@@ -92,8 +100,9 @@ public class NPCManagers : CharactersManager
         if (_dialog.Started && !_dialog.IsWaiting)
             _dialog.ToggleIndicator(false);
 
-        if (!_isPlayerNearBy)
-            _dialog.EndDialog();
+        //Kết thúc thoại nếu Player 0 ở gần (rời đi)
+        //if (!_isPlayerNearBy)
+            //_dialog.EndDialog();
         //Debug.Log("Can Talk: " + _hasDetectedPlayer);
 
         //Thêm ĐK Player OnGround thì mới cho phép bắt đầu xl
@@ -101,4 +110,18 @@ public class NPCManagers : CharactersManager
         if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround())
             ChangeState(_npcTalkState);
     }
+
+    protected void UpdateConversationPosition()
+    {
+        if (_isFacingRight)
+            _conversationPos = new Vector2(transform.position.x + _adjustConversationRange, transform.parent.position.y);
+        else
+            _conversationPos = new Vector2(transform.position.x - _adjustConversationRange, transform.parent.position.y);
+    }
+
+    protected void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(ConversationPos, _gizmosRadius);
+    }
+
 }

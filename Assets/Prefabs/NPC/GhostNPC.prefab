@@ -536,6 +536,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _dialog: {fileID: 3953149492650980032}
+  _startIndex: 0
   _disappearTime: 2
   _restTime: 1
   _wanderTime: 2
@@ -659,7 +660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850150, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.82
+      value: -2.93
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850150, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_LocalPosition.y
@@ -759,7 +760,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397902285040, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.15
+      value: -0.45
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397902285041, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_Size.x
@@ -773,6 +774,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d1dd140570bf71c4497f9c7131d2823c, type: 3}
+    - target: {fileID: 5974956398008797077, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956398008797077, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.22
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
 --- !u!114 &3953149492650980032 stripped

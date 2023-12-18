@@ -20,9 +20,6 @@ public class GhostManager : NPCManagers
     [SerializeField] private Transform _leftBound;
     [SerializeField] private Transform _rightBound;
 
-    [Header("Gizmos Radius")]
-    [SerializeField] private float _gizmosRadius;
-
     private GhostAppearState _ghostAppearState = new();
     private GhostIdleState _ghostIdleState = new();
     private GhostWanderState _ghostWanderState = new();
@@ -67,10 +64,6 @@ public class GhostManager : NPCManagers
     protected override void Update()
     {
         base.Update();
-        if (_isFacingRight)
-            _conversationPos = new Vector2(transform.position.x + _adjustConversationRange, transform.parent.position.y);
-        else
-            _conversationPos = new Vector2(transform.position.x - _adjustConversationRange, transform.parent.position.y);
     }
 
     private void FixedUpdate()
@@ -89,11 +82,6 @@ public class GhostManager : NPCManagers
         var playerScript = _playerRef.GetComponent<PlayerStateManager>();
         return _isPlayerNearBy = Vector2.Distance(transform.position, _playerRef.position) <= _triggerConversationRange 
             && _state is not GhostDisappearState && playerScript.GetIsOnGround();
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(ConversationPos, _gizmosRadius);
     }
 
 }

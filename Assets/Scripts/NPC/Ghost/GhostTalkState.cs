@@ -10,7 +10,7 @@ public class GhostTalkState : NPCTalkState
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger("state", (int)EnumState.EGhostState.appear);
         _ghostManager.GetRigidbody2D().velocity = Vector2.zero;
-        HandleInteractWithPlayer(_ghostManager);
+        HandleInteractWithPlayer(_ghostManager, _ghostManager.GetStartIndex());
         //Debug.Log("Talk");
     }
 

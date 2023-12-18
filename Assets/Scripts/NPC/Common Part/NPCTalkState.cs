@@ -2,7 +2,7 @@
 
 public class NPCTalkState : CharacterBaseState
 {
-    private NPCManagers _npcManager;
+    protected NPCManagers _npcManager;
 
     public override void EnterState(CharactersManager charactersManager)
     {
@@ -10,7 +10,7 @@ public class NPCTalkState : CharacterBaseState
         _npcManager = (NPCManagers)charactersManager;
         _npcManager.Animator.SetInteger("state", (int)EnumState.ENPCState.idle);
         _npcManager.GetRigidbody2D().velocity = Vector2.zero;
-        HandleInteractWithPlayer(_npcManager);
+        HandleInteractWithPlayer(_npcManager, _npcManager.GetStartIndex());
         Debug.Log("Talk");
     }
 
@@ -18,6 +18,7 @@ public class NPCTalkState : CharacterBaseState
 
     public override void Update()
     {
+        //Debug.Log("NPC Update");
         //Đéo tiếp chuyện nữa thì trả về Idle State
         if (!_npcManager.GetDialog().Started)
         {
@@ -27,7 +28,7 @@ public class NPCTalkState : CharacterBaseState
         }
     }
 
-    protected void HandleInteractWithPlayer(NPCManagers npcManagers)
+    protected virtual void HandleInteractWithPlayer(NPCManagers npcManagers, int startIndex)
     {
         var playerScript = npcManagers.PlayerRef.GetComponent<PlayerStateManager>();
 
@@ -49,7 +50,10 @@ public class NPCTalkState : CharacterBaseState
         playerScript.IsInteractingWithNPC = true;
 
         //Lấy và bắt đầu Thoại
-        npcManagers.GetDialog().StartDialog();
+        if (startIndex == 0)
+            npcManagers.GetDialog().StartDialog(startIndex);
+        else
+            npcManagers.GetDialog().ContinueDialog(startIndex);
     }
 
     public override void FixedUpdate() { }

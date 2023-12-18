@@ -82,21 +82,28 @@ public class Dialog : MonoBehaviour
         //Dùng để bật/tắt Indicator
     }
 
-    public void StartDialog()
+    public void StartDialog(int index)
     {
         if(_started) 
-            return;
+            return; //prob here: 0 có lock thì 0 đc mà có lock thì lại bị block ở slime :v
+
         _started = true;
         ToggleWindow(true);
         ToggleIndicator(true);
-        GetDialog(0);
+        GetDialog(index);
         //Bắt đầu Thoại
         //Bật Hộp và Indicator cũng như bắt đầu Thoại đầu tiên
     }
 
+    public void ContinueDialog(int index)
+    {
+        ToggleWindow(true);
+        ToggleIndicator(true);
+        GetDialog(index);
+    }
+
     public void EndDialog()
     {
-        //if (_indicatorText == null) return;
         //Trả lại chỉ dẫn ban đầu khi end Thoại
         _indicatorText.text = _indicatorString[0];
         _started = false;
@@ -111,7 +118,8 @@ public class Dialog : MonoBehaviour
         _rowIndex = i; //Chỉ định hàng i
         _charIndex = 0; //Bắt đầu ở chỉ số 0
         _dialogText.text = string.Empty; //Làm "sạch" Thoại hiện tại
-        StartCoroutine(Writing()); //StartCoroutine tương đồng với Invoke,
+        StartCoroutine(Writing());
+        //StartCoroutine tương đồng với Invoke,
         //có thể cải thiện hiệu năng đáng kể, hàm đc gọi trong nó phải là kiểu IEnumerator
         //Ở đây gọi thằng Writing
 
@@ -131,7 +139,6 @@ public class Dialog : MonoBehaviour
         string currentDialog = _dialog[_rowIndex];
 
         //Render Thoại(Render từng chữ) lên màn hình
-        //if(_rowIndex > _dialog.)
         _dialogText.text += currentDialog[_charIndex];
 
         //Tăng chỉ số của char
@@ -147,7 +154,10 @@ public class Dialog : MonoBehaviour
         else
         {
             _indicatorText.text = string.Empty;
-            _indicatorText.text = _indicatorString[1]; //Render chỉ dẫn thứ 2
+            if (_rowIndex > 0)
+                _indicatorText.text = _indicatorString[1]; //Render chỉ dẫn thứ 2
+            else 
+                _indicatorText.text = _indicatorString[0]; 
             ToggleIndicator(true);
             _isWaiting = true;
         }
