@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro; //TMP = TextMeshPro
-using System.Net.NetworkInformation;
 
 public class Dialog : MonoBehaviour
 {
@@ -97,6 +96,7 @@ public class Dialog : MonoBehaviour
 
     public void EndDialog()
     {
+        //if (_indicatorText == null) return;
         //Trả lại chỉ dẫn ban đầu khi end Thoại
         _indicatorText.text = _indicatorString[0];
         _started = false;

@@ -1,13 +1,12 @@
 using UnityEngine;
 
-public class GhostIdleState : CharacterBaseState
+public class GhostIdleState : NPCIdleState
 {
     private GhostManager _ghostManager;
     private float _entryTime;
 
     public override void EnterState(CharactersManager charactersManager)
     {
-        base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger("state", (int)EnumState.EGhostState.idle);
         _ghostManager.GetRigidbody2D().velocity = Vector2.zero;
@@ -15,10 +14,7 @@ public class GhostIdleState : CharacterBaseState
         //Debug.Log("Idle");
     }
 
-    public override void ExitState()
-    {
-        base.ExitState();
-    }
+    public override void ExitState() { }
 
     public override void Update()
     {
@@ -31,8 +27,5 @@ public class GhostIdleState : CharacterBaseState
         return Time.time - _entryTime >= _ghostManager.RestTime;
     }
 
-    public override void FixedUpdate()
-    {
-        
-    }
+    public override void FixedUpdate() { }
 }

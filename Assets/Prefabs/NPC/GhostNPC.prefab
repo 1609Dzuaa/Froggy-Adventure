@@ -483,7 +483,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 4740742658319907719, guid: d4f2f936f814df24fb7559370c465cdc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -535,6 +535,7 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  _dialog: {fileID: 3953149492650980032}
   _disappearTime: 2
   _restTime: 1
   _wanderTime: 2
@@ -542,7 +543,6 @@ MonoBehaviour:
   _leftBound: {fileID: 9003253104994312433}
   _rightBound: {fileID: 9003253105022309411}
   _gizmosRadius: 0.2
-  _dialog: {fileID: 3953149492650980032}
 --- !u!50 &9003253105144916235
 Rigidbody2D:
   serializedVersion: 4
@@ -612,6 +612,14 @@ PrefabInstance:
     - target: {fileID: 5974956396106680758, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956396106680759, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_Size.x
+      value: 2.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956396106680759, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_Size.y
+      value: 2.56
       objectReference: {fileID: 0}
     - target: {fileID: 5974956396106680759, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_SortingLayer
@@ -752,6 +760,14 @@ PrefabInstance:
     - target: {fileID: 5974956397902285040, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956397902285041, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_Size.x
+      value: 2.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956397902285041, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_Size.y
+      value: 2.56
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397902285041, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_Sprite

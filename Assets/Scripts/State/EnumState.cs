@@ -29,6 +29,10 @@
     public enum EHedgehogState
     { idle, spikeOut, gotHit, spikeIn, spikeIdle }
 
+
+    public enum ENPCState
+    { idle }
+
     public enum EGhostState
     { appear, idle, wander, disappear, gotHit }
 

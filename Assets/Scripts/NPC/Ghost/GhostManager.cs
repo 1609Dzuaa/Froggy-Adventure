@@ -23,9 +23,6 @@ public class GhostManager : NPCManagers
     [Header("Gizmos Radius")]
     [SerializeField] private float _gizmosRadius;
 
-    [Header("Dialog")]
-    [SerializeField] private Dialog _dialog;
-
     private GhostAppearState _ghostAppearState = new();
     private GhostIdleState _ghostIdleState = new();
     private GhostWanderState _ghostWanderState = new();
@@ -43,8 +40,6 @@ public class GhostManager : NPCManagers
     public Transform LeftBound { get { return _leftBound; } }
 
     public Transform RightBound { get { return _rightBound; } }
-
-    public Dialog GetDialog() { return _dialog; }
 
     public GhostAppearState GetGhostAppearState() { return _ghostAppearState; }
 
@@ -66,6 +61,7 @@ public class GhostManager : NPCManagers
         base.Start();
         _state = _ghostAppearState;
         _state.EnterState(this);
+        _npcTalkState = _ghostTalkState;
     }
 
     protected override void Update()
@@ -75,21 +71,6 @@ public class GhostManager : NPCManagers
             _conversationPos = new Vector2(transform.position.x + _adjustConversationRange, transform.parent.position.y);
         else
             _conversationPos = new Vector2(transform.position.x - _adjustConversationRange, transform.parent.position.y);
-
-        //Thêm ĐK Player OnGround thì mới cho phép bắt đầu xl
-        var playerScript = _playerRef.GetComponent<PlayerStateManager>();
-        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround())
-            ChangeState(_ghostTalkState);
-
-        _dialog.ToggleIndicator(_isPlayerNearBy);
-
-        //Nếu đã bắt đầu Thoại và chưa đến đoạn chờ thì tắt Indicator
-        if (_dialog.Started && !_dialog.IsWaiting)
-            _dialog.ToggleIndicator(false);
-
-        if (!_isPlayerNearBy)
-            _dialog.EndDialog();
-        //Debug.Log("Can Talk: " + _hasDetectedPlayer);
     }
 
     private void FixedUpdate()

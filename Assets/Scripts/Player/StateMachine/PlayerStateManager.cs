@@ -261,7 +261,7 @@ public class PlayerStateManager : MonoBehaviour
                 if (transform.position.x > InteractPosition.x + GameConstants.STARTCONVERSATIONRANGE)
                 {
                     FlippingSprite();
-                    Debug.Log("Flip to Left");
+                    //Debug.Log("Flip to Left");
                 }
             }
             else
@@ -269,7 +269,7 @@ public class PlayerStateManager : MonoBehaviour
                 if (transform.position.x < InteractPosition.x - GameConstants.STARTCONVERSATIONRANGE)
                 {
                     FlippingSprite();
-                    Debug.Log("Flip to Right");
+                    //Debug.Log("Flip to Right");
                 }
             }
         }
