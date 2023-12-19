@@ -229,6 +229,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         NPCCheck();
         DrawRayDetectNPC();
+        //Debug.Log("Interact?: " + _isInteractingWithNPC);
 
         if (_isInteractingWithNPC)
         {
@@ -247,7 +248,6 @@ public class PlayerStateManager : MonoBehaviour
         HandleFlipSprite();
         HandleDustVelocity();
         SpawnDust();
-        //Debug.Log("iOG: " + isOnGround);
     }
 
     private void UpdateInteractWithNPC()

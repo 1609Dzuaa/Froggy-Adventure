@@ -24,9 +24,15 @@ public class Dialog : MonoBehaviour
     private bool _started; //Biến đánh dấu đã bắt đầu Thoại
     private bool _isWaiting; //Biến đánh dấu chờ Player tương tác
 
+    //Biến check nếu bắt chuyện theo cách bị động (0 nhấn T mà làm gì đó NPC trước)
+    //VD: với Slime thì Player có thể chọn nhấn T hoặc Jump lên đầu nó để Start Conversation(SC)
+    private bool _startConversationPassive;
+
     public bool Started { get { return _started; } }
 
     public bool IsWaiting { get { return _isWaiting; } }
+
+    public bool StartConversationPassive { set { _startConversationPassive = value; } }
 
     private void Awake()
     {
@@ -54,9 +60,15 @@ public class Dialog : MonoBehaviour
         //0 có 2 dòng dưới thì khi quay phải text sẽ bị ngược
         _dialogText.transform.eulerAngles = Vector3.zero;
 
-        //Chờ Player tương tác (Nhấn Space)
-        if (_isWaiting && Input.GetKeyDown(KeyCode.Space))
+        //Chờ Player tương tác (Nhấn Space nếu SC chủ động hoặc T nếu SC bị động)
+        //Mục đích của SC bị động là nhấn T sẽ lấy string trò chuyện tiếp theo luôn
+        if (_isWaiting && Input.GetKeyDown(KeyCode.Space) && !_startConversationPassive
+            || _isWaiting && Input.GetKeyDown(KeyCode.T) && _startConversationPassive)
         {
+            //Restart cho SC bị động lần sau
+            if (_startConversationPassive) 
+                _startConversationPassive = false;
+
             _isWaiting = false; //0 phải đợi nữa
             _rowIndex++; //Xuống hàng kế tiếp
             
@@ -95,12 +107,12 @@ public class Dialog : MonoBehaviour
         //Bật Hộp và Indicator cũng như bắt đầu Thoại đầu tiên
     }
 
-    public void ContinueDialog(int index)
+    /*public void ContinueDialog(int index)
     {
         ToggleWindow(true);
         ToggleIndicator(true);
         GetDialog(index);
-    }
+    }*/
 
     public void EndDialog()
     {

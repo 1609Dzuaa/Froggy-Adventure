@@ -64,9 +64,9 @@ public class NPCManagers : CharactersManager
         base.Update();
         IsPlayerNearBy();
         DetectPlayerByRay();
-        UpdateConversationPosition();
         DrawLineDetectPlayer();
         HandleDialogAndIndicator();
+        UpdateConversationPosition();
     }
 
     protected virtual bool IsPlayerNearBy()
@@ -103,12 +103,14 @@ public class NPCManagers : CharactersManager
         //Kết thúc thoại nếu Player 0 ở gần (rời đi)
         //if (!_isPlayerNearBy)
             //_dialog.EndDialog();
-        //Debug.Log("Can Talk: " + _hasDetectedPlayer);
 
         //Thêm ĐK Player OnGround thì mới cho phép bắt đầu xl
         var playerScript = _playerRef.GetComponent<PlayerStateManager>();
-        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround())
+        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround() && _state is not NPCTalkState)
+        {
+            playerScript.IsInteractingWithNPC = true;
             ChangeState(_npcTalkState);
+        }
     }
 
     protected void UpdateConversationPosition()
@@ -119,7 +121,7 @@ public class NPCManagers : CharactersManager
             _conversationPos = new Vector2(transform.position.x - _adjustConversationRange, transform.parent.position.y);
     }
 
-    protected void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.DrawSphere(ConversationPos, _gizmosRadius);
     }

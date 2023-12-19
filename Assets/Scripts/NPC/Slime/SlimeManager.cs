@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class SlimeManager : NPCManagers
 {
+    //Với Slime thì SC bị động là bị Player Jump lên đầu
+    //Có thêm "lỗi" là nếu Player Jump đoạn box trigger ngoài rìa thì add 1 lượng force lớn hơn bthg ?
+
     [SerializeField] private int _startIndexIfGotHit;
 
     private SlimeTalkState _slimeTalkState = new();
     private SlimeGotHitState _slimeGotHitState = new();
     private bool _hasGotHit;
-    private bool _hasStartConversation;
+    //Đánh dấu nếu đã SC theo cách bị động thì lấy index IfGotHit cho Dialog
+    private bool _hasStartConversationPassive;
 
     public int GetStartIndexIfGotHit() { return _startIndexIfGotHit; }
 
-    public bool HasStartConversation { get {  return _hasStartConversation; } set { _hasStartConversation = value; } }
+    public bool HasStartConversationPassive { get {  return _hasStartConversationPassive; } set { _hasStartConversationPassive = value; } }
 
     protected override void Awake()
     {
@@ -58,7 +62,7 @@ public class SlimeManager : NPCManagers
             playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
             playerScript.GetRigidBody2D().AddForce(playerScript.GetJumpOnEnemiesForce(), ForceMode2D.Impulse);
             ChangeState(_slimeGotHitState);
-            _hasStartConversation = true;
+            _hasStartConversationPassive = true;
         }
     }
 
@@ -69,22 +73,8 @@ public class SlimeManager : NPCManagers
         //Event của animation GotHit
     }
 
-    protected override void HandleDialogAndIndicator()
+    protected override void OnDrawGizmos()
     {
-        _dialog.ToggleIndicator(_isPlayerNearBy);
-
-        //Nếu đã bắt đầu Thoại và chưa đến đoạn chờ thì tắt Indicator
-        if (_dialog.Started && !_dialog.IsWaiting)
-            _dialog.ToggleIndicator(false);
-
-        //Kết thúc thoại nếu Player 0 ở gần (rời đi)
-        //if (!_isPlayerNearBy)
-        //_dialog.EndDialog();
-        //Debug.Log("Can Talk: " + _hasDetectedPlayer);
-
-        //Thêm ĐK Player OnGround thì mới cho phép bắt đầu xl
-        var playerScript = _playerRef.GetComponent<PlayerStateManager>();
-        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround())
-            ChangeState(_slimeTalkState);
+        base.OnDrawGizmos();
     }
 }

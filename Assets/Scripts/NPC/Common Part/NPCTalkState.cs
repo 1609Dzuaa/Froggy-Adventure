@@ -46,14 +46,11 @@ public class NPCTalkState : CharacterBaseState
         //Gán vị trí cần di chuyển cho Player
         playerScript.InteractPosition = npcManagers.ConversationPos;
 
-        //Đánh dấu đang tương tác với NPC, lock change state
+        //Đánh dấu đang tương tác với NPC, lock change state chủ động của Player
         playerScript.IsInteractingWithNPC = true;
 
         //Lấy và bắt đầu Thoại
-        if (startIndex == 0)
-            npcManagers.GetDialog().StartDialog(startIndex);
-        else
-            npcManagers.GetDialog().ContinueDialog(startIndex);
+        npcManagers.GetDialog().StartDialog(startIndex);
     }
 
     public override void FixedUpdate() { }

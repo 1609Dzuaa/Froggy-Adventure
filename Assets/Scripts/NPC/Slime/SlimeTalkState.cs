@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SlimeTalkState : NPCTalkState
 {
@@ -12,18 +12,23 @@ public class SlimeTalkState : NPCTalkState
         _slimeManager.Animator.SetInteger("state", (int)EnumState.ESlimState.idle);
         _slimeManager.GetRigidbody2D().velocity = Vector2.zero;
 
-        if (_slimeManager.HasStartConversation)
-            HandleInteractWithPlayer(_slimeManager, _slimeManager.GetStartIndex() + 1);
+        //Xử lý nếu SC bị động thì lấy IndexIfGH
+        //Còn 0 thì lấy StartIndex bthg
+        if (_slimeManager.HasStartConversationPassive)
+            HandleInteractWithPlayer(_slimeManager, _slimeManager.GetStartIndexIfGotHit());
         else
             HandleInteractWithPlayer(_slimeManager, _slimeManager.GetStartIndex());
         Debug.Log("Slime Talk");
     }
 
-    public override void ExitState() { }
+    public override void ExitState() 
+    { 
+        base.ExitState();
+        _slimeManager.HasStartConversationPassive = false; //Reset cho lần sau
+    }
 
     public override void Update()
     {
-        //Debug.Log("Slime Update");
         base.Update();
     }
 
