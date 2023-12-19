@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    //Thêm cơ chế Move Cam cơ bản, trước mắt tạm ổn
-    //NHƯNG có thể vẫn còn bug nên cần xem lại sau
+    //Move Cam về phía trước và thu Cam về Player đã mượt hơn
+    //Cân nhắc cơ chế đi quá nửa màn hình r hẵng move Cam
+    //Hoặc move Cam theo độ Smooth
 
     [Header("Character References")]
-    [SerializeField] private Transform _playerRef;
+    [SerializeField] private Transform _targetToFollow;
 
     [Header("TriggerZone Field")]
     [SerializeField] private Transform _triggerZone;
-    [SerializeField] private Vector3 _distanceMove;
+    [SerializeField] private float _distanceMove;
 
     private bool _hasTriggered;
     private bool _hasLeavedTriggerZone;
@@ -35,38 +36,54 @@ public class CameraController : MonoBehaviour
         if (_instance == null)
             _instance = this;
 
-        this.transform.position = new Vector3(_playerRef.position.x, _playerRef.position.y, _playerRef.position.z - 10);
+        this.transform.position = new Vector3(_targetToFollow.position.x, _targetToFollow.position.y, _targetToFollow.position.z - 10);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (_hasTriggered)
-            MovingToNewPosition(_posNeedToMove);
+            FollowNewTarget(_posNeedToMove);
         else if (_hasLeavedTriggerZone && _mustMoveBack)
-            MovingBackToPlayer(_playerRef);
+            FollowBackToPlayer(_targetToFollow);
         else
-            MovingALongPlayer();
+            FollowALongPlayer();
     }
 
-    private void MovingALongPlayer()
+    private void FollowALongPlayer()
     {
-        this.transform.position = new Vector3(_playerRef.position.x, _playerRef.position.y, _playerRef.position.z - 10);
+        this.transform.position = new Vector3(_targetToFollow.position.x, _targetToFollow.position.y, _targetToFollow.position.z - 10);
     }
 
-    private void MovingToNewPosition(Transform newPos)
+    private void FollowNewTarget(Transform newTarget)
     {
-        if (Mathf.Abs(transform.position.x - newPos.position.x) > GameConstants.CAMERASAFERANGE)
-            transform.position += new Vector3(_distanceMove.x, _distanceMove.y, _distanceMove.z);
+        if (Vector2.Distance(transform.position, newTarget.position) > GameConstants.CAMERASAFERANGE)
+        {
+            Vector3 _newPos = new Vector3(newTarget.position.x, newTarget.position.y, newTarget.position.z - 10);
+            transform.position = Vector3.Lerp(transform.position, _newPos, _distanceMove * Time.deltaTime);
+
+            //Lerp: Nhận vào 3 tham số là 2 điểm a, b và tỉ lệ t
+            //Nó sẽ trả về giá trị nằm giữa 2 điểm a, b theo ct:
+            //Value = a*x - (b+a)*x*t
+
+            //Dùng Nội Suy Tuyến Tính (LERP) để di chuyển cam theo target cho mượt
+            //Vì dùng DeltaTime nên giá trị mà Lerp trả về sẽ 0 bao giờ = giá trị thực tế
+            //nên mình lấy ~ (Dùng GameConstants.CAMERASAFERANGE)
+            //https://www.youtube.com/watch?v=MyVY-y_jK1I 4:10
+        }
         _mustMoveBack = true;
         //Hàm này để Move Cam tới vị trí mới và đánh dấu cần phải move back về player
     }
 
-    private void MovingBackToPlayer(Transform player)
+    private void FollowBackToPlayer(Transform player)
     {
-        if (Mathf.Abs(transform.position.x - player.position.x) > GameConstants.CAMERASAFERANGE)
-            transform.position -= new Vector3(_distanceMove.x, _distanceMove.y, _distanceMove.z);
+        if (Vector2.Distance(transform.position, player.position) > GameConstants.CAMERASAFERANGE)
+        {
+            Vector3 newPos = new Vector3(player.position.x, player.position.y, player.position.z - 10);
+            transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * _distanceMove);
+        }
         else
             _mustMoveBack = false;
+
         //Hàm này để Move Cam từ từ về Player sau khi rời TriggerZone và đánh dấu (nếu đủ đk) 0 cần move back
     }
 }
