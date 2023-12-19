@@ -107,13 +107,6 @@ public class Dialog : MonoBehaviour
         //Bật Hộp và Indicator cũng như bắt đầu Thoại đầu tiên
     }
 
-    /*public void ContinueDialog(int index)
-    {
-        ToggleWindow(true);
-        ToggleIndicator(true);
-        GetDialog(index);
-    }*/
-
     public void EndDialog()
     {
         //Trả lại chỉ dẫn ban đầu khi end Thoại
