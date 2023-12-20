@@ -66,12 +66,12 @@ public class Dialog : MonoBehaviour
             || _isWaiting && Input.GetKeyDown(KeyCode.T) && _startConversationPassive)
         {
             //Restart cho SC bị động lần sau
-            if (_startConversationPassive) 
+            if (_startConversationPassive)
                 _startConversationPassive = false;
 
             _isWaiting = false; //0 phải đợi nữa
             _rowIndex++; //Xuống hàng kế tiếp
-            
+
             //Check hàng hiện tại CHƯA vượt quá hàng thực tế thì
             //bắt đầu Thoại hàng kế tiếp
             //Còn 0 thì kết thúc Thoại
@@ -114,6 +114,7 @@ public class Dialog : MonoBehaviour
         _started = false;
         StopAllCoroutines();
         ToggleWindow(false);
+        Debug.Log("End");
         //Kết thúc Thoại
         //Dừng mọi Coroutines và tắt Hộp
     }
@@ -159,10 +160,10 @@ public class Dialog : MonoBehaviour
         else
         {
             _indicatorText.text = string.Empty;
-            if (_rowIndex > 0)
+            if (_rowIndex > 0 && _indicatorString.Count > 1)
                 _indicatorText.text = _indicatorString[1]; //Render chỉ dẫn thứ 2
-            else 
-                _indicatorText.text = _indicatorString[0]; 
+            else
+                _indicatorText.text = _indicatorString[0];
             ToggleIndicator(true);
             _isWaiting = true;
         }

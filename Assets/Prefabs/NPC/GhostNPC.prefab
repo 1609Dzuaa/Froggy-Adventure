@@ -537,13 +537,14 @@ MonoBehaviour:
     m_Bits: 128
   _dialog: {fileID: 3953149492650980032}
   _startIndex: 0
+  _gizmosRadius: 0.2
+  _needTriggerIndicator: 1
   _disappearTime: 2
   _restTime: 1
   _wanderTime: 2
   _wanderSpeed: {x: 2, y: 0}
   _leftBound: {fileID: 9003253104994312433}
   _rightBound: {fileID: 9003253105022309411}
-  _gizmosRadius: 0.2
 --- !u!50 &9003253105144916235
 Rigidbody2D:
   serializedVersion: 4

@@ -26,6 +26,9 @@ public class NPCManagers : CharactersManager
     [Header("Gizmos Radius")]
     [SerializeField] protected float _gizmosRadius;
 
+    [Header("Indicator")]
+    [SerializeField] protected bool _needTriggerIndicator;
+
     protected NPCIdleState _npcIdleState = new();
     protected NPCTalkState _npcTalkState = new();
 
@@ -94,7 +97,8 @@ public class NPCManagers : CharactersManager
 
     protected virtual void HandleDialogAndIndicator()
     {
-        _dialog.ToggleIndicator(_isPlayerNearBy);
+        if (_needTriggerIndicator)
+            _dialog.ToggleIndicator(_isPlayerNearBy);
 
         //Nếu đã bắt đầu Thoại và chưa đến đoạn chờ thì tắt Indicator
         if (_dialog.Started && !_dialog.IsWaiting)

@@ -32,6 +32,7 @@ public class PlayerStateManager : MonoBehaviour
     private bool _hasChange;
     private bool _hasFlip;
     private bool _hasDetectedNPC;
+    private bool _hasBeenDisabled;
     private Vector2 _InteractPosition;
     private int OrangeCount = 0;
 
@@ -227,6 +228,9 @@ public class PlayerStateManager : MonoBehaviour
 
     void Update()
     {
+        if (_hasBeenDisabled) 
+            return;
+
         NPCCheck();
         DrawRayDetectNPC();
         //Debug.Log("Interact?: " + _isInteractingWithNPC);
@@ -450,5 +454,16 @@ public class PlayerStateManager : MonoBehaviour
             dustVelocity.x = 0.3f;
 
         //Nhược điểm lớn là nếu thay đổi velo ngoài Inspector phải vào đây sửa @@ 
+    }
+
+    public void Disable()
+    {
+        ChangeState(idleState);
+        _hasBeenDisabled = true;
+    }
+
+    public void Enable()
+    {
+        _hasBeenDisabled = false;
     }
 }

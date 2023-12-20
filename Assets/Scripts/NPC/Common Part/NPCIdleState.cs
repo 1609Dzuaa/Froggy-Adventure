@@ -7,7 +7,7 @@ public class NPCIdleState : CharacterBaseState
         base.EnterState(charactersManager);
         _charactersManager.Animator.SetInteger("state", (int)EnumState.ENPCState.idle);
         _charactersManager.GetRigidbody2D().velocity = Vector2.zero;
-        Debug.Log("NPC Idle");
+        //Debug.Log("NPC Idle");
     }
 
     public override void ExitState() { }
