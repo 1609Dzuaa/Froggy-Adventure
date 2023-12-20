@@ -7,6 +7,15 @@ using UnityEngine.UI;
 public class DealerManager : NPCManagers
 {
     //Hết Text giới thiệu thì bắt đầu thoại
+    //Đã xong, tìm cách chỉnh cam về player và làm Iventory cho Player, Shop cho Dealer
+
+    //Use Signal as communication channel between Timeline and other object in Scene
+    //Timeline Signal has 3 pieces:
+    //Signal Assets
+    //Signal Emitter
+    //Signal Receiver
+    //Create Signal Emitter that will take Signal Assets
+    //Receiver will listen for signal from Emitter and execute signal orders
 
     [Header("Text Related")]
     [SerializeField] private Text _txtOverHead;
@@ -15,11 +24,11 @@ public class DealerManager : NPCManagers
     [SerializeField] private float _timeEnableTxt;
     [SerializeField] private float _timeEachIncrease;
     [SerializeField] private float _alphaEachIncrease;
+    [SerializeField] private float _decreaseDelay;
 
     private DealerTalkState _dealerTalkState = new();
 
-    private bool _hasEnabled;
-    private bool _hasDisabled;
+    private bool _mustDecrease;
     private float _entryTime;
     private float _alpha;
 
@@ -42,41 +51,59 @@ public class DealerManager : NPCManagers
 
     protected override void Update()
     {
-        if (CameraController.GetInstance().HasTriggered && !_hasEnabled)
-            StartCoroutine(EnableText());
-
-        if (_txtOverHead.enabled)
+        if (_txtOverHead.enabled && !_mustDecrease)
             IncreaseTextAlpha();
 
-        //Xem lại tăng giảm alpha lúc mượt lúc 0
+        if (_mustDecrease)
+            DecreaseTextAlpha();
+
         //Debug.Log("Color: " + _txtOverHead.color.a);
         base.Update();
     }
 
-    private IEnumerator EnableText()
+    public void StartCoroutineText()
+    {
+        StartCoroutine(Enable());
+        //Đhs để IEnumerator thì đéo xài ngoài Inspector đc @@
+    }
+
+    private IEnumerator Enable()
     {
         yield return new WaitForSeconds(_delayTxtEnable);
 
-        //IncreaseTextAlpha();
         _txtOverHead.enabled = true;
-        _hasEnabled = true;
         _entryTime = Time.time; //Bấm giờ để tăng độ Alpha theo thgian cho Text
 
-        if (!_hasDisabled)
-            StartCoroutine(DisableText());
+        StartCoroutine(DisableText());
     }
 
     private void IncreaseTextAlpha()
     {
-        //_hasIncreased = true;
         if (_alpha >= 1) 
             return;
         if (Time.time - _entryTime >= _timeEachIncrease)
         {
             _alpha += _alphaEachIncrease;
             Color textColor = _txtOverHead.color;
-            textColor.a = _alpha; // Thiết lập alpha (độ trong suốt) về 0
+            textColor.a = _alpha;
             _txtOverHead.color = textColor;
+            Debug.Log("Color: " + _txtOverHead.color.a);
+            _entryTime = Time.time;
+        }
+    }
+
+    private void DecreaseTextAlpha()
+    {
+        if (_alpha <= 0)
+            return;
+        if (Time.time - _entryTime >= _timeEachIncrease)
+        {
+            _alpha -= _alphaEachIncrease;
+            Color textColor = _txtOverHead.color;
+            textColor.a = _alpha;
+            _txtOverHead.color = textColor;
+            if (_alpha <= 0f)
+                ChangeState(_dealerTalkState);
             Debug.Log("Color: " + _txtOverHead.color.a);
             _entryTime = Time.time;
         }
@@ -86,17 +113,14 @@ public class DealerManager : NPCManagers
     {
         yield return new WaitForSeconds(_timeEnableTxt);
 
-        _txtOverHead.enabled = false;
-        _hasDisabled = true;    
-
-        ChangeState(_dealerTalkState);
-       // _dialog.StartDialog(_startIndex);
-        //_dialog.StartConversationPassive = true;
+        StartCoroutine(MustDecrease());
     }
 
-    /*public void LookAtMe()
+    private IEnumerator MustDecrease()
     {
-        CameraController.GetInstance().SetTargetToFollow = transform;
-    }*/
+        yield return null;
+
+        _mustDecrease = true;
+    }
 
 }

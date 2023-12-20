@@ -465,5 +465,6 @@ public class PlayerStateManager : MonoBehaviour
     public void Enable()
     {
         _hasBeenDisabled = false;
+        Debug.Log("Enable");
     }
 }
