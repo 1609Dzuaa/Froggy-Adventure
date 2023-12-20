@@ -18,15 +18,17 @@ public class CameraController : MonoBehaviour
     private bool _hasTriggered;
     private bool _hasLeavedTriggerZone;
     private bool _mustMoveBack;
-    private Transform _posNeedToMove;
+    private Transform _targetNeedToFollow;
 
     private static CameraController _instance;
+
+    public Transform SetTargetToFollow { set { _targetToFollow = value; } }
 
     public bool HasTriggered { get { return _hasTriggered; } set { _hasTriggered = value; } }
 
     public bool HasLeavedTriggerZone { set { _hasLeavedTriggerZone = value; } }
 
-    public Transform PosNeedToMove { set {  _posNeedToMove = value; } }
+    public Transform TargetNeedToFollow { set {  _targetNeedToFollow = value; } }
 
     public static CameraController GetInstance() { return _instance; }
 
@@ -42,7 +44,7 @@ public class CameraController : MonoBehaviour
     private void LateUpdate()
     {
         if (_hasTriggered)
-            FollowNewTarget(_posNeedToMove);
+            FollowNewTarget(_targetNeedToFollow);
         else if (_hasLeavedTriggerZone && _mustMoveBack)
             FollowBackToPlayer(_targetToFollow);
         else

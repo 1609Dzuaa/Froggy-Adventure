@@ -7,7 +7,7 @@ public class TriggerZone : MonoBehaviour
     //Object vô hình này sẽ là điểm mà khi Player trigger nó,
     //cam sẽ tự động điều chỉnh vị trí theo ý mình muốn
 
-    [SerializeField] Transform _posNeedToMove;
+    [SerializeField] Transform _targetNeedToFollow;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -15,7 +15,7 @@ public class TriggerZone : MonoBehaviour
         {
             CameraController.GetInstance().HasTriggered = true;
             CameraController.GetInstance().HasLeavedTriggerZone = false;
-            CameraController.GetInstance().PosNeedToMove = _posNeedToMove;
+            CameraController.GetInstance().TargetNeedToFollow = _targetNeedToFollow;
             Debug.Log("Trigger");
         }
     }
