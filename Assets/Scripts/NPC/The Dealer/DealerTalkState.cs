@@ -18,9 +18,11 @@ public class DealerTalkState : NPCTalkState
 
     public override void ExitState()
     {
+        //Nói xong thì chạy Timeline lia cam về Player
+        _dealerManager.NeedTriggerIndicator = true;
+        //_dealerManager.TargetCam.SetActive(false);
+        _dealerManager.TimelineBackToPlayer.Play();
         //base.ExitState();
-        var playerScript = _dealerManager.PlayerRef.GetComponent<PlayerStateManager>();
-        playerScript.Enable();
     }
 
     public override void Update()

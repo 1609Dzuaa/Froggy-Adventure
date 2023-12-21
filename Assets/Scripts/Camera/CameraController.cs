@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    //Sử dụng Cinemachine thay vì tự move để cho nó mượt mà hơn 
+
     //Move Cam về phía trước và thu Cam về Player đã mượt hơn
     //Cân nhắc cơ chế đi quá nửa màn hình r hẵng move Cam
     //Hoặc move Cam theo độ Smooth

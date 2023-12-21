@@ -44,6 +44,8 @@ public class NPCManagers : CharactersManager
 
     public bool HasDetectedPlayer { get { return _hasDetectedPlayer; } }
 
+    public bool NeedTriggerIndicator { set { _needTriggerIndicator = value; } }
+
     public Vector2 ConversationPos { get { return _conversationPos; } set { _conversationPos = value; } }
 
     public Dialog GetDialog() { return _dialog; }

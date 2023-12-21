@@ -8,6 +8,7 @@ public class TriggerZone : MonoBehaviour
     //Object vô hình này sẽ là điểm mà khi Player trigger nó,
     //cam sẽ tự động điều chỉnh vị trí theo ý mình muốn
 
+    [Header("Timeline Reference")]
     [SerializeField] private PlayableDirector _playableDirector;
 
     private void Awake()
@@ -32,41 +33,8 @@ public class TriggerZone : MonoBehaviour
                 return;
             }
             _playableDirector.Play();
+            Debug.Log("Trigger Play");
             GetComponent<BoxCollider2D>().enabled = false;
         }
     }
-
-    /*[SerializeField] private Transform _targetNeedToFollow;
-    [SerializeField] private bool _canDisablePlayer;
-    //[SerializeField] private PlayableDirector _playableDirector;
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.name == "Player" && !CameraController.GetInstance().HasTriggered)
-        {
-            /*_playableDirector.enabled = true;
-            _playableDirector.Play();
-            if(_canDisablePlayer)
-            {
-                var PlayerScript = collision.GetComponent<PlayerStateManager>();
-                PlayerScript.Disable();
-                Debug.Log("Dis");
-            }
-            CameraController.GetInstance().HasTriggered = true;
-            CameraController.GetInstance().HasLeavedTriggerZone = false;
-            CameraController.GetInstance().TargetNeedToFollow = _targetNeedToFollow;
-            //GetComponent<BoxCollider2D>().enabled = false;
-            Debug.Log("Trigger");
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.name == "Player" && CameraController.GetInstance().HasTriggered)
-        {
-            CameraController.GetInstance().HasTriggered = false;
-            CameraController.GetInstance().HasLeavedTriggerZone = true;
-            Debug.Log("Leave");
-        }
-    }*/
 }

@@ -8,6 +8,10 @@ public class DealerManager : NPCManagers
 {
     //Hết Text giới thiệu thì bắt đầu thoại
     //Đã xong, tìm cách chỉnh cam về player và làm Iventory cho Player, Shop cho Dealer
+    //Để ý Wrap Mode trong Timeline:
+    //Hold: Khi Tl kết thúc thì giữ nguyên hiện trạng
+    //Loop: Y như tên, lặp lại Tl
+    //None: Tl kết thúc thì quay về ban đầu (0 lặp)
 
     //Use Signal as communication channel between Timeline and other object in Scene
     //Timeline Signal has 3 pieces:
@@ -26,11 +30,16 @@ public class DealerManager : NPCManagers
     [SerializeField] private float _alphaEachIncrease;
     [SerializeField] private float _decreaseDelay;
 
+    [Header("Timeline Reference")]
+    [SerializeField] PlayableDirector _timelineBackToPlayer;
+
     private DealerTalkState _dealerTalkState = new();
 
     private bool _mustDecrease;
     private float _entryTime;
     private float _alpha;
+
+    public PlayableDirector TimelineBackToPlayer { get { return _timelineBackToPlayer; } set { _timelineBackToPlayer = value; } }
 
     protected override void Awake()
     {
@@ -61,7 +70,7 @@ public class DealerManager : NPCManagers
         base.Update();
     }
 
-    public void StartCoroutineText()
+    public void StartIntroduceText()
     {
         StartCoroutine(Enable());
         //Đhs để IEnumerator thì đéo xài ngoài Inspector đc @@
@@ -87,7 +96,7 @@ public class DealerManager : NPCManagers
             Color textColor = _txtOverHead.color;
             textColor.a = _alpha;
             _txtOverHead.color = textColor;
-            Debug.Log("Color: " + _txtOverHead.color.a);
+            //Debug.Log("Color: " + _txtOverHead.color.a);
             _entryTime = Time.time;
         }
     }
@@ -104,7 +113,7 @@ public class DealerManager : NPCManagers
             _txtOverHead.color = textColor;
             if (_alpha <= 0f)
                 ChangeState(_dealerTalkState);
-            Debug.Log("Color: " + _txtOverHead.color.a);
+            //Debug.Log("Color: " + _txtOverHead.color.a);
             _entryTime = Time.time;
         }
     }
