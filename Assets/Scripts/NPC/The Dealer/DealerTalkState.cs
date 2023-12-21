@@ -20,7 +20,6 @@ public class DealerTalkState : NPCTalkState
     {
         //Nói xong thì chạy Timeline lia cam về Player
         _dealerManager.NeedTriggerIndicator = true;
-        //_dealerManager.TargetCam.SetActive(false);
         _dealerManager.TimelineBackToPlayer.Play();
         //base.ExitState();
     }

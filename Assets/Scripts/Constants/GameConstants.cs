@@ -10,4 +10,9 @@
     public const float DELAYPLAYERRUNSTATE = 0.1f;
 
     #endregion
+
+    #region Shield String Constants
+    public const string RUNNINGOUT = "RunningOut";
+    public const string IDLE = "Idle";
+    #endregion
 }

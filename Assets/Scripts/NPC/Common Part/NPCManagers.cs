@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NPCManagers : CharactersManager
 {
-    //NPC vẫn còn bug ẩn khi Player ấn T thì chạy vô định ?@@
+    //NPC vẫn còn bug ẩn khi Player ấn T thì chạy vô định ?@@: 21/12 còn
     //Xử lý thêm nếu Player tiếp chuyện thì tự động bước ra chỗ trước mặt NPC
     //Học cách bố cục Dialog cũng như Indicator (Font, ...)
 
@@ -119,7 +119,7 @@ public class NPCManagers : CharactersManager
         }
     }
 
-    protected void UpdateConversationPosition()
+    protected virtual void UpdateConversationPosition()
     {
         if (_isFacingRight)
             _conversationPos = new Vector2(transform.position.x + _adjustConversationRange, transform.parent.position.y);

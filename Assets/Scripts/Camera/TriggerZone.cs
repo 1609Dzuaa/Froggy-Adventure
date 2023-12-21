@@ -11,27 +11,10 @@ public class TriggerZone : MonoBehaviour
     [Header("Timeline Reference")]
     [SerializeField] private PlayableDirector _playableDirector;
 
-    private void Awake()
-    {
-        if (_playableDirector)
-            Debug.Log("Tao deo null1");
-    }
-
-    private void Start()
-    {
-        if (_playableDirector)
-            Debug.Log("Tao deo null2");
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.name == "Player")
         {
-            if (!_playableDirector)
-            {
-                Debug.Log("Tao bi null");
-                return;
-            }
             _playableDirector.Play();
             Debug.Log("Trigger Play");
             GetComponent<BoxCollider2D>().enabled = false;

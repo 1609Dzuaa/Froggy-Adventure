@@ -35,9 +35,11 @@ public class DealerManager : NPCManagers
 
     private DealerTalkState _dealerTalkState = new();
 
+    #region Text Overhead Related
     private bool _mustDecrease;
     private float _entryTime;
     private float _alpha;
+    #endregion
 
     public PlayableDirector TimelineBackToPlayer { get { return _timelineBackToPlayer; } set { _timelineBackToPlayer = value; } }
 
@@ -56,6 +58,7 @@ public class DealerManager : NPCManagers
     {
         base.Start();
         _npcTalkState = _dealerTalkState;
+        _dialog.CantGetNextIndicatorText = true;
     }
 
     protected override void Update()
@@ -130,6 +133,37 @@ public class DealerManager : NPCManagers
         yield return null;
 
         _mustDecrease = true;
+    }
+
+    protected override void HandleDialogAndIndicator()
+    {
+        if (_needTriggerIndicator)
+            _dialog.ToggleIndicator(_isPlayerNearBy);
+
+        //Nếu đã bắt đầu Thoại và chưa đến đoạn chờ thì tắt Indicator
+        if (_dialog.Started && !_dialog.IsWaiting)
+            _dialog.ToggleIndicator(false);
+
+        //Thêm ĐK Player OnGround thì mới cho phép bắt đầu xl
+        var playerScript = _playerRef.GetComponent<PlayerStateManager>();
+        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround() && _state is not NPCTalkState)
+        {
+            playerScript.IsInteractingWithNPC = true;
+            Debug.Log("Trading");
+            //Hiện shop lúc này
+            //ChangeState(_dealerTalkState);
+        }
+    }
+
+    protected override void UpdateConversationPosition()
+    {
+        if (_isFacingRight)
+            _conversationPos = new Vector2(transform.position.x + _adjustConversationRange, transform.position.y);
+        else
+            _conversationPos = new Vector2(transform.position.x - _adjustConversationRange, transform.position.y);
+
+        var PlayerScript = _playerRef.GetComponent<PlayerStateManager>();
+        PlayerScript.InteractPosition = _conversationPos;
     }
 
 }

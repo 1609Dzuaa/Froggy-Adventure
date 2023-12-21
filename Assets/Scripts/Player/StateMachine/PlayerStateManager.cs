@@ -90,6 +90,9 @@ public class PlayerStateManager : MonoBehaviour
     //Mà 0 bị ảnh hưởng bởi input directionX
     [SerializeField] private float _disableTime;
 
+    [Header("Shield")]
+    [SerializeField] private GameObject _shield;
+
     public float DisableTime { get { return this._disableTime; } }
 
     //GET Functions
@@ -153,6 +156,8 @@ public class PlayerStateManager : MonoBehaviour
     public void SetCanDbJump(bool para) { this._canDbJump = para; }
 
     public Vector2 InteractPosition { get { return _InteractPosition; } set { _InteractPosition = value; } }
+
+    public GameObject PlayerShield { get { return _shield; } set { _shield = value; } }
 
     public void IncreaseOrangeCount() { this.OrangeCount++; }
 

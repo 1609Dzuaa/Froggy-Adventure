@@ -18,11 +18,13 @@ public class Dialog : MonoBehaviour
     [SerializeField] private List<string> _dialog; //Thoại
     [SerializeField] private List<string> _indicatorString;
     [SerializeField] private float _writingSpeed; //Tốc độ viết Thoại
+    [SerializeField] private bool _dontNeedStartIndicatorTextAgain; //tick vào nếu sau khi hội thoại xong 0 muốn indicator trở về text ban đầu
 
     private int _rowIndex; //Chỉ số hàng
     private int _charIndex; //Chỉ số char trong string
     private bool _started; //Biến đánh dấu đã bắt đầu Thoại
     private bool _isWaiting; //Biến đánh dấu chờ Player tương tác
+    private bool _cantGetNextIndicatorText;
 
     //Biến check nếu bắt chuyện theo cách bị động (0 nhấn T mà làm gì đó NPC trước)
     //VD: với Slime thì Player có thể chọn nhấn T hoặc Jump lên đầu nó để Start Conversation(SC)
@@ -31,6 +33,8 @@ public class Dialog : MonoBehaviour
     public bool Started { get { return _started; } }
 
     public bool IsWaiting { get { return _isWaiting; } }
+
+    public bool CantGetNextIndicatorText { set { _cantGetNextIndicatorText = value; } }
 
     public bool StartConversationPassive { set { _startConversationPassive = value; } }
 
@@ -52,6 +56,7 @@ public class Dialog : MonoBehaviour
     void Update()
     {
         _indicatorText.transform.eulerAngles = Vector3.zero;
+
         //Chỉ khi bắt đầu Thoại thì mới Update
         if (!_started) 
             return;
@@ -78,8 +83,19 @@ public class Dialog : MonoBehaviour
             if (_rowIndex < _dialog.Count)
                 GetDialog(_rowIndex);
             else
+            {
+                UpdateIndicatorText();
                 EndDialog();
+            }
         }
+    }
+
+    private void UpdateIndicatorText()
+    {
+        if (!_dontNeedStartIndicatorTextAgain)
+            _indicatorText.text = _indicatorString[0];
+        else
+            _indicatorText.text = _indicatorString[1];
     }
 
     public void ToggleWindow(bool show)
@@ -97,7 +113,7 @@ public class Dialog : MonoBehaviour
     public void StartDialog(int index)
     {
         if(_started) 
-            return; //prob here: 0 có lock thì 0 đc mà có lock thì lại bị block ở slime :v
+            return;
 
         _started = true;
         ToggleWindow(true);
@@ -110,7 +126,11 @@ public class Dialog : MonoBehaviour
     public void EndDialog()
     {
         //Trả lại chỉ dẫn ban đầu khi end Thoại
-        _indicatorText.text = _indicatorString[0];
+        /*if (!_isBackToNextIndicatorText)
+            _indicatorText.text = _indicatorString[0];
+        else 
+            _indicatorText.text = _indicatorString[1];*/
+
         _started = false;
         StopAllCoroutines();
         ToggleWindow(false);
@@ -160,7 +180,7 @@ public class Dialog : MonoBehaviour
         else
         {
             _indicatorText.text = string.Empty;
-            if (_rowIndex > 0 && _indicatorString.Count > 1)
+            if (_rowIndex > 0 && _indicatorString.Count > 1 && !_cantGetNextIndicatorText)
                 _indicatorText.text = _indicatorString[1]; //Render chỉ dẫn thứ 2
             else
                 _indicatorText.text = _indicatorString[0];
