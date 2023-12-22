@@ -70,7 +70,7 @@ public class JumpState : PlayerBaseState
 
     private void HandleJump()
     {
-        _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetSpeedY());
+        _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SPEED_Y);
         _playerStateManager.GetJumpSound().Play();
     }
 

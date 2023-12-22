@@ -94,6 +94,8 @@ public class PlayerStateManager : MonoBehaviour
     [Header("Shield")]
     [SerializeField] private GameObject _shield;
 
+    [SerializeField] private PlayerStats _playerStats;
+
     public float DisableTime { get { return this._disableTime; } }
 
     //GET Functions
@@ -158,16 +160,16 @@ public class PlayerStateManager : MonoBehaviour
 
     public Vector2 InteractPosition { get { return _InteractPosition; } set { _InteractPosition = value; } }
 
-    public GameObject PlayerShield { get { return _shield; } set { _shield = value; } }
+    public PlayerStats GetPlayerStats { get { return _playerStats; } set { _playerStats = value; } } 
 
     public void IncreaseOrangeCount() { this.OrangeCount++; }
+
+    //public static event Action OnAppliedBuff;
 
     //HP Functions
     public void IncreaseHP() { if (_HP < _maxHP) _HP++; }
 
     public void DecreaseHP() { _HP--; }
-
-    public static event Action OnAppliedBuff;
 
     // Start is called before the first frame update
     private void Start()
@@ -178,6 +180,7 @@ public class PlayerStateManager : MonoBehaviour
         _state = idleState;
         _state.EnterState(this);
 
+        //Debug.Log(_testScriptableObject.myString);
         //Parallax BG: |Origin + (Travel x Parallax)|
         //Trong đó:
         //Origin: Starting Position of Sprites ?
@@ -224,8 +227,10 @@ public class PlayerStateManager : MonoBehaviour
         {
             this.transform.SetParent(collision.gameObject.transform);
         }
-        else if (collision.CompareTag("Buff"))
-            OnAppliedBuff?.Invoke();
+
+        //Phần này đụng sau
+        /*else if (collision.CompareTag("Buff"))
+            OnAppliedBuff?.Invoke();*/
     }
 
     private void OnTriggerExit2D(Collider2D collision)

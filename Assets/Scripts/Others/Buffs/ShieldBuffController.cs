@@ -7,7 +7,7 @@ public class ShieldBuffController : ItemsController
     [Header("Shield")]
     [SerializeField] private GameObject _shieldBuff;
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         PlayerStateManager.OnAppliedBuff += ApplyBuff;    
     }
@@ -15,7 +15,7 @@ public class ShieldBuffController : ItemsController
     private void OnDisable()
     {
         PlayerStateManager.OnAppliedBuff -= ApplyBuff;
-    }
+    }*/
 
     private void ApplyBuff()
     {
