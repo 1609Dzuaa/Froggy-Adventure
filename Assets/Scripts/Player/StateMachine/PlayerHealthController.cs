@@ -13,7 +13,7 @@ public class PlayerHealthController : MonoBehaviour
     [SerializeField] private Sprite _lostHPIcon;
 
     [Header("Manager Reference")]
-    [SerializeField] PlayerStateManager _playerStateManager;
+    [SerializeField] PlayerStateManager _playerStateManager; //Hard - reference (Shouldn't do this)
 
     // Update is called once per frame
     private void Update()

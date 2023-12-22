@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -166,6 +167,8 @@ public class PlayerStateManager : MonoBehaviour
 
     public void DecreaseHP() { _HP--; }
 
+    public static event Action OnAppliedBuff;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -217,10 +220,12 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Platform"))
+        if (collision.CompareTag("Platform"))
         {
             this.transform.SetParent(collision.gameObject.transform);
         }
+        else if (collision.CompareTag("Buff"))
+            OnAppliedBuff?.Invoke();
     }
 
     private void OnTriggerExit2D(Collider2D collision)

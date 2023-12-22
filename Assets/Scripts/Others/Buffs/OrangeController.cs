@@ -8,7 +8,18 @@ public class OrangeController : MonoBehaviour
 
     //Giảm tải bớt khối lượng dòng code cho class PlayerManager
     //Run faster when eat
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private void OnEnable()
+    {
+        PlayerStateManager.OnAppliedBuff += ApplyBuff;
+    }
+
+    private void ApplyBuff()
+    {
+        //how to apply buff for player from this shit ?
+    }
+
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player") 
         {
@@ -19,5 +30,5 @@ public class OrangeController : MonoBehaviour
             Instantiate(collectedEffect, transform.position, Quaternion.identity, null);
             Destroy(this.gameObject);
         }
-    }
+    }*/
 }

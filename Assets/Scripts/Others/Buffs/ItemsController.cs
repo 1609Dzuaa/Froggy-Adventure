@@ -18,4 +18,9 @@ public class ItemsController : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    /*protected virtual void ApplyBuff()
+    {
+
+    }*/
 }

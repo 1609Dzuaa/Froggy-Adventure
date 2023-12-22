@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6207447451621864531}
   m_Layer: 0
   m_Name: ShieldBuff
-  m_TagString: Untagged
+  m_TagString: Buff
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,3 +137,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collectedEffect: {fileID: 7284400035579609473, guid: 7c5a9912aa7f8114fbe024ed93a127f7, type: 3}
+  _shieldBuff: {fileID: 1141239760657750491, guid: 2be6c9e57c0efbf4b9b0b06669c3b8e1, type: 3}

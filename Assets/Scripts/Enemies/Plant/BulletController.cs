@@ -61,7 +61,20 @@ public class BulletController : MonoBehaviour
         //Có nên thử cho nó damage allies của mình || box ?
         if(collision.collider.name == "Player" || collision.collider.CompareTag("Ground"))
         {
-            //Debug.Log("Collided");
+            if(collision.collider.name == "Player")
+            {
+                var playerScript = collision.collider.GetComponent<PlayerStateManager>();
+                playerScript.ChangeState(playerScript.gotHitState);
+            }
+            SpawnBulletPieces();
+            Destroy(this.gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Shield"))
+        {
             SpawnBulletPieces();
             Destroy(this.gameObject);
         }
