@@ -18,7 +18,8 @@ public class OrangeController : MonoBehaviour
     {
         if (collision.name == "Player")
         {
-            JumpBuff.Instance.ApplyBuff();
+            ShieldBuff.Instance.ApplyBuff();
+            //JumpBuff.Instance.ApplyBuff();
             //SpeedBuff.Instance.ApplyBuff();
             Instantiate(collectedEffect, transform.position, Quaternion.identity, null);
             Destroy(gameObject);

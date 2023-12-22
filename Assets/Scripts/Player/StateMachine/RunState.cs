@@ -68,14 +68,20 @@ public class RunState : PlayerBaseState
         if (!_playerStateManager.IsInteractingWithNPC)
         {
             if (_playerStateManager.GetDirX() != 0)
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SPEED_X * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            {
+                if (!SpeedBuff.Instance.IsAllowToUpdate)
+                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+                else
+                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX() * SpeedBuff.Instance.SpeedMultiplier, _playerStateManager.GetRigidBody2D().velocity.y);
+
+            }
         }
         else
         {
             if (_playerStateManager.GetIsFacingRight())
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SPEED_X, _playerStateManager.GetRigidBody2D().velocity.y);
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX, _playerStateManager.GetRigidBody2D().velocity.y);
             else
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(-_playerStateManager.GetPlayerStats.SPEED_X, _playerStateManager.GetRigidBody2D().velocity.y);
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(-_playerStateManager.GetPlayerStats.SpeedX, _playerStateManager.GetRigidBody2D().velocity.y);
         }
     }
 }

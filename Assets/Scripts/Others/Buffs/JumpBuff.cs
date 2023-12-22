@@ -13,6 +13,8 @@ public class JumpBuff : MonoBehaviour
     private bool _hasApplied;
     private float _entryTime;
 
+    public float JumpMutiplier { get { return _jumpMultiplier; } }
+
     public static JumpBuff Instance
     {
         get
@@ -59,7 +61,6 @@ public class JumpBuff : MonoBehaviour
         {
             if (Time.time - _entryTime >= _duration)
             {
-                _playerStats.SPEED_Y /= _jumpMultiplier;
                 _isAllowToUpdate = false;
                 _hasApplied = false;
                 Debug.Log("Timeout!");
@@ -74,7 +75,6 @@ public class JumpBuff : MonoBehaviour
         if (!_hasApplied)
         {
             _hasApplied = true;
-            _playerStats.SPEED_Y *= _jumpMultiplier;
         }
     }
 

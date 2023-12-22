@@ -248,7 +248,7 @@ public class PlayerStateManager : MonoBehaviour
 
         NPCCheck();
         DrawRayDetectNPC();
-        //Debug.Log("Interact?: " + _isInteractingWithNPC);
+        Debug.Log("velo x: " + rb.velocity.x);
 
         if (_isInteractingWithNPC)
         {

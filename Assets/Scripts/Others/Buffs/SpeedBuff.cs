@@ -10,8 +10,9 @@ public class SpeedBuff : MonoBehaviour
 
     private static SpeedBuff _speedBuffInstance;
     private bool _isAllowToUpdate;
-    private bool _hasApplied;
     private float _entryTime;
+
+    public float SpeedMultiplier { get { return _speedMultiplier; } }
 
     public static SpeedBuff Instance
     {
@@ -29,7 +30,7 @@ public class SpeedBuff : MonoBehaviour
         }
     }
 
-    public bool IsAllowToUpdate { get { return _isAllowToUpdate; } set { _isAllowToUpdate = value; } }
+    public bool IsAllowToUpdate { get { return _isAllowToUpdate; } }
 
     public float EntryTime { set { _entryTime = value; } }
 
@@ -53,25 +54,13 @@ public class SpeedBuff : MonoBehaviour
         }
     }
 
-    /*private void OnEnable()
-    {
-        PlayerStateManager.OnAppliedBuff += ApplyBuff;
-    }
-
-    private void OnDisable()
-    {
-        PlayerStateManager.OnAppliedBuff -= ApplyBuff;
-    }*/
-
     private void Update()
     {
         if(_isAllowToUpdate)
         {
             if (Time.time - _entryTime >= _duration)
             {
-                _playerStats.SPEED_X /= _speedMultiplier;
                 _isAllowToUpdate = false;
-                _hasApplied = false;
                 Debug.Log("Timeout!");
             }
         }
@@ -81,11 +70,6 @@ public class SpeedBuff : MonoBehaviour
     {
         _entryTime = Time.time;
         _isAllowToUpdate = true;
-        if (!_hasApplied)
-        {
-            _hasApplied = true;
-            _playerStats.SPEED_X *= _speedMultiplier;
-        }
     }
 
 }

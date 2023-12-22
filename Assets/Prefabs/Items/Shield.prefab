@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1141239760657750489}
   - component: {fileID: 1141239760657750488}
   - component: {fileID: 1141239760657750494}
-  - component: {fileID: 1141239760657750495}
   - component: {fileID: 1141239760657750492}
+  - component: {fileID: 9104102367979147771}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Shield
@@ -108,20 +108,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1141239760657750495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1141239760657750491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e7227ea630ad514d99d865bdb894bd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _existTime: 5
-  _runningOutTime: 2
 --- !u!58 &1141239760657750492
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -138,3 +124,17 @@ CircleCollider2D:
   m_Offset: {x: 0.0062847137, y: 0.012568474}
   serializedVersion: 2
   m_Radius: 1.0719042
+--- !u!114 &9104102367979147771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141239760657750491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e96d3b80b784b4f9c06b03f7d3ebe6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shieldDuration: 5
+  _runningOutDuration: 2

@@ -15,10 +15,19 @@ using UnityEngine;
 //https://docs.unity3d.com/Manual/class-ScriptableObject.html
 //https://gamedevbeginner.com/scriptable-objects-in-unity/#what_is_a_scriptable_object
 
+//NOTE:
+//Nên dùng SO dưới dạng (Read Only), hạn chế hoặc 0 modify trực tiếp nó trong quá trình Runtime
+//https://www.reddit.com/r/Unity2D/comments/mayjhy/should_i_edit_scriptable_objects_at_runtime/
+//https://forum.unity.com/threads/change-scriptableobject-at-runtime.1008376/
+
 [CreateAssetMenu(fileName ="ScriptableObject", menuName = "ScriptableObject/PlayerStats")]
 public class PlayerStats : ScriptableObject
 {
-    public float SPEED_X;
-    public float SPEED_Y;
+    [SerializeField] private float _speedX;
+    [SerializeField] private float _speedY;
+
+    public float SpeedX { get { return _speedX; } }
+
+    public float SpeedY { get { return _speedY; } }
 
 }
