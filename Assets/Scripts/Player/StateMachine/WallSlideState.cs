@@ -40,18 +40,14 @@ public class WallSlideState : PlayerBaseState
 
     private bool CheckIfCanIdle()
     {
-        if (Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < .1f
-            && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < .1f 
-            && _playerStateManager.GetIsOnGround())
-            return true;
-        return false;
+        return Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < .1f
+            && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < .1f
+            && _playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanWallJump()
     {
-        if (Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsOnGround())
-            return true;
-        return false;
+        return Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanFall()
@@ -61,17 +57,15 @@ public class WallSlideState : PlayerBaseState
         //hoặc trượt hết tường mà vẫn ở trên không thì Fall
         //Tại sao 0 ss normal.x == dirX ?
         //=>Vì nhấn dirX nó (Tăng/Giảm Dần) từ 0 -> 1 hoặc -1
-        if (_playerStateManager.WallHit.normal.x * _playerStateManager.GetDirX() > 0 
+        return _playerStateManager.WallHit.normal.x * _playerStateManager.GetDirX() > 0
             && !Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsOnGround()
-            || !_playerStateManager.GetIsOnGround() && !_playerStateManager.GetIsWallTouch() 
-            && _playerStateManager.GetRigidBody2D().velocity.y < -.1f)
-            return true;
-        return false;
+            || !_playerStateManager.GetIsOnGround() && !_playerStateManager.GetIsWallTouch()
+            && _playerStateManager.GetRigidBody2D().velocity.y < -.1f;
     }
 
     public override void FixedUpdate()
     {
         //0 đổi v trục x khi WS, tránh bị nhích ra khỏi wall
-        _playerStateManager.GetRigidBody2D().velocity = new Vector2(0f, -_playerStateManager.GetWallSlideSpeed());
+        _playerStateManager.GetRigidBody2D().velocity = new Vector2(0f, -_playerStateManager.GetPlayerStats.WallSlideSpeed);
     }
 }

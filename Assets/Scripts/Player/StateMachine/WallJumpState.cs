@@ -36,26 +36,17 @@ public class WallJumpState : PlayerBaseState
     private bool CheckIfCanDbJump()
     {
         //Press S While WallJump => Double Jump
-        if (Input.GetKeyDown(KeyCode.S))
-            return true;
-        return false;
+        return Input.GetKeyDown(KeyCode.S);
     }
 
     private bool CheckIfCanFall()
     {
-        if (_playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
-            return true;
-        return false;
+        return _playerStateManager.GetRigidBody2D().velocity.y < -0.1f;
     }
 
     private bool CheckIfCanWallSlide()
     {
-        if (_playerStateManager.GetIsWallTouch() && _isEndDisable)
-        {
-            //Debug.Log("ws here"); 
-            return true;
-        }
-        return false;
+        return _playerStateManager.GetIsWallTouch() && _isEndDisable;
     }
 
     public override void FixedUpdate()
@@ -64,7 +55,13 @@ public class WallJumpState : PlayerBaseState
         {
             _isEndDisable = true;
             if (_playerStateManager.GetDirX() != 0)
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            {
+                if (!PlayerSpeedBuff.Instance.IsAllowToUpdate)
+                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+                else
+                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX() * PlayerSpeedBuff.Instance.SpeedMultiplier, _playerStateManager.GetRigidBody2D().velocity.y);
+
+            }
         }
     }
 
@@ -72,9 +69,9 @@ public class WallJumpState : PlayerBaseState
     {
         //Nếu nhảy khi đang trượt tường thì nhảy xéo
         if (_playerStateManager.WallHit.normal.x == 1f)
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetWallJumpSpeedX(), _playerStateManager.GetWallJumpSpeedY());
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.WallJumpSpeed.x, _playerStateManager.GetPlayerStats.WallJumpSpeed.y);
         else if (_playerStateManager.WallHit.normal.x == -1f)
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(-_playerStateManager.GetWallJumpSpeedX(), _playerStateManager.GetWallJumpSpeedY());
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(-_playerStateManager.GetPlayerStats.WallJumpSpeed.x, _playerStateManager.GetPlayerStats.WallJumpSpeed.y);
 
         _playerStateManager.GetJumpSound().Play();
     }

@@ -35,6 +35,9 @@ public class TrunkManager : MEnemiesManager
 
     private void SpawnBullet()
     {
+        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+            return;
+
         GameObject bullet;
         bullet = Instantiate(_bullet, _shootPos.position, transform.rotation);
         bullet.GetComponent<BulletController>().SetIsDirectionRight(_isFacingRight);

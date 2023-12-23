@@ -70,6 +70,9 @@ public class FallState : PlayerBaseState
         //Vì bị ngu nên ở code cũ nhân thằng Speed với DirX mà 0 check DirX != 0 nên
         //Nhảy đáp từ tường xuống Ground trông đéo được mượt :D
         if (_playerStateManager.GetDirX() != 0)
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            if (!PlayerSpeedBuff.Instance.IsAllowToUpdate)
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            else
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * PlayerSpeedBuff.Instance.SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 }

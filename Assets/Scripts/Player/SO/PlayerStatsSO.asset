@@ -14,3 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speedX: 5
   _speedY: 10
+  _wallSlideSpeed: 2
+  _wallJumpSpeed: {x: 7, y: 10}
+  _knockBackForce: {x: 200, y: 0}
+  _jumpOnEnemiesForce: {x: 0, y: 5}
+  _dashForce: {x: 10, y: 0}
+  _HP: 0
+  _maxHP: 0
+  _dbJumpSpeedFactor: 0.9

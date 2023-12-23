@@ -8,7 +8,7 @@ public class GeckoManager : MEnemiesManager
     //Đối với các sprite có size khác bthg trong 1 sprite sheet thì điều chỉnh pivot
     //trong Sprite Editor của sprite đó
     //https://www.reddit.com/r/Unity2D/comments/2qtnzm/animating_sprites_of_different_sizes/
-    //Xong bug
+    //Coi lại vẫn đụng wall
 
     [Header("Teleport Distance")]
     [SerializeField] private float _teleDistance;
@@ -100,11 +100,16 @@ public class GeckoManager : MEnemiesManager
             if(_hasDetectedPlayer)
             {
                 var playerScript = _playerRef.GetComponent<PlayerStateManager>();
+                if (_isFacingRight)
+                    playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
+                else
+                    playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
+
                 playerScript.ChangeState(playerScript.gotHitState);
                 if (_isFacingRight)
-                    playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetKnockBackForce(), 0f));
+                    playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetPlayerStats.KnockBackForce.x, 0f));
                 else
-                    playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetKnockBackForce(), 0f));
+                    playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetPlayerStats.KnockBackForce.x, 0f));
                 //Debug.Log("Damage");
             }
         }
@@ -114,8 +119,13 @@ public class GeckoManager : MEnemiesManager
 
     private void ChangeToAttack()
     {
-        ChangeState(_geckoAttackState);
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        {
+            ChangeState(_geckoIdleState);
+            return;
+        }
 
+        ChangeState(_geckoAttackState);
         //Event của animation Hide
     }
 

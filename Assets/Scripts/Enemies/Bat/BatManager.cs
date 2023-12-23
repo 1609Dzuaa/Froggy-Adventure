@@ -82,12 +82,12 @@ public class BatManager : MEnemiesManager
 
     protected override bool DetectedPlayer()
     {
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+            return _hasDetectedPlayer = false;
+
+
         _distanceToPlayer = Vector2.Distance(transform.position, _playerCheck.position);
-        if (_distanceToPlayer <= _attackRange)
-            _hasDetectedPlayer = true;
-        else
-            _hasDetectedPlayer = false;
-        return _hasDetectedPlayer;
+        return _distanceToPlayer <= _attackRange;
     }
 
     public void FlipLeft()
@@ -118,6 +118,9 @@ public class BatManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+            return;
+
         ChangeState(_batAttackState);
     }
 

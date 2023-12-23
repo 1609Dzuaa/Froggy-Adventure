@@ -43,9 +43,9 @@ public class GotHitState : PlayerBaseState
     private void KnockBack()
     {
         if (_playerStateManager.GetIsFacingRight())
-            _playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * _playerStateManager.GetKnockBackForce(), 0f));
+            _playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * _playerStateManager.GetPlayerStats.KnockBackForce.x, 0f));
         else
-            _playerStateManager.GetRigidBody2D().AddForce(new Vector2(_playerStateManager.GetKnockBackForce(), 0f));
+            _playerStateManager.GetRigidBody2D().AddForce(new Vector2(_playerStateManager.GetPlayerStats.KnockBackForce.x, 0f));
         Debug.Log("Knock");
     }
 

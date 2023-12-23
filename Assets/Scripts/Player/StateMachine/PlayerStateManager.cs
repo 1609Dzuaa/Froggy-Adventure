@@ -10,14 +10,15 @@ public class PlayerStateManager : MonoBehaviour
 {
     //PlayerStateManager - Context Class, Use to pass DATA to each State
     private PlayerBaseState _state;
-    public IdleState idleState = new IdleState();
-    public RunState runState = new RunState();
-    public JumpState jumpState = new JumpState();
-    public FallState fallState = new FallState();
-    public DoubleJumpState doubleJumpState = new DoubleJumpState();
-    public WallSlideState wallSlideState = new WallSlideState();
-    public GotHitState gotHitState = new GotHitState();
+    public IdleState idleState = new();
+    public RunState runState = new();
+    public JumpState jumpState = new();
+    public FallState fallState = new();
+    public DoubleJumpState doubleJumpState = new();
+    public WallSlideState wallSlideState = new();
+    public GotHitState gotHitState = new();
     public WallJumpState wallJumpState = new();
+    public DashState dashState = new();
 
     private float dirX, dirY;
     private Rigidbody2D rb;
@@ -51,18 +52,7 @@ public class PlayerStateManager : MonoBehaviour
     ParticleSystem.MinMaxCurve rate;
     //Simulation SPACE: Local/World:
     //Chọn Local sẽ làm các hạt di chuyển "link" với local ở đây là vật chứa nó
-    //Chọn World sẽ giải phóng các hạt, cho phép chúng di chuyển mà 0 bị "link" với vật chứa nó
-
-    [Header("Speed")]
-    [SerializeField] private float speedX = 5f;
-    [SerializeField] private float speedY = 10.0f;
-    [SerializeField] private float wallSlideSpeed = 2.0f;
-    [SerializeField] private float wallJumpSpeedX;
-    [SerializeField] private float wallJumpSpeedY;
-
-    [Header("Force")]
-    [SerializeField] private float knockBackForce = 15f;
-    [SerializeField] private Vector2 jumpOnEnemiesForce;
+    //Chọn World sẽ giải phóng các hạt, cho phép chúng di chuyển mà 0 bị "link" với vật chứa nó 
 
     [Header("Sound")]
     [SerializeField] private AudioSource jumpSound;
@@ -113,12 +103,6 @@ public class PlayerStateManager : MonoBehaviour
 
     public AudioSource GetGotHitSound() { return this.gotHitSound; }
 
-    public float GetSpeedX() { return this.speedX; }
-
-    public float GetSpeedY() { return this.speedY; }
-
-    public float GetWallSlideSpeed() { return this.wallSlideSpeed; }
-
     public bool GetCanDbJump() { return this._canDbJump; }
 
     public bool GetIsWallTouch() { return this.IsWallTouch; }
@@ -128,14 +112,6 @@ public class PlayerStateManager : MonoBehaviour
     public bool GetIsFacingRight() { return this.isFacingRight; }
 
     public bool IsInteractingWithNPC { get { return _isInteractingWithNPC; } set { _isInteractingWithNPC = value; } }
-
-    public float GetWallJumpSpeedX() { return this.wallJumpSpeedX; }
-
-    public float GetWallJumpSpeedY() { return this.wallJumpSpeedY; }
-
-    public float GetKnockBackForce() { return this.knockBackForce; }
-
-    public Vector2 GetJumpOnEnemiesForce() { return this.jumpOnEnemiesForce; }
 
     public ParticleSystem GetDustPS() { return this.dustPS; }
 
@@ -161,8 +137,6 @@ public class PlayerStateManager : MonoBehaviour
     public Vector2 InteractPosition { get { return _InteractPosition; } set { _InteractPosition = value; } }
 
     public PlayerStats GetPlayerStats { get { return _playerStats; } set { _playerStats = value; } } 
-
-    public void IncreaseOrangeCount() { this.OrangeCount++; }
 
     //public static event Action OnAppliedBuff;
 
@@ -253,13 +227,12 @@ public class PlayerStateManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            rb.AddForce(new Vector2(15f, 0f), ForceMode2D.Impulse);
-            anim.SetInteger("state", 8);//dash
+            ChangeState(dashState);
         }
 
         NPCCheck();
         DrawRayDetectNPC();
-        //Debug.Log("velo x: " + rb.velocity.x);
+        //Debug.Log("velo : " + rb.velocity);
 
         if (_isInteractingWithNPC)
         {

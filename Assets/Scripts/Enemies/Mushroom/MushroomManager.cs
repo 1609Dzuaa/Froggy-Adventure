@@ -41,6 +41,9 @@ public class MushroomManager : MEnemiesManager
 
     private void SafeCheck()
     {
+        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+            return;
+
         if (!_isFacingRight)
             _isDetected = Physics2D.Raycast(new Vector2(_safeCheck.position.x, _safeCheck.position.y), Vector2.right, _safeCheckDistance, _playerLayer);
         else
@@ -68,6 +71,9 @@ public class MushroomManager : MEnemiesManager
     //Hàm này dùng để Invoke trong state Attack
     private void AllowUpdateAttack()
     {
+        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+            return;
+
         _mrAttackState.SetAllowUpdate(true);
     }
 

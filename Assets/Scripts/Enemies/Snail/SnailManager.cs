@@ -175,7 +175,7 @@ public class SnailManager : MEnemiesManager
         {
             _hasGotHit = true;
             var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.GetRigidBody2D().AddForce(playerScript.GetJumpOnEnemiesForce(), ForceMode2D.Impulse);
+            playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.JumpOnEnemiesForce, ForceMode2D.Impulse);
             if (_healthPoint == 0)
                 ChangeState(_snailGotHitState);
             else
@@ -185,6 +185,9 @@ public class SnailManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
+        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+            return;
+
         ChangeState(_snailAttackState);
     }
 }

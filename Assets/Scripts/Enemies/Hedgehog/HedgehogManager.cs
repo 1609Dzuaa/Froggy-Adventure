@@ -40,6 +40,9 @@ public class HedgehogManager : NMEnemiesManager
 
     private void ChangeToSpikeIdle()
     {
+        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+            return;
+
         _prevCollider2DSize = _boxCollider2D.size;
         ChangeState(_hedgehogSpikeIdle);
         //Event func của animation SpikeOut

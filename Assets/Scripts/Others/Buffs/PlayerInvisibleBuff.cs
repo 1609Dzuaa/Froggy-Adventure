@@ -28,6 +28,9 @@ public class PlayerInvisibleBuff : MonoBehaviour
             return _invisibleBuffInstance;
         }
     }
+
+    public bool IsAllowToUpdate { get { return _isAllowToUpdate; } }
+
     private void Awake()
     {
         CreateInstance();

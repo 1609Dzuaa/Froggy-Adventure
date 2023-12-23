@@ -64,6 +64,11 @@ public class BulletController : MonoBehaviour
             if(collision.collider.name == "Player")
             {
                 var playerScript = collision.collider.GetComponent<PlayerStateManager>();
+                if (_isDirectionRight)
+                    playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
+                else
+                    playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
+
                 playerScript.ChangeState(playerScript.gotHitState);
             }
             SpawnBulletPieces();

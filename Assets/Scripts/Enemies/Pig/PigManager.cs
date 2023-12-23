@@ -64,7 +64,7 @@ public class PigManager : MEnemiesManager
             _hp--;
             var playerScript = collision.GetComponent<PlayerStateManager>();
             playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
-            playerScript.GetRigidBody2D().AddForce(playerScript.GetJumpOnEnemiesForce(), ForceMode2D.Impulse);
+            playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.JumpOnEnemiesForce, ForceMode2D.Impulse);
             
             if(!_isTurnRed)
             {

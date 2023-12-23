@@ -28,6 +28,8 @@ public class PlantManager : NMEnemiesManager
     //Event Func in Attack Animation
     private void SpawnBullet()
     {
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate) 
+            return;
         //Xài cách này tha hồ điều chỉnh ngoài Inspector, hạn chế hard - coded
 
         //Mỗi lần bắn, tạo 1 viên đạn mới và set hướng cho nó

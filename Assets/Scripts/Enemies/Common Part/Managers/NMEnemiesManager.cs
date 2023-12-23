@@ -39,13 +39,16 @@ public class NMEnemiesManager : EnemiesManager
             _hasGotHit = true;
             var playerScript = collision.GetComponent<PlayerStateManager>();
             playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
-            playerScript.GetRigidBody2D().AddForce(playerScript.GetJumpOnEnemiesForce(), ForceMode2D.Impulse);
+            playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.JumpOnEnemiesForce, ForceMode2D.Impulse);
             ChangeState(_nmEnemiesGotHitState);
         }
     }
 
     protected virtual void AllowAttackPlayer()
     {
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+            return;
+
         ChangeState(_nmEnemiesAttackState);
     }
 

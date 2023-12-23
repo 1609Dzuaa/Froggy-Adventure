@@ -46,26 +46,20 @@ public class JumpState : PlayerBaseState
 
     private bool CheckIfCanFall()
     {
-        if (_playerStateManager.GetRigidBody2D().velocity.y < -0.1f)
-            return true;
-        return false;
+        return _playerStateManager.GetRigidBody2D().velocity.y < -0.1f;
     }
 
     private bool CheckIfCanWallSlide()
     {
-        if (_playerStateManager.GetIsWallTouch()
+        return _playerStateManager.GetIsWallTouch()
             && _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f
-            && !_isRunStateHitWall)
-            return true;
-        return false;
+            && !_isRunStateHitWall;
     }
 
     private bool CheckIfCanWallJump()
     {
         //Đè dirX (run) va vào tường + nhấn S lúc đang Jump (current State) thì switch sang WallJump
-        if (_playerStateManager.GetIsWallTouch() && Input.GetKeyDown(KeyCode.S) && _isRunStateHitWall)
-            return true;
-        return false;
+        return _playerStateManager.GetIsWallTouch() && Input.GetKeyDown(KeyCode.S) && _isRunStateHitWall;
     }
 
     private void HandleJump()
@@ -81,7 +75,10 @@ public class JumpState : PlayerBaseState
     public override void FixedUpdate()
     {
         if (_playerStateManager.GetDirX() != 0)
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetSpeedX() * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            if (!PlayerSpeedBuff.Instance.IsAllowToUpdate)
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            else
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * PlayerSpeedBuff.Instance.SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 
 }

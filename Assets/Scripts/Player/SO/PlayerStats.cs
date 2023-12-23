@@ -23,11 +23,39 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="ScriptableObject", menuName = "ScriptableObject/PlayerStats")]
 public class PlayerStats : ScriptableObject
 {
+    [Header("Speed")]
     [SerializeField] private float _speedX;
     [SerializeField] private float _speedY;
+    [SerializeField] private float _wallSlideSpeed;
+    [SerializeField] private Vector2 _wallJumpSpeed;
+
+    [Header("Force")]
+    [SerializeField] private Vector2 _knockBackForce;
+    [SerializeField] private Vector2 _jumpOnEnemiesForce;
+    [SerializeField] private Vector2 _dashForce;
+
+    //Đạt được nhiều thành tựu thì mới tăng thêm maxHP
+    [Header("HP")]
+    [SerializeField] private int _HP;
+    [SerializeField] private int _maxHP;
+
+    [Header("Factor")]
+    [SerializeField, Range(0f, 1f)] private float _dbJumpSpeedFactor; //Db jump 0 thể mạnh hơn Jump
 
     public float SpeedX { get { return _speedX; } }
 
     public float SpeedY { get { return _speedY; } }
+
+    public float WallSlideSpeed { get {  return _wallSlideSpeed; } }
+
+    public Vector2 WallJumpSpeed { get { return _wallJumpSpeed; } }
+
+    public Vector2 KnockBackForce { get { return _knockBackForce; } }
+
+    public Vector2 JumpOnEnemiesForce { get { return _jumpOnEnemiesForce; } }
+
+    public Vector2 DashForce { get { return _dashForce; } }
+
+    public float DbJumpSpeedFactor { get { return _dbJumpSpeedFactor; } }
 
 }

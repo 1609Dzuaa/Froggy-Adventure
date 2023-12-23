@@ -65,14 +65,17 @@ public abstract class EnemiesManager : CharactersManager
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
             playerScript.ChangeState(playerScript.gotHitState);
             if (_isFacingRight)
-                playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetKnockBackForce(), 0f));
+                playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetPlayerStats.KnockBackForce.x, 0f));
             else
-                playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetKnockBackForce(), 0f));
+                playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetPlayerStats.KnockBackForce.x, 0f));
         }
     }
 
     protected virtual bool DetectedPlayer()
     {
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+            return _hasDetectedPlayer = false;
+
         if (!_isFacingRight)
             _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _checkDistance, _playerLayer);
         else
