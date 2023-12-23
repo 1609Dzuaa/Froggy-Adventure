@@ -9,18 +9,17 @@ public class ItemsController : MonoBehaviour
     //Jump higher when eat
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player")
+        if (collision.name == "Player")
         {
-            var playerManagerScript = collision.gameObject.GetComponent<PlayerStateManager>();
-            playerManagerScript.IncreaseOrangeCount();
-            playerManagerScript.GetCollectSound().Play();
+            ApplyBuff();
+            //Sound
             Instantiate(_collectedEffect, transform.position, Quaternion.identity, null);
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 
-    /*protected virtual void ApplyBuff()
+    protected virtual void ApplyBuff()
     {
-
-    }*/
+        //Each item will apply different buff in here
+    }
 }

@@ -70,10 +70,10 @@ public class JumpState : PlayerBaseState
 
     private void HandleJump()
     {
-        if (!JumpBuff.Instance.IsAllowToUpdate)
+        if (!PlayerJumpBuff.Instance.IsAllowToUpdate)
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY);
         else
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY * JumpBuff.Instance.JumpMutiplier);
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY * PlayerJumpBuff.Instance.JumpMutiplier);
         
         _playerStateManager.GetJumpSound().Play();
     }

@@ -241,14 +241,25 @@ public class PlayerStateManager : MonoBehaviour
         }
     }
 
+    private void ChangeIdle()
+    {
+        ChangeState(idleState);
+    }
+
     void Update()
     {
         if (_hasBeenDisabled) 
             return;
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            rb.AddForce(new Vector2(15f, 0f), ForceMode2D.Impulse);
+            anim.SetInteger("state", 8);//dash
+        }
+
         NPCCheck();
         DrawRayDetectNPC();
-        Debug.Log("velo x: " + rb.velocity.x);
+        //Debug.Log("velo x: " + rb.velocity.x);
 
         if (_isInteractingWithNPC)
         {

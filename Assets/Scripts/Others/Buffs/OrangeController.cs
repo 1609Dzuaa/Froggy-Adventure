@@ -2,27 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrangeController : MonoBehaviour
+public class OrangeController : ItemsController
 {
-    [SerializeField] private Transform collectedEffect;
-
     //Giảm tải bớt khối lượng dòng code cho class PlayerManager
     //Run faster when eat
 
-    private void Awake()
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        base.OnTriggerEnter2D(collision);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void ApplyBuff()
     {
-        if (collision.name == "Player")
-        {
-            ShieldBuff.Instance.ApplyBuff();
-            //JumpBuff.Instance.ApplyBuff();
-            //SpeedBuff.Instance.ApplyBuff();
-            Instantiate(collectedEffect, transform.position, Quaternion.identity, null);
-            Destroy(gameObject);
-        }
+        PlayerSpeedBuff.Instance.ApplyBuff();
     }
 }

@@ -8,4 +8,9 @@ public class AppleController : ItemsController
     {
         base.OnTriggerEnter2D(collision);
     }
+
+    protected override void ApplyBuff()
+    {
+        PlayerJumpBuff.Instance.ApplyBuff();
+    }
 }

@@ -6,7 +6,7 @@
     //https://stackoverflow.com/questions/70252468/how-does-the-command-pattern-solve-the-problem-of-hard-wired-commands-requests
 
     public enum EPlayerState
-    { idle, run, jump, fall, wallSlide, doubleJump, gotHit, wallJump }
+    { idle, run, jump, fall, wallSlide, doubleJump, gotHit, wallJump, dash }
 
     public enum EMEnemiesState
     { idle, patrol, attack, gotHit }
