@@ -20,7 +20,7 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 8728324bd86b283418f22a2e7e49ed72, type: 3}
+      value: {fileID: 21300000, guid: 0c9b86e0b9f58984eaa215fe7ad0de1b, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -40,7 +40,7 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 8728324bd86b283418f22a2e7e49ed72, type: 3}
+    - {fileID: 21300000, guid: 0c9b86e0b9f58984eaa215fe7ad0de1b, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -67,7 +67,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.25
-    functionName: ChangeIdle
+    functionName: AllowUpdateDash
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

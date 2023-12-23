@@ -33,6 +33,8 @@ public class DoubleJumpState : PlayerBaseState
             _playerStateManager.ChangeState(_playerStateManager.fallState);
         else if (CheckIfCanWallSlide())
             _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
+        else if (CheckIfCanDash())
+            _playerStateManager.ChangeState(_playerStateManager.dashState);
     }
 
     private bool CheckIfCanFall()
@@ -43,6 +45,14 @@ public class DoubleJumpState : PlayerBaseState
     private bool CheckIfCanWallSlide()
     {
         return _playerStateManager.GetIsWallTouch() && !_playerStateManager.GetIsOnGround();
+    }
+
+    private bool CheckIfCanDash()
+    {
+        //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
+        return Input.GetKeyDown(KeyCode.E)
+             && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
+             || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     public override void FixedUpdate()

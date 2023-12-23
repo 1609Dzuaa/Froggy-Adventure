@@ -25,12 +25,19 @@ public class WallJumpState : PlayerBaseState
 
     public override void Update()
     {
+        //Okay on? r`
+        if (Time.time - _disableStart >= _playerStateManager.DisableTime)
+            _isEndDisable = true;
+
         if (CheckIfCanDbJump())
             _playerStateManager.ChangeState(_playerStateManager.doubleJumpState);
         else if (CheckIfCanFall())
             _playerStateManager.ChangeState(_playerStateManager.fallState);
         else if (CheckIfCanWallSlide())
             _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
+        else if (CheckIfCanDash())
+            _playerStateManager.ChangeState(_playerStateManager.dashState);
+
     }
 
     private bool CheckIfCanDbJump()
@@ -49,11 +56,17 @@ public class WallJumpState : PlayerBaseState
         return _playerStateManager.GetIsWallTouch() && _isEndDisable;
     }
 
+    private bool CheckIfCanDash()
+    {
+        return Input.GetKeyDown(KeyCode.E)
+            && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
+            || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
+    }
+
     public override void FixedUpdate()
     {
-        if(Time.time - _disableStart >= _playerStateManager.DisableTime)
+        if (_isEndDisable)
         {
-            _isEndDisable = true;
             if (_playerStateManager.GetDirX() != 0)
             {
                 if (!PlayerSpeedBuff.Instance.IsAllowToUpdate)

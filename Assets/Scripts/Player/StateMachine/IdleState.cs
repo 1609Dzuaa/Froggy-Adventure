@@ -7,7 +7,6 @@ public class IdleState : PlayerBaseState
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.idle);
         _playerStateManager.GetRigidBody2D().velocity = Vector2.zero; //Cố định vị trí
-
         HandleIfInteractWithNPC();
         HandleIfPrevStateWallSlide();
 
@@ -27,7 +26,8 @@ public class IdleState : PlayerBaseState
                 _playerStateManager.ChangeState(_playerStateManager.jumpState);
             else if (CheckIfFall())
                 _playerStateManager.ChangeState(_playerStateManager.fallState);
-        }
+            else if (CheckIfCanDash())
+                _playerStateManager.ChangeState(_playerStateManager.dashState);        }
     }
 
     private bool CheckIfRun()
@@ -52,6 +52,14 @@ public class IdleState : PlayerBaseState
         return false;
         //Idle => Fall có thể là đứng yên, bị 1 vật khác
         //tác dụng lực vào đẩy rơi xuống dưới
+    }
+
+    private bool CheckIfCanDash()
+    {
+        //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
+        return Input.GetKeyDown(KeyCode.E)
+             && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
+             || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     private void HandleIfInteractWithNPC()

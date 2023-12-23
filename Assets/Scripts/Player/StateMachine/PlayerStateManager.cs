@@ -60,6 +60,7 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private AudioSource _collectHPSound;
     [SerializeField] private AudioSource gotHitSound;
     [SerializeField] private AudioSource deadSound;
+    [SerializeField] private AudioSource _dashSound;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
@@ -86,6 +87,8 @@ public class PlayerStateManager : MonoBehaviour
 
     [SerializeField] private PlayerStats _playerStats;
 
+    [SerializeField] private TrailRenderer _trailRenderer;
+
     public float DisableTime { get { return this._disableTime; } }
 
     //GET Functions
@@ -108,7 +111,7 @@ public class PlayerStateManager : MonoBehaviour
     public bool GetIsWallTouch() { return this.IsWallTouch; }
 
     public bool GetPrevStateIsWallSlide() { return this.prevStateIsWallSlide; }
-
+    
     public bool GetIsFacingRight() { return this.isFacingRight; }
 
     public bool IsInteractingWithNPC { get { return _isInteractingWithNPC; } set { _isInteractingWithNPC = value; } }
@@ -120,6 +123,10 @@ public class PlayerStateManager : MonoBehaviour
     public AudioSource GetCollectSound() { return this.collectSound; }
 
     public AudioSource GetCollectHPSound() { return this._collectHPSound; }
+
+    public AudioSource GetDashSound() { return this._dashSound; }
+
+    public TrailRenderer GetTrailRenderer() { return this._trailRenderer; }
 
     public Text GetScoreText() { return this.txtScore; }
 
@@ -153,6 +160,7 @@ public class PlayerStateManager : MonoBehaviour
         dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
         _state = idleState;
         _state.EnterState(this);
+        rb.gravityScale = _playerStats.GravScale;
 
         //Debug.Log(_testScriptableObject.myString);
         //Parallax BG: |Origin + (Travel x Parallax)|
@@ -215,20 +223,10 @@ public class PlayerStateManager : MonoBehaviour
         }
     }
 
-    private void ChangeIdle()
-    {
-        ChangeState(idleState);
-    }
-
     void Update()
     {
         if (_hasBeenDisabled) 
             return;
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            ChangeState(dashState);
-        }
 
         NPCCheck();
         DrawRayDetectNPC();
@@ -285,13 +283,6 @@ public class PlayerStateManager : MonoBehaviour
         _state.Update();
     }
 
-    private void ChangeToRun()
-    {
-        //Dùng để Invoke Delay sang RunState khi tương tác với NPC
-        //Tránh TH như mushroom, flip quá nhanh dẫn đến thoả mãn đk quá nhanh
-        ChangeState(runState);
-    }
-
     private void FixedUpdate()
     {
         _state.FixedUpdate();
@@ -322,11 +313,13 @@ public class PlayerStateManager : MonoBehaviour
     public void FlippingSprite()
     {
         //ĐK check if:
-        //Vì khi WallJump, ta muốn sprite giữ nguyên ở hướng WallSlide 1 khoảng DisableTime
+        //Vì khi WallJump || Dash sau khi WS,
+        //ta muốn sprite giữ nguyên ở hướng WS 1 khoảng DisableTime
         //Nên chỉ cho lật sprite khi hết DisableTime(IsEndDisable)
-        if(_state is WallJumpState)
+        //Vấn đề flip nằm ở func này, Xem lại !
+        if(_state is WallJumpState )//|| _state is DashState)
         {
-            if(wallJumpState.IsEndDisable)
+            if(wallJumpState.IsEndDisable)// || dashState.IsEndDisable)
             {
                 isFacingRight = !isFacingRight;
                 transform.Rotate(0, 180, 0);
@@ -418,6 +411,19 @@ public class PlayerStateManager : MonoBehaviour
     private void ChangeToIdle()
     {
         gotHitState.SetAllowUpdate(true);
+    }
+
+    private void ChangeToRun()
+    {
+        //Dùng để Invoke Delay sang RunState khi tương tác với NPC
+        //Tránh TH như mushroom, flip quá nhanh dẫn đến thoả mãn đk quá nhanh
+        ChangeState(runState);
+    }
+
+    private void AllowUpdateDash()
+    {
+        dashState.AllowUpdate = true;
+        //Vứt trong Dash Animation để Delay việc Update của Dash 
     }
 
     private void HandleDeadState()

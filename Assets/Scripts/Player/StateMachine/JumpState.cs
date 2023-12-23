@@ -34,6 +34,8 @@ public class JumpState : PlayerBaseState
             _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
         else if (CheckIfCanWallJump())
             _playerStateManager.ChangeState(_playerStateManager.wallJumpState);
+        else if (CheckIfCanDash())
+            _playerStateManager.ChangeState(_playerStateManager.dashState);
     }
 
     private bool CheckIfCanDbJump()
@@ -60,6 +62,14 @@ public class JumpState : PlayerBaseState
     {
         //Đè dirX (run) va vào tường + nhấn S lúc đang Jump (current State) thì switch sang WallJump
         return _playerStateManager.GetIsWallTouch() && Input.GetKeyDown(KeyCode.S) && _isRunStateHitWall;
+    }
+
+    private bool CheckIfCanDash()
+    {
+        //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
+        return Input.GetKeyDown(KeyCode.E)
+             && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
+             || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     private void HandleJump()

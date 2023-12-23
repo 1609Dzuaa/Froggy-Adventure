@@ -30,6 +30,8 @@ public class RunState : PlayerBaseState
             }
             else if (CheckIfFall())
                 _playerStateManager.ChangeState(_playerStateManager.fallState);
+            else if (CheckIfCanDash())
+                _playerStateManager.ChangeState(_playerStateManager.dashState);
         }
         else
         {
@@ -41,9 +43,7 @@ public class RunState : PlayerBaseState
 
     private bool CheckIfIdle()
     {
-        if (_playerStateManager.GetDirX() == 0)
-            return true;
-        return false;
+        return _playerStateManager.GetDirX() == 0;
     }
 
     private bool CheckIfJump()
@@ -61,6 +61,13 @@ public class RunState : PlayerBaseState
         return false;
         //Idle => Fall có thể là đứng yên, bị 1 vật khác
         //tác dụng lực vào đẩy rơi xuống dưới
+    }
+
+    private bool CheckIfCanDash()
+    {
+        return Input.GetKeyDown(KeyCode.E)
+            && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
+            || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     public override void FixedUpdate()

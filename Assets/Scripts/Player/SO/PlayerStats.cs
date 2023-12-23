@@ -41,6 +41,10 @@ public class PlayerStats : ScriptableObject
 
     [Header("Factor")]
     [SerializeField, Range(0f, 1f)] private float _dbJumpSpeedFactor; //Db jump 0 thể mạnh hơn Jump
+    [SerializeField] private float _gravScale;
+
+    [Header("Time")]
+    [SerializeField] private float _delayDashTime;
 
     public float SpeedX { get { return _speedX; } }
 
@@ -57,5 +61,9 @@ public class PlayerStats : ScriptableObject
     public Vector2 DashForce { get { return _dashForce; } }
 
     public float DbJumpSpeedFactor { get { return _dbJumpSpeedFactor; } }
+
+    public float GravScale { get {  return _gravScale; } }
+
+    public float DelayDashTime { get { return _delayDashTime; } }
 
 }

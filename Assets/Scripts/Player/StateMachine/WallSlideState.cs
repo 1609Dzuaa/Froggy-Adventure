@@ -10,8 +10,6 @@ public class WallSlideState : PlayerBaseState
         //Debug.Log("WS");
         //Flip sprite khi chuyển từ state này sang state bất kì
         //Theo đúng chiều của nhân vật khi đang slide
-        //Lỗi khi đè dirX khiến nó != nxWall dẫn đến loạn State
-        //DONE!~
         //WS còn vài chỗ lăn tăn nhỏ nữa nhưng chắc thế này là đủ ^^
         //Sau cần thiết thì record fix sau
         //Vẫn còn lỗi nếu isFr != nxWall và bấm S lần đầu sẽ Jump nhưng lúc Jump đó bấm S tiếp
@@ -28,6 +26,7 @@ public class WallSlideState : PlayerBaseState
         //nếu bấm S thì change sang nhảy
         //nếu slide hết tường mà vẫn trên không
         //hoặc directionX cùng dấu với pháp tuyến x của Wall thì fall
+        //nếu bấm E thì dash
         //nếu 0 thuộc các TH trên thì slide như bthg
 
         if (CheckIfCanIdle())
@@ -36,6 +35,8 @@ public class WallSlideState : PlayerBaseState
             _playerStateManager.ChangeState(_playerStateManager.wallJumpState);
         else if (CheckIfCanFall())
             _playerStateManager.ChangeState(_playerStateManager.fallState);
+        else if (CheckIfCanDash())
+            _playerStateManager.ChangeState(_playerStateManager.dashState);
     }
 
     private bool CheckIfCanIdle()
@@ -61,6 +62,13 @@ public class WallSlideState : PlayerBaseState
             && !Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsOnGround()
             || !_playerStateManager.GetIsOnGround() && !_playerStateManager.GetIsWallTouch()
             && _playerStateManager.GetRigidBody2D().velocity.y < -.1f;
+    }
+
+    private bool CheckIfCanDash()
+    {
+        return Input.GetKeyDown(KeyCode.E)
+             && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
+             || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     public override void FixedUpdate()
