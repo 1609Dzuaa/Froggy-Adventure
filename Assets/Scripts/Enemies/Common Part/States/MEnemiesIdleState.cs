@@ -2,6 +2,9 @@
 
 public class MEnemiesIdleState : MEnemiesBaseState
 {
+    //Thằng hasChangedState tạo ra nhằm mục đích duy nhất là chỉ Invoke Attack player 1 lần
+    //Muốn change sang state != attack player thì đ' cần check nó
+
     protected float _entryTime;
     protected bool _hasChangedState;
 
@@ -24,30 +27,26 @@ public class MEnemiesIdleState : MEnemiesBaseState
     public override void Update()
     {
         if (CheckIfCanPatrol())
+        {
+            _mEnemiesManager.CancelInvoke();
             _mEnemiesManager.ChangeState(_mEnemiesManager.MEnemiesPatrolState);
+        }
         else if (CheckIfCanAttack())
+        {
+            _hasChangedState = true;
             _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());
+        }
         //Debug.Log("Update");
     }
 
     protected bool CheckIfCanPatrol()
     {
-        if (Time.time - _entryTime >= _mEnemiesManager.GetRestTime() && !_hasChangedState)
-        {
-            _hasChangedState = true;
-            return true;
-        }
-        return false;
+        return Time.time - _entryTime >= _mEnemiesManager.GetRestTime();
     }
 
     protected virtual bool CheckIfCanAttack()
     {
-        if (_mEnemiesManager.HasDetectedPlayer && !_hasChangedState)
-        {
-            _hasChangedState = true;
-            return true;
-        }
-        return false;
+        return _mEnemiesManager.HasDetectedPlayer && !_hasChangedState;
     }
 
     public override void FixedUpdate() { }

@@ -10,7 +10,7 @@ public class FallState : PlayerBaseState
 
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        Debug.Log("Fall");
+        //Debug.Log("Fall");
         //Lỗi fall khi đang trượt hết tường mà dirX != nxWall thì bị kẹt luôn ở cái wall đó
         //DONE!~
     }
@@ -50,24 +50,25 @@ public class FallState : PlayerBaseState
     {
         //Nếu vận tốc trục x lớn hơn .1f và trục y rất nhỏ
         //và đang OnGround thì chuyển sang state Run
-        if (Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) > 0.1f && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < 0.1f && _playerStateManager.GetIsOnGround())
-            return true;
-        return false;
+        return Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) > 0.1f 
+            && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < 0.1f 
+            && _playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanDbJump()
     {
-        //Cho phép lúc Fall có thể Double Jump đc
+        return Input.GetButtonDown("Jump") && _playerStateManager.GetCanDbJump();
+
+        /*Cho phép lúc Fall có thể Double Jump đc
         if (Input.GetKeyDown(KeyCode.S) && _playerStateManager.GetCanDbJump()) 
             return true;
-        return false;
+        return false;*/
     }
 
     private bool CheckIfCanWallSlide()
     {
-        if (_playerStateManager.GetIsWallTouch() && _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f)
-            return true;
-        return false;
+        return _playerStateManager.GetIsWallTouch() && 
+            _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f;
     }
 
     private bool CheckIfCanDash()

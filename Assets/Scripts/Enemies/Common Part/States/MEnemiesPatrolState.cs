@@ -4,7 +4,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 {
     protected float _entryTime;
     protected bool _hasChangeDirection = false; //Đảm bảo chỉ flip 1 lần
-    protected bool _hasChangedState;
+    protected bool _hasChangedState; //Th này sinh ra nhằm tránh việc Invoke Attack nhiều lần
     protected bool _canRdDirection = true;
     protected bool _hasJustHitWall = false; //Hitwall thì 0 cho Rd hướng
     protected int _rdLeftRight; //0: Left; 1: Right
@@ -48,10 +48,17 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     protected virtual void LogicUpdate()
     {
+        //recheck this shit
         if (CheckIfCanRest())
+        {
+            _mEnemiesManager.CancelInvoke();
             _mEnemiesManager.ChangeState(_mEnemiesManager.MEnemiesIdleState);
+        }
         else if (CheckIfCanAttack())
+        {
+            _hasChangedState = true;
             _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());
+        }
         else if (CheckIfCanChangeDirection())
         {
             _hasChangeDirection = true;
@@ -62,32 +69,21 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     protected bool CheckIfCanRest()
     {
-        if (Time.time - _entryTime >= _mEnemiesManager.GetPatrolTime() && !_hasChangedState && !_mEnemiesManager.HasDetectedPlayer)
-        {
-            _hasChangedState = true;
-            return true;
-        }
-        return false;
+        return Time.time - _entryTime >= _mEnemiesManager.GetPatrolTime() 
+            && !_mEnemiesManager.HasDetectedPlayer;
         //Thêm đk: !_mEnemiesManager.HasDetectedPlayer vì có thể giây cuối idle
     }
 
     protected virtual bool CheckIfCanAttack()
     {
-        if (_mEnemiesManager.HasDetectedPlayer && !_hasChangedState)
-        {
-            _hasChangedState = true;
-            return true;
-        }
-        return false;
+        return _mEnemiesManager.HasDetectedPlayer && !_hasChangedState;
     }
 
     protected virtual bool CheckIfCanChangeDirection()
     {
         //recheck
-        if (_mEnemiesManager.transform.position.x >= _mEnemiesManager.BoundaryRight.position.x && !_hasChangeDirection && !_hasJustHitWall
-            || _mEnemiesManager.transform.position.x <= _mEnemiesManager.BoundaryLeft.position.x && !_hasChangeDirection && !_hasJustHitWall)
-            return true;
-        return false;
+        return _mEnemiesManager.transform.position.x >= _mEnemiesManager.BoundaryRight.position.x && !_hasChangeDirection && !_hasJustHitWall
+            || _mEnemiesManager.transform.position.x <= _mEnemiesManager.BoundaryLeft.position.x && !_hasChangeDirection && !_hasJustHitWall;
         //Check nếu đi quá giới hạn trái/phải và CHƯA đổi hướng ở state này
         //Thì lật sprite đổi hướng
         //Thêm ĐK hasJustHitWall vì lúc Hitwall thì hiển nhiên x > x min/max

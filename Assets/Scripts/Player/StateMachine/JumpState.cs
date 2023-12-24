@@ -17,7 +17,7 @@ public class JumpState : PlayerBaseState
         HandleJump();
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        Debug.Log("Jump");
+        //Debug.Log("Jump");
     }
 
     public override void ExitState() { _isRunStateHitWall = false; }
@@ -40,10 +40,7 @@ public class JumpState : PlayerBaseState
 
     private bool CheckIfCanDbJump()
     {
-        //Press S While Jump and not touching wall => Double Jump
-        if (Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsWallTouch())
-           return true;
-        return false;
+        return Input.GetButtonDown("Jump") && !_playerStateManager.GetIsWallTouch();
     }
 
     private bool CheckIfCanFall()

@@ -48,7 +48,7 @@ public class WallSlideState : PlayerBaseState
 
     private bool CheckIfCanWallJump()
     {
-        return Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsOnGround();
+        return Input.GetButtonDown("Jump") && !_playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanFall()
@@ -56,8 +56,6 @@ public class WallSlideState : PlayerBaseState
         //Hiểu đơn giản là pháp tuyến X của Wall mà
         //cùng dấu với directionX
         //hoặc trượt hết tường mà vẫn ở trên không thì Fall
-        //Tại sao 0 ss normal.x == dirX ?
-        //=>Vì nhấn dirX nó (Tăng/Giảm Dần) từ 0 -> 1 hoặc -1
         return _playerStateManager.WallHit.normal.x * _playerStateManager.GetDirX() > 0
             && !Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsOnGround()
             || !_playerStateManager.GetIsOnGround() && !_playerStateManager.GetIsWallTouch()

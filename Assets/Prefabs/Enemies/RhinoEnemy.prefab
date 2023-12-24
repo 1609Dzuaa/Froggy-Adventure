@@ -392,7 +392,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 1ad74ff463913bf4084f09d29687c0a6, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -431,6 +431,10 @@ MonoBehaviour:
   _chaseSpeed: {x: 0, y: 0}
   _parent: {fileID: 2824499469113538296}
   _restDelay: 0.5
+  _shieldLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _size: {x: 0, y: 0}
 --- !u!61 &2824499469433178325
 BoxCollider2D:
   m_ObjectHideFlags: 0

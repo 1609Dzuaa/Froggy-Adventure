@@ -23,7 +23,6 @@ public class PlayerStateManager : MonoBehaviour
     private float dirX, dirY;
     private Rigidbody2D rb;
     private Animator anim;
-    private bool _isDashing;
     private RaycastHit2D wallHit;
     private bool isOnGround = false;
     private bool _canDbJump = false; //Cho phép DbJump 1 lần
@@ -115,8 +114,6 @@ public class PlayerStateManager : MonoBehaviour
     
     public bool GetIsFacingRight() { return this.isFacingRight; }
 
-    public bool IsDashing { get { return _isDashing; } set { this._isDashing = value; } }
-
     public bool IsInteractingWithNPC { get { return _isInteractingWithNPC; } set { _isInteractingWithNPC = value; } }
 
     public ParticleSystem GetDustPS() { return this.dustPS; }
@@ -179,6 +176,16 @@ public class PlayerStateManager : MonoBehaviour
         //Khi tương tác với NPC chỉ cho change giữa 2 state là Run và Idle
         if (_isInteractingWithNPC && state is not RunState && state is not IdleState)
             return;
+
+        //Thêm đoạn check dưới nếu Upcoming state là GotHit
+        //và đang có khiên thì 0 cho change vì có thể có TH
+        //chọc xuyên qua collider của shield
+
+        if (state is GotHitState && PlayerShieldBuff.Instance.IsAllowToUpdate)
+        {
+            Debug.Log("Tao co khien");
+            return;
+        }
 
         this._state.ExitState();
         this._state = state;
@@ -248,7 +255,7 @@ public class PlayerStateManager : MonoBehaviour
 
         HandleInput();
         _state.Update();
-        //Debug.Log("WJ Lock: " + wallJumpState.IsEndDisable);
+        //Debug.Log("dirX: " + dirX);
         GroundAndWallCheck();
         HandleFlipSprite();
         HandleDustVelocity();
@@ -310,8 +317,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleInput()
     {
-        dirX = Input.GetAxis("Horizontal");
-        dirY = Input.GetAxis("Vertical");
+        dirX = Input.GetAxisRaw("Horizontal");
+        dirY = Input.GetAxisRaw("Vertical");
     }
 
     public void FlippingSprite()

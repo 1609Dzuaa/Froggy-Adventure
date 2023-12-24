@@ -20,6 +20,7 @@ public class RhinoWallHitState : MEnemiesBaseState
     public override void ExitState()
     {
         _allowUpdate = false;
+        _rhinoManager.IsHitShield = false;
     }
 
     public override void Update()
@@ -36,7 +37,8 @@ public class RhinoWallHitState : MEnemiesBaseState
 
     private void HandleAfterHitWall()
     {
-        _rhinoManager.FlippingSprite();
+        if (!_rhinoManager.IsHitShield)
+            _rhinoManager.FlippingSprite();
         _rhinoManager.ChangeState(_rhinoManager.MEnemiesIdleState);
     }
 }

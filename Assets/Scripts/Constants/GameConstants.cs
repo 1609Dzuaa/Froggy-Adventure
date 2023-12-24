@@ -23,5 +23,11 @@
 
     #region Tag Constants
     public const string BULLET_TAG = "Bullet";
+    public const string SHIELD_TAG = "Shield";
+    public const string ENEMIES_TAG = "Enemies";
+    #endregion
+
+    #region Name Constants
+    public const string PLAYER_NAME = "Player";
     #endregion
 }

@@ -42,8 +42,8 @@ public class WallJumpState : PlayerBaseState
 
     private bool CheckIfCanDbJump()
     {
-        //Press S While WallJump => Double Jump
-        return Input.GetKeyDown(KeyCode.S);
+        //Press Space While WallJump => Double Jump
+        return Input.GetButtonDown("Jump");
     }
 
     private bool CheckIfCanFall()

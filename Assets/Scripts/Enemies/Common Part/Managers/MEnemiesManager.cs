@@ -142,6 +142,13 @@ public class MEnemiesManager : EnemiesManager
             playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.JumpOnEnemiesForce, ForceMode2D.Impulse);
             ChangeState(_mEnemiesGotHitState);
         }
+        else if(collision.CompareTag(GameConstants.SHIELD_TAG))
+        {
+            if (_isFacingRight)
+                _rb.AddForce(KnockForce);
+            else
+                _rb.AddForce(KnockForce * new Vector2(-1f, 1f));
+        }
     }
 
     //Event của Got Hit Animation

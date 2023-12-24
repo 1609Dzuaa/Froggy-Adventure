@@ -7,7 +7,7 @@ public class RunState : PlayerBaseState
         base.EnterState(playerStateManager);
         playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
-        Debug.Log("Run");
+        //Debug.Log("Run");
     }
 
     public override void ExitState() { }
@@ -48,10 +48,11 @@ public class RunState : PlayerBaseState
 
     private bool CheckIfJump()
     {
+        return Input.GetButtonDown("Jump") && _playerStateManager.GetIsOnGround();
         //Phải OnGround thì mới cho nhảy
-        if (_playerStateManager.GetDirY() < 0 && _playerStateManager.GetIsOnGround())
+        /*if (_playerStateManager.GetDirY() < 0 && _playerStateManager.GetIsOnGround())
             return true;
-        return false;
+        return false;*/
     }
 
     private bool CheckIfFall()
@@ -80,7 +81,6 @@ public class RunState : PlayerBaseState
                     _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
                 else
                     _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX() * PlayerSpeedBuff.Instance.SpeedMultiplier, _playerStateManager.GetRigidBody2D().velocity.y);
-
             }
         }
         else

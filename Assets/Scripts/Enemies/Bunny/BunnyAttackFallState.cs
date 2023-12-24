@@ -22,8 +22,8 @@ public class BunnyAttackFallState : MEnemiesAttackState
 
     private bool CheckIfCanIdle()
     {
-        if (Math.Abs(_bunnyManager.GetRigidbody2D().velocity.x) < 0.1f && Math.Abs(_bunnyManager.GetRigidbody2D().velocity.y) < 0.1f) return true;
-        return false;
+        return Math.Abs(_bunnyManager.GetRigidbody2D().velocity.x) < 0.1f 
+            && Math.Abs(_bunnyManager.GetRigidbody2D().velocity.y) < 0.1f;
     }
 
     public override void FixedUpdate() { }

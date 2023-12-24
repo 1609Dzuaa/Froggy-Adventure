@@ -74,11 +74,7 @@ public class BulletController : MonoBehaviour
             SpawnBulletPieces();
             Destroy(this.gameObject);
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Shield"))
+        else if (collision.collider.CompareTag(GameConstants.SHIELD_TAG))
         {
             SpawnBulletPieces();
             Destroy(this.gameObject);

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1141239760657750494}
   - component: {fileID: 1141239760657750492}
   - component: {fileID: 9104102367979147771}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Shield
   m_TagString: Shield
   m_Icon: {fileID: 0}
@@ -136,5 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e96d3b80b784b4f9c06b03f7d3ebe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shieldPos: {fileID: 0}
   _shieldDuration: 5
   _runningOutDuration: 2

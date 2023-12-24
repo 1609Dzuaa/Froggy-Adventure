@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class RhinoManager : MEnemiesManager
 {
+    //Rhino vẫn flip linh tinh ?@
+
     private RhinoAttackState _rhinoAttackState = new();
     private RhinoWallHitState _rhinoWallHitState = new();
 
     [Tooltip("Mở rộng từ phần Time ở class MEnemiesManager")]
     [SerializeField] protected float _restDelay;
+
+    private bool _isHitShield;
+
+    public bool IsHitShield { get { return _isHitShield; } set { _isHitShield = value; } }
 
     public RhinoWallHitState RhinoWallHitState { get { return this._rhinoWallHitState; } }
 
@@ -30,6 +36,25 @@ public class RhinoManager : MEnemiesManager
     protected override void Update()
     {
         base.Update();
+    }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        base.OnCollisionEnter2D(collision);
+        HandleIfCollidedWithShield(collision);
+    }
+
+    private void HandleIfCollidedWithShield(Collision2D collision)
+    {
+        if (collision.collider.CompareTag(GameConstants.SHIELD_TAG))
+        {
+            if (_isFacingRight)
+                _rb.velocity = (_knockForce * new Vector2(-1f, 1f));
+            else
+                _rb.velocity = (_knockForce);
+            _isHitShield = true;
+            ChangeState(_rhinoWallHitState);
+        }
     }
 
     protected override void FixedUpdate()

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BunnyPatrolState : MEnemiesPatrolState
 {
@@ -17,27 +17,30 @@ public class BunnyPatrolState : MEnemiesPatrolState
 
     public override void Update()
     {
-        if (CheckIfCanRest())
-            _bunnyManager.ChangeState(_bunnyManager.BunnyIdleState);
-        else if (CheckIfCanAttack())
-            _bunnyManager.Invoke("AllowAttackPlayer", _bunnyManager.GetAttackDelay());
-        else if (CheckIfCanChangeDirection())
+        //Th này ra đây hợp lí hơn
+        if (CheckIfCanChangeDirection())
         {
             _hasChangeDirection = true;
             _bunnyManager.FlippingSprite();
+        }
+
+        if (CheckIfCanRest())
+        {
+            //Xoá hết Invoke
+            _mEnemiesManager.CancelInvoke();
+            _bunnyManager.ChangeState(_bunnyManager.BunnyIdleState);
+        }
+        else if (CheckIfCanAttack())
+        {
+            _hasChangedState = true;
+            _bunnyManager.Invoke("AllowAttackPlayer", _bunnyManager.GetAttackDelay());
         }
     }
 
     protected override bool CheckIfCanAttack()
     {
-        if (_bunnyManager.HasDetectedPlayer && !_hasChangedState
-             || _bunnyManager.IsPlayerBackWard && !_hasChangedState)
-        {
-            _hasChangedState = true;
-            if (_bunnyManager.IsPlayerBackWard) _bunnyManager.FlippingSprite();
-            return true;
-        }
-        return false;
+        return _bunnyManager.HasDetectedPlayer && !_hasChangedState
+             || _bunnyManager.IsPlayerBackWard && !_hasChangedState;
     }
 
     public override void FixedUpdate()

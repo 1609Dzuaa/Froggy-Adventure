@@ -17,22 +17,22 @@ public class BunnyIdleState : MEnemiesIdleState
 
     public override void Update()
     {
+        //prob here
         if (CheckIfCanPatrol())
             _bunnyManager.ChangeState(_bunnyManager.BunnyPatrolState);
         else if (CheckIfCanAttack())
+        {
+            _hasChangedState = true;
+            if (_bunnyManager.IsPlayerBackWard)
+                _bunnyManager.FlippingSprite();
             _bunnyManager.Invoke("AllowAttackPlayer", _bunnyManager.GetAttackDelay());
+        }
     }
 
     protected override bool CheckIfCanAttack()
     {
-        if (_bunnyManager.HasDetectedPlayer && !_hasChangedState
-            || _bunnyManager.IsPlayerBackWard && !_hasChangedState)
-        {
-            _hasChangedState = true;
-            if (_bunnyManager.IsPlayerBackWard) _bunnyManager.FlippingSprite();
-            return true;
-        }
-        return false;
+        return _bunnyManager.HasDetectedPlayer && !_hasChangedState
+            || _bunnyManager.IsPlayerBackWard && !_hasChangedState;
     }
 
     public override void FixedUpdate()

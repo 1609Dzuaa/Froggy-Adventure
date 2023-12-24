@@ -32,11 +32,12 @@ public class BunnyAttackJumpState : MEnemiesAttackState
     {
         //Debug.Log("Bx, Px: " + _bunnyManager.transform.position.x + " " + _bunnyManager.PlayerRef.transform.position.x);
         _xAxisDistance = _bunnyManager.transform.position.x - _bunnyManager.PlayerRef.transform.position.x;
+        //Debug.Log("Jump, rabb x: " + _xAxisDistance + ", " + _bunnyManager.transform.position.x);
+
         if (_xAxisDistance < 0)
             _bunnyManager.GetRigidbody2D().AddForce(new Vector2(Mathf.Abs(_xAxisDistance), _bunnyManager.JumpHeight), ForceMode2D.Impulse);
         else
             _bunnyManager.GetRigidbody2D().AddForce(new Vector2(-_xAxisDistance, _bunnyManager.JumpHeight), ForceMode2D.Impulse);
         //Impulse: A large force applied for a very short duration
-        //Debug.Log("Jump: " + _xAxisDistance);
     }
 }

@@ -10,7 +10,7 @@ public class IdleState : PlayerBaseState
         HandleIfInteractWithNPC();
         HandleIfPrevStateWallSlide();
 
-        Debug.Log("Idle, OG: " + _playerStateManager.GetIsOnGround()); //Keep this, use for debugging change state
+        //Debug.Log("Idle, OG: " + _playerStateManager.GetIsOnGround()); //Keep this, use for debugging change state
     }
 
     public override void ExitState() { }
@@ -40,9 +40,10 @@ public class IdleState : PlayerBaseState
 
     private bool CheckIfJump()
     {
-        if (_playerStateManager.GetDirY() < 0 && _playerStateManager.GetIsOnGround())
+        return Input.GetButtonDown("Jump") && _playerStateManager.GetIsOnGround();
+        /*if (_playerStateManager.GetDirY() < 0 && _playerStateManager.GetIsOnGround())
             return true;
-        return false;
+        return false;*/
     }
 
     private bool CheckIfFall()

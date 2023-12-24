@@ -22,7 +22,7 @@ public class DashState : PlayerBaseState
         _isFirstTimeDash = false;
         HandleIfPrevStateWallSlide();
         HandleDash();
-        Debug.Log("Dash");
+        //Debug.Log("Dash");
     }
 
     public override void ExitState() 
@@ -31,7 +31,6 @@ public class DashState : PlayerBaseState
         _dashDelayStart = Time.time;
         _playerStateManager.GetTrailRenderer().emitting = false;
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.PLAYER_LAYER);
-        _playerStateManager.IsDashing = false;
         //Thêm dòng dưới khi Exit phòng TH: dash nhưng ch update thì đã exit state 
         //dẫn đến grav scale = 0
         _playerStateManager.GetRigidBody2D().gravityScale = _playerStateManager.GetPlayerStats.GravScale;
@@ -45,10 +44,7 @@ public class DashState : PlayerBaseState
             _playerStateManager.GetRigidBody2D().gravityScale = _playerStateManager.GetPlayerStats.GravScale;
 
             if (CheckIfCanIdle())
-            {
-                Debug.Log("OG: " + _playerStateManager.GetIsOnGround());
                 _playerStateManager.ChangeState(_playerStateManager.idleState);
-            }
             else if(CheckIfCanRun())
                 _playerStateManager.ChangeState(_playerStateManager.runState);
             else if (CheckIfCanFall())
@@ -92,7 +88,6 @@ public class DashState : PlayerBaseState
         _playerStateManager.GetDashSound().Play();
         _playerStateManager.GetTrailRenderer().emitting = true; //Ch thấy effect đâu @@?
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
-        _playerStateManager.IsDashing = true;
 
         //Set thẳng thằng velo luôn cho khỏi bị override
         //Vì nếu set theo addforce thì lúc fall nó sẽ dash dần xuống 1 đoạn

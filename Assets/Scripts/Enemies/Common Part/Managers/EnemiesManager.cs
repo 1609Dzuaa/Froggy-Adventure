@@ -60,9 +60,11 @@ public abstract class EnemiesManager : CharactersManager
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.name == "Player")
+        if (collision.collider.name == GameConstants.PLAYER_NAME)
         {
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
+            /*if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+                return; //tao co khien*/
             playerScript.ChangeState(playerScript.gotHitState);
             if (_isFacingRight)
                 playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetPlayerStats.KnockBackForce.x, 0f));

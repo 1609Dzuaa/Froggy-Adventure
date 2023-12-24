@@ -5,6 +5,8 @@ using UnityEngine;
 public class BunnyManager : MEnemiesManager
 {
     //Bật cao như Bunny => Cân nhắc việc design kill 1 lượng enemies Bunny thì unlock DbJump
+    //Vẫn còn bug flip sprite lung tung khi attack @@
+    
     [Header("PlayerRef")]
     [SerializeField] private Transform _playerRef;
 
