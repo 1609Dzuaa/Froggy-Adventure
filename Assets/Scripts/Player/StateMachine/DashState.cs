@@ -3,16 +3,12 @@
 public class DashState : PlayerBaseState
 {
     private bool _allowUpdate;
-    private bool _isEndDisable;
     private float _dashDelayStart; //Đếm giờ sau khi vừa Dash xong, để sau _delayDashTime (s) thì mới đc Dash tiếp
-    private float _disableStart; //If previous state is WS
     private bool _isFirstTimeDash = true; //thêm th này
     //vì có thể có TH vào scene cái là nhấn E để dash luôn
     //nhưng 0 đc và phải đợi _delayDashTime (s)
 
     public bool AllowUpdate { set {  _allowUpdate = value; } }
-
-    public bool IsEndDisable { get { return _isEndDisable; } }
 
     public float DashDelayStart { get { return _dashDelayStart; } }
 
@@ -26,7 +22,7 @@ public class DashState : PlayerBaseState
         _isFirstTimeDash = false;
         HandleIfPrevStateWallSlide();
         HandleDash();
-        //Debug.Log("Jump");
+        Debug.Log("Dash");
     }
 
     public override void ExitState() 
@@ -43,36 +39,33 @@ public class DashState : PlayerBaseState
             //Trả grav về lại như cũ sau khi cho phép Update
             _playerStateManager.GetRigidBody2D().gravityScale = _playerStateManager.GetPlayerStats.GravScale;
 
-            if (CheckIfCanDbJump())
-                _playerStateManager.ChangeState(_playerStateManager.doubleJumpState);
-            else if (CheckIfCanFall())
-                _playerStateManager.ChangeState(_playerStateManager.fallState);
-            else if (CheckIfCanWallSlide())
+            if (CheckIfCanIdle())
             {
-                //Debug.Log("here");
-                _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
-            }
-            else if (CheckIfCanIdle())
+                Debug.Log("OG: " + _playerStateManager.GetIsOnGround());
                 _playerStateManager.ChangeState(_playerStateManager.idleState);
-            else if (!CheckIfCanIdle())
+            }
+            else if(CheckIfCanRun())
                 _playerStateManager.ChangeState(_playerStateManager.runState);
+            else if (CheckIfCanFall())
+            {
+                //Đảm bảo 0 dashing quá xa sau khi fall
+                _playerStateManager.GetRigidBody2D().velocity = Vector2.zero;
 
-            if (Time.time - _disableStart >= _playerStateManager.DisableTime && _playerStateManager.GetPrevStateIsWallSlide())
-                _isEndDisable = true;
+                _playerStateManager.ChangeState(_playerStateManager.fallState);
+            }
+            else if (CheckIfCanWallSlide())
+                _playerStateManager.ChangeState(_playerStateManager.wallSlideState);
         }
     }
 
     private bool CheckIfCanIdle()
     {
-        return _playerStateManager.GetDirX() == 0;
+        return Mathf.Abs(_playerStateManager.GetDirX()) < 0.1f && _playerStateManager.GetIsOnGround();
     }
 
-    private bool CheckIfCanDbJump()
+    private bool CheckIfCanRun()
     {
-        //Press S While Jump and not touching wall => Double Jump
-        if (Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsWallTouch())
-            return true;
-        return false;
+        return Mathf.Abs(_playerStateManager.GetDirX()) > 0.1f && _playerStateManager.GetIsOnGround(); 
     }
 
     private bool CheckIfCanFall()
@@ -82,6 +75,7 @@ public class DashState : PlayerBaseState
 
     private bool CheckIfCanWallSlide()
     {
+        //Chạm tường và tích 2 vector inputX và Nx của wall trái dấu
         return _playerStateManager.GetIsWallTouch()
             && _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f;
     }
@@ -92,6 +86,10 @@ public class DashState : PlayerBaseState
         _playerStateManager.GetRigidBody2D().gravityScale = 0f;
         _playerStateManager.GetDashSound().Play();
         _playerStateManager.GetTrailRenderer().emitting = true; //Ch thấy effect đâu @@?
+
+        //Set thẳng thằng velo luôn cho khỏi bị override
+        //Vì nếu set theo addforce thì lúc fall nó sẽ dash dần xuống 1 đoạn
+        //Chứ 0 phải dash thẳng trên 0 1 đoạn
 
         if (_playerStateManager.GetIsFacingRight())
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.DashForce.x, 0f);
@@ -105,10 +103,7 @@ public class DashState : PlayerBaseState
         //Ta sẽ check nếu biến bool prev State là WS thì flip ngược lại
         //và set lại biến đó sau khi flip xong 
         if (_playerStateManager.GetPrevStateIsWallSlide())
-        {
             _playerStateManager.FlipSpriteAfterWallSlide();
-            _disableStart = Time.time;
-        }
     }
 
     public override void FixedUpdate()

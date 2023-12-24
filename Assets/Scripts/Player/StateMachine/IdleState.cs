@@ -10,7 +10,7 @@ public class IdleState : PlayerBaseState
         HandleIfInteractWithNPC();
         HandleIfPrevStateWallSlide();
 
-        //Debug.Log("Idle, Interact: " + _playerStateManager.IsInteractingWithNPC); //Keep this, use for debugging change state
+        Debug.Log("Idle, OG: " + _playerStateManager.GetIsOnGround()); //Keep this, use for debugging change state
     }
 
     public override void ExitState() { }

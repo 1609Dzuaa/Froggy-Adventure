@@ -245,6 +245,7 @@ public class PlayerStateManager : MonoBehaviour
 
         HandleInput();
         _state.Update();
+        //Debug.Log("WJ Lock: " + wallJumpState.IsEndDisable);
         GroundAndWallCheck();
         HandleFlipSprite();
         HandleDustVelocity();
@@ -313,16 +314,19 @@ public class PlayerStateManager : MonoBehaviour
     public void FlippingSprite()
     {
         //ĐK check if:
-        //Vì khi WallJump || Dash sau khi WS,
+        //Vì khi WallJump sau khi WS,
         //ta muốn sprite giữ nguyên ở hướng WS 1 khoảng DisableTime
-        //Nên chỉ cho lật sprite khi hết DisableTime(IsEndDisable)
-        //Vấn đề flip nằm ở func này, Xem lại !
-        if(_state is WallJumpState )//|| _state is DashState)
+        //Nên chỉ cho lật sprite ở 2 states đó khi hết DisableTime(IsEndDisable)
+        //Tránh việc Player khi vừa WS và bấm S (WJ) nhưng Input directionX
+        //hướng về cái Wall vừa đu dẫn đến Player quay mặt luôn vào cái Wall
+
+        if(_state is WallJumpState)
         {
-            if(wallJumpState.IsEndDisable)// || dashState.IsEndDisable)
+            if(wallJumpState.IsEndDisable)
             {
                 isFacingRight = !isFacingRight;
                 transform.Rotate(0, 180, 0);
+                //Debug.Log("hereWJ");
             }
         }
         else
@@ -335,7 +339,6 @@ public class PlayerStateManager : MonoBehaviour
 
     public void FlipSpriteAfterWallSlide()
     {
-        //FlippingSprite();
         isFacingRight = !isFacingRight;
         transform.Rotate(0, 180, 0);
         prevStateIsWallSlide = false;
@@ -345,6 +348,9 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleFlipSprite()
     {
+        //Sao 0 nghĩ đơn giản hơn là đ' cho flip khi dash 
+        if (_state is DashState) 
+            return;
         //Tại sao thêm ĐK !IsWallTouch
         //Vì sprites Wall Slide bị ngược + lười chỉnh :v
         //Và vì sau khi WallSlide xong thì sprite phải được

@@ -8,7 +8,7 @@ public class DoubleJumpState : PlayerBaseState
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.doubleJump);
         HandleDbJump();
-        //Debug.Log("DBJump");
+        Debug.Log("DBJump");
     }
 
     public override void ExitState() { }

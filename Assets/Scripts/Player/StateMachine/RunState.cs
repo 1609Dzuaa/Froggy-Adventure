@@ -7,7 +7,7 @@ public class RunState : PlayerBaseState
         base.EnterState(playerStateManager);
         playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
-        //Debug.Log("Run");
+        Debug.Log("Run");
     }
 
     public override void ExitState() { }

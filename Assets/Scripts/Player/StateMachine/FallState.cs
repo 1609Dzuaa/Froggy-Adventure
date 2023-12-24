@@ -10,7 +10,7 @@ public class FallState : PlayerBaseState
 
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        //Debug.Log("Fall");
+        Debug.Log("Fall");
         //Lỗi fall khi đang trượt hết tường mà dirX != nxWall thì bị kẹt luôn ở cái wall đó
         //DONE!~
     }
@@ -23,7 +23,10 @@ public class FallState : PlayerBaseState
         //So we check does it greater or smaller than a very small value
 
         if (CheckIfCanIdle())
+        {
+            //Debug.Log("Idle Fall");
             _playerStateManager.ChangeState(_playerStateManager.idleState);
+        }
         else if (CheckIfCanRun())
             _playerStateManager.ChangeState(_playerStateManager.runState);
         else if (CheckIfCanDbJump())
@@ -38,9 +41,9 @@ public class FallState : PlayerBaseState
     private bool CheckIfCanIdle()
     {
         //Nếu vận tốc 2 trục rất nhỏ VÀ đang trên nền thì coi như đang Idle
-        if (Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < 0.1f && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < 0.1f && _playerStateManager.GetIsOnGround())
-            return true;
-        return false;
+        return Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < 0.1f 
+            && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < 0.1f 
+            && _playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanRun()

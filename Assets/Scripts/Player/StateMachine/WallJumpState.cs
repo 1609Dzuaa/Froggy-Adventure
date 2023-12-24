@@ -73,7 +73,6 @@ public class WallJumpState : PlayerBaseState
                     _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
                 else
                     _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX() * PlayerSpeedBuff.Instance.SpeedMultiplier, _playerStateManager.GetRigidBody2D().velocity.y);
-
             }
         }
     }
@@ -81,9 +80,9 @@ public class WallJumpState : PlayerBaseState
     private void HandleWallJump()
     {
         //Nếu nhảy khi đang trượt tường thì nhảy xéo
-        if (_playerStateManager.WallHit.normal.x == 1f)
+        if (_playerStateManager.WallHit.normal.x >= 1f)
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.WallJumpSpeed.x, _playerStateManager.GetPlayerStats.WallJumpSpeed.y);
-        else if (_playerStateManager.WallHit.normal.x == -1f)
+        else if (_playerStateManager.WallHit.normal.x <= -1f)
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(-_playerStateManager.GetPlayerStats.WallJumpSpeed.x, _playerStateManager.GetPlayerStats.WallJumpSpeed.y);
 
         _playerStateManager.GetJumpSound().Play();
