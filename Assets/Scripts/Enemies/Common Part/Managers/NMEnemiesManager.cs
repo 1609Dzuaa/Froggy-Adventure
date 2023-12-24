@@ -32,6 +32,16 @@ public class NMEnemiesManager : EnemiesManager
         //Debug.Log("update");
     }
 
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.name == "Player")
+        {
+            var playerScript = collision.collider.GetComponent<PlayerStateManager>();
+            playerScript.gotHitState.IsHitByTrap = true;
+            playerScript.ChangeState(playerScript.gotHitState);
+        }
+    }
+
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.name == "Player" && !_hasGotHit)

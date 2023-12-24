@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 8819631318256263051}
   - component: {fileID: 8819631318256263050}
   - component: {fileID: 1480656114}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bat
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -310,6 +310,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _knockForce: {x: 0, y: 100}
+  _attackDelay: 0
+  degreeEachRotation: 0
+  timeEachRotate: 0
   _boundaryLeft: {fileID: 8819631318811798698}
   _boundaryRight: {fileID: 8819631318925522419}
   _wallCheck: {fileID: 0}
@@ -319,9 +322,8 @@ MonoBehaviour:
     m_Bits: 0
   _restTime: 2
   _patrolTime: 2
-  _attackDelay: 0
-  _patrolSpeed: 2
-  _chaseSpeed: 4
+  _patrolSpeed: {x: 0, y: 0}
+  _chaseSpeed: {x: 0, y: 0}
   _parent: {fileID: 8819631318198135883}
   _sleepPos: {fileID: 8819631318022016802}
   _sleepTime: 3

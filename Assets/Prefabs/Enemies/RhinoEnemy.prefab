@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 2824499469433178315}
   - component: {fileID: 2824499469433178325}
   - component: {fileID: 2824499469433178324}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rhino
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,8 +427,8 @@ MonoBehaviour:
     m_Bits: 64
   _restTime: 2
   _patrolTime: 2
-  _patrolSpeed: 2
-  _chaseSpeed: 5
+  _patrolSpeed: {x: 0, y: 0}
+  _chaseSpeed: {x: 0, y: 0}
   _parent: {fileID: 2824499469113538296}
   _restDelay: 0.5
 --- !u!61 &2824499469433178325
@@ -444,7 +444,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0235436, y: -0.2168875}
+  m_Offset: {x: 0.023543596, y: -0.23207563}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -455,7 +455,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.449509, y: 1.516642}
+  m_Size: {x: 2.449509, y: 1.5470182}
   m_EdgeRadius: 0
 --- !u!61 &2824499469433178324
 BoxCollider2D:

@@ -23,6 +23,7 @@ public class PlayerStateManager : MonoBehaviour
     private float dirX, dirY;
     private Rigidbody2D rb;
     private Animator anim;
+    private bool _isDashing;
     private RaycastHit2D wallHit;
     private bool isOnGround = false;
     private bool _canDbJump = false; //Cho phép DbJump 1 lần
@@ -113,6 +114,8 @@ public class PlayerStateManager : MonoBehaviour
     public bool GetPrevStateIsWallSlide() { return this.prevStateIsWallSlide; }
     
     public bool GetIsFacingRight() { return this.isFacingRight; }
+
+    public bool IsDashing { get { return _isDashing; } set { this._isDashing = value; } }
 
     public bool IsInteractingWithNPC { get { return _isInteractingWithNPC; } set { _isInteractingWithNPC = value; } }
 

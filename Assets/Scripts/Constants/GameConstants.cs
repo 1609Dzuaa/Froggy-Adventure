@@ -15,4 +15,13 @@
     public const string RUNNINGOUT = "RunningOut";
     public const string IDLE = "Idle";
     #endregion
+
+    #region Layer Constants
+    public const string PLAYER_LAYER = "Player";
+    public const string IGNORE_ENEMIES_LAYER = "Ignore Enemies";
+    #endregion
+
+    #region Tag Constants
+    public const string BULLET_TAG = "Bullet";
+    #endregion
 }

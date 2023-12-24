@@ -27,6 +27,9 @@ public class HedgehogSpikeIdleState : NMEnemiesBaseState
             _hedgehogManager.Invoke("ChangeToSpikeIn", _hedgehogManager.SpikeInDelay);
         }
         else if (_hedgehogManager.HasDetectedPlayer)
+        {
+            _hasChangedState = false; //quen mat th nay` =]]
             _hedgehogManager.CancelInvoke(); //Huỷ về Spike In nếu detect ra Player lần nữa
+        }
     }
 }

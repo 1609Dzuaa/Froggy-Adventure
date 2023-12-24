@@ -74,7 +74,7 @@ public class BeeManager : MEnemiesManager
 
     protected override bool DetectedPlayer()
     {
-        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
             return _hasDetectedPlayer = false;
 
         return _hasDetectedPlayer = Vector2.Distance(_playerCheck.position, _beeNest.position) <= _triggerAttackRange;
@@ -88,7 +88,7 @@ public class BeeManager : MEnemiesManager
 
     public void SpawnBullet()
     {
-        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
             return;
 
         Instantiate(_bullet, _shootPos.position, Quaternion.identity);

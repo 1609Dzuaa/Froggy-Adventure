@@ -60,7 +60,7 @@ public abstract class EnemiesManager : CharactersManager
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.name == "Player")
+        if (collision.collider.name == "Player")
         {
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
             playerScript.ChangeState(playerScript.gotHitState);
@@ -75,7 +75,7 @@ public abstract class EnemiesManager : CharactersManager
     {
         if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
             return _hasDetectedPlayer = false;
-
+        
         if (!_isFacingRight)
             _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _checkDistance, _playerLayer);
         else

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3655779703906280006}
   - component: {fileID: 3655779703906280007}
   - component: {fileID: 3655779703906280004}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mushroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,6 +204,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _knockForce: {x: 50, y: 200}
+  _attackDelay: 0.2
+  degreeEachRotation: 0
+  timeEachRotate: 0
   _boundaryLeft: {fileID: 3655779704356223024}
   _boundaryRight: {fileID: 3655779704778879938}
   _wallCheck: {fileID: 3655779705785379520}
@@ -213,9 +216,8 @@ MonoBehaviour:
     m_Bits: 64
   _restTime: 2
   _patrolTime: 2
-  _attackDelay: 0.2
-  _patrolSpeed: 2
-  _chaseSpeed: 4
+  _patrolSpeed: {x: 0, y: 0}
+  _chaseSpeed: {x: 0, y: 0}
   _parent: {fileID: 3655779705793735963}
   _safeCheck: {fileID: 3655779705098556408}
   _safeCheckDistance: 10

@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 4420872109169055466}
   - component: {fileID: 4420872109169055445}
   - component: {fileID: 4420872109169055467}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bunny
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -363,6 +363,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _knockForce: {x: 0, y: 100}
+  _attackDelay: 0.3
+  degreeEachRotation: 0
+  timeEachRotate: 0
   _boundaryLeft: {fileID: 4420872108478845575}
   _boundaryRight: {fileID: 4420872108818980981}
   _wallCheck: {fileID: 4420872109294774845}
@@ -372,14 +375,11 @@ MonoBehaviour:
     m_Bits: 64
   _restTime: 1.5
   _patrolTime: 2
-  _attackDelay: 0.3
-  _patrolSpeed: 2.5
-  _chaseSpeed: 0
+  _patrolSpeed: {x: 0, y: 0}
+  _chaseSpeed: {x: 0, y: 0}
   _parent: {fileID: 4420872108730201697}
   _playerRef: {fileID: 8824840369338483486, guid: 808843004ac583d4d9cbde381e1d51d8, type: 3}
   _jumpHeight: 5
-  _degreeEachRotation: 1.5
-  _timeEachRotate: 0.1
 --- !u!50 &4420872109169055466
 Rigidbody2D:
   serializedVersion: 4

@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 2700627932623062157}
   - component: {fileID: 2700627932623062156}
   - component: {fileID: 2700627932623062155}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hedgehog
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 3
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
