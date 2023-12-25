@@ -18,6 +18,7 @@ public class TrunkManager : MEnemiesManager
     private TrunkPatrolState _trunkPatrolState = new();
     private TrunkWithdrawnState _trunkRetreatState = new();
     private TrunkAttackState _trunkAttackState = new();
+    private TrunkGotHitState _trunkGotHitState = new();
 
     private bool _canWithDrawn;
 
@@ -40,16 +41,16 @@ public class TrunkManager : MEnemiesManager
 
     protected override void Start()
     {
-        //base.Start();
         _state = _trunkIdleState;
         _state.EnterState(this);
+        MEnemiesGotHitState = _trunkGotHitState;
     }
 
     protected override void Update()
     {
         WithDrawnCheck();
         base.Update();
-        Debug.Log("here");
+        //Debug.Log("here");
     }
 
     private bool WithDrawnCheck()

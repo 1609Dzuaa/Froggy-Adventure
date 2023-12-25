@@ -24,14 +24,14 @@ public class TrunkPatrolState : MEnemiesPatrolState
             _trunkManager.CancelInvoke();
             _trunkManager.ChangeState(_trunkManager.GetTrunkIdleState());
         }
-        else if (CheckIfCanRetreat())
+        else if (CheckIfCanWithdrawn())
         {
             _trunkManager.ChangeState(_trunkManager.GetTrunkWithState());
         }
         //base.Update();
     }
 
-    private bool CheckIfCanRetreat()
+    private bool CheckIfCanWithdrawn()
     {
         return _trunkManager.CanWithDrawn;
     }
