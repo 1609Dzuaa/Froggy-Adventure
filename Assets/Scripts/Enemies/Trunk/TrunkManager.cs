@@ -10,7 +10,28 @@ public class TrunkManager : MEnemiesManager
     [SerializeField] private GameObject _bullet;
     [SerializeField] private Transform _shootPos;
 
+    [Header("Withdrawn Field")]
+    [SerializeField] private float _withdrawnCheckDistance; //khcach withdrawn phải < khcach playerCheck (Obviously!)
+    [SerializeField] Vector2 _withdrawnForce;
+
+    private TrunkIdleState _trunkIdleState = new();
+    private TrunkPatrolState _trunkPatrolState = new();
+    private TrunkWithdrawnState _trunkRetreatState = new();
     private TrunkAttackState _trunkAttackState = new();
+
+    private bool _canWithDrawn;
+
+    public TrunkIdleState GetTrunkIdleState() { return _trunkIdleState; }
+
+    public TrunkPatrolState GetTrunkPatrolState() { return _trunkPatrolState; }
+
+    public TrunkWithdrawnState GetTrunkWithState() { return _trunkRetreatState; }
+
+    public TrunkAttackState GetTrunkAttackState() { return _trunkAttackState; }
+
+    public bool CanWithDrawn { get {  return _canWithDrawn; } }
+
+    public Vector2 WithdrawnForce { get { return _withdrawnForce; } }
 
     protected override void Awake()
     {
@@ -19,13 +40,29 @@ public class TrunkManager : MEnemiesManager
 
     protected override void Start()
     {
-        base.Start();
-        MEnemiesAttackState = _trunkAttackState;
+        //base.Start();
+        _state = _trunkIdleState;
+        _state.EnterState(this);
     }
 
     protected override void Update()
     {
+        WithDrawnCheck();
         base.Update();
+        Debug.Log("here");
+    }
+
+    private bool WithDrawnCheck()
+    {
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+            return _canWithDrawn = false;
+
+        if (!_isFacingRight)
+            _canWithDrawn = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _withdrawnCheckDistance, _playerLayer);
+        else
+            _canWithDrawn = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _withdrawnCheckDistance, _playerLayer);
+
+        return _canWithDrawn;
     }
 
     protected override void FixedUpdate()
@@ -42,5 +79,10 @@ public class TrunkManager : MEnemiesManager
         bullet = Instantiate(_bullet, _shootPos.position, transform.rotation);
         bullet.GetComponent<BulletController>().SetIsDirectionRight(_isFacingRight);
         //Event của animation Attack
+    }
+
+    private void AllowUpdateWithDrawn()
+    {
+        _trunkRetreatState.AllowUpdate = true;
     }
 }

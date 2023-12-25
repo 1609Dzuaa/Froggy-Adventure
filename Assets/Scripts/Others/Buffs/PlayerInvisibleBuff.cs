@@ -60,7 +60,7 @@ public class PlayerInvisibleBuff : MonoBehaviour
             {
                 _isAllowToUpdate = false;
                 _playerSpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
-                Debug.Log("Timeout!");
+                //Debug.Log("Timeout!");
             }
         }
     }

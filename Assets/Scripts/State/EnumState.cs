@@ -43,4 +43,7 @@
 
     public enum EGeckoState
     { idle, patrol, attack, gotHit, hide  }
+
+    public enum ETrunkState
+    { idle, patrol, withdrawn, attack, gotHit }
 }
