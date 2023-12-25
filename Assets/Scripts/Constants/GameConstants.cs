@@ -17,17 +17,26 @@
     #endregion
 
     #region Layer Constants
+    public const string GROUND_LAYER = "Ground";
     public const string PLAYER_LAYER = "Player";
     public const string IGNORE_ENEMIES_LAYER = "Ignore Enemies";
     #endregion
 
     #region Tag Constants
+    public const string GROUND_TAG = "Ground";
+    public const string PLATFORM_TAG = "Platform";
+    public const string TRAP_TAG = "Trap";
     public const string BULLET_TAG = "Bullet";
     public const string SHIELD_TAG = "Shield";
-    public const string ENEMIES_TAG = "Enemies";
+    public const string ENEMIES_TAG = "Enemy";
     #endregion
 
     #region Name Constants
     public const string PLAYER_NAME = "Player";
+    #endregion
+
+    #region Axis Constants
+    public const string VERTICAL_AXIS = "Vertical";
+    public const string HORIZONTAL_AXIS = "Horizontal";
     #endregion
 }

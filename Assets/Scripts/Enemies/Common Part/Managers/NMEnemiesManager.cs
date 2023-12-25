@@ -34,17 +34,24 @@ public class NMEnemiesManager : EnemiesManager
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.name == "Player")
+        if (collision.collider.name == GameConstants.PLAYER_NAME)
         {
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
             playerScript.gotHitState.IsHitByTrap = true;
             playerScript.ChangeState(playerScript.gotHitState);
         }
+        else if(collision.collider.CompareTag(GameConstants.BULLET_TAG))
+        {
+            var BulletCtrl = collision.collider.GetComponent<BulletController>();
+            BulletCtrl.SpawnBulletPieces();
+            Destroy(BulletCtrl.gameObject);
+            ChangeState(_nmEnemiesGotHitState);
+        }
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "Player" && !_hasGotHit)
+        if (collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
         {
             _hasGotHit = true;
             var playerScript = collision.GetComponent<PlayerStateManager>();

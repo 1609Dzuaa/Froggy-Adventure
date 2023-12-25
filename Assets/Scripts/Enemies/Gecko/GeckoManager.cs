@@ -9,6 +9,8 @@ public class GeckoManager : MEnemiesManager
     //trong Sprite Editor của sprite đó
     //https://www.reddit.com/r/Unity2D/comments/2qtnzm/animating_sprites_of_different_sizes/
     //Coi lại vẫn đụng wall
+    //Coi lại vẫn có thể tele mấy góc chết
+    //Solution: nếu vị trí tele mới rơi vào góc chết thì giữ nguyên vị trí tele
 
     [Header("Teleport Distance")]
     [SerializeField] private float _teleDistance;

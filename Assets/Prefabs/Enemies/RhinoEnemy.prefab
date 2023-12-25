@@ -388,7 +388,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -431,10 +431,6 @@ MonoBehaviour:
   _chaseSpeed: {x: 0, y: 0}
   _parent: {fileID: 2824499469113538296}
   _restDelay: 0.5
-  _shieldLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _size: {x: 0, y: 0}
 --- !u!61 &2824499469433178325
 BoxCollider2D:
   m_ObjectHideFlags: 0

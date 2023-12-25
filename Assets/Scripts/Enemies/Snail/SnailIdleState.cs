@@ -20,7 +20,10 @@ public class SnailIdleState : MEnemiesIdleState
         if (CheckIfCanPatrol())
             _snailManager.ChangeState(_snailManager.SnailPatrolState);
         else if (CheckIfCanAttack())
+        {
+            _hasChangedState = true;
             _snailManager.Invoke("AllowAttackPlayer", _snailManager.GetAttackDelay());
+        }
     }
 
     public override void FixedUpdate()

@@ -3,6 +3,7 @@
 public class SnailAttackState : MEnemiesAttackState
 {
     private SnailManager _snailManager;
+    private bool _hasChangedState;
 
     public override void EnterState(CharactersManager charactersManager)
     {
@@ -14,15 +15,22 @@ public class SnailAttackState : MEnemiesAttackState
     public override void ExitState()
     {
         base.ExitState();
+        _hasChangedState = false;
     }
 
     public override void Update()
     {
         //Sometimes, prob here:D
-        if (!_snailManager.HasDetectedPlayer)
+        if (!_snailManager.HasDetectedPlayer && !_hasChangedState)
+        {
+            _hasChangedState = true;
             _snailManager.Invoke("ChangeToIdle", _snailManager.DelayIdleTime);
+        }
         else
+        {
+            _hasChangedState = false;
             _snailManager.CancelInvoke();
+        }
         //base.Update();
     }
 

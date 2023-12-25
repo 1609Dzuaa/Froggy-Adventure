@@ -38,7 +38,10 @@ public class BatPatrolState : MEnemiesPatrolState
             //Debug.Log("Has PT: " + _batManager.BatIdleState.HasPatrol);
         }
         else if (CheckIfCanAttack()) //recheck here
-            _batManager.Invoke("AllowAttackPlayer", _batManager.GetAttackDelay());
+            _batManager.ChangeState(_batManager.BatAttackState); //Bat thì chắc change luôn 0 cần delay
+        //_batManager.Invoke("AllowAttackPlayer", _batManager.GetAttackDelay());
+        else if (CheckIfNeedRetreat())
+            _batManager.ChangeState(_batManager.BatRetreatState);
         else if (_allowBackToSleepPos && !_hasChangedState)
         {
             HandleFlyBackToSleepPos();
@@ -48,6 +51,11 @@ public class BatPatrolState : MEnemiesPatrolState
             HandleFlyPatrol();
 
         //Debug.Log("Allow back, hasPT: " + _allowBackToSleepPos + _batManager.BatIdleState.HasPatrol);
+    }
+
+    protected override bool CheckIfCanAttack()
+    {
+        return _batManager.HasDetectedPlayer;
     }
 
     private void HandleFlyPatrol()
@@ -87,11 +95,30 @@ public class BatPatrolState : MEnemiesPatrolState
         if (!_hasFlip)
             HandleFlipSprite();
 
-        //_maxDistance = Mathf.Sqrt(_batManager.GetPatrolSpeed() * _batManager.GetPatrolSpeed().x + _batManager.GetPatrolSpeed().y * _batManager.GetPatrolSpeed().y);
         _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.SleepPos.position, _batManager.GetPatrolSpeed().x * Time.deltaTime);
         if(CheckCanCeilIn())
             _batManager.ChangeState(_batManager.BatCeilInState);
         //Xử lý việc bay về chỗ ngủ và chuyển trạng thái Ceil In
+    }
+
+    private bool CheckIfNeedRetreat()
+    {
+        //Thêm đk check này vì
+        //Vẫn có TH:
+        //bat mới dậy và chase player tới khi player tàng hình
+        //và về Idle r Patrol tiếp nhưng lúc này Patrol lại vượt quá safe_range của nó 
+
+        if (_batManager.transform.position.x >= _batManager.BoundaryRight.position.x)
+        {
+            _batManager.FlipLeft();
+            return true;
+        }
+        else if (_batManager.transform.position.x <= _batManager.BoundaryLeft.position.x)
+        {
+            _batManager.FlipRight();
+            return true;
+        }
+        return false;
     }
 
     private void HandleFlipSprite()
@@ -107,11 +134,6 @@ public class BatPatrolState : MEnemiesPatrolState
 
     private bool CheckCanCeilIn()
     {
-        if (Vector2.Distance(_batManager.transform.position, _batManager.SleepPos.position) < 0.01f)
-        {
-            //_allowBackToSleepPos = false;
-            return true;
-        }
-        return false;
+        return Vector2.Distance(_batManager.transform.position, _batManager.SleepPos.position) < 0.01f;
     }
 }

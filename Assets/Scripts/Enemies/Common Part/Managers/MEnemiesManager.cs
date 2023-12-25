@@ -85,7 +85,6 @@ public class MEnemiesManager : EnemiesManager
         //Debug.Log("Called");
     }
 
-
     //Call this in Patrol State
     public virtual void Move(float velo)
     {
@@ -129,25 +128,23 @@ public class MEnemiesManager : EnemiesManager
     {
         base.OnCollisionEnter2D(collision);
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
+        {
+            var BulletCtrl = collision.collider.GetComponent<BulletController>();
+            BulletCtrl.SpawnBulletPieces();
+            Destroy(BulletCtrl.gameObject);
             ChangeState(_mEnemiesGotHitState);
+        }
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.name == "Player" && !_hasGotHit)
+        if(collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
         {
             _hasGotHit = true;
             var playerScript = collision.GetComponent<PlayerStateManager>();
             playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
             playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.JumpOnEnemiesForce, ForceMode2D.Impulse);
             ChangeState(_mEnemiesGotHitState);
-        }
-        else if(collision.CompareTag(GameConstants.SHIELD_TAG))
-        {
-            if (_isFacingRight)
-                _rb.AddForce(KnockForce);
-            else
-                _rb.AddForce(KnockForce * new Vector2(-1f, 1f));
         }
     }
 

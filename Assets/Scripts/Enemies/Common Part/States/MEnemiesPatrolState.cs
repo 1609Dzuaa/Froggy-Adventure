@@ -82,6 +82,8 @@ public class MEnemiesPatrolState : MEnemiesBaseState
     protected virtual bool CheckIfCanChangeDirection()
     {
         //recheck
+        //Hàm này có vấn đề 
+
         return _mEnemiesManager.transform.position.x >= _mEnemiesManager.BoundaryRight.position.x && !_hasChangeDirection && !_hasJustHitWall
             || _mEnemiesManager.transform.position.x <= _mEnemiesManager.BoundaryLeft.position.x && !_hasChangeDirection && !_hasJustHitWall;
         //Check nếu đi quá giới hạn trái/phải và CHƯA đổi hướng ở state này

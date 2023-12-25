@@ -112,5 +112,6 @@ public class PigManager : MEnemiesManager
         yield return new WaitForSeconds(_flipDelay);
 
         _pigAtkRedState.AllowFlip = true;
+        //Delay việc Flip 1 xíu để khỏi flip loạn xạ khi thoả mãn đk flip
     }
 }

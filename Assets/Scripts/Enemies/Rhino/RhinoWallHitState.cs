@@ -14,7 +14,7 @@ public class RhinoWallHitState : MEnemiesBaseState
         _rhinoManager.Animator.SetInteger("state", (int)EnumState.ERhinoState.wallHit);
         _rhinoManager.MEnemiesPatrolState.SetCanRdDirection(false);
         _rhinoManager.MEnemiesPatrolState.SetHasJustHitWall(true);
-        //Debug.Log("WH");
+        Debug.Log("WH");
     }
 
     public override void ExitState()

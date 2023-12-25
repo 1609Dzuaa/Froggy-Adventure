@@ -68,6 +68,7 @@ public class BatManager : MEnemiesManager
         _state.Update();
         DetectedPlayer();
         //DetectWall();
+        //Debug.Log("DTP: " + _hasDetectedPlayer);
     }
 
     protected override void FixedUpdate()
@@ -83,11 +84,12 @@ public class BatManager : MEnemiesManager
     protected override bool DetectedPlayer()
     {
         if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        {
+            //Debug.Log("here");
             return _hasDetectedPlayer = false;
-
-
+        }
         _distanceToPlayer = Vector2.Distance(transform.position, _playerCheck.position);
-        return _distanceToPlayer <= _attackRange;
+        return _hasDetectedPlayer =  _distanceToPlayer <= _attackRange; //Quên mất gán _hasDT @
     }
 
     public void FlipLeft()

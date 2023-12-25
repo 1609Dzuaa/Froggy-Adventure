@@ -35,7 +35,7 @@ public class TrunkManager : MEnemiesManager
 
     private void SpawnBullet()
     {
-        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
             return;
 
         GameObject bullet;

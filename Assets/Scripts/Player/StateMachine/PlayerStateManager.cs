@@ -198,11 +198,11 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Ground") || collision.collider.CompareTag("Platform"))
+        if (collision.collider.CompareTag(GameConstants.GROUND_TAG) || collision.collider.CompareTag(GameConstants.PLATFORM_TAG))
         {
             HandleCollideGround();
         }
-        else if (collision.collider.CompareTag("Trap") && _state is not GotHitState)
+        else if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
         {
             //Enemies/Trap sẽ áp lực vào Player theo hướng của nó chứ 0 phải của Player
             if (_HP > 0)
@@ -215,7 +215,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Platform"))
+        if (collision.CompareTag(GameConstants.PLATFORM_TAG))
         {
             this.transform.SetParent(collision.gameObject.transform);
         }
@@ -227,7 +227,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.CompareTag("Platform"))
+        if(collision.CompareTag(GameConstants.PLATFORM_TAG))
         {
             this.transform.SetParent(null);
         }
@@ -317,8 +317,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleInput()
     {
-        dirX = Input.GetAxisRaw("Horizontal");
-        dirY = Input.GetAxisRaw("Vertical");
+        dirX = Input.GetAxisRaw(GameConstants.HORIZONTAL_AXIS);
+        dirY = Input.GetAxisRaw(GameConstants.VERTICAL_AXIS);
     }
 
     public void FlippingSprite()

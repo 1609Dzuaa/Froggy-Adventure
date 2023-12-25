@@ -58,17 +58,16 @@ public class BulletController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //Có nên thử cho nó damage allies của mình || box ?
-        if(collision.collider.name == "Player" || collision.collider.CompareTag("Ground"))
+        if (collision.collider.name == GameConstants.PLAYER_NAME || collision.collider.CompareTag(GameConstants.GROUND_TAG))
         {
-            if(collision.collider.name == "Player")
+            if (collision.collider.name == GameConstants.PLAYER_NAME)
             {
                 var playerScript = collision.collider.GetComponent<PlayerStateManager>();
                 if (_isDirectionRight)
                     playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
                 else
                     playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
-
+                Debug.Log("here");
                 playerScript.ChangeState(playerScript.gotHitState);
             }
             SpawnBulletPieces();

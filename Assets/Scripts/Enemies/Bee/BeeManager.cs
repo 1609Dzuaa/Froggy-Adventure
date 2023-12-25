@@ -89,7 +89,11 @@ public class BeeManager : MEnemiesManager
     public void SpawnBullet()
     {
         if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        {
+            ChangeState(_beeIdleState);
+            _mustAttack = false;
             return;
+        }
 
         Instantiate(_bullet, _shootPos.position, Quaternion.identity);
     }

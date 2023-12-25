@@ -46,7 +46,8 @@ public class RhinoManager : MEnemiesManager
 
     private void HandleIfCollidedWithShield(Collision2D collision)
     {
-        if (collision.collider.CompareTag(GameConstants.SHIELD_TAG))
+        //Chỉ khi attack và va phải Shield thì mới change sang WH
+        if (collision.collider.CompareTag(GameConstants.SHIELD_TAG) && _state is RhinoAttackState)
         {
             if (_isFacingRight)
                 _rb.velocity = (_knockForce * new Vector2(-1f, 1f));

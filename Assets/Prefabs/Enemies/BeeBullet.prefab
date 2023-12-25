@@ -184,12 +184,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55a56f0d49e1e44f9f635b38ec8fb59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletSpeed: 0
-  _existTime: 0
-  _piece1: {fileID: 0}
-  _piece2: {fileID: 0}
-  _piece1Position: {fileID: 0}
-  _piece2Position: {fileID: 0}
+  _bulletSpeed: 4
+  _existTime: 2
+  _piece1: {fileID: 501127545072022260, guid: fdc4038c396294a4fba87f7ea1551093, type: 3}
+  _piece2: {fileID: 2915683180305748394, guid: fd357dcb5fb94b84fa041f733aa525b6, type: 3}
+  _piece1Position: {fileID: 7117984088051767184}
+  _piece2Position: {fileID: 7117984087741271564}
   _isHorizontal: 0
 --- !u!70 &7117984088079876885
 CapsuleCollider2D:

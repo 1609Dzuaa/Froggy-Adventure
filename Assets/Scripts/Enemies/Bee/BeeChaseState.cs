@@ -14,6 +14,7 @@ public class BeeChaseState : MEnemiesAttackState
         _attackPos = new Vector2(_beeManager.GetPlayer().position.x, _beeManager.GetPlayer().position.y + _beeManager.AdJustYAxisAttackRange());
         HandleLeftRightLogic();
         //1 khi vào chase r thì phải chase & shoot đến khi nào vượt min/max Nest thì tha
+        //Hoặc khi 0 detect ra player nữa (Player tàng hình)
         _beeManager.MustAttack = true;
         //Debug.Log("Bee Chase");
     }
@@ -47,10 +48,8 @@ public class BeeChaseState : MEnemiesAttackState
 
     private bool CheckIfOutOfMinMaxRange()
     {
-        if (_beeManager.transform.position.x >= _beeManager.BoundaryRight.position.x
-            || _beeManager.transform.position.x <= _beeManager.BoundaryLeft.position.x)
-            return true;
-        return false;
+        return _beeManager.transform.position.x >= _beeManager.BoundaryRight.position.x
+             || _beeManager.transform.position.x <= _beeManager.BoundaryLeft.position.x;
     }
 
     public override void FixedUpdate()

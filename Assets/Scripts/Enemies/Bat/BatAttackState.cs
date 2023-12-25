@@ -19,8 +19,16 @@ public class BatAttackState : MEnemiesAttackState
     {
         if (CheckIfNeedRetreat())
             _batManager.ChangeState(_batManager.BatRetreatState);
+        else if (CheckIfCanIdle())
+            _batManager.ChangeState(_batManager.BatIdleState);
         else
             Attack();
+    }
+
+    private bool CheckIfCanIdle()
+    {
+        //Tương tự như bee, khi chase mà player tàng hình thì về idle
+        return !_batManager.HasDetectedPlayer;
     }
 
     public override void FixedUpdate() { }

@@ -10,7 +10,7 @@ public class BatGotHitState : MEnemiesGotHitState
     {
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
-        _batManager.GetRigidbody2D().bodyType = RigidbodyType2D.Dynamic;
+        _batManager.GetRigidbody2D().gravityScale = 1f;
         lastRotateTime = Time.time;
     }
 

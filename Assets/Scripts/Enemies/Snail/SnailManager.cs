@@ -77,6 +77,9 @@ public class SnailManager : MEnemiesManager
 
     protected override bool DetectedPlayer()
     {
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+            return _hasDetectedPlayer = false;
+
         _distanceToPlayer = Vector2.Distance(transform.position, _playerCheck.position);
         if (_distanceToPlayer <= _detectRange)
             _hasDetectedPlayer = true;
@@ -185,8 +188,11 @@ public class SnailManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
-        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        {
+            ChangeState(_snailIdleState);
             return;
+        }
 
         ChangeState(_snailAttackState);
     }
