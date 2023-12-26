@@ -9,7 +9,7 @@ public class TrunkIdleState : MEnemiesIdleState
         base.EnterState(charactersManager);
         _trunkManager = (TrunkManager)charactersManager;
         _trunkManager.Animator.SetInteger("state", (int)EnumState.ETrunkState.idle);
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
     }
 
     public override void ExitState()

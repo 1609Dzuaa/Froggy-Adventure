@@ -50,7 +50,7 @@ public class PlayerAbsorbBuff : MonoBehaviour
     {
         if (_isAllowToUpdate)
         {
-            Debug.Log("Updateee");
+            //Debug.Log("Updateee");
             if (Time.time - _entryTime >= _duration)
             {
                 _isAllowToUpdate = false;

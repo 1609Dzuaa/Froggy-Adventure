@@ -11,7 +11,7 @@ public class TrunkAttackState : MEnemiesAttackState
         _trunkManager = (TrunkManager)charactersManager;
         _trunkManager.Animator.SetInteger("state", (int)EnumState.ETrunkState.attack);
         _trunkManager.GetRigidbody2D().velocity = Vector2.zero;
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
     }
 
     public override void ExitState()

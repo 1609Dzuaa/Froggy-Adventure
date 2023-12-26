@@ -67,7 +67,7 @@ public class BulletController : MonoBehaviour
                     playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
                 else
                     playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
-                Debug.Log("here");
+                //Debug.Log("here");
                 playerScript.ChangeState(playerScript.gotHitState);
             }
             SpawnBulletPieces();
