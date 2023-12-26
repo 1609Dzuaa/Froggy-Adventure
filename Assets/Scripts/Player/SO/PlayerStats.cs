@@ -44,7 +44,16 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float _gravScale;
 
     [Header("Time")]
+    //Disable Time Là khoảng thgian mà mình disable directionX ở state WallJump
+    //Mục đích cho nó nhảy hướng ra phía đối diện cái wall vừa đu
+    //Mà 0 bị ảnh hưởng bởi input directionX
+    [SerializeField] private float _disableTime;
     [SerializeField] private float _delayDashTime;
+    [SerializeField] private float _invulnerableTime;
+    [SerializeField] private float _timeEachApplyAlpha;
+
+    [Header("Alpha Value")]
+    [SerializeField] private float _alphaValueGotHit;
 
     public float SpeedX { get { return _speedX; } }
 
@@ -64,6 +73,14 @@ public class PlayerStats : ScriptableObject
 
     public float GravScale { get {  return _gravScale; } }
 
+    public float DisableTime { get { return this._disableTime; } }
+
     public float DelayDashTime { get { return _delayDashTime; } }
+
+    public float InvulnerableTime { get { return _invulnerableTime; } }
+
+    public float TimeEachApplyAlpha { get { return _timeEachApplyAlpha; } }
+
+    public float AlphaValueGotHit { get { return _alphaValueGotHit; } }
 
 }

@@ -4,12 +4,17 @@ public class GotHitState : PlayerBaseState
 {
     private bool allowUpdate = false;
     private bool _isHitByTrap; //Nếu bị hit bởi Traps thì mới AddForce dựa vào hướng mặt của Player
+    private float _entryTime = 0;
+    /*private float _countingTime = 0;
+    private bool _increaseAlpha;*/
 
     public void SetAllowUpdate(bool para) { this.allowUpdate = para; }
 
     public bool IsHitByTrap { set { _isHitByTrap = value; } }
 
- public override void EnterState(PlayerStateManager playerStateManager)
+    public float EntryTime { get {  return _entryTime; } }
+
+    public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.gotHit);
@@ -21,7 +26,10 @@ public class GotHitState : PlayerBaseState
         //Tránh bị đứng ngay frame đầu tiên
     }
 
-    public override void ExitState() { _isHitByTrap = false; }
+    public override void ExitState() 
+    { 
+        _isHitByTrap = false;
+    }
 
     public override void Update()
     {
@@ -35,6 +43,7 @@ public class GotHitState : PlayerBaseState
             else if (Input.GetKeyDown(KeyCode.S))
                 _playerStateManager.ChangeState(_playerStateManager.jumpState);
         }
+
         //Debug.Log("Allow: " + allowUpdate);
     }
 
@@ -51,9 +60,11 @@ public class GotHitState : PlayerBaseState
 
     private void HandleGotHit()
     {
+        _entryTime = Time.time;
         if (_isHitByTrap)
             KnockBack();
         allowUpdate = false;
+        _playerStateManager.IsApplyGotHitEffect = true;
         _playerStateManager.DecreaseHP();
         _playerStateManager.GetGotHitSound().Play();
         _playerStateManager.Invoke("ChangeToIdle", 0.48f);

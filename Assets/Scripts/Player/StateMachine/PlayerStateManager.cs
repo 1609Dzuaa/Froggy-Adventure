@@ -23,6 +23,7 @@ public class PlayerStateManager : MonoBehaviour
     private float dirX, dirY;
     private Rigidbody2D rb;
     private Animator anim;
+    private SpriteRenderer _spriteRenderer;
     private RaycastHit2D wallHit;
     private bool isOnGround = false;
     private bool _canDbJump = false; //Cho phép DbJump 1 lần
@@ -35,8 +36,10 @@ public class PlayerStateManager : MonoBehaviour
     private bool _hasFlip;
     private bool _hasDetectedNPC;
     private bool _hasBeenDisabled;
+    private bool _isApplyGotHitEffect;
+    private bool _hasStartCoroutine;
     private Vector2 _InteractPosition;
-    private int OrangeCount = 0;
+    private int _count = 0;
 
     //Should we put it here ?
     [SerializeField] private Text txtScore;
@@ -49,7 +52,6 @@ public class PlayerStateManager : MonoBehaviour
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
     private ParticleSystem.VelocityOverLifetimeModule dustVelocity;
-    ParticleSystem.MinMaxCurve rate;
     //Simulation SPACE: Local/World:
     //Chọn Local sẽ làm các hạt di chuyển "link" với local ở đây là vật chứa nó
     //Chọn World sẽ giải phóng các hạt, cho phép chúng di chuyển mà 0 bị "link" với vật chứa nó 
@@ -76,20 +78,11 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private LayerMask _npcLayer;
     [SerializeField] private float _npcCheckDistance;
 
-    [Header("Time")]
-    //Là khoảng thgian mà mình disable directionX ở state WallJump
-    //Mục đích cho nó nhảy hướng ra phía đối diện cái wall vừa đu
-    //Mà 0 bị ảnh hưởng bởi input directionX
-    [SerializeField] private float _disableTime;
-
-    [Header("Shield")]
-    [SerializeField] private GameObject _shield;
-
+    [Header("SO")]
     [SerializeField] private PlayerStats _playerStats;
-
+   
+    [Header("Trail Renderer")]
     [SerializeField] private TrailRenderer _trailRenderer;
-
-    public float DisableTime { get { return this._disableTime; } }
 
     //GET Functions
     public float GetDirX() { return this.dirX; }
@@ -118,8 +111,6 @@ public class PlayerStateManager : MonoBehaviour
 
     public ParticleSystem GetDustPS() { return this.dustPS; }
 
-    public int GetOrangeCount() { return this.OrangeCount; }
-
     public AudioSource GetCollectSound() { return this.collectSound; }
 
     public AudioSource GetCollectHPSound() { return this._collectHPSound; }
@@ -127,8 +118,6 @@ public class PlayerStateManager : MonoBehaviour
     public AudioSource GetDashSound() { return this._dashSound; }
 
     public TrailRenderer GetTrailRenderer() { return this._trailRenderer; }
-
-    public Text GetScoreText() { return this.txtScore; }
 
     public RaycastHit2D WallHit { get { return this.wallHit; } }
 
@@ -145,6 +134,8 @@ public class PlayerStateManager : MonoBehaviour
 
     public PlayerStats GetPlayerStats { get { return _playerStats; } set { _playerStats = value; } } 
 
+    public bool IsApplyGotHitEffect { set { _isApplyGotHitEffect = value; } }
+    
     //public static event Action OnAppliedBuff;
 
     //HP Functions
@@ -152,12 +143,17 @@ public class PlayerStateManager : MonoBehaviour
 
     public void DecreaseHP() { _HP--; }
 
-    // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    // Start is called before the first frame update
+    private void Start()
+    {
         _state = idleState;
         _state.EnterState(this);
         rb.gravityScale = _playerStats.GravScale;
@@ -175,6 +171,10 @@ public class PlayerStateManager : MonoBehaviour
     {
         //Khi tương tác với NPC chỉ cho change giữa 2 state là Run và Idle
         if (_isInteractingWithNPC && state is not RunState && state is not IdleState)
+            return;
+
+        //Nếu state kế vẫn là GotHit mà đang trong thgian miễn dmg thì 0 change
+        if (state is GotHitState && Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime)
             return;
 
         //Thêm đoạn check dưới nếu Upcoming state là GotHit
@@ -228,19 +228,16 @@ public class PlayerStateManager : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if(collision.CompareTag(GameConstants.PLATFORM_TAG))
-        {
             this.transform.SetParent(null);
-        }
     }
 
     void Update()
     {
-        if (_hasBeenDisabled) 
+        if (_hasBeenDisabled)
             return;
 
         NPCCheck();
         DrawRayDetectNPC();
-        //Debug.Log("velo : " + rb.velocity);
 
         if (_isInteractingWithNPC)
         {
@@ -255,9 +252,9 @@ public class PlayerStateManager : MonoBehaviour
 
         HandleInput();
         _state.Update();
-        //Debug.Log("dirX: " + dirX);
         GroundAndWallCheck();
         HandleFlipSprite();
+        HandleAlphaValueGotHit();
         HandleDustVelocity();
         SpawnDust();
     }
@@ -487,5 +484,34 @@ public class PlayerStateManager : MonoBehaviour
     {
         _hasBeenDisabled = false;
         Debug.Log("Enable");
+    }
+
+    private IEnumerator Twinkling()
+    {
+        //Lock - Đảm bảo chỉ gọi coroutine sau khi đi đc 1 vòng Alpha Value:
+        //từ 1 -> AlphaVal -> 1
+        _hasStartCoroutine = true;
+        _count++;
+        _spriteRenderer.color = new Color(1f, 1f, 1f, _playerStats.AlphaValueGotHit);
+        Debug.Log("tang lan: " + _count);
+
+        yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
+
+        _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+
+        yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
+
+        _hasStartCoroutine = false;
+    }
+
+    private void HandleAlphaValueGotHit()
+    {
+        if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && !_hasStartCoroutine && _isApplyGotHitEffect)
+            StartCoroutine(Twinkling());
+        else if (Time.time - gotHitState.EntryTime > _playerStats.InvulnerableTime)
+        {
+            _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+            _isApplyGotHitEffect = false;
+        }
     }
 }

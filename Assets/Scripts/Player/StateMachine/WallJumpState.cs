@@ -26,7 +26,7 @@ public class WallJumpState : PlayerBaseState
     public override void Update()
     {
         //Okay on? r`
-        if (Time.time - _disableStart >= _playerStateManager.DisableTime)
+        if (Time.time - _disableStart >= _playerStateManager.GetPlayerStats.DisableTime)
             _isEndDisable = true;
 
         if (CheckIfCanDbJump())

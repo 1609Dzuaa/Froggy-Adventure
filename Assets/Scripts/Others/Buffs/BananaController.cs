@@ -12,7 +12,6 @@ public class BananaController : MonoBehaviour
         if (collision.gameObject.name == "Player")
         {
             var playerManagerScript = collision.gameObject.GetComponent<PlayerStateManager>();
-            playerManagerScript.GetScoreText().text = "Oranges:" + playerManagerScript.GetOrangeCount().ToString();
             playerManagerScript.GetCollectSound().Play();
             Instantiate(collectedEffect, transform.position, Quaternion.identity, null);
             Destroy(this.gameObject);
