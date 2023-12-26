@@ -69,6 +69,8 @@ public class PlayerStats : ScriptableObject
 
     public Vector2 DashForce { get { return _dashForce; } }
 
+    public int MaxHP { get { return _maxHP; } }
+
     public float DbJumpSpeedFactor { get { return _dbJumpSpeedFactor; } }
 
     public float GravScale { get {  return _gravScale; } }

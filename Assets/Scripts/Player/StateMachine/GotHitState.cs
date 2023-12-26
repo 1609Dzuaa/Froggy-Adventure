@@ -65,7 +65,10 @@ public class GotHitState : PlayerBaseState
             KnockBack();
         allowUpdate = false;
         _playerStateManager.IsApplyGotHitEffect = true;
-        _playerStateManager.DecreaseHP();
+        if (!PlayerAbsorbBuff.Instance.IsAllowToUpdate)
+            PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
+        else
+            PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_TEMP);
         _playerStateManager.GetGotHitSound().Play();
         _playerStateManager.Invoke("ChangeToIdle", 0.48f);
         //Why 0.48f ?

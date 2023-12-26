@@ -493,7 +493,7 @@ public class PlayerStateManager : MonoBehaviour
         _hasStartCoroutine = true;
         _count++;
         _spriteRenderer.color = new Color(1f, 1f, 1f, _playerStats.AlphaValueGotHit);
-        Debug.Log("tang lan: " + _count);
+        //Debug.Log("tang lan: " + _count);
 
         yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
 

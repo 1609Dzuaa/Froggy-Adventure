@@ -18,7 +18,7 @@ public class PlayerSpeedBuff : MonoBehaviour
     {
         get
         {
-            if (_speedBuffInstance == null)
+            if (!_speedBuffInstance)
             {
                 //Tìm xem có Instance có trong Scene kh ?
                 _speedBuffInstance = FindObjectOfType<PlayerSpeedBuff>();

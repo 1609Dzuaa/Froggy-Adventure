@@ -19,7 +19,7 @@ public class PlayerJumpBuff : MonoBehaviour
     {
         get
         {
-            if (_jumpBuffInstance == null)
+            if (!_jumpBuffInstance)
             {
                 //Tìm xem có Instance có trong Scene kh ?
                 _jumpBuffInstance = FindObjectOfType<PlayerJumpBuff>();

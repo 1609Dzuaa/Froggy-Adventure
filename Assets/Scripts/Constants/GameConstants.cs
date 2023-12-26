@@ -39,4 +39,10 @@
     public const string VERTICAL_AXIS = "Vertical";
     public const string HORIZONTAL_AXIS = "Horizontal";
     #endregion
+
+    #region HEALTHPOINT(HP) Constants
+    public const int HP_STATE_NORMAL = 0;
+    public const int HP_STATE_LOST = 1;
+    public const int HP_STATE_TEMP = 2;
+    #endregion
 }

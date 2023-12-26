@@ -17,7 +17,7 @@ public class PlayerInvisibleBuff : MonoBehaviour
     {
         get
         {
-            if (_invisibleBuffInstance == null)
+            if (!_invisibleBuffInstance)
             {
                 //Tìm xem có Instance có trong Scene kh ?
                 _invisibleBuffInstance = FindObjectOfType<PlayerInvisibleBuff>();

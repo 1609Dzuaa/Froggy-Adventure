@@ -39,7 +39,7 @@ public class FrogHPController : MonoBehaviour //Tạo class Item
         {
             Instantiate(_collectedEffect, transform.position, Quaternion.identity);
             var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.IncreaseHP();
+            PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_NORMAL);
             playerScript.GetCollectHPSound().Play();
             Destroy(_parent);
         }
