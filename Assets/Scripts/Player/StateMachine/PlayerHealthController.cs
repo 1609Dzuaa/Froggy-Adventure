@@ -59,12 +59,7 @@ public class PlayerHealthController : MonoBehaviour
         _tempHP = 0;
         InitHPArray();
         InitHPDictionary();
-        /*for (int i = 0; i < 7; i++)
-        {
-            if (i < _maxHP)
-                _uiHP[i].enabled = true;
-        }*/
-        //Disable het, tao func trong day chi enable nhung thang < maxHP
+        InitUIHP();
     }
 
     private void CreateInstance()
@@ -94,6 +89,19 @@ public class PlayerHealthController : MonoBehaviour
             };        
         }
         //Thiết lập từng key - value cho từng HP
+    }
+
+    private void InitUIHP()
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            if (i < _maxHP)
+                _uiHP[i].enabled = true;
+            else
+                _uiHP[i].enabled = false;
+        }
+        //Enable những thằng có index < maxHP
+        //Disable những thằng còn lại
     }
 
     private void InitHPArray()
@@ -172,11 +180,14 @@ public class PlayerHealthController : MonoBehaviour
     {
         if (state == GameConstants.HP_STATE_TEMP)
         {
-            if (_tempHP == 0)
-                _HPs[_currentHP]._state = state;
-            else
-                _HPs[_currentHP + _tempHP]._state = state;
+            //Set state máu ảo cho các HP từ máu hiện tại trở đi
+            _HPs[_currentHP + _tempHP]._state = state;
             _tempHP++;
+
+            //Sau khi đã tăng máu ảo thì check nếu tổng máu hiện tại + máu ảo >= maxHP
+            //thì cho phép các thanh máu sau maxHP enable
+            if (_tempHP + _currentHP >= _maxHP)
+                _uiHP[_tempHP + _currentHP - 1].enabled = true;
         }
         //Ổn
     }
@@ -210,44 +221,8 @@ public class PlayerHealthController : MonoBehaviour
             }
             Debug.Log("Co vao day");
             _uiHP[i + _currentHP].sprite = _HPs[i + _currentHP]._dictHP[_HPs[i + _currentHP]._state];
+            
+            //Render lượng HP max lên sprite dựa trên state của nó 
         }
-
-        /*if (_tempHP < _maxHP)
-        {
-            for (int i = 0; i < _maxHP; i++)
-            {
-                if (!_uiHP[i])
-                {
-                    Debug.Log("NULLLL");
-                    return;
-                }
-                _uiHP[i].sprite = _HPs[i]._dictHP[_HPs[i]._state];
-            }
-        }
-        else
-        {
-            for (int i = 0; i <= _tempHP; i++)
-            {
-                if (!_uiHP[i])
-                {
-                    Debug.Log("UI NULLLL");
-                    return;
-                }
-
-                if (_HPs[i]._dictHP == null)
-                {
-                    _HPs[i]._dictHP = new Dictionary<int, Sprite>()
-                    {
-                        { GameConstants.HP_STATE_NORMAL, _normalHPSprite },
-                        { GameConstants.HP_STATE_LOST, _lostHPSprite },
-                        { GameConstants.HP_STATE_TEMP, _tempHPSprite }
-                    };
-                }
-                if (_HPs[i]._state == 1)
-                    Debug.Log("hehe");
-                _uiHP[i].sprite = _HPs[i]._dictHP[_HPs[i]._state];
-            }
-        }*/
-        //Render lượng HP max lên sprite dựa trên state của nó 
     }
 }
