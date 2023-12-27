@@ -63,7 +63,10 @@ public abstract class EnemiesManager : CharactersManager
         if (collision.collider.name == GameConstants.PLAYER_NAME)
         {
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
-            playerScript.ChangeState(playerScript.gotHitState);
+            if (PlayerHealthController.Instance.CurrentHP > 0)
+                playerScript.ChangeState(playerScript.gotHitState);
+            else
+                playerScript.HandleDeadState();
             if (_isFacingRight)
                 playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetPlayerStats.KnockBackForce.x, 0f));
             else

@@ -11,9 +11,19 @@
 
     #endregion
 
+    #region ANIMATION_CONSTANT
+    //-----------------------------//
+
+    #region Player
+    public const string DEAD_ANIMATION = "dead";
+    #endregion
+
     #region Shield String Constants
     public const string RUNNINGOUT = "RunningOut";
     public const string IDLE = "Idle";
+    #endregion
+
+    //-----------------------------//
     #endregion
 
     #region Layer Constants

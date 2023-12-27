@@ -67,8 +67,10 @@ public class BulletController : MonoBehaviour
                     playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
                 else
                     playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
-                //Debug.Log("here");
-                playerScript.ChangeState(playerScript.gotHitState);
+                if (PlayerHealthController.Instance.CurrentHP > 0)
+                    playerScript.ChangeState(playerScript.gotHitState);
+                else
+                    playerScript.HandleDeadState();
             }
             SpawnBulletPieces();
             Destroy(this.gameObject);

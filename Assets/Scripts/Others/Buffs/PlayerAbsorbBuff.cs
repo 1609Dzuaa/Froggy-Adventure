@@ -54,8 +54,25 @@ public class PlayerAbsorbBuff : MonoBehaviour
             if (Time.time - _entryTime >= _duration)
             {
                 _isAllowToUpdate = false;
-                //Debug.Log("Timeout!");
+                HandleIterateTempHP();
+                PlayerHealthController.Instance.TempHP = 0; //Đưa temp về 0 sau khi duyệt xong
             }
+        }
+    }
+
+    private void HandleIterateTempHP()
+    {
+        //Func này để duyệt và set giá trị các TempHP, cách duyệt:
+        //Bắt đầu từ VỊ TRÍ sau VỊ TRÍ của currentHP, nếu tempHP != 0 <=> ĐK for dưới thoả mãn thì:
+        //Nếu vị trí của i VƯỢT QUÁ vị trí của MaxHP thì disable nó đi
+        //Nếu 0 thì gán lại state lost cho vị trí đó
+        for (int i = PlayerHealthController.Instance.CurrentHP; i < PlayerHealthController.Instance.CurrentHP + PlayerHealthController.Instance.TempHP; i++)
+        {
+            if (i > PlayerHealthController.Instance.MaxHP - 1)
+                PlayerHealthController.Instance.UIHPs[i].enabled = false;
+            else
+                PlayerHealthController.Instance.HPs[i]._state = GameConstants.HP_STATE_LOST;
+            //Debug.Log("i, state: " + i + ", " + PlayerHealthController.Instance.HPs[i]._state); 
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-struct HP
+public struct HP
 {
     public int _state;
     public Sprite _HPSprite;
@@ -28,6 +28,14 @@ public class PlayerHealthController : MonoBehaviour
     private int _maxHP;
     private int _currentHP;
     private int _tempHP;
+
+    public Image[] UIHPs { get { return _uiHP; } set { _uiHP = value; } }
+
+    public HP[] HPs { get { return _HPs; } set { HPs = value; } }
+
+    public int MaxHP { get { return _maxHP; } }
+
+    public int CurrentHP { get { return _currentHP; } }
 
     public int TempHP { get { return _tempHP; } set { _tempHP = value; } }
 
@@ -116,6 +124,7 @@ public class PlayerHealthController : MonoBehaviour
     private void Update()
     {
         UpdateHPToUI();
+        Debug.Log("temp: " + _tempHP);
         //Debug.Log("Curr, TempHP , state: " + _currentHP + ", " + _tempHP + "," + _HPs[_tempHP]._state);
     }
 
@@ -169,7 +178,8 @@ public class PlayerHealthController : MonoBehaviour
                 //Tại sao trừ trước r mới gán state
                 //=> vì là mảng nên index từ 0 (obviously!) nên phải trừ trước khi gán
                 //vd: máu hiện tại là 3 tương ứng với index là 2
-                _currentHP--;
+                if (_currentHP > 0)
+                    _currentHP--;
                 _HPs[_currentHP]._state = state;
             }
             //Debug.Log("current, state: " + _currentHP + ", " + _HPs[_currentHP]._state);
@@ -219,7 +229,7 @@ public class PlayerHealthController : MonoBehaviour
                         { GameConstants.HP_STATE_TEMP, _tempHPSprite }
                 };
             }
-            Debug.Log("Co vao day");
+            //Debug.Log("Co vao day");
             _uiHP[i + _currentHP].sprite = _HPs[i + _currentHP]._dictHP[_HPs[i + _currentHP]._state];
             
             //Render lượng HP max lên sprite dựa trên state của nó 

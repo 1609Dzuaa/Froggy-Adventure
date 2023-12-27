@@ -39,15 +39,8 @@ public class PlayerStateManager : MonoBehaviour
     private bool _isApplyGotHitEffect;
     private bool _hasStartCoroutine;
     private Vector2 _InteractPosition;
-    private int _count = 0;
-
-    //Should we put it here ?
-    [SerializeField] private Text txtScore;
 
     //Đạt được nhiều thành tựu thì mới tăng thêm maxHP
-    [Header("HP")]
-    [SerializeField] private int _HP;
-    [SerializeField] private int _maxHP;
 
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
@@ -123,10 +116,6 @@ public class PlayerStateManager : MonoBehaviour
 
     public bool HasDetectedNPC { get { return _hasDetectedNPC; } }
 
-    public int GetHP() { return _HP; }
-
-    public int GetMaxHP() { return _maxHP; }
-
     //SET Functions
     public void SetCanDbJump(bool para) { this._canDbJump = para; }
 
@@ -137,11 +126,6 @@ public class PlayerStateManager : MonoBehaviour
     public bool IsApplyGotHitEffect { set { _isApplyGotHitEffect = value; } }
     
     //public static event Action OnAppliedBuff;
-
-    //HP Functions
-    public void IncreaseHP() { if (_HP < _maxHP) _HP++; }
-
-    public void DecreaseHP() { _HP--; }
 
     private void Awake()
     {
@@ -205,11 +189,13 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
         {
             //Enemies/Trap sẽ áp lực vào Player theo hướng của nó chứ 0 phải của Player
-            if (_HP > 0)
+            if (PlayerHealthController.Instance.CurrentHP > 0)
             {
                 gotHitState.IsHitByTrap = true;
                 ChangeState(gotHitState);
             }
+            else
+                HandleDeadState();
         }
     }
 
@@ -439,9 +425,9 @@ public class PlayerStateManager : MonoBehaviour
         //Vứt trong Dash Animation để Delay việc Update của Dash 
     }
 
-    private void HandleDeadState()
+    public void HandleDeadState()
     {
-        anim.SetTrigger("dead");
+        anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
         deadSound.Play();
     }
@@ -491,7 +477,6 @@ public class PlayerStateManager : MonoBehaviour
         //Lock - Đảm bảo chỉ gọi coroutine sau khi đi đc 1 vòng Alpha Value:
         //từ 1 -> AlphaVal -> 1
         _hasStartCoroutine = true;
-        _count++;
         _spriteRenderer.color = new Color(1f, 1f, 1f, _playerStats.AlphaValueGotHit);
         //Debug.Log("tang lan: " + _count);
 
