@@ -40,8 +40,6 @@ public class PlayerStateManager : MonoBehaviour
     private bool _hasStartCoroutine;
     private Vector2 _InteractPosition;
 
-    //Đạt được nhiều thành tựu thì mới tăng thêm maxHP
-
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
     private ParticleSystem.VelocityOverLifetimeModule dustVelocity;

@@ -23,21 +23,29 @@ public class PlayerHealthController : MonoBehaviour
     [Header("SO")]
     [SerializeField] private PlayerStats _playerSO;
 
+    [Header("Time")]
+    //khoảng thgian để blink máu ảo khi nó trong trạng thái RunningOut
+    [SerializeField] private float _timeEachBlink;
+
     private static PlayerHealthController _Instance;
     private HP[] _HPs = new HP[7];
     private int _maxHP;
     private int _currentHP;
     private int _tempHP;
 
-    public Image[] UIHPs { get { return _uiHP; } set { _uiHP = value; } }
+    //Giúp cảnh báo Player khi máu ảo sắp hết thgian sử dụng ^^
+    #region BLINK EFFECT FOR TEMP_HP WHEN RUNNING OUT
+    private bool _hasGotTempHP;
+    private float _tempHPEntryTime;
+    private bool _hasTickRunOut;
+    private float _tempHPEachRunOutEntryTime;
+    private float _tempHPRunOutEntryTime;
+    private bool _blinkLost = true;
+    #endregion
 
     public HP[] HPs { get { return _HPs; } set { HPs = value; } }
 
-    public int MaxHP { get { return _maxHP; } }
-
     public int CurrentHP { get { return _currentHP; } }
-
-    public int TempHP { get { return _tempHP; } set { _tempHP = value; } }
 
     public static PlayerHealthController Instance
     {
@@ -62,9 +70,7 @@ public class PlayerHealthController : MonoBehaviour
 
     private void Start()
     {
-        _maxHP = _playerSO.MaxHP;
-        _currentHP = _maxHP;
-        _tempHP = 0;
+        InitHP();
         InitHPArray();
         InitHPDictionary();
         InitUIHP();
@@ -83,6 +89,13 @@ public class PlayerHealthController : MonoBehaviour
             //Nếu đã tồn tại thằng Instance != ở trong game thì destroy thằng này
             Destroy(gameObject);
         }
+    }
+
+    private void InitHP()
+    {
+        _maxHP = _playerSO.MaxHP;
+        _currentHP = _maxHP;
+        _tempHP = 0;
     }
 
     private void InitHPDictionary()
@@ -123,8 +136,9 @@ public class PlayerHealthController : MonoBehaviour
 
     private void Update()
     {
+        HandleIterateTempHP();
         UpdateHPToUI();
-        Debug.Log("temp: " + _tempHP);
+        //Debug.Log("temp: " + _tempHP);
         //Debug.Log("Curr, TempHP , state: " + _currentHP + ", " + _tempHP + "," + _HPs[_tempHP]._state);
     }
 
@@ -190,6 +204,12 @@ public class PlayerHealthController : MonoBehaviour
     {
         if (state == GameConstants.HP_STATE_TEMP)
         {
+            if (_tempHP == 0)
+            {
+                _hasGotTempHP = true; //Đánh dấu đã nhận đc máu ảo để tính giờ
+                _tempHPEntryTime = Time.time; //Bắt đầu tính giờ thgian để sd máu ảo
+            }
+
             //Set state máu ảo cho các HP từ máu hiện tại trở đi
             _HPs[_currentHP + _tempHP]._state = state;
             _tempHP++;
@@ -234,5 +254,80 @@ public class PlayerHealthController : MonoBehaviour
             
             //Render lượng HP max lên sprite dựa trên state của nó 
         }
+    }
+
+    private void HandleIterateTempHP()
+    {
+        //Nếu hết thgian sử dụng tempHP
+        if (Time.time - _tempHPEntryTime >= PlayerAbsorbBuff.Instance.TempHPDuration && _hasGotTempHP)
+        {
+            Debug.Log("Het buff");
+            //Bắt đầu bấm giờ cho RunOut
+            StartTickRunOut();
+
+            //Nếu vẫn đang trong thgian RunOut thì xử lý blink blink cho tempHP
+            if (Time.time - _tempHPRunOutEntryTime < PlayerAbsorbBuff.Instance.TempHPRunOutDuration)
+                HandleTempHPRunOutState();
+            else
+            {
+                //Hết thgian RunOut máu ảo -> xoá lượng máu ảo và Reset Data liên quan đến nó
+                HandleExpireTempHP();
+                ResetDataRelatedToTempHP();
+            }
+        }
+    }
+
+    private void StartTickRunOut()
+    {
+        if (!_hasTickRunOut)
+        {
+            _hasTickRunOut = true;
+            _tempHPRunOutEntryTime = Time.time;
+            _tempHPEachRunOutEntryTime = Time.time;
+        }
+    }
+
+    private void HandleTempHPRunOutState()
+    {
+        //Check tới lần Blink tiếp theo chưa
+        if (Time.time - _tempHPEachRunOutEntryTime >= _timeEachBlink)
+        {
+            //Dựa trên bool check để set sprite cho từng máu ảo
+            if (_blinkLost)
+            {
+                for (int i = _currentHP; i < _currentHP + _tempHP; i++)
+                    _HPs[i]._state = GameConstants.HP_STATE_LOST;
+                _blinkLost = false;
+            }
+            else
+            {
+                for (int i = _currentHP; i < _currentHP + _tempHP; i++)
+                    _HPs[i]._state = GameConstants.HP_STATE_TEMP;
+                _blinkLost = true;
+            }
+            _tempHPEachRunOutEntryTime = Time.time;
+        }
+    }
+
+    private void HandleExpireTempHP()
+    {
+        //Func này để duyệt và set giá trị các TempHP, cách duyệt:
+        //Bắt đầu từ VỊ TRÍ sau VỊ TRÍ của currentHP, nếu tempHP != 0 <=> ĐK for dưới thoả mãn thì:
+        //Nếu vị trí của i VƯỢT QUÁ vị trí của MaxHP thì disable nó đi
+        //Nếu 0 thì gán lại state lost cho vị trí đó
+        for (int i = _currentHP; i < _currentHP + _tempHP; i++)
+        {
+            if (i > _maxHP - 1)
+                _uiHP[i].enabled = false;
+            else
+                _HPs[i]._state = GameConstants.HP_STATE_LOST;
+        }
+    }
+
+    private void ResetDataRelatedToTempHP()
+    {
+        _tempHP = 0;
+        _hasGotTempHP = false;
+        _hasTickRunOut = false;
     }
 }

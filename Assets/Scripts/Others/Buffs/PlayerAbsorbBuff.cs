@@ -2,11 +2,22 @@
 
 public class PlayerAbsorbBuff : MonoBehaviour
 {
-    [SerializeField] private float _duration;
+    //Nên bố trí vị trí buff này sao cho
+    //Khoảng thgian ăn buff 1 và buff 2 không gần kề nhau tránh bug (có thể có)
+
+    [SerializeField] private float _buffDuration;
+    [SerializeField] private float _tempHPDuration;
+    [SerializeField] private float _tempHPRunOutDuration;
 
     private static PlayerAbsorbBuff _absurbBuffInstance;
     private bool _isAllowToUpdate;
     private float _entryTime;
+
+    //Vẫn còn minor bug dù ch hết thgian dùng buff nhưng đã tự động trừ máu ảo ?
+
+    public float TempHPDuration { get { return _tempHPDuration; } }
+
+    public float TempHPRunOutDuration { get { return _tempHPRunOutDuration; } }
 
     public static PlayerAbsorbBuff Instance
     {
@@ -51,28 +62,10 @@ public class PlayerAbsorbBuff : MonoBehaviour
         if (_isAllowToUpdate)
         {
             //Debug.Log("Updateee");
-            if (Time.time - _entryTime >= _duration)
+            if (Time.time - _entryTime >= _buffDuration)
             {
                 _isAllowToUpdate = false;
-                HandleIterateTempHP();
-                PlayerHealthController.Instance.TempHP = 0; //Đưa temp về 0 sau khi duyệt xong
             }
-        }
-    }
-
-    private void HandleIterateTempHP()
-    {
-        //Func này để duyệt và set giá trị các TempHP, cách duyệt:
-        //Bắt đầu từ VỊ TRÍ sau VỊ TRÍ của currentHP, nếu tempHP != 0 <=> ĐK for dưới thoả mãn thì:
-        //Nếu vị trí của i VƯỢT QUÁ vị trí của MaxHP thì disable nó đi
-        //Nếu 0 thì gán lại state lost cho vị trí đó
-        for (int i = PlayerHealthController.Instance.CurrentHP; i < PlayerHealthController.Instance.CurrentHP + PlayerHealthController.Instance.TempHP; i++)
-        {
-            if (i > PlayerHealthController.Instance.MaxHP - 1)
-                PlayerHealthController.Instance.UIHPs[i].enabled = false;
-            else
-                PlayerHealthController.Instance.HPs[i]._state = GameConstants.HP_STATE_LOST;
-            //Debug.Log("i, state: " + i + ", " + PlayerHealthController.Instance.HPs[i]._state); 
         }
     }
 
