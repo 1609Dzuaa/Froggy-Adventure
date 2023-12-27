@@ -63,10 +63,15 @@ public class BulletController : MonoBehaviour
             if (collision.collider.name == GameConstants.PLAYER_NAME)
             {
                 var playerScript = collision.collider.GetComponent<PlayerStateManager>();
-                if (_isDirectionRight)
-                    playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
-                else
-                    playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
+
+                if (!PlayerAbsorbBuff.Instance.IsAllowToUpdate)
+                {
+                    if (_isDirectionRight)
+                        playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
+                    else
+                        playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
+                }
+               
                 if (PlayerHealthController.Instance.CurrentHP > 0)
                     playerScript.ChangeState(playerScript.gotHitState);
                 else

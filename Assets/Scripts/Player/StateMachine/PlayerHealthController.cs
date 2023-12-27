@@ -261,7 +261,7 @@ public class PlayerHealthController : MonoBehaviour
         //Nếu hết thgian sử dụng tempHP
         if (Time.time - _tempHPEntryTime >= PlayerAbsorbBuff.Instance.TempHPDuration && _hasGotTempHP)
         {
-            Debug.Log("Het buff");
+            Debug.Log("TempHP Ready Run Out Of Time");
             //Bắt đầu bấm giờ cho RunOut
             StartTickRunOut();
 

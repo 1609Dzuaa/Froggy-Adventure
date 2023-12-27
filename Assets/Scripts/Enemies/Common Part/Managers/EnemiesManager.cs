@@ -67,10 +67,14 @@ public abstract class EnemiesManager : CharactersManager
                 playerScript.ChangeState(playerScript.gotHitState);
             else
                 playerScript.HandleDeadState();
-            if (_isFacingRight)
-                playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetPlayerStats.KnockBackForce.x, 0f));
-            else
-                playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetPlayerStats.KnockBackForce.x, 0f));
+
+            if(!PlayerAbsorbBuff.Instance.IsAllowToUpdate)
+            {
+                if (_isFacingRight)
+                    playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetPlayerStats.KnockBackForce.x, 0f));
+                else
+                    playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetPlayerStats.KnockBackForce.x, 0f));
+            }
         }
     }
 

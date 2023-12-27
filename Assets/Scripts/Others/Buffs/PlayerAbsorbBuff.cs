@@ -8,12 +8,13 @@ public class PlayerAbsorbBuff : MonoBehaviour
     [SerializeField] private float _buffDuration;
     [SerializeField] private float _tempHPDuration;
     [SerializeField] private float _tempHPRunOutDuration;
+    [SerializeField] private Transform _tempShieldIcon; //sign báo hiệu vẫn còn thgian buff
 
     private static PlayerAbsorbBuff _absurbBuffInstance;
     private bool _isAllowToUpdate;
     private float _entryTime;
 
-    //Vẫn còn minor bug dù ch hết thgian dùng buff nhưng đã tự động trừ máu ảo ?
+    //Thêm hiệu ứng để biết hết Buff tương tự như Shield ?
 
     public float TempHPDuration { get { return _tempHPDuration; } }
 
@@ -42,6 +43,11 @@ public class PlayerAbsorbBuff : MonoBehaviour
         CreateInstance();
     }
 
+    private void Start()
+    {
+        _tempShieldIcon.gameObject.SetActive(false);
+    }
+
     private void CreateInstance()
     {
         if (!_absurbBuffInstance)
@@ -65,6 +71,7 @@ public class PlayerAbsorbBuff : MonoBehaviour
             if (Time.time - _entryTime >= _buffDuration)
             {
                 _isAllowToUpdate = false;
+                _tempShieldIcon.gameObject.SetActive(false);
             }
         }
     }
@@ -73,5 +80,6 @@ public class PlayerAbsorbBuff : MonoBehaviour
     {
         _isAllowToUpdate = true;
         _entryTime = Time.time;
+        _tempShieldIcon.gameObject.SetActive(true);
     }
 }

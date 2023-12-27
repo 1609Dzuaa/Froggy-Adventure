@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerSpeedBuff : MonoBehaviour
 {
+    //Buff này chắc dùng PS/TR để tạo effect
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private float _speedMultiplier;
     [SerializeField] private float _duration;
