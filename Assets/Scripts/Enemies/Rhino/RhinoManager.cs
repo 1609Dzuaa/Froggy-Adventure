@@ -5,6 +5,8 @@ using UnityEngine;
 public class RhinoManager : MEnemiesManager
 {
     //Rhino vẫn flip linh tinh ?@
+    [Header("SO")]
+    [SerializeField] private EnemiesStats _enemiesStats;
 
     private RhinoAttackState _rhinoAttackState = new();
     private RhinoWallHitState _rhinoWallHitState = new();

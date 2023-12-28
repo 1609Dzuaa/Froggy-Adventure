@@ -33,6 +33,7 @@ public class MrAttackState : MEnemiesAttackState
                     _mushroomManager.MEnemiesPatrolState.SetCanRdDirection(true);
                 else
                 {
+                    //Flip ở đây luôn để tạo cảm giác nó quay mặt lại nhưng 0 thấy Player đâu
                     _mushroomManager.FlippingSprite();
                     _mushroomManager.MEnemiesPatrolState.SetCanRdDirection(false);
                     _mushroomManager.MEnemiesPatrolState.SetHasJustHitWall(true);

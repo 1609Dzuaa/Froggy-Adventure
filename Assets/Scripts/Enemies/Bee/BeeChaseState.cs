@@ -32,7 +32,7 @@ public class BeeChaseState : MEnemiesAttackState
             _beeManager.ChangeState(_beeManager.GetBeeAttackState());
         else if (CheckIfOutOfMinMaxRange())
         {
-            _beeManager.GetBeePatrolState().SetHasChangeDirection(true);
+            //_beeManager.GetBeePatrolState().SetHasChangeDirection(true);
             _beeManager.GetBeePatrolState().SetCanRdDirection(false);
             _beeManager.FlippingSprite();
             _beeManager.ChangeState(_beeManager.GetBeePatrolState());

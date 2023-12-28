@@ -3,7 +3,7 @@
 public class MEnemiesPatrolState : MEnemiesBaseState
 {
     protected float _entryTime;
-    protected bool _hasChangeDirection = false; //Đảm bảo chỉ flip 1 lần
+    protected bool _hasChangeDirection = false; //Đảm bảo chỉ flip 1 lần - 0 có thì flip loạn xạ ở đoạn min/max
     protected bool _hasChangedState; //Th này sinh ra nhằm tránh việc Invoke Attack nhiều lần
     protected bool _canRdDirection = true;
     protected bool _hasJustHitWall = false; //Hitwall thì 0 cho Rd hướng
@@ -11,7 +11,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     public void SetCanRdDirection(bool para) { this._canRdDirection = para; }
 
-    public void SetHasChangeDirection(bool para) { _hasChangeDirection = para; }
+    public bool HasChangedDirection { get { return _hasChangeDirection; } set { _hasChangeDirection = value; } }
 
     //Mọi quái moveable cần func dưới, mục đích đụng tường thì 0 cho rd direction 
     public void SetHasJustHitWall(bool para) { this._hasJustHitWall = para; }
@@ -21,23 +21,17 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.patrol);
         _entryTime = Time.time;
+        Debug.Log("Patrol, canRD, hasChangeDir, HW: " + _canRdDirection + ", " + _hasChangeDirection + ", " + _hasJustHitWall);
         if (_canRdDirection)
             HandleRandomChangeDirection();
-        //Debug.Log("Patrol");
     }
 
     public override void ExitState()
     {
         //Check trước khi rời state cho lần enter state Patrol tới:
-        //Nếu đụng min, max r thì lần patrol tiếp 0 đc random
-        //Debug.Log("PTExitHasChangeDir: " + _hasChangeDirection);
-        if (_hasChangeDirection)
-            _canRdDirection = false;
-        else
-            _canRdDirection = true;
-        _hasChangeDirection = false;
-        _hasJustHitWall = false;
-        _hasChangedState = false;
+        //Nếu đụng min, max r VÀ chưa hit wall thì lần patrol tiếp 0 đc random
+        HandleCanRandomNextPatrolState();
+        ResetDataForNextPatrolState();
     }
 
     public override void Update()
@@ -48,7 +42,15 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     protected virtual void LogicUpdate()
     {
-        //recheck this shit
+        //Flip Sprite Check
+        if (CheckIfCanChangeDirection())
+        {
+            _hasChangeDirection = true;
+            _mEnemiesManager.FlippingSprite();
+            //Debug.Log("Flip Patrol, Has Hit Wall: " + _hasJustHitWall);
+        }
+
+        //Change States check
         if (CheckIfCanRest())
         {
             _mEnemiesManager.CancelInvoke();
@@ -58,12 +60,6 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         {
             _hasChangedState = true;
             _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());
-        }
-        else if (CheckIfCanChangeDirection())
-        {
-            _hasChangeDirection = true;
-            _mEnemiesManager.FlippingSprite();
-            //Debug.Log("Flip Patrol, Has Hit Wall: " + _hasJustHitWall);
         }
     }
 
@@ -81,16 +77,13 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     protected virtual bool CheckIfCanChangeDirection()
     {
-        //recheck
-        //Hàm này có vấn đề 
-
+        //ổn r
         return _mEnemiesManager.transform.position.x >= _mEnemiesManager.BoundaryRight.position.x && !_hasChangeDirection && !_hasJustHitWall
             || _mEnemiesManager.transform.position.x <= _mEnemiesManager.BoundaryLeft.position.x && !_hasChangeDirection && !_hasJustHitWall;
-        //Check nếu đi quá giới hạn trái/phải và CHƯA đổi hướng ở state này
+
+        //Check nếu đi quá giới hạn trái/phải, CHƯA đổi hướng ở state này và CHƯA hit wall
         //Thì lật sprite đổi hướng
-        //Thêm ĐK hasJustHitWall vì lúc Hitwall thì hiển nhiên x > x min/max
-        //Với ĐK test là min max gần với tường :v
-        //Cần xem lại hàm này sau!
+        //_hasChangeDirection ở đây để lock việc changeDir(chỉ 1 lần duy nhất)
     }
 
     public override void FixedUpdate()
@@ -109,5 +102,27 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         //Các TH 0 thể Rd:
         //Vừa tông vào wall => bắt buộc phải flip và patrol hướng ngược lại vs tường
         //Vừa flip vì vượt quá min, max boundaries
+    }
+
+    private void HandleCanRandomNextPatrolState()
+    {
+        //Thêm đoạn check bool _hasJustHitWall vì:
+        //Lúc hitwall thì hiển nhiên vị trí hitwall lớn hơn min/max |trừ khi bố trí ngu ;)|
+        //Dẫn đến phải flip lúc đó -> haschange = true (0 đc rd flip lần sau)
+        //TÓM LẠI mình muốn kết quả chạy debug sau khi hit wall như sau:
+        //PT1: Rd(false) - HitWall(true)
+        //PT2: Rd(true) - Hitwall(false)
+
+        if (_hasChangeDirection && !_hasJustHitWall)
+            _canRdDirection = false;
+        else
+            _canRdDirection = true;
+    }
+
+    private void ResetDataForNextPatrolState()
+    {
+        _hasChangeDirection = false;
+        _hasJustHitWall = false;
+        _hasChangedState = false;
     }
 }

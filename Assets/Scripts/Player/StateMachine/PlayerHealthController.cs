@@ -159,9 +159,12 @@ public class PlayerHealthController : MonoBehaviour
     {
         if (state == GameConstants.HP_STATE_NORMAL)
         {
-            _HPs[_currentHP]._state = state;
+            //Quên mất current phải < max thì mới + HP
             if (_currentHP < _maxHP)
+            {
+                _HPs[_currentHP]._state = state;
                 _currentHP++;
+            }
         }
         //Func này ổn r
     }

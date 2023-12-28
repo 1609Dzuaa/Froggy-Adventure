@@ -77,6 +77,8 @@ public class MEnemiesManager : EnemiesManager
     protected override void Update()
     {
         base.Update(); //Đã bao gồm việc Update state và detect Player trong đây
+        DetectWall();
+        //Debug.Log("Hit Wall: " + _hasCollidedWall);
     }
 
     protected virtual void FixedUpdate()
