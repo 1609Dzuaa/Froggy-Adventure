@@ -9,6 +9,7 @@ public class PlayerAbsorbBuff : MonoBehaviour
     [SerializeField] private float _tempHPDuration;
     [SerializeField] private float _tempHPRunOutDuration;
     [SerializeField] private Transform _tempShieldIcon; //sign báo hiệu vẫn còn thgian buff
+    [SerializeField] private Transform _tempShieldIconPos;
 
     private static PlayerAbsorbBuff _absurbBuffInstance;
     private bool _isAllowToUpdate;
@@ -73,6 +74,8 @@ public class PlayerAbsorbBuff : MonoBehaviour
                 _isAllowToUpdate = false;
                 _tempShieldIcon.gameObject.SetActive(false);
             }
+            else
+                _tempShieldIcon.transform.position = _tempShieldIconPos.position;
         }
     }
 

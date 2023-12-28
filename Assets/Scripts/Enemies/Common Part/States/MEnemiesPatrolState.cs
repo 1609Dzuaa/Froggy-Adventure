@@ -42,14 +42,6 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     protected virtual void LogicUpdate()
     {
-        //Flip Sprite Check
-        if (CheckIfCanChangeDirection())
-        {
-            _hasChangeDirection = true;
-            _mEnemiesManager.FlippingSprite();
-            //Debug.Log("Flip Patrol, Has Hit Wall: " + _hasJustHitWall);
-        }
-
         //Change States check
         if (CheckIfCanRest())
         {
@@ -60,6 +52,14 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         {
             _hasChangedState = true;
             _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());
+        }
+
+        //Flip Sprite Check
+        if (CheckIfCanChangeDirection())
+        {
+            _hasChangeDirection = true;
+            _mEnemiesManager.FlippingSprite();
+            //Debug.Log("Flip Patrol, Has Hit Wall: " + _hasJustHitWall);
         }
     }
 
@@ -78,8 +78,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
     protected virtual bool CheckIfCanChangeDirection()
     {
         //ổn r
-        return _mEnemiesManager.transform.position.x >= _mEnemiesManager.BoundaryRight.position.x && !_hasChangeDirection && !_hasJustHitWall
-            || _mEnemiesManager.transform.position.x <= _mEnemiesManager.BoundaryLeft.position.x && !_hasChangeDirection && !_hasJustHitWall;
+        return _mEnemiesManager.HasCollidedWall;
 
         //Check nếu đi quá giới hạn trái/phải, CHƯA đổi hướng ở state này và CHƯA hit wall
         //Thì lật sprite đổi hướng

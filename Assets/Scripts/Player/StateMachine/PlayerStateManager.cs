@@ -489,6 +489,9 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleAlphaValueGotHit()
     {
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate) 
+            return;
+
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && !_hasStartCoroutine && _isApplyGotHitEffect)
             StartCoroutine(Twinkling());
         else if (Time.time - gotHitState.EntryTime > _playerStats.InvulnerableTime)

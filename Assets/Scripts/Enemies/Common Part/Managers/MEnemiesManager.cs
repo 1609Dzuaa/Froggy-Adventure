@@ -12,6 +12,7 @@ public class MEnemiesManager : EnemiesManager
     private MEnemiesAttackState _mEnemiesAttackState = new();
     private MEnemiesGotHitState _mEnemiesGotHitState = new();
 
+    //Chắc vứt boundaries và check dựa vào wall check ?
     [Header("Boundaries")]
     [SerializeField] protected Transform _boundaryLeft;
     [SerializeField] protected Transform _boundaryRight;

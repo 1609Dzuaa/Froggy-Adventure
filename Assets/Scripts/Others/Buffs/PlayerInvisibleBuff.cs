@@ -6,12 +6,20 @@ public class PlayerInvisibleBuff : MonoBehaviour
 {
     [SerializeField] Transform _playerRef;
     [SerializeField] private float _alphaApply;
+    [SerializeField] private float _alphaApplyRunOut;
     [SerializeField] private float _duration;
+    [SerializeField] private float _runOutDuration;
+    [SerializeField] private float _timeEachRunOutEffect;
 
     private static PlayerInvisibleBuff _invisibleBuffInstance;
     private SpriteRenderer _playerSpriteRenderer;
     private bool _isAllowToUpdate;
     private float _entryTime;
+
+    private float _entryRunOutTime;
+    private float _entryEachRunOutTime;
+    private bool _hasTickRunOut;
+    private bool _isDecrease;
 
     public static PlayerInvisibleBuff Instance
     {
@@ -58,10 +66,15 @@ public class PlayerInvisibleBuff : MonoBehaviour
         {
             if (Time.time - _entryTime >= _duration)
             {
-                _isAllowToUpdate = false;
-                _playerSpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
-                //Debug.Log("Timeout!");
+                StartTickRunOut();
+
+                if(Time.time - _entryRunOutTime < _runOutDuration)
+                    HandleIncreaseDecreaseAlpha();
+                else
+                    ResetBuffData();
             }
+            /*else
+                Debug.Log("PlayerColor: " + _playerSpriteRenderer.color.a);*/
         }
     }
 
@@ -69,7 +82,44 @@ public class PlayerInvisibleBuff : MonoBehaviour
     {
         _entryTime = Time.time;
         _isAllowToUpdate = true;
+        _hasTickRunOut = false; //Vì có thể runout r lại ăn buff
         _playerSpriteRenderer.color = new Color(1f, 1f, 1f, _alphaApply);
+    }
+
+    private void StartTickRunOut()
+    {
+        if (!_hasTickRunOut)
+        {
+            _hasTickRunOut = true;
+            _entryRunOutTime = Time.time;
+            _entryEachRunOutTime = Time.time;
+        }
+    }
+
+    private void HandleIncreaseDecreaseAlpha()
+    {
+        if (Time.time - _entryEachRunOutTime >= _timeEachRunOutEffect)
+        {
+            _entryEachRunOutTime = Time.time;
+            if (!_isDecrease)
+            {
+                _isDecrease = true;
+                _playerSpriteRenderer.color = new Color(1f, 1f, 1f, _alphaApplyRunOut);
+            }
+            else
+            {
+                _isDecrease = false;
+                _playerSpriteRenderer.color = new Color(1f, 1f, 1f, 1 - _alphaApplyRunOut);
+            }
+        }
+    }
+
+    private void ResetBuffData()
+    {
+        _isAllowToUpdate = false;
+        _hasTickRunOut = false;
+        _playerSpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+        Debug.Log("Timeout!");
     }
 
 }
