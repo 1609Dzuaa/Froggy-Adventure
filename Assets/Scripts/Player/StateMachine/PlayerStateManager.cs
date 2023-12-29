@@ -75,6 +75,10 @@ public class PlayerStateManager : MonoBehaviour
     [Header("Trail Renderer")]
     [SerializeField] private TrailRenderer _trailRenderer;
 
+    [Header("Dashable Sign")]
+    [SerializeField] private GameObject _dashableSign;
+    [SerializeField] private Transform _dashableSignPos;
+
     //GET Functions
     public float GetDirX() { return this.dirX; }
 
@@ -500,4 +504,14 @@ public class PlayerStateManager : MonoBehaviour
             _isApplyGotHitEffect = false;
         }
     }
+
+    private void SpawnDashableEffect()
+    {
+        GameObject dEff = Instantiate(_dashableSign, _dashableSignPos.position, Quaternion.identity, null);
+        dEff.GetComponent<DashableSign>().SetRefPosition(_dashableSignPos);
+        //Event của Dash animation
+        //Dùng để ra dấu hiệu chỉ đc dash khi hết effect
+    }
+
+
 }
