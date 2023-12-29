@@ -19,6 +19,9 @@ public class BulletController : MonoBehaviour
     [Header("Horizontal Or Vertical")]
     [SerializeField] private bool _isHorizontal;
 
+    [Header("Effect")]
+    [SerializeField] private GameObject _hitShieldEffect;
+
     private Rigidbody2D _rb;
     private float _entryTime;
     private bool _isDirectionRight = false;
@@ -82,6 +85,7 @@ public class BulletController : MonoBehaviour
         }
         else if (collision.collider.CompareTag(GameConstants.SHIELD_TAG))
         {
+            SpawnHitShieldEffect();
             SpawnBulletPieces();
             Destroy(this.gameObject);
         }
@@ -94,5 +98,12 @@ public class BulletController : MonoBehaviour
         pieces[1] = Instantiate(_piece2, _piece2Position.position, Quaternion.identity, null);
         for (int i = 0; i < pieces.Length; i++)
             pieces[i].GetComponent<BulletPieceController>().SetIsShotFromRight(_isDirectionRight);
+    }
+
+    private void SpawnHitShieldEffect()
+    {
+        //Vấn đề của cách spawn eff này là việc inst + destroy trong thgian ngắn
+        //sẽ gây ảnh hưởng performance => dùng Object pool
+        Instantiate(_hitShieldEffect, transform.position, Quaternion.identity, null);
     }
 }

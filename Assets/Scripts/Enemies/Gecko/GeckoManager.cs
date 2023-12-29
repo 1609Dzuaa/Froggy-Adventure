@@ -21,6 +21,10 @@ public class GeckoManager : MEnemiesManager
     [Header("Damage Range")]
     [SerializeField] private Vector2 _damageRange;
 
+    [Header("Disappear Effect")]
+    [SerializeField] private GameObject _dissapearEffect;
+    [SerializeField] private GameObject _apearEffect;
+
     private GeckoIdleState _geckoIdleState = new();
     private GeckoPatrolState _geckoPatrolState = new();
     private GeckoHideState _geckoHideState = new();
@@ -141,5 +145,15 @@ public class GeckoManager : MEnemiesManager
         yield return new WaitForSeconds(_attackDelay);
 
         ChangeState(_geckoHideState);
+    }
+
+    private void SpawnDisappearEffect()
+    {
+        Instantiate(_dissapearEffect, transform.position, Quaternion.identity, null);
+    }
+
+    private void SpawnAppearEffect()
+    {
+        Instantiate(_apearEffect, transform.position, Quaternion.identity, null);
     }
 }

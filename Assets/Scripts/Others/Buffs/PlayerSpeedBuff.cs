@@ -8,6 +8,8 @@ public class PlayerSpeedBuff : MonoBehaviour
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private float _speedMultiplier;
     [SerializeField] private float _duration;
+    [SerializeField] private Transform _speedBuffIcon; //sign báo hiệu vẫn còn thgian buff
+    [SerializeField] private Transform _speedBuffIconPos;
 
     private static PlayerSpeedBuff _speedBuffInstance;
     private bool _isAllowToUpdate;
@@ -55,6 +57,11 @@ public class PlayerSpeedBuff : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        _speedBuffIcon.gameObject.SetActive(false);
+    }
+
     private void Update()
     {
         if(_isAllowToUpdate)
@@ -62,8 +69,10 @@ public class PlayerSpeedBuff : MonoBehaviour
             if (Time.time - _entryTime >= _duration)
             {
                 _isAllowToUpdate = false;
+                _speedBuffIcon.gameObject.SetActive(false);
                 Debug.Log("Timeout!");
             }
+            _speedBuffIcon.transform.position = _speedBuffIconPos.position;
         }
     }
 
@@ -71,6 +80,8 @@ public class PlayerSpeedBuff : MonoBehaviour
     {
         _entryTime = Time.time;
         _isAllowToUpdate = true;
+        _speedBuffIcon.gameObject.SetActive(true);
+        _speedBuffIcon.transform.position = _speedBuffIconPos.position;
     }
 
 }
