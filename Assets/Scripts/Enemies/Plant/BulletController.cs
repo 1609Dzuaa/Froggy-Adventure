@@ -42,7 +42,8 @@ public class BulletController : MonoBehaviour
         {
             //Spawn lá hoặc effect gì đấy
             //Debug.Log("Time Out");
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
+            //Destroy(this.gameObject);
         }
     }
 
@@ -81,13 +82,15 @@ public class BulletController : MonoBehaviour
                     playerScript.HandleDeadState();
             }
             SpawnBulletPieces();
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
+            //Destroy(this.gameObject);
         }
         else if (collision.collider.CompareTag(GameConstants.SHIELD_TAG))
         {
             SpawnHitShieldEffect();
             SpawnBulletPieces();
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
+            //Destroy(this.gameObject);
         }
     }
 

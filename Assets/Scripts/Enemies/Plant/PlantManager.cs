@@ -38,9 +38,17 @@ public class PlantManager : NMEnemiesManager
         //Là mình chỉ tạo bản sao của cái bullet(lúc này isDirectionRight của nó 
         //mặc định là false) dẫn đến việc vector vận tốc của bullet hđ 0 như ý
         //Cân nhắc xài Object Pool pattern
-        GameObject bullet;
-        bullet = Instantiate(_bullet, _shootPosition.position, transform.rotation);
-        bullet.GetComponent<BulletController>().SetIsDirectionRight(_isFacingRight);
+        GameObject bullet = ObjectPool._instance.GetPoolObject();
+
+        if (bullet != null)
+        {
+            bullet.SetActive(true);
+            bullet.transform.position = _shootPosition.position;
+            bullet.GetComponent<BulletController>().SetIsDirectionRight(_isFacingRight);
+            Debug.Log("I'm here");
+        }
+
+        //bullet = Instantiate(_bullet, _shootPosition.position, transform.rotation);
     }
 
 }
