@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: PlayerStatsSO
   m_EditorClassIdentifier: 
   _speedX: 4
-  _speedY: 10
+  _speedY: 9
   _wallSlideSpeed: 2
-  _wallJumpSpeed: {x: 7, y: 10}
+  _wallJumpSpeed: {x: 7, y: 12}
   _knockBackForce: {x: 200, y: 0}
-  _jumpOnEnemiesForce: {x: 0, y: 7}
+  _jumpOnEnemiesForce: {x: 0, y: 12}
   _dashForce: {x: 17, y: 0}
   _HP: 2
   _maxHP: 3
