@@ -25,8 +25,11 @@ public class BulletController : MonoBehaviour
     private Rigidbody2D _rb;
     private float _entryTime;
     private bool _isDirectionRight = false;
+    private int _type;
 
-    public void SetIsDirectionRight(bool para) { this._isDirectionRight = para; }
+    public bool IsDirectionRight { set { _isDirectionRight = value; } }
+
+    public int Type { set {  _type = value; } }
 
     // Start is called before the first frame update
     void Start()
@@ -94,10 +97,19 @@ public class BulletController : MonoBehaviour
     public void SpawnBulletPieces()
     {
         GameObject[] pieces = new GameObject[2];
-        pieces[0] = Instantiate(_piece1, _piece1Position.position, Quaternion.identity, null);
-        pieces[1] = Instantiate(_piece2, _piece2Position.position, Quaternion.identity, null);
+        pieces[0] = BulletPiecePool.Instance.GetPoolObject(_type).Pair1;
+        pieces[1] = BulletPiecePool.Instance.GetPoolObject(_type).Pair2;
+        Debug.Log("Type: " + _type);
+
         for (int i = 0; i < pieces.Length; i++)
-            pieces[i].GetComponent<BulletPieceController>().SetIsShotFromRight(_isDirectionRight);
+        {
+            pieces[i].SetActive(true);
+            if (i == 0)
+                pieces[i].GetComponent<BulletPieceController>().SpawnPosition = _piece1Position.position;
+            else
+                pieces[i].GetComponent<BulletPieceController>().SpawnPosition = _piece2Position.position;
+            pieces[i].GetComponent<BulletPieceController>().IsShotFromRight = _isDirectionRight;
+        }
     }
 
     private void SpawnHitShieldEffect()

@@ -70,10 +70,10 @@ public class BulletPool : MonoBehaviour
             InstantiateBullet(_plantBulletPrefabs, GameConstants.PLANT_BULLET);
 
         for (int i = 0; i < _poolBeeBulletCount; i++)
-            InstantiateBullet(_trunkBulletPrefabs, GameConstants.BEE_BULLET);
+            InstantiateBullet(_beeBulletPrefabs, GameConstants.BEE_BULLET);
 
         for (int i = 0; i < _poolTrunkBulletCount; i++)
-            InstantiateBullet(_beeBulletPrefabs, GameConstants.TRUNK_BULLET);
+            InstantiateBullet(_trunkBulletPrefabs, GameConstants.TRUNK_BULLET);
     }
 
     private void InstantiateBullet(GameObject gameObject, int bulletType)

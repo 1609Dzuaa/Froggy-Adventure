@@ -79,7 +79,8 @@ public class TrunkManager : MEnemiesManager
         GameObject bullet = BulletPool.Instance.GetPoolObject(GameConstants.TRUNK_BULLET);
         bullet.SetActive(true);
         bullet.transform.position = _shootPosition.position;
-        bullet.GetComponent<BulletController>().SetIsDirectionRight(_isFacingRight);
+        bullet.GetComponent<BulletController>().IsDirectionRight = _isFacingRight;
+        bullet.GetComponent<BulletController>().Type = GameConstants.TRUNK_BULLET;
         //Event của animation Attack
     }
 

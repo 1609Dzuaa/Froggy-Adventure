@@ -11,7 +11,7 @@ public class BeeManager : MEnemiesManager
 
     [Header("Weapon Field")]
     [SerializeField] private GameObject _bullet;
-    [SerializeField] private Transform _shootPos;
+    [SerializeField] private Transform _shootPosition;
 
     [Header("Range")]
     [SerializeField] private float _triggerAttackRange;
@@ -95,7 +95,16 @@ public class BeeManager : MEnemiesManager
             return;
         }
 
-        Instantiate(_bullet, _shootPos.position, Quaternion.identity);
+        GameObject bullet = BulletPool.Instance.GetPoolObject(GameConstants.BEE_BULLET);
+
+        if (bullet != null)
+        {
+            bullet.SetActive(true);
+            bullet.transform.position = _shootPosition.position;
+            bullet.GetComponent<BulletController>().IsDirectionRight = _isFacingRight;
+            bullet.GetComponent<BulletController>().Type = GameConstants.BEE_BULLET;
+            //Debug.Log("I'm here");
+        }
     }
 
     public void AllowUpdateAttackState()
