@@ -6,6 +6,6 @@ public class EffectController : MonoBehaviour
 {
     private void Destroy()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

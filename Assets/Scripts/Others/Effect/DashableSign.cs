@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class DashableSign : MonoBehaviour
 {
-    [SerializeField] Transform _refPosition;
-
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        transform.position = _refPosition.position;    
+        transform.position = PlayerStateManager.PlayerInstance.DashableSignPosition.position; 
     }
 
-    public void SetRefPosition(Transform refPos)
+    void Update()
     {
-        _refPosition = refPos;
+        transform.position = PlayerStateManager.PlayerInstance.DashableSignPosition.position;
     }
 }

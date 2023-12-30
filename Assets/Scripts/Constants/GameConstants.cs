@@ -61,4 +61,8 @@
     public const int BEE_BULLET = 1;
     public const int TRUNK_BULLET = 2;
     #endregion
+
+    #region Effect
+    public const string DASHABLE_EFFECT = "DashableEffect";
+    #endregion
 }

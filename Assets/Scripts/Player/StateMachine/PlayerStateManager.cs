@@ -20,6 +20,9 @@ public class PlayerStateManager : MonoBehaviour
     public WallJumpState wallJumpState = new();
     public DashState dashState = new();
 
+    //Xác định Gameplay chỉ có duy nhất 1 thằng Player nên dùng Singleton cho nó luôn
+    private static PlayerStateManager _playerInstance;
+
     private float dirX, dirY;
     private Rigidbody2D rb;
     private Animator anim;
@@ -76,10 +79,27 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private TrailRenderer _trailRenderer;
 
     [Header("Dashable Sign")]
-    [SerializeField] private GameObject _dashableSign;
     [SerializeField] private Transform _dashableSignPos;
 
     //GET Functions
+
+    public static PlayerStateManager PlayerInstance 
+    {
+        get
+        {
+            if (!_playerInstance)
+            {
+                _playerInstance = FindObjectOfType<PlayerStateManager>();
+
+                if (!_playerInstance)
+                    Debug.Log("No Player in scene");
+            }
+            return _playerInstance;
+        }
+    }
+
+    public Transform DashableSignPosition { get { return _dashableSignPos; } }
+
     public float GetDirX() { return this.dirX; }
 
     public float GetDirY() { return this.dirY; }
@@ -131,6 +151,23 @@ public class PlayerStateManager : MonoBehaviour
 
     private void Awake()
     {
+        CreatePlayerInstance();
+        InitReference();
+    }
+
+    private void CreatePlayerInstance()
+    {
+        if (!_playerInstance)
+        {
+            _playerInstance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
+    }
+
+    private void InitReference()
+    {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
@@ -143,14 +180,6 @@ public class PlayerStateManager : MonoBehaviour
         _state = idleState;
         _state.EnterState(this);
         rb.gravityScale = _playerStats.GravScale;
-
-        //Debug.Log(_testScriptableObject.myString);
-        //Parallax BG: |Origin + (Travel x Parallax)|
-        //Trong đó:
-        //Origin: Starting Position of Sprites ?
-        //Travel: The amount of The Camera has traveled
-        //Parallax: Const Value of that Layer
-        //(The more it farther, the bigger the Value is)
     }
 
     public void ChangeState(PlayerBaseState state)
@@ -507,8 +536,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void SpawnDashableEffect()
     {
-        GameObject dEff = Instantiate(_dashableSign, _dashableSignPos.position, Quaternion.identity, null);
-        dEff.GetComponent<DashableSign>().SetRefPosition(_dashableSignPos);
+        GameObject dEff = EffectPool.Instance.GetPoolObject(GameConstants.DASHABLE_EFFECT);
+        dEff.SetActive(true);
         //Event của Dash animation
         //Dùng để ra dấu hiệu chỉ đc dash khi hết effect
     }
