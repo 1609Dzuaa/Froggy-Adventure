@@ -55,4 +55,10 @@
     public const int HP_STATE_LOST = 1;
     public const int HP_STATE_TEMP = 2;
     #endregion
+
+    #region Enemies Bullets Constants
+    public const int PLANT_BULLET = 0;
+    public const int BEE_BULLET = 1;
+    public const int TRUNK_BULLET = 2;
+    #endregion
 }

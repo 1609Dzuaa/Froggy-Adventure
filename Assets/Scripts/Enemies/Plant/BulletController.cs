@@ -32,6 +32,10 @@ public class BulletController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void OnEnable()
+    {
         _entryTime = Time.time;
     }
 
@@ -39,12 +43,7 @@ public class BulletController : MonoBehaviour
     void Update()
     {
         if (Time.time - _entryTime >= _existTime)
-        {
-            //Spawn lá hoặc effect gì đấy
-            //Debug.Log("Time Out");
             gameObject.SetActive(false);
-            //Destroy(this.gameObject);
-        }
     }
 
     private void FixedUpdate()
@@ -83,14 +82,12 @@ public class BulletController : MonoBehaviour
             }
             SpawnBulletPieces();
             gameObject.SetActive(false);
-            //Destroy(this.gameObject);
         }
         else if (collision.collider.CompareTag(GameConstants.SHIELD_TAG))
         {
             SpawnHitShieldEffect();
             SpawnBulletPieces();
             gameObject.SetActive(false);
-            //Destroy(this.gameObject);
         }
     }
 

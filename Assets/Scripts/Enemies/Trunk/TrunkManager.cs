@@ -8,7 +8,7 @@ public class TrunkManager : MEnemiesManager
 
     [Header("Weapon Field")]
     [SerializeField] private GameObject _bullet;
-    [SerializeField] private Transform _shootPos;
+    [SerializeField] private Transform _shootPosition;
 
     [Header("Withdrawn Field")]
     [SerializeField] private float _withdrawnCheckDistance; //khcach withdrawn phải < khcach playerCheck (Obviously!)
@@ -76,8 +76,9 @@ public class TrunkManager : MEnemiesManager
         if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
             return;
 
-        GameObject bullet;
-        bullet = Instantiate(_bullet, _shootPos.position, transform.rotation);
+        GameObject bullet = BulletPool.Instance.GetPoolObject(GameConstants.TRUNK_BULLET);
+        bullet.SetActive(true);
+        bullet.transform.position = _shootPosition.position;
         bullet.GetComponent<BulletController>().SetIsDirectionRight(_isFacingRight);
         //Event của animation Attack
     }

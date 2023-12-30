@@ -70,7 +70,7 @@ public class PlayerSpeedBuff : MonoBehaviour
             {
                 _isAllowToUpdate = false;
                 _speedBuffIcon.gameObject.SetActive(false);
-                Debug.Log("Timeout!");
+                //Debug.Log("Timeout!");
             }
             _speedBuffIcon.transform.position = _speedBuffIconPos.position;
         }
