@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class EffectPool : MonoBehaviour
 {
-    //Define a pool class that maintains a collection of reusable objects
-    //Pools are useful to avoid the cost of allocation and deallocation
-    //Ref: https://gameprogrammingpatterns.com/object-pool.html
-
     private static EffectPool _EffectPoolInstance;
     private Dictionary<string, List<GameObject>> _dictEffectPool = new Dictionary<string, List<GameObject>>();
 
     [Header("Dashable")]
-    [SerializeField] private int _dashableEffCount;
     [SerializeField] private GameObject _dashableEffectPrefabs;
 
-    [Header("Bee")]
-    [SerializeField] private int _poolBeeEffectCount;
-    [SerializeField] private GameObject _beeEffectPrefabs;
+    [Header("Gecko")]
+    [SerializeField] private GameObject _geckoAppearEffect;
+    [SerializeField] private GameObject _geckoDisappearEffect;
 
-    [Header("Trunk")]
+    [Header("Hit Shield")]
     [SerializeField] private int _poolTrunkEffectCount;
-    [SerializeField] private GameObject _trunkEffectPrefabs;
+    [SerializeField] private GameObject _hitShieldEffect;
+
+    [Header("CollectHP")]
+    [SerializeField] private GameObject _collectHPEffect;
 
     public static EffectPool Instance
     {
@@ -47,8 +45,10 @@ public class EffectPool : MonoBehaviour
     private void InitDictionary()
     {
         _dictEffectPool.Add(GameConstants.DASHABLE_EFFECT, new List<GameObject>());
-        //_dictEffectPool.Add(GameConstants.BEE_Effect, new List<GameObject>());
-        //_dictEffectPool.Add(GameConstants.TRUNK_Effect, new List<GameObject>());
+        _dictEffectPool.Add(GameConstants.GECKO_APPEAR_EFFECT, new List<GameObject>());
+        _dictEffectPool.Add(GameConstants.GECKO_DISAPPEAR_EFFECT, new List<GameObject>());
+        _dictEffectPool.Add(GameConstants.HIT_SHIELD_EFFECT, new List<GameObject>());
+        _dictEffectPool.Add(GameConstants.COLLECT_HP_EFFECT, new List<GameObject>());
     }
 
     private void CreateInstance()
@@ -66,14 +66,11 @@ public class EffectPool : MonoBehaviour
     void Start()
     {
         //Add Effect vào pool và đánh dấu chưa active nó
-        for (int i = 0; i < _dashableEffCount; i++)
-            InstantiateEffect(_dashableEffectPrefabs, GameConstants.DASHABLE_EFFECT);
-
-        /*for (int i = 0; i < _poolBeeEffectCount; i++)
-            InstantiateEffect(_beeEffectPrefabs, GameConstants.BEE_Effect);
-
-        for (int i = 0; i < _poolTrunkEffectCount; i++)
-            InstantiateEffect(_trunkEffectPrefabs, GameConstants.TRUNK_Effect);*/
+        InstantiateEffect(_dashableEffectPrefabs, GameConstants.DASHABLE_EFFECT);
+        InstantiateEffect(_geckoAppearEffect, GameConstants.GECKO_APPEAR_EFFECT);
+        InstantiateEffect(_geckoDisappearEffect, GameConstants.GECKO_DISAPPEAR_EFFECT);
+        InstantiateEffect(_hitShieldEffect, GameConstants.HIT_SHIELD_EFFECT);
+        InstantiateEffect(_collectHPEffect, GameConstants.COLLECT_HP_EFFECT);
     }
 
     private void InstantiateEffect(GameObject gameObject, string EffectType)
@@ -83,7 +80,7 @@ public class EffectPool : MonoBehaviour
         _dictEffectPool[EffectType].Add(gObj);
     }
 
-    public GameObject GetPoolObject(string EffectType)
+    public GameObject GetObjectInPool(string EffectType)
     {
         for (int i = 0; i < _dictEffectPool[EffectType].Count; i++)
         {

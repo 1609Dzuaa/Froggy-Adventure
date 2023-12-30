@@ -83,7 +83,7 @@ public class BulletPool : MonoBehaviour
         _dictBulletPool[bulletType].Add(gObj);
     }
 
-    public GameObject GetPoolObject(int bulletType)
+    public GameObject GetObjectInPool(int bulletType)
     {
         for (int i = 0; i < _dictBulletPool[bulletType].Count; i++)
         {

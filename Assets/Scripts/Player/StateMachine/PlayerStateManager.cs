@@ -536,7 +536,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void SpawnDashableEffect()
     {
-        GameObject dEff = EffectPool.Instance.GetPoolObject(GameConstants.DASHABLE_EFFECT);
+        GameObject dEff = EffectPool.Instance.GetObjectInPool(GameConstants.DASHABLE_EFFECT);
         dEff.SetActive(true);
         //Event của Dash animation
         //Dùng để ra dấu hiệu chỉ đc dash khi hết effect

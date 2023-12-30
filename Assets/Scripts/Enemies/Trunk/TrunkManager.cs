@@ -76,7 +76,7 @@ public class TrunkManager : MEnemiesManager
         if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
             return;
 
-        GameObject bullet = BulletPool.Instance.GetPoolObject(GameConstants.TRUNK_BULLET);
+        GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.TRUNK_BULLET);
         bullet.SetActive(true);
         bullet.transform.position = _shootPosition.position;
         bullet.GetComponent<BulletController>().IsDirectionRight = _isFacingRight;

@@ -64,5 +64,9 @@
 
     #region Effect
     public const string DASHABLE_EFFECT = "DashableEffect";
+    public const string GECKO_APPEAR_EFFECT = "GeckoAppear";
+    public const string GECKO_DISAPPEAR_EFFECT = "GeckoDisappear";
+    public const string HIT_SHIELD_EFFECT = "HitShieldEffect";
+    public const string COLLECT_HP_EFFECT = "CollectHP";
     #endregion
 }

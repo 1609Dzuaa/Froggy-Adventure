@@ -95,7 +95,7 @@ public class BeeManager : MEnemiesManager
             return;
         }
 
-        GameObject bullet = BulletPool.Instance.GetPoolObject(GameConstants.BEE_BULLET);
+        GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.BEE_BULLET);
 
         if (bullet != null)
         {

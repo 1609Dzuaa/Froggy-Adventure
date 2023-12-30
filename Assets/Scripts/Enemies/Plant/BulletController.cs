@@ -97,8 +97,8 @@ public class BulletController : MonoBehaviour
     public void SpawnBulletPieces()
     {
         GameObject[] pieces = new GameObject[2];
-        pieces[0] = BulletPiecePool.Instance.GetPoolObject(_type).Pair1;
-        pieces[1] = BulletPiecePool.Instance.GetPoolObject(_type).Pair2;
+        pieces[0] = BulletPiecePool.Instance.GetObjectInPool(_type).Pair1;
+        pieces[1] = BulletPiecePool.Instance.GetObjectInPool(_type).Pair2;
         Debug.Log("Type: " + _type);
 
         for (int i = 0; i < pieces.Length; i++)
@@ -116,6 +116,9 @@ public class BulletController : MonoBehaviour
     {
         //Vấn đề của cách spawn eff này là việc inst + destroy trong thgian ngắn
         //sẽ gây ảnh hưởng performance => dùng Object pool
-        Instantiate(_hitShieldEffect, transform.position, Quaternion.identity, null);
+        GameObject hitShieldEff = EffectPool.Instance.GetObjectInPool(GameConstants.HIT_SHIELD_EFFECT);
+        hitShieldEff.SetActive(true);
+        hitShieldEff.GetComponent<EffectController>().SetPosition(transform.position);
+        //Instantiate(_hitShieldEffect, transform.position, Quaternion.identity, null);
     }
 }

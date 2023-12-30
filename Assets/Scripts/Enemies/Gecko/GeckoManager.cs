@@ -21,10 +21,6 @@ public class GeckoManager : MEnemiesManager
     [Header("Damage Range")]
     [SerializeField] private Vector2 _damageRange;
 
-    [Header("Disappear Effect")]
-    [SerializeField] private GameObject _dissapearEffect;
-    [SerializeField] private GameObject _apearEffect;
-
     private GeckoIdleState _geckoIdleState = new();
     private GeckoPatrolState _geckoPatrolState = new();
     private GeckoHideState _geckoHideState = new();
@@ -149,11 +145,15 @@ public class GeckoManager : MEnemiesManager
 
     private void SpawnDisappearEffect()
     {
-        Instantiate(_dissapearEffect, transform.position, Quaternion.identity, null);
+        GameObject disEff = EffectPool.Instance.GetObjectInPool(GameConstants.GECKO_DISAPPEAR_EFFECT);
+        disEff.SetActive(true);
+        disEff.GetComponent<EffectController>().SetPosition(transform.position);
     }
 
     private void SpawnAppearEffect()
     {
-        Instantiate(_apearEffect, transform.position, Quaternion.identity, null);
+        GameObject disEff = EffectPool.Instance.GetObjectInPool(GameConstants.GECKO_APPEAR_EFFECT);
+        disEff.SetActive(true);
+        disEff.GetComponent<EffectController>().SetPosition(transform.position);
     }
 }

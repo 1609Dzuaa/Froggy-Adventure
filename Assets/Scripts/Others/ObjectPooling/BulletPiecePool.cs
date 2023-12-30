@@ -103,7 +103,7 @@ public class BulletPiecePool : MonoBehaviour
         _dictBulletPiecePiecePool[BulletPieceType].Add(piecePair);
     }
 
-    public BulletPiecePair GetPoolObject(int BulletPieceType)
+    public BulletPiecePair GetObjectInPool(int BulletPieceType)
     {
         BulletPiecePair bulletPiecePair = new BulletPiecePair();
 

@@ -31,7 +31,7 @@ public class PlantManager : NMEnemiesManager
         if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
             return;
 
-        GameObject bullet = BulletPool.Instance.GetPoolObject(GameConstants.PLANT_BULLET);
+        GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.PLANT_BULLET);
 
         if (bullet != null)
         {
