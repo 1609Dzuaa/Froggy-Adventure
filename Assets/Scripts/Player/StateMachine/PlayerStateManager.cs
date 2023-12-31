@@ -228,9 +228,7 @@ public class PlayerStateManager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(GameConstants.PLATFORM_TAG))
-        {
             transform.SetParent(collision.gameObject.transform);
-        }
 
         //Phần này đụng sau
         /*else if (collision.CompareTag("Buff"))

@@ -17,13 +17,7 @@ public class TriggerZone : MonoBehaviour
     [Header("Player Layer")]
     [SerializeField] private LayerMask _playerLayer;
 
-    [Header("Player Ref")]
-    [SerializeField] private Transform _playerRef;
-
     private bool _hasPlayed;
-
-    //Nên check = overlapBox vì có thể nếu Player jump vào cái vùng trigger thì sẽ 0 bị trigger
-    //(Do 0 thoả mãn ở trên Ground)
 
     private void Update()
     {
@@ -36,26 +30,11 @@ public class TriggerZone : MonoBehaviour
 
     private bool CanPlayTimeline()
     {
-        var playerScript = _playerRef.GetComponent<PlayerStateManager>();
-        return Physics2D.OverlapBox(transform.position, _sizeZone, 0f, _playerLayer) && playerScript.GetIsOnGround() && !_hasPlayed;
+        return Physics2D.OverlapBox(transform.position, _sizeZone, 0f, _playerLayer) && PlayerStateManager.PlayerInstance.GetIsOnGround() && !_hasPlayed;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawCube(transform.position, _sizeZone);   
     }
-
-    /*private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.name == "Player")
-        {
-            var playerScript = collision.GetComponent<PlayerStateManager>();
-            if (playerScript.GetIsOnGround())
-            {
-                _playableDirector.Play();
-                Debug.Log("Trigger Play");
-                GetComponent<BoxCollider2D>().enabled = false;
-            }
-        }
-    }*/
 }

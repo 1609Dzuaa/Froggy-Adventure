@@ -98,12 +98,46 @@ public class SnailPatrolState : MEnemiesPatrolState
 
     public override void FixedUpdate()
     {
-        if (!_canMoveVertical)
+        if (_snailManager._hasFlip && !_snailManager._doneFlip)
+        {
+            if (!_snailManager.GetIsFacingRight())
+                _snailManager.GetRigidbody2D().velocity = new Vector2(-_snailManager.GetPatrolSpeed().x, -_snailManager.GetPatrolSpeed().y);
+            else
+                _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, _snailManager.GetPatrolSpeed().y);
+            //Debug.Log("IM hereee: " + _snailManager.GetRigidbody2D().velocity.y);
+        }
+        else if(_snailManager._doneFlip)
+        {
+            if (!_snailManager.GetIsFacingRight())
+                _snailManager.GetRigidbody2D().velocity = new Vector2(0f, -_snailManager.GetPatrolSpeed().x);
+            else
+                _snailManager.GetRigidbody2D().velocity = new Vector2(0f, _snailManager.GetPatrolSpeed().x);
+        }
+        else
         {
             if (!_snailManager.GetIsFacingRight())
                 _snailManager.GetRigidbody2D().velocity = new Vector2(-_snailManager.GetPatrolSpeed().x, 0f);
             else
                 _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, 0f);
+        }
+        /*if (!_canMoveVertical)
+        {
+            if(_snailManager._hasFlip)
+            {
+                if (!_snailManager.GetIsFacingRight())
+                    _snailManager.GetRigidbody2D().velocity = new Vector2(0, -_snailManager.GetPatrolSpeed().x);
+                else
+                    _snailManager.GetRigidbody2D().velocity = new Vector2(0, _snailManager.GetPatrolSpeed().x);
+                //Debug.Log("IM hereee: " + _snailManager.GetRigidbody2D().velocity.y);
+            }
+            else
+            {
+                if (!_snailManager.GetIsFacingRight())
+                    _snailManager.GetRigidbody2D().velocity = new Vector2(-_snailManager.GetPatrolSpeed().x, 0f);
+                else
+                    _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, 0f);
+            }
+            
         }
         else
         {
@@ -120,8 +154,8 @@ public class SnailPatrolState : MEnemiesPatrolState
                     _snailManager.GetRigidbody2D().velocity = new Vector2(0f, -_snailManager.GetPatrolSpeed());
                 else
                     _snailManager.GetRigidbody2D().velocity = new Vector2(0f, +_snailManager.GetPatrolSpeed());
-            }*/
-        }
+            }
+        }*/
     }
 
 }

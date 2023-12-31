@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class SnailManager : MEnemiesManager
 {
-    //Kill this enemy x times to unlock WallSlide Skill
     //Khi chui vào vỏ thì trâu hơn bthg x _healthPoint lần (Mặc định bthg đạp lên trên vỏ 1 lần là chết)
-    //Hiện tại ốc mới chỉ flip và di chuyển lên chỗ có wall th
-    //Cân nhắc lật 90 độ dương trục z với địa hình vuông góc 0 phải wall 
+    //Docs:
+    //When you read the .eulerAngles property,
+    //Unity converts the Quaternion's internal representation of the rotation
+    //to Euler angles. Because, there is more than one way
+    //to represent any given rotation using Euler angles,
+    //the values you read back out may be quite DIFFERENT
+    //from the values you assigned.
+    //This can cause confusion if you are trying
+    //to gradually increment the values to produce animation.
+
+
     [Header("Health Point")]
     [SerializeField] private int _healthPoint;
 
@@ -24,6 +32,7 @@ public class SnailManager : MEnemiesManager
     //Rotate sprite after got hit
     [Header("Z Rotation When Dead")]
     [SerializeField] private float _degreeEachRotation;
+    [SerializeField] private float _rotateTime;
     [SerializeField] private float _timeEachRotation;
 
     private SnailIdleState _snailIdleState = new();
@@ -32,8 +41,13 @@ public class SnailManager : MEnemiesManager
     private SnailShellHitState _snailShellHitState = new();
     private SnailGotHitState _snailGotHitState = new();
     private float _distanceToPlayer;
+    private bool _hasDetectedGround;
+    public bool _hasFlip;
+    private float _entryTime;
+    private float zDegree = 0f;
+    public bool _doneFlip;
 
-    //public bool HasDetectedGround { get { return _hasDetectedGround; } }
+    public bool HasDetectedGround { get { return _hasDetectedGround; } }
 
     public float HealthPoint { get { return _healthPoint; } set { _healthPoint = (int)value; } }
 
@@ -60,6 +74,7 @@ public class SnailManager : MEnemiesManager
         _state = _snailIdleState;
         _state.EnterState(this);
         _collider2D = GetComponent<Collider2D>();
+        //transform.Rotate(0f, 0f, 90f);
     }
 
     protected override void Update()
@@ -67,12 +82,49 @@ public class SnailManager : MEnemiesManager
         _state.Update();
         DetectedPlayer();
         DetectWall();
-        //DetectGround();
+        DetectGround();
         DrawRayDetectPlayer();
         DrawRayDetectWall();
+        if (!_hasDetectedGround && !_hasFlip)
+        {
+            _hasFlip = true;
+            _entryTime = Time.time;
+        }
+        HandleIfNotDetectedGround();
+        //if (Mathf.Abs(WrapAngle(transform.eulerAngles.z)) == 90f)
+        //Debug.Log("enough");
+        //transform.eulerAngles goes from 0-360
+        //Debug.Log("X, Z degree: " + WrapAngle(transform.eulerAngles.x) + ", " + WrapAngle(transform.eulerAngles.z));
         //Debug.Log("Ground: " + _hasDetectedGround);
-        //Debug.Log("HP: " + _healthPoint);
-        //Coi lại min/max boundaries cho sên :v
+        Debug.Log("v: " + _rb.velocity);
+    }
+
+    private float WrapAngle(float angle)
+    {
+        angle %= 360;
+        if (angle > 180)
+            return angle - 360;
+
+        return angle;
+    }
+
+    private void HandleIfNotDetectedGround()
+    {
+        if(Time.time - _entryTime >= _timeEachRotation && _hasFlip)
+        {
+            if (zDegree >= 90f)
+            {
+                _doneFlip = true;
+                return;
+            }
+
+            //_rb.velocity = Vector2.zero;
+            zDegree += _degreeEachRotation;
+            transform.rotation = Quaternion.Euler(0f, 0f, zDegree);
+            //transform.Rotate(0f, 0f, zDegree);
+            //Debug.Log("Zdegree: " + zDegree);
+            _entryTime = Time.time;
+        }
     }
 
     protected override bool DetectedPlayer()
@@ -137,7 +189,7 @@ public class SnailManager : MEnemiesManager
         }
     }
 
-    /*private void DetectGround()
+    private void DetectGround()
     {
         //_hasDetectedGround = Physics2D.Raycast(new Vector2(_groundCheck.position.x, _groundCheck.position.y), Vector2.down, _wallCheckDistance, _wallLayer);
         //Move vertical thì chỉnh left/right thành 2 vector up/down
@@ -159,7 +211,7 @@ public class SnailManager : MEnemiesManager
             //else
             //_hasDetectedGround = Physics2D.Raycast(new Vector2(_groundCheck.position.x, _groundCheck.position.y), Vector2.down, _wallCheckDistance, _wallLayer);
         }
-    }*/
+    }
 
     protected override void ChangeToIdle()
     {
@@ -174,7 +226,7 @@ public class SnailManager : MEnemiesManager
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "Player" && !_hasGotHit)
+        if (collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
         {
             _hasGotHit = true;
             var playerScript = collision.GetComponent<PlayerStateManager>();
