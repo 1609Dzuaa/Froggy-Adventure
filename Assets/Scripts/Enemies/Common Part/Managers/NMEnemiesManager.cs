@@ -44,7 +44,7 @@ public class NMEnemiesManager : EnemiesManager
         {
             var BulletCtrl = collision.collider.GetComponent<BulletController>();
             BulletCtrl.SpawnBulletPieces();
-            Destroy(BulletCtrl.gameObject);
+            BulletCtrl.gameObject.SetActive(false);
             ChangeState(_nmEnemiesGotHitState);
         }
     }

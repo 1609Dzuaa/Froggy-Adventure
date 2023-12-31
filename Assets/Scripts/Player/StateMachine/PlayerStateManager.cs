@@ -202,13 +202,13 @@ public class PlayerStateManager : MonoBehaviour
             return;
         }
 
-        this._state.ExitState();
-        this._state = state;
+        _state.ExitState();
+        _state = state;
         //Vì SW là state đặc biệt(phải flip sprite ngược lại sau khi exit state)
         //nên cần đoạn dưới để check
         if (state is WallSlideState)
             prevStateIsWallSlide = true;
-        this._state.EnterState(this);
+        _state.EnterState(this);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -220,13 +220,8 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
         {
             //Enemies/Trap sẽ áp lực vào Player theo hướng của nó chứ 0 phải của Player
-            if (PlayerHealthController.Instance.CurrentHP > 0)
-            {
-                gotHitState.IsHitByTrap = true;
-                ChangeState(gotHitState);
-            }
-            else
-                HandleDeadState();
+            gotHitState.IsHitByTrap = true;
+            ChangeState(gotHitState);
         }
     }
 
@@ -234,7 +229,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         if (collision.CompareTag(GameConstants.PLATFORM_TAG))
         {
-            this.transform.SetParent(collision.gameObject.transform);
+            transform.SetParent(collision.gameObject.transform);
         }
 
         //Phần này đụng sau
@@ -245,7 +240,7 @@ public class PlayerStateManager : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if(collision.CompareTag(GameConstants.PLATFORM_TAG))
-            this.transform.SetParent(null);
+            transform.SetParent(null);
     }
 
     void Update()
@@ -440,7 +435,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void ChangeToIdle()
     {
-        gotHitState.SetAllowUpdate(true);
+        ChangeState(idleState);
     }
 
     private void ChangeToRun()

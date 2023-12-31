@@ -63,10 +63,8 @@ public abstract class EnemiesManager : CharactersManager
         if (collision.collider.name == GameConstants.PLAYER_NAME)
         {
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
-            if (PlayerHealthController.Instance.CurrentHP > 0)
+            if (PlayerHealthController.Instance.CurrentHP > 1)
                 playerScript.ChangeState(playerScript.gotHitState);
-            else
-                playerScript.HandleDeadState();
 
             if(!PlayerAbsorbBuff.Instance.IsAllowToUpdate)
             {

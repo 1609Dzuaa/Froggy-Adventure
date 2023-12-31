@@ -2,13 +2,8 @@
 
 public class GotHitState : PlayerBaseState
 {
-    private bool allowUpdate = false;
     private bool _isHitByTrap; //Nếu bị hit bởi Traps thì mới AddForce dựa vào hướng mặt của Player
     private float _entryTime = 0;
-    /*private float _countingTime = 0;
-    private bool _increaseAlpha;*/
-
-    public void SetAllowUpdate(bool para) { this.allowUpdate = para; }
 
     public bool IsHitByTrap { set { _isHitByTrap = value; } }
 
@@ -17,8 +12,9 @@ public class GotHitState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.gotHit);
         HandleGotHit();
+        if (PlayerHealthController.Instance.CurrentHP > 0)
+            _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.gotHit);
         //Debug.Log("GotHit");
 
         //Chú ý khi làm việc với Any State
@@ -31,21 +27,7 @@ public class GotHitState : PlayerBaseState
         _isHitByTrap = false;
     }
 
-    public override void Update()
-    {
-        //Chỉ cho phép Update sau khi chạy xong animation Hit
-        if(allowUpdate)
-        {
-            if (_playerStateManager.GetDirX() == 0)
-                _playerStateManager.ChangeState(_playerStateManager.idleState);
-            else if (_playerStateManager.GetDirX() != 0)
-                _playerStateManager.ChangeState(_playerStateManager.runState);
-            else if (Input.GetKeyDown(KeyCode.S))
-                _playerStateManager.ChangeState(_playerStateManager.jumpState);
-        }
-
-        //Debug.Log("Allow: " + allowUpdate);
-    }
+    public override void Update() { }
 
     public override void FixedUpdate() { }
 
@@ -60,19 +42,22 @@ public class GotHitState : PlayerBaseState
 
     private void HandleGotHit()
     {
-        _entryTime = Time.time;
-        if (_isHitByTrap)
-            KnockBack();
-        allowUpdate = false;
-        _playerStateManager.IsApplyGotHitEffect = true;
         if (!PlayerAbsorbBuff.Instance.IsAllowToUpdate)
             PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
         else
             PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_TEMP);
+        
+        if (PlayerHealthController.Instance.CurrentHP == 0)
+        {
+            //Xử lý bay màu ở đây là hợp lý
+            _playerStateManager.HandleDeadState();
+            return;
+        }
+
+        _entryTime = Time.time;
+        if (_isHitByTrap)
+            KnockBack();
+        _playerStateManager.IsApplyGotHitEffect = true;
         _playerStateManager.GetGotHitSound().Play();
-        _playerStateManager.Invoke("ChangeToIdle", 0.48f);
-        //Why 0.48f ?
-        //Vì Animation GotHit có tổng thgian là 0.467s
-        //=> Gọi hàm change Idle sau .48s
     }
 }

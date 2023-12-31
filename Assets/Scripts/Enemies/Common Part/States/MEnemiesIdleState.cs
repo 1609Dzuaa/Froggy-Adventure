@@ -16,7 +16,7 @@ public class MEnemiesIdleState : MEnemiesBaseState
         _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.idle);
         _mEnemiesManager.GetRigidbody2D().velocity = Vector2.zero;
         _entryTime = Time.time;
-        Debug.Log("Idle, HitWall: " + _mEnemiesManager.HasCollidedWall);
+        //Debug.Log("Idle, HitWall: " + _mEnemiesManager.HasCollidedWall);
     }
 
     public override void ExitState() 

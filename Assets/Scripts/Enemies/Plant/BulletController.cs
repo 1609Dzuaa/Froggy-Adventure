@@ -77,11 +77,9 @@ public class BulletController : MonoBehaviour
                     else
                         playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
                 }
-               
+
                 if (PlayerHealthController.Instance.CurrentHP > 0)
                     playerScript.ChangeState(playerScript.gotHitState);
-                else
-                    playerScript.HandleDeadState();
             }
             SpawnBulletPieces();
             gameObject.SetActive(false);
@@ -99,7 +97,7 @@ public class BulletController : MonoBehaviour
         GameObject[] pieces = new GameObject[2];
         pieces[0] = BulletPiecePool.Instance.GetObjectInPool(_type).Pair1;
         pieces[1] = BulletPiecePool.Instance.GetObjectInPool(_type).Pair2;
-        Debug.Log("Type: " + _type);
+        //Debug.Log("Type: " + _type);
 
         for (int i = 0; i < pieces.Length; i++)
         {
@@ -114,11 +112,8 @@ public class BulletController : MonoBehaviour
 
     private void SpawnHitShieldEffect()
     {
-        //Vấn đề của cách spawn eff này là việc inst + destroy trong thgian ngắn
-        //sẽ gây ảnh hưởng performance => dùng Object pool
         GameObject hitShieldEff = EffectPool.Instance.GetObjectInPool(GameConstants.HIT_SHIELD_EFFECT);
         hitShieldEff.SetActive(true);
         hitShieldEff.GetComponent<EffectController>().SetPosition(transform.position);
-        //Instantiate(_hitShieldEffect, transform.position, Quaternion.identity, null);
     }
 }

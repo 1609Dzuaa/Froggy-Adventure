@@ -20,10 +20,6 @@ public struct BulletPiecePair
 
 public class BulletPiecePool : MonoBehaviour
 {
-    //Define a pool class that maintains a collection of reusable objects
-    //Pools are useful to avoid the cost of allocation and deallocation
-    //Ref: https://gameprogrammingpatterns.com/object-pool.html
-
     private static BulletPiecePool _BulletPiecePiecePoolInstance;
     private Dictionary<int, List<BulletPiecePair>> _dictBulletPiecePiecePool = new Dictionary<int, List<BulletPiecePair>>();
 
@@ -82,7 +78,6 @@ public class BulletPiecePool : MonoBehaviour
 
     void Start()
     {
-        //Add BulletPiece vào pool và đánh dấu chưa active nó
         for (int i = 0; i < _poolPlantBulletPieceCount; i++)
             InstantiateBulletPiece(new BulletPiecePair(_plantBulletPiecePrefabs1, _plantBulletPiecePrefabs2), GameConstants.PLANT_BULLET);
 
@@ -109,15 +104,14 @@ public class BulletPiecePool : MonoBehaviour
 
         for (int i = 0; i < _dictBulletPiecePiecePool[BulletPieceType].Count; i++)
         {
-            //Tìm xem trong cái pool có thằng nào 0 kích hoạt kh thì lôi nó ra
             if (!_dictBulletPiecePiecePool[BulletPieceType][i].Pair1.activeInHierarchy && !_dictBulletPiecePiecePool[BulletPieceType][i].Pair2.activeInHierarchy)
             {
-                Debug.Log("BulletPiece: " + _dictBulletPiecePiecePool[BulletPieceType][i].Pair1.name + " " + i);
+                //Debug.Log("BulletPiece: " + _dictBulletPiecePiecePool[BulletPieceType][i].Pair1.name + " " + i);
                 return _dictBulletPiecePiecePool[BulletPieceType][i];
             }
         }
 
-        //Debug.Log("out of ammo");
+        Debug.Log("out of piece");
         return bulletPiecePair;
     }
 }

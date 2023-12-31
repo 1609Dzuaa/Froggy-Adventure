@@ -90,7 +90,7 @@ public class BulletPool : MonoBehaviour
             //Tìm xem trong cái pool có thằng nào 0 kích hoạt kh thì lôi nó ra
             if (!_dictBulletPool[bulletType][i].activeInHierarchy)
             {
-                Debug.Log("Bullet: " + _dictBulletPool[bulletType][i].name + " " + i);
+                //Debug.Log("Bullet: " + _dictBulletPool[bulletType][i].name + " " + i);
                 return _dictBulletPool[bulletType][i];
             }
         }

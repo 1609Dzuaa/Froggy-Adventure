@@ -68,5 +68,6 @@
     public const string GECKO_DISAPPEAR_EFFECT = "GeckoDisappear";
     public const string HIT_SHIELD_EFFECT = "HitShieldEffect";
     public const string COLLECT_HP_EFFECT = "CollectHP";
+    public const string BROWN_EXPLOSION = "BrownExplosion";
     #endregion
 }

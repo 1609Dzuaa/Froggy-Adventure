@@ -35,12 +35,11 @@ public class FrogHPController : MonoBehaviour //Tạo class Item
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.name == "Player")
+        if(collision.name == GameConstants.PLAYER_NAME)
         {
             GameObject collectEff = EffectPool.Instance.GetObjectInPool(GameConstants.COLLECT_HP_EFFECT);
             collectEff.SetActive(true);
             collectEff.GetComponent<EffectController>().SetPosition(transform.position);
-            //Instantiate(_collectedEffect, transform.position, Quaternion.identity);
             var playerScript = collision.GetComponent<PlayerStateManager>();
             PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_NORMAL);
             playerScript.GetCollectHPSound().Play();

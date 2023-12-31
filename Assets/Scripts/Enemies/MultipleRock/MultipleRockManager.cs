@@ -5,7 +5,6 @@ using UnityEngine;
 public class MultipleRockManager : MEnemiesManager
 {
     //Con vk này có 3 form: Big - Medium - Tiny
-    //Từ Big về các form dưới sẽ tăng số lượng theo cấp số nhân của 2
     //Add effect cho nó sau
     //Add effect = particle system ?
     [Tooltip("0: Big|1: Medium|2: Tiny")]
@@ -51,19 +50,25 @@ public class MultipleRockManager : MEnemiesManager
 
     protected virtual void SpawnClone()
     {
+        if (_type != 2)
+        {
+            GameObject brownEff = EffectPool.Instance.GetObjectInPool(GameConstants.BROWN_EXPLOSION);
+            brownEff.SetActive(true);
+            brownEff.GetComponent<EffectController>().SetPosition(transform.position);
+        }
+
         switch(_type)
         {
             case 0:
-                Instantiate(_deadEffect, transform.position, Quaternion.identity, null);
                 GameObject medRock1 = Instantiate(_rockClone, _spawnPos1.transform.position, Quaternion.identity, null);
-                GameObject medRock2 = Instantiate(_rockClone, _spawnPos2.transform.position, Quaternion.identity, null);
-                /*medRock1.GetComponent<BigRockManager>().SetIsFacingRight(true);
-                medRock2.GetComponent<BigRockManager>().SetIsFacingRight(false);*/
+                Instantiate(_rockClone, _spawnPos2.transform.position, Quaternion.identity, null);
+                medRock1.GetComponent<MultipleRockManager>().FlippingSprite();
+               // medRock2.GetComponent<BigRockManager>().SetIsFacingRight(false);*/
                 break;
             case 1:
-                Instantiate(_deadEffect, transform.position, Quaternion.identity, null);
                 GameObject tinyRock1 = Instantiate(_rockClone, _spawnPos1.transform.position, Quaternion.identity, null);
-                GameObject tinyRock2 = Instantiate(_rockClone, _spawnPos2.transform.position, Quaternion.identity, null);
+                Instantiate(_rockClone, _spawnPos2.transform.position, Quaternion.identity, null);
+                tinyRock1.GetComponent<MultipleRockManager>().FlippingSprite();
                 break;
         }
         Destroy(this.gameObject);

@@ -196,7 +196,11 @@ public class PlayerHealthController : MonoBehaviour
                 //=> vì là mảng nên index từ 0 (obviously!) nên phải trừ trước khi gán
                 //vd: máu hiện tại là 3 tương ứng với index là 2
                 if (_currentHP > 0)
+                {
                     _currentHP--;
+                    //Debug.Log("Cur: " + _currentHP);
+                }
+                
                 _HPs[_currentHP]._state = state;
             }
             //Debug.Log("current, state: " + _currentHP + ", " + _HPs[_currentHP]._state);
