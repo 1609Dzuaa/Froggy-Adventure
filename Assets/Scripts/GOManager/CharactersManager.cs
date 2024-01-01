@@ -43,5 +43,6 @@ public class CharactersManager : GameObjectManager
         _isFacingRight = !_isFacingRight;
         transform.Rotate(0, 180, 0);
         //Hàm này dùng để lật sprite theo chiều ngang
+        //Debug.Log("vao day");
     }
 }

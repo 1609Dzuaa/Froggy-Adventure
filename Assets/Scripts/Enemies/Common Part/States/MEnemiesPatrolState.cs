@@ -21,7 +21,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.patrol);
         _entryTime = Time.time;
-        Debug.Log("Patrol, canRD, hasChangeDir, HW: " + _canRdDirection + ", " + _hasChangeDirection + ", " + _hasJustHitWall);
+        //Debug.Log("Patrol, canRD, hasChangeDir, HW: " + _canRdDirection + ", " + _hasChangeDirection + ", " + _hasJustHitWall);
         if (_canRdDirection)
             HandleRandomChangeDirection();
     }
