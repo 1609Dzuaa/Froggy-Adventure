@@ -35,31 +35,33 @@ public class SnailPatrolState : MEnemiesPatrolState
 
     public override void FixedUpdate()
     {
-        if (!_snailManager._isMovingVertical) //move ngang
+        if (!_snailManager.IsMovingVertical) //move ngang
         {
             //trong thgian rotate
-            if (_snailManager._hasFlip && !_snailManager._doneFlip)
+            if (_snailManager.HasRotate && !_snailManager.DoneRotate)
             {
-                if (_snailManager._direction == 1)
+                if (_snailManager.Direction == 1)
                 {
                     _snailManager.GetRigidbody2D().velocity = new Vector2(-_snailManager.GetPatrolSpeed().x, -_snailManager.GetPatrolSpeed().y);
-                    Debug.Log("trai xuong");
+                    //Debug.Log("trai xuong");
                 }
-                else if (_snailManager._direction == 3)
+                else if (_snailManager.Direction == 3)
                 {
                     _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, _snailManager.GetPatrolSpeed().y);
-                    Debug.Log("phai len");
+                    //Debug.Log("phai len");
                 }
             }
             else //move ngang bthg
             {
-                switch (_snailManager._direction)
+                switch (_snailManager.Direction)
                 {
                     case 1:
                         _snailManager.GetRigidbody2D().velocity = new Vector2(-_snailManager.GetPatrolSpeed().x, 0f);
+                        //Debug.Log("ngang1");
                         break;
                     case 3:
                         _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, 0f);
+                        //Debug.Log("ngang3");
                         break;
                 }
             }
@@ -67,28 +69,30 @@ public class SnailPatrolState : MEnemiesPatrolState
         else //move doc
         {
             //trong thgian rotate
-            if(_snailManager._hasFlip && !_snailManager._doneFlip)
+            if(_snailManager.HasRotate && !_snailManager.DoneRotate)
             {
-                if (_snailManager._direction == 2)
+                if (_snailManager.Direction == 2)
                 {
-                    _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, -_snailManager.GetPatrolSpeed().x);
-                    Debug.Log("trai xuong");
+                    _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, - _snailManager.GetPatrolSpeed().y);
+                    //Debug.Log("trai len2");
                 }
-                else if (_snailManager._direction == 4)
+                else if (_snailManager.Direction == 4)
                 {
-                    _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, _snailManager.GetPatrolSpeed().y);
-                    Debug.Log("phai len");
+                    _snailManager.GetRigidbody2D().velocity = new Vector2(-_snailManager.GetPatrolSpeed().x, _snailManager.GetPatrolSpeed().y);
+                    //Debug.Log("phai len");
                 }
             }
             else //move doc bthg
             {
-                switch (_snailManager._direction)
+                switch (_snailManager.Direction)
                 {
                     case 2:
                         _snailManager.GetRigidbody2D().velocity = new Vector2(0f, -_snailManager.GetPatrolSpeed().x);
+                        //Debug.Log("doc2");
                         break;
                     case 4:
                         _snailManager.GetRigidbody2D().velocity = new Vector2(0f, _snailManager.GetPatrolSpeed().x);
+                        //Debug.Log("doc4");
                         break;
                 }
             }

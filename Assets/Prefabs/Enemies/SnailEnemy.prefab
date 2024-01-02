@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738105750}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: -0.6, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365161629012570030}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalPosition: {x: -0.15, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -92,7 +92,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365161629106712432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.84, y: -0.57, z: 0}
+  m_LocalPosition: {x: -7.76, y: -0.59, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -199,26 +199,25 @@ MonoBehaviour:
   _boundaryLeft: {fileID: 0}
   _boundaryRight: {fileID: 0}
   _wallCheck: {fileID: 365161629012570031}
-  _wallCheckDistance: 0.8
+  _wallCheckDistance: 3
   _wallLayer:
     serializedVersion: 2
     m_Bits: 64
   _restTime: 2
   _patrolTime: 2
-  _patrolSpeed: {x: 2, y: 8}
+  _patrolSpeed: {x: 2, y: 4}
   _chaseSpeed: {x: 0, y: 0}
   _parent: {fileID: 365161629218747645}
+  _boundaryLeftBot: {fileID: 0}
+  _boundaryRightBot: {fileID: 0}
   _healthPoint: 2
   _groundCheck: {fileID: 1738105751}
   _idleDelay: 1.15
   _degreeEachRotation: 12
   _rotateTime: 0.3
   _timeEachRotation: 0.03
-  _xOffset: 0
-  _yOffset: 0
-  _hasFlip: 0
-  _doneFlip: 0
-  _isMovingVertical: 0
+  _delayRotate: 0.2
+  _yOffset: 0.315
 --- !u!50 &365161629106712442
 Rigidbody2D:
   serializedVersion: 4

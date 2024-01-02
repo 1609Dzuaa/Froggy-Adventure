@@ -5,16 +5,7 @@ using UnityEngine;
 public class SnailManager : MEnemiesManager
 {
     //Khi chui vào vỏ thì trâu hơn bthg x _healthPoint lần (Mặc định bthg đạp lên trên vỏ 1 lần là chết)
-    //Docs:
-    //When you read the .eulerAngles property,
-    //Unity converts the Quaternion's internal representation of the rotation
-    //to Euler angles. Because, there is more than one way
-    //to represent any given rotation using Euler angles,
-    //the values you read back out may be quite DIFFERENT
-    //from the values you assigned.
-    //This can cause confusion if you are trying
-    //to gradually increment the values to produce animation.
-
+    //Nhìn chung tạm ổn, còn mỗi vấn đề snap con sên(cần tính dist từ nó tới ground để snap)
 
     [Header("Health Point")]
     [SerializeField] private int _healthPoint;
@@ -33,8 +24,10 @@ public class SnailManager : MEnemiesManager
     [SerializeField] private float _rotateTime;
     [SerializeField] private float _timeEachRotation;
 
-    [Header("XY Offset")]
-    [SerializeField] private float _xOffset;
+    [Header("Delay Rotate")]
+    [SerializeField] private float _delayRotate;
+
+    [Header("Y Offset")]
     [SerializeField] private float _yOffset;
 
     private SnailIdleState _snailIdleState = new();
@@ -42,12 +35,22 @@ public class SnailManager : MEnemiesManager
     private SnailAttackState _snailAttackState = new();
     private SnailShellHitState _snailShellHitState = new();
     private SnailGotHitState _snailGotHitState = new();
-    private bool _hasDetectedGround;
-    public bool _hasFlip;
+    private bool _hasDetectWall;
+    private RaycastHit2D _hasDetectedGround;
+    private bool _hasRotate;
     private float _entryTime;
-    public bool _doneFlip;
-    public bool _isMovingVertical;
-    public int _direction = 1;
+    private bool _doneRotate;
+    private bool _isMovingVertical;
+    private int _direction = 1;
+    private bool _hasStart;
+
+    public bool HasRotate { get {  return _hasRotate; } }
+
+    public bool DoneRotate { get { return _doneRotate; } }
+
+    public bool IsMovingVertical { get { return _isMovingVertical; } }   
+
+    public int Direction { get {  return _direction; } }    
 
     public bool HasDetectedGround { get { return _hasDetectedGround; } }
 
@@ -87,17 +90,24 @@ public class SnailManager : MEnemiesManager
         DrawRayDetectPlayer();
         DrawRayDetectWall();
         DrawRayDetectGround();
-        if (!_hasDetectedGround && !_hasFlip)
-        {
-            //Prob here dẫn đến Prob dưới
-            _hasFlip = true;
-            _doneFlip = false;
-            _entryTime = Time.time;
-            Debug.Log("0 thay ground");
-        }
-        HandleIfNotDetectedGround();
-        //Debug.Log("Current Z Angles: " + currentZAngles);
+        if (!_hasDetectedGround && !_hasStart)
+            StartCoroutine(StartTickRotation());
+
+        RotateIfNotDetectedGround();
+        //Debug.Log("Current Z Angles: " +transform.localEulerAngles.z);
         //transform.eulerAngles goes from 0-360
+    }
+
+    private IEnumerator StartTickRotation()
+    {
+        _hasStart = true;
+
+        yield return new WaitForSeconds(_delayRotate);
+
+        _hasRotate = true;
+        _doneRotate = false;
+        _entryTime = Time.time;
+        //Debug.Log("0 thay ground");
     }
 
     private float WrapAngle(float angle)
@@ -107,56 +117,89 @@ public class SnailManager : MEnemiesManager
             return angle - 360;
 
         return angle;
+        //Func này để trả về góc giữa -180 -> 180 Euler Angles
+        //Mục đích đọc Euler Angles ngoài Inspector
     }
 
-    private void HandleIfNotDetectedGround()
+    private void RotateIfDetectedWall()
     {
-        if (Time.time - _entryTime >= _timeEachRotation && _hasFlip && !_doneFlip)
+        //Còn việc xử lý đâm wall của con vk này
+    }
+
+    private void RotateIfNotDetectedGround()
+    {
+        //Cách rotate:
+        //Xác định direction(dir): 
+        //2<---1
+        //|    |
+        //3--->4
+        //Từ 1->2->3 xoay 0 -> 90 -> 180 trục z tăng dần
+        //Từ 3->4->1 xoay từ -180 -> -90 -> 0 trục z tăng dần
+        //Vì khi đạt ngưỡng 180 độ thì ngoài Inspector nó chuyển về -180 ? :Đ
+
+        if (Time.time - _entryTime >= _timeEachRotation && _hasRotate && !_doneRotate)
         {
             float currentZAngles = WrapAngle(transform.localEulerAngles.z);
             currentZAngles += _degreeEachRotation;
 
             if (!_isMovingVertical)
             {
-                if (currentZAngles >= 90f)
+                //Nếu đang là dir 3 thì cố định góc là -90 độ và chuyển dir sang 4
+                //Tại sao là -90 độ mà 0 phải 270 độ ?
+                //Ngoài Inspector nó chỉ chạy từ -180 đến 180 độ
+                //=> 270 độ <=> -90 độ
+                if (currentZAngles >= -90f && currentZAngles < 0f && _direction == 3)
                 {
+                    currentZAngles = -90f;
+                    _direction = 4;
+                    _hasStart = false;
+                    _doneRotate = true;
+                    _isMovingVertical = true;
+                    _hasRotate = false;
+                    //Debug.Log("Done Rotate4, currAZ: " + _direction);
+                }
+                else if (currentZAngles >= 90f && _direction == 1)
+                {
+                    //Nếu đang là dir 1 thì cố định góc là 90 độ và chuyển dir sang 2
                     currentZAngles = 90f;
                     _direction = 2;
-                    _doneFlip = true;
+                    _hasStart = false;
+                    _doneRotate = true;
                     _isMovingVertical = true;
-                    _hasFlip = false;
-                    Debug.Log("Done Flip1, dir: " + _direction);
-                    transform.position = new Vector3(transform.position.x - _xOffset, transform.position.y - _yOffset, transform.position.z);
-                    /*if (!_isFacingRight)
-                        transform.position = new Vector3(transform.position.x + _xOffset, transform.position.y - _yOffset, transform.position.z);
-                    else
-                        transform.position = new Vector3(transform.position.x - _xOffset, transform.position.y - _yOffset, transform.position.z);*/
-                }
+                    _hasRotate = false;
+                } 
             }
             else
             {
+                //Nếu đang là dir 2 thì cố định góc là 180 độ và chuyển dir sang 3
                 if (currentZAngles >= 180f)
                 {
                     currentZAngles = 180f;
                     _direction = 3;
-                    _doneFlip = true;
+                    _hasStart = false;
+                    _doneRotate = true;
                     _isMovingVertical = false;
-                    _hasFlip = false;
-                    Debug.Log("Done Flip2, dir: " + _direction);
-                    transform.position = new Vector3(transform.position.x + _xOffset, transform.position.y + _yOffset, transform.position.z);
-                    /*if (!_isFacingRight)
-                        transform.position = new Vector3(transform.position.x - _xOffset, transform.position.y, transform.position.z);
-                    else
-                        transform.position = new Vector3(transform.position.x + _xOffset, transform.position.y, transform.position.z);*/
+                    _hasRotate = false;                    
+                    transform.position = new Vector3(transform.position.x, transform.position.y + _yOffset, transform.position.z);
+                    //Debug.Log("OffsetY cho 3: " + _hasDetectedGround.distance);
+                }
+                else if( currentZAngles >= 0f && _direction == 4)
+                {
+                    //Nếu đang là dir 4 thì cố định góc là 0 độ và chuyển dir sang 1
+                    currentZAngles = 0f;
+                    _direction = 1;
+                    _hasStart = false;
+                    _doneRotate = true;
+                    _isMovingVertical = false;
+                    _hasRotate = false;
+                    transform.position = new Vector3(transform.position.x, transform.position.y - _yOffset, transform.position.z);
+                    //Debug.Log("OffsetY cho 1: " + _hasDetectedGround.distance);
                 }
             }
 
-            Debug.Log("Current Z Angles: " + currentZAngles);
-            //currentZAngles += _degreeEachRotation;
+            //Debug.Log("Current Z Angles: " + currentZAngles);
             float currentYAngles = WrapAngle(transform.localEulerAngles.y);
             transform.rotation = Quaternion.Euler(0f, currentYAngles, currentZAngles);
-            //transform.Rotate(0f, 0f, zDegree);
-            //Debug.Log("Zdegree: " + zDegree);
             _entryTime = Time.time;
         }
     }
@@ -225,54 +268,74 @@ public class SnailManager : MEnemiesManager
     protected override void DetectWall()
     {
         //Snail sẽ detect wall theo style của nó
-        if(!_isMovingVertical)
+        if (!_isMovingVertical)
         {
-            if (!_isFacingRight)
-                _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.left, _wallCheckDistance, _wallLayer);
+            if (_direction == 1)
+                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.left, _wallCheckDistance, _wallLayer);
             else
-                _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.right, _wallCheckDistance, _wallLayer);
+                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.right, _wallCheckDistance, _wallLayer);
         }
         else
         {
-            if (!_isFacingRight)
-                _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.down, _wallCheckDistance, _wallLayer);
+            if (_direction == 2)
+                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.down, _wallCheckDistance, _wallLayer);
             else
-                _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.up, _wallCheckDistance, _wallLayer);
+                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.up, _wallCheckDistance, _wallLayer);
         }
     }
 
     private void DrawRayDetectWall()
     {
-        //Move vertical thì chỉnh left/right thành 2 vector down/up
-        /*if (!_isMovingVertical)
+        if (!_isMovingVertical)
         {
-            if (!_isFacingRight)
-                Debug.DrawRay(_wallCheck.position, Vector2.left, Color.green);
+            if (_hasCollidedWall)
+            {
+                if (_direction == 1)
+                    Debug.DrawRay(_wallCheck.position, Vector2.left, Color.red);
+                else
+                    Debug.DrawRay(_wallCheck.position, Vector2.right, Color.red);
+            }
             else
-                Debug.DrawRay(_wallCheck.position, Vector2.right, Color.green);
+            {
+                if (_direction == 1)
+                    Debug.DrawRay(_wallCheck.position, Vector2.left, Color.green);
+                else
+                    Debug.DrawRay(_wallCheck.position, Vector2.right, Color.green);
+            }
         }
         else
         {
-            if (!_isFacingRight)
-                Debug.DrawRay(_wallCheck.position, Vector2.down, Color.red);
+            if (_hasCollidedWall)
+            {
+                if (_direction == 2)
+                    Debug.DrawRay(_wallCheck.position, Vector2.down, Color.red);
+                else
+                    Debug.DrawRay(_wallCheck.position, Vector2.up, Color.red);
+            }
             else
-                Debug.DrawRay(_wallCheck.position, Vector2.up, Color.red);
-        }*/
+            {
+                if (_direction == 2)
+                    Debug.DrawRay(_wallCheck.position, Vector2.down, Color.green);
+                else
+                    Debug.DrawRay(_wallCheck.position, Vector2.up, Color.green);
+            }
+        }
     }
 
     private void DetectGround()
     {
+        //Move vertical thì chỉnh left/right thành 2 vector down/up
         if (!_isMovingVertical)
         {
             if (_direction == 1)
             {
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _wallCheckDistance, _wallLayer);
-                Debug.Log("detecG dir1");
+                //Debug.Log("detecG dir1");
             }
             else
             {
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.up, _wallCheckDistance, _wallLayer);
-                Debug.Log("detecG dir3");
+                //Debug.Log("detecG dir3");
             }
         }
         else
@@ -280,30 +343,14 @@ public class SnailManager : MEnemiesManager
             if (_direction == 2)
             {
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _wallCheckDistance, _wallLayer);
-                Debug.Log("detecG dir2");
+                //Debug.Log("detecG dir2");
             }
             else
             {
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _wallCheckDistance, _wallLayer);
-                Debug.Log("detecG dir4");
+                //Debug.Log("detecG dir4");
             }
         }
-        /*if (!_isMovingVertical)
-            _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _wallCheckDistance, _wallLayer);
-        else
-        {
-            if (!_isFacingRight)
-            {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _wallCheckDistance, _wallLayer);
-                Debug.Log("Ground 1");
-            }
-            else
-            {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _wallCheckDistance, _wallLayer);
-                Debug.Log("Ground 2");
-
-            }
-        }*/
     }
 
     private void DrawRayDetectGround()
@@ -322,15 +369,6 @@ public class SnailManager : MEnemiesManager
             else
                 Debug.DrawRay(_groundCheck.position, Vector2.left, Color.green);
         }
-        /*if (!_isMovingVertical)
-            Debug.DrawRay(_groundCheck.position, Vector2.down, Color.green);
-        else
-        {
-            if (!_isFacingRight)
-                Debug.DrawRay(_groundCheck.position, Vector2.right, Color.green);
-            else
-                Debug.DrawRay(_groundCheck.position, Vector2.left, Color.green);
-        }*/
     }
 
     protected override void ChangeToIdle()
@@ -356,6 +394,46 @@ public class SnailManager : MEnemiesManager
             else
                 ChangeState(_snailShellHitState);
         }
+        /*else if (collision.name == "Bound1")
+        {
+            if (!_hasRotate)
+            {
+                _hasRotate = true;
+                _doneRotate = false;
+                _entryTime = Time.time;
+                Debug.Log("B1");
+            }
+        }
+        else if(collision.name == "Bound2")
+        {
+            if(!_hasRotate)
+            {
+                _hasRotate = true;
+                _doneRotate = false;
+                _entryTime = Time.time;
+                Debug.Log("B2");
+            }
+        }
+        else if (collision.name == "Bound3")
+        {
+            if (!_hasRotate)
+            {
+                _hasRotate = true;
+                _doneRotate = false;
+                _entryTime = Time.time;
+                Debug.Log("B3");
+            }
+        }
+        else if (collision.name == "Bound4")
+        {
+            if (!_hasRotate)
+            {
+                _hasRotate = true;
+                _doneRotate = false;
+                _entryTime = Time.time;
+                Debug.Log("B4");
+            }
+        }*/
     }
 
     protected override void AllowAttackPlayer()
