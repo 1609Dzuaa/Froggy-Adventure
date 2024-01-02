@@ -6,12 +6,14 @@ public class SnailManager : MEnemiesManager
 {
     //Khi chui vào vỏ thì trâu hơn bthg x _healthPoint lần (Mặc định bthg đạp lên trên vỏ 1 lần là chết)
     //Nhìn chung tạm ổn, còn mỗi vấn đề snap con sên(cần tính dist từ nó tới ground để snap)
+    //Sau khi thêm detect wall vẫn còn bug nhỏ rotate loạn xạ đoạn từ dir 2 -> 1 (wall)
 
     [Header("Health Point")]
     [SerializeField] private int _healthPoint;
 
     [Header("Ground Check")]
     [SerializeField] private Transform _groundCheck;
+    [SerializeField] private float _groundCheckDistance;
     //private bool _hasDetectedGround;
 
     [Header("Detect Player2")]
@@ -27,8 +29,8 @@ public class SnailManager : MEnemiesManager
     [Header("Delay Rotate")]
     [SerializeField] private float _delayRotate;
 
-    [Header("Y Offset")]
-    [SerializeField] private float _yOffset;
+    [Header("Offset")]
+    [SerializeField] private float _offSet;
 
     private SnailIdleState _snailIdleState = new();
     private SnailPatrolState _snailPatrolState = new();
@@ -43,6 +45,7 @@ public class SnailManager : MEnemiesManager
     private bool _isMovingVertical;
     private int _direction = 1;
     private bool _hasStart;
+    private bool _rotateByWall;
 
     public bool HasRotate { get {  return _hasRotate; } }
 
@@ -90,12 +93,28 @@ public class SnailManager : MEnemiesManager
         DrawRayDetectPlayer();
         DrawRayDetectWall();
         DrawRayDetectGround();
+
+        if (_hasCollidedWall && !_hasStart)
+            StartCoroutine(StartRotation());
+
         if (!_hasDetectedGround && !_hasStart)
             StartCoroutine(StartTickRotation());
 
+        RotateIfDetectedWall();
         RotateIfNotDetectedGround();
-        //Debug.Log("Current Z Angles: " +transform.localEulerAngles.z);
+        //Debug.Log("Current Z Angles: " + WrapAngle(transform.eulerAngles.z));
         //transform.eulerAngles goes from 0-360
+    }
+
+    private IEnumerator StartRotation()
+    {
+        _rotateByWall = true;
+        _hasStart = true; //Lock, only start coroutine once if detected W/ not detected G
+        _hasRotate = true;
+        _doneRotate = false;
+        _entryTime = Time.time;
+        //Debug.Log("dam wall");
+        yield return null;
     }
 
     private IEnumerator StartTickRotation()
@@ -123,7 +142,89 @@ public class SnailManager : MEnemiesManager
 
     private void RotateIfDetectedWall()
     {
-        //Còn việc xử lý đâm wall của con vk này
+        if (_rotateByWall)
+        {
+            //Wall thì ngược lại với Ground
+            //Flip dần dần -90 độ theo trục z 
+
+            if (Time.time - _entryTime >= _timeEachRotation && _hasRotate && !_doneRotate)
+            {
+                float currentZAngles = WrapAngle(transform.localEulerAngles.z);
+                currentZAngles -= _degreeEachRotation;
+
+                if (!_isMovingVertical)
+                {
+                    if (currentZAngles <= 90f && _direction == 3)
+                    {
+                        //Nếu đang direction 3 (góc Euler trục z lúc này = -180* = 180*)
+                        //Thì theo nguyên tắc rotate khi đụng wall thì phải rotate trục z đến góc -270*
+                        //Nhưng ngoài Inspector khi hiển thị sẽ chỉ chạy từ -180* -> 180*
+                        //Nên thay vào đó rotate nó về góc 90* (90* = -270*)
+                        //=> 180* trừ dần về 90*
+
+                        currentZAngles = 90f;
+                        _direction = 2;
+                        _hasStart = false;
+                        _doneRotate = true;
+                        _isMovingVertical = true;
+                        _hasRotate = false;
+                        _rotateByWall = false;
+                        transform.position = new Vector3(transform.position.x + _offSet, transform.position.y, transform.position.z);
+                        Debug.Log("Done RotateW3");
+                    }
+                    else if (currentZAngles <= -90f && _direction == 1)
+                    {
+                        //Nếu đang direction 1 thì rotate 1 góc 90 trục z theo chiều âm (=>hướng lên)
+                        //và chuyển sang direction 4
+                        currentZAngles = -90f;
+                        _direction = 4;
+                        _hasStart = false;
+                        _doneRotate = true;
+                        _isMovingVertical = true;
+                        _hasRotate = false;
+                        _rotateByWall = false;
+                        Debug.Log("Done RotateW1");
+                        transform.position = new Vector3(transform.position.x - _offSet, transform.position.y, transform.position.z);
+                    }
+                }
+                else
+                {
+                    //Nếu dir đang là 4 thì giới hạn góc Euler trục z ở -180* và switch dir sang 3
+                    if (currentZAngles <= -180f)
+                    {
+                        currentZAngles = -180f;
+                        _direction = 3;
+                        _hasStart = false;
+                        _doneRotate = true;
+                        _isMovingVertical = false;
+                        _hasRotate = false;
+                        _rotateByWall = false;
+                        Debug.Log("Done RotateW4");
+                        transform.position = new Vector3(transform.position.x, transform.position.y + _offSet, transform.position.z);
+                        //Debug.Log("OffsetY cho 3: " + _hasDetectedGround.distance);
+                    }
+                    else if (currentZAngles <= 0f && _direction == 2)
+                    {
+                        //Nếu đang là dir 2 thì cố định góc Euler là 0* và sw dir sang 1
+                        //90* -> 0* (90* = -270*)
+                        currentZAngles = 0f;
+                        _direction = 1;
+                        _hasStart = false;
+                        _doneRotate = true;
+                        _isMovingVertical = false;
+                        _hasRotate = false;
+                        _rotateByWall = false;
+                        transform.position = new Vector3(transform.position.x, transform.position.y - _offSet, transform.position.z);
+                        Debug.Log("Done RotateW2");
+                    }
+                }
+
+                Debug.Log("Current Z Angles: " + currentZAngles);
+                float currentYAngles = WrapAngle(transform.localEulerAngles.y);
+                transform.rotation = Quaternion.Euler(0f, currentYAngles, currentZAngles);
+                _entryTime = Time.time;
+            }
+        }
     }
 
     private void RotateIfNotDetectedGround()
@@ -136,6 +237,9 @@ public class SnailManager : MEnemiesManager
         //Từ 1->2->3 xoay 0 -> 90 -> 180 trục z tăng dần
         //Từ 3->4->1 xoay từ -180 -> -90 -> 0 trục z tăng dần
         //Vì khi đạt ngưỡng 180 độ thì ngoài Inspector nó chuyển về -180 ? :Đ
+
+        if (_rotateByWall) 
+            return;
 
         if (Time.time - _entryTime >= _timeEachRotation && _hasRotate && !_doneRotate)
         {
@@ -180,7 +284,7 @@ public class SnailManager : MEnemiesManager
                     _doneRotate = true;
                     _isMovingVertical = false;
                     _hasRotate = false;                    
-                    transform.position = new Vector3(transform.position.x, transform.position.y + _yOffset, transform.position.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y + _offSet, transform.position.z);
                     //Debug.Log("OffsetY cho 3: " + _hasDetectedGround.distance);
                 }
                 else if( currentZAngles >= 0f && _direction == 4)
@@ -192,7 +296,7 @@ public class SnailManager : MEnemiesManager
                     _doneRotate = true;
                     _isMovingVertical = false;
                     _hasRotate = false;
-                    transform.position = new Vector3(transform.position.x, transform.position.y - _yOffset, transform.position.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y - _offSet, transform.position.z);
                     //Debug.Log("OffsetY cho 1: " + _hasDetectedGround.distance);
                 }
             }
@@ -328,28 +432,16 @@ public class SnailManager : MEnemiesManager
         if (!_isMovingVertical)
         {
             if (_direction == 1)
-            {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _wallCheckDistance, _wallLayer);
-                //Debug.Log("detecG dir1");
-            }
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _wallLayer);
             else
-            {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.up, _wallCheckDistance, _wallLayer);
-                //Debug.Log("detecG dir3");
-            }
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.up, _groundCheckDistance, _wallLayer);
         }
         else
         {
             if (_direction == 2)
-            {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _wallCheckDistance, _wallLayer);
-                //Debug.Log("detecG dir2");
-            }
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _groundCheckDistance, _wallLayer);
             else
-            {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _wallCheckDistance, _wallLayer);
-                //Debug.Log("detecG dir4");
-            }
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _groundCheckDistance, _wallLayer);
         }
     }
 
@@ -394,46 +486,6 @@ public class SnailManager : MEnemiesManager
             else
                 ChangeState(_snailShellHitState);
         }
-        /*else if (collision.name == "Bound1")
-        {
-            if (!_hasRotate)
-            {
-                _hasRotate = true;
-                _doneRotate = false;
-                _entryTime = Time.time;
-                Debug.Log("B1");
-            }
-        }
-        else if(collision.name == "Bound2")
-        {
-            if(!_hasRotate)
-            {
-                _hasRotate = true;
-                _doneRotate = false;
-                _entryTime = Time.time;
-                Debug.Log("B2");
-            }
-        }
-        else if (collision.name == "Bound3")
-        {
-            if (!_hasRotate)
-            {
-                _hasRotate = true;
-                _doneRotate = false;
-                _entryTime = Time.time;
-                Debug.Log("B3");
-            }
-        }
-        else if (collision.name == "Bound4")
-        {
-            if (!_hasRotate)
-            {
-                _hasRotate = true;
-                _doneRotate = false;
-                _entryTime = Time.time;
-                Debug.Log("B4");
-            }
-        }*/
     }
 
     protected override void AllowAttackPlayer()

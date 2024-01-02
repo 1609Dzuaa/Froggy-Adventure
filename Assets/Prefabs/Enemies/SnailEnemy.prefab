@@ -199,7 +199,7 @@ MonoBehaviour:
   _boundaryLeft: {fileID: 0}
   _boundaryRight: {fileID: 0}
   _wallCheck: {fileID: 365161629012570031}
-  _wallCheckDistance: 3
+  _wallCheckDistance: 0.7
   _wallLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -208,10 +208,9 @@ MonoBehaviour:
   _patrolSpeed: {x: 2, y: 4}
   _chaseSpeed: {x: 0, y: 0}
   _parent: {fileID: 365161629218747645}
-  _boundaryLeftBot: {fileID: 0}
-  _boundaryRightBot: {fileID: 0}
   _healthPoint: 2
   _groundCheck: {fileID: 1738105751}
+  _groundCheckDistance: 3
   _idleDelay: 1.15
   _degreeEachRotation: 12
   _rotateTime: 0.3
