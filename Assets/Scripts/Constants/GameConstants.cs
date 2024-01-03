@@ -30,6 +30,11 @@
     public const string GROUND_LAYER = "Ground";
     public const string PLAYER_LAYER = "Player";
     public const string IGNORE_ENEMIES_LAYER = "Ignore Enemies";
+    public const string SHIELD_LAYER = "Shield";
+    #endregion
+
+    #region Render Layer Constants
+    public const string RENDER_MAP_LAYER = "Map_Layer";
     #endregion
 
     #region Tag Constants

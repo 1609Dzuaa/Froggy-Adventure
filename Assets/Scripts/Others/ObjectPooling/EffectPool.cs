@@ -108,7 +108,7 @@ public class EffectPool : MonoBehaviour
             //Tìm xem trong cái pool có thằng nào 0 kích hoạt kh thì lôi nó ra
             if (!_dictEffectPool[EffectType][i].activeInHierarchy)
             {
-                Debug.Log("Effect: " + _dictEffectPool[EffectType][i].name + " " + i);
+                //Debug.Log("Effect: " + _dictEffectPool[EffectType][i].name + " " + i);
                 return _dictEffectPool[EffectType][i];
             }
         }

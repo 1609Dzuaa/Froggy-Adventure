@@ -267,6 +267,7 @@ public class PlayerStateManager : MonoBehaviour
         HandleAlphaValueGotHit();
         HandleDustVelocity();
         SpawnDust();
+        //Debug.Log("v: " + rb.velocity);
     }
 
     private void UpdateInteractWithNPC()

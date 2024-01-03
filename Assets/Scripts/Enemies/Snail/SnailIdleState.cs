@@ -8,6 +8,8 @@ public class SnailIdleState : MEnemiesIdleState
     {
         base.EnterState(charactersManager);
         _snailManager = (SnailManager)charactersManager;
+        _snailManager.SnailAttackState.HasBeenHit = false; //Reset th này cho Attack
+        Debug.Log("Idle");
     }
 
     public override void ExitState()

@@ -26,8 +26,10 @@ public class SnailManager : MEnemiesManager
     //private bool _hasDetectedGround;
 
     [Header("Detect Player2")]
-    //Khoảng thgian mình muốn ốc thực sự chui ra sau khi 0 detect Player ở gần
+    [Tooltip("Khoảng thgian mình muốn ốc chui ra sau khi 0 detect Player ở gần")]
     [SerializeField] private float _idleDelay;
+    [Tooltip("Khoảng thgian sau khi ốc bị hit mà mình muốn nó chui ra sau khi 0 detect Player ở gần")]
+    [SerializeField] private float _idleDelayAfterGotHit;
 
     //Rotate sprite after got hit
     [Header("Z Rotation When Dead")]
@@ -46,8 +48,8 @@ public class SnailManager : MEnemiesManager
     private SnailAttackState _snailAttackState = new();
     private SnailShellHitState _snailShellHitState = new();
     private SnailGotHitState _snailGotHitState = new();
-    private bool _hasDetectWall;
     private RaycastHit2D _hasDetectedGround;
+    private SpriteRenderer _spriteRenderer;
     private bool _hasRotate;
     private float _entryTime;
     private bool _doneRotate;
@@ -70,19 +72,17 @@ public class SnailManager : MEnemiesManager
 
     public float DelayIdleTime { get { return _idleDelay; } }
 
+    public float DelayIdleAfterGotHit { get { return _idleDelayAfterGotHit; } }
+
     public float DegreeEachRotation { get { return _degreeEachRotation; } }
 
     public float TimeEachRotation { get { return _timeEachRotation; } }
-
-    public SnailIdleState SnailIdleState { get { return _snailIdleState; } }
 
     public SnailPatrolState SnailPatrolState { get { return _snailPatrolState; } }
 
     public SnailAttackState SnailAttackState { get { return _snailAttackState; } }
 
-    public SnailShellHitState SnailShellHitState { get { return _snailShellHitState; } }
-
-    public SnailGotHitState SnailGotHitState { get { return _snailGotHitState; } }
+    public SpriteRenderer SpriteRenderer { get { return _spriteRenderer; } set { _spriteRenderer = value; } }
 
     protected override void Start()
     {
@@ -91,11 +91,15 @@ public class SnailManager : MEnemiesManager
         _state = _snailIdleState;
         _state.EnterState(this);
         _collider2D = GetComponent<Collider2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     protected override void Update()
     {
         _state.Update();
+        if (_state is SnailGotHitState)
+            return;
+
         DetectedPlayer();
         DetectWall();
         DetectGround();
@@ -104,9 +108,9 @@ public class SnailManager : MEnemiesManager
         DrawRayDetectGround();
 
         if (_hasCollidedWall && !_hasStart)
-            StartCoroutine(StartRotation());
+            StartCoroutine(StartTickWallRotation());
         else if (!_hasDetectedGround && !_hasStart)
-            StartCoroutine(StartTickRotation());
+            StartCoroutine(StartTickGroundRotation());
 
         if (_rotateByWall)
             RotateIfDetectedWall();
@@ -116,18 +120,18 @@ public class SnailManager : MEnemiesManager
         //transform.eulerAngles goes from 0-360
     }
 
-    private IEnumerator StartRotation()
+    private IEnumerator StartTickWallRotation()
     {
         _rotateByWall = true;
         _hasStart = true; //Lock, only start coroutine once if detected W/ not detected G
         _hasRotate = true;
         _doneRotate = false;
         _entryTime = Time.time;
-        Debug.Log("dam wall");
+        //Debug.Log("dam wall");
         yield return null;
     }
 
-    private IEnumerator StartTickRotation()
+    private IEnumerator StartTickGroundRotation()
     {
         _hasStart = true;
 
@@ -136,7 +140,7 @@ public class SnailManager : MEnemiesManager
         _hasRotate = true;
         _doneRotate = false;
         _entryTime = Time.time;
-        Debug.Log("0 thay ground");
+        //Debug.Log("0 thay ground");
     }
 
     private float WrapAngle(float angle)
@@ -180,7 +184,7 @@ public class SnailManager : MEnemiesManager
                         _hasRotate = false;
                         _rotateByWall = false;
                         transform.position = new Vector3(transform.position.x + _offSet, transform.position.y, transform.position.z);
-                        Debug.Log("Done RotateW3");
+                        //Debug.Log("Done RotateW3");
                     }
                     else if (currentZAngles <= -90f && _direction == 1)
                     {
@@ -193,7 +197,7 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = true;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        Debug.Log("Done RotateW1");
+                        //Debug.Log("Done RotateW1");
                         transform.position = new Vector3(transform.position.x - _offSet, transform.position.y, transform.position.z);
                     }
                 }
@@ -209,7 +213,7 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = false;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        Debug.Log("Done RotateW4, deo snap Y");
+                        //Debug.Log("Done RotateW4, deo snap Y");
                         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                         //Debug.Log("OffsetY cho 3: " + _hasDetectedGround.distance);
                     }
@@ -225,11 +229,11 @@ public class SnailManager : MEnemiesManager
                         _hasRotate = false;
                         _rotateByWall = false;
                         //transform.position = new Vector3(transform.position.x, transform.position.y - _offSet, transform.position.z);
-                        Debug.Log("Done RotateW2, deo can snap");
+                        //Debug.Log("Done RotateW2, deo can snap");
                     }
                 }
 
-                Debug.Log("Current Z Angles: " + currentZAngles);
+                //Debug.Log("Current Z Angles: " + currentZAngles);
                 float currentYAngles = WrapAngle(transform.localEulerAngles.y);
                 transform.rotation = Quaternion.Euler(0f, currentYAngles, currentZAngles);
                 _entryTime = Time.time;
@@ -340,18 +344,18 @@ public class SnailManager : MEnemiesManager
 
     protected override void DrawRayDetectPlayer()
     {
-        /*if (!_isMovingVertical)
+        if (!_isMovingVertical)
         {
             if (_hasDetectedPlayer)
             {
-                if (!_isFacingRight)
+                if (_direction == 1)
                     Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.red);
                 else
                     Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.red);
             }
             else
             {
-                if (!_isFacingRight)
+                if (_direction == 1)
                     Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.green);
                 else
                     Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.green);
@@ -361,19 +365,19 @@ public class SnailManager : MEnemiesManager
         {
             if (_hasDetectedPlayer)
             {
-                if (!_isFacingRight)
+                if (_direction == 2)
                     Debug.DrawRay(_playerCheck.position, Vector2.down * _checkDistance, Color.red);
                 else
                     Debug.DrawRay(_playerCheck.position, Vector2.up * _checkDistance, Color.red);
             }
             else
             {
-                if (!_isFacingRight)
+                if (_direction == 2)
                     Debug.DrawRay(_playerCheck.position, Vector2.down * _checkDistance, Color.green);
                 else
                     Debug.DrawRay(_playerCheck.position, Vector2.up * _checkDistance, Color.green);
             }
-        }*/
+        }
     }
 
     protected override void DetectWall()
@@ -473,7 +477,13 @@ public class SnailManager : MEnemiesManager
     protected override void ChangeToIdle()
     {
         ChangeState(_snailIdleState);
+    }
+
+    private void ChangeToAttack()
+    {
+        ChangeState(_snailAttackState);
         _hasGotHit = false;
+        //Event của animation Shell_Hit
     }
 
     protected override void FixedUpdate()
@@ -491,7 +501,10 @@ public class SnailManager : MEnemiesManager
             if (_healthPoint == 0)
                 ChangeState(_snailGotHitState);
             else
+            {
+                CancelInvoke();
                 ChangeState(_snailShellHitState);
+            }
         }
     }
 

@@ -211,12 +211,13 @@ MonoBehaviour:
   _healthPoint: 2
   _groundCheck: {fileID: 1738105751}
   _groundCheckDistance: 3
-  _idleDelay: 1.15
+  _idleDelay: 1.3
+  _idleDelayAfterGotHit: 2
   _degreeEachRotation: 12
   _rotateTime: 0.3
   _timeEachRotation: 0.03
   _delayRotate: 0.2
-  _yOffset: 0.315
+  _offSet: 0.315
 --- !u!50 &365161629106712442
 Rigidbody2D:
   serializedVersion: 4

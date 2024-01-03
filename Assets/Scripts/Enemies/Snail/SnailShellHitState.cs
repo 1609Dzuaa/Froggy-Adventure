@@ -8,9 +8,11 @@ public class SnailShellHitState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _snailManager = (SnailManager)charactersManager;
+        _snailManager.SnailAttackState.HasBeenHit = true;
         _snailManager.Animator.SetInteger("state", (int)EnumState.ESnailState.shellHit);
         _snailManager.HealthPoint -= 1;
         _snailManager.SetHasGotHit(false);
+        Debug.Log("SH");
     }
 
     public override void ExitState() { }
