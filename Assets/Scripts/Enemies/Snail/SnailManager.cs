@@ -7,6 +7,15 @@ public class SnailManager : MEnemiesManager
     //Khi chui vào vỏ thì trâu hơn bthg x _healthPoint lần (Mặc định bthg đạp lên trên vỏ 1 lần là chết)
     //Nhìn chung tạm ổn, còn mỗi vấn đề snap con sên(cần tính dist từ nó tới ground để snap)
     //Sau khi thêm detect wall vẫn còn bug nhỏ rotate loạn xạ đoạn từ dir 2 -> 1 (wall)
+    //Do việc snap dẫn đến snail có phần "lún" vào trong G
+    //Nên Raycast 0 bắt đc collision
+    //Stop the ray begins inside a collider
+    //Docs, Ref:
+    //https://docs.unity3d.com/ScriptReference/Physics-queriesHitBackfaces.html
+    //“Note: This function will return false if you cast a ray
+    //from inside a sphere to the outside; this in an intended behaviour.”
+    //Solution: Kiểm tra những chỗ "snap" sao cho nó 0 khiến snail "lún" vào G,
+    //hoặc vào Project Settings mục Physics2D chỉnh ở trong đó. 
 
     [Header("Health Point")]
     [SerializeField] private int _healthPoint;
@@ -96,12 +105,13 @@ public class SnailManager : MEnemiesManager
 
         if (_hasCollidedWall && !_hasStart)
             StartCoroutine(StartRotation());
-
-        if (!_hasDetectedGround && !_hasStart)
+        else if (!_hasDetectedGround && !_hasStart)
             StartCoroutine(StartTickRotation());
 
-        RotateIfDetectedWall();
-        RotateIfNotDetectedGround();
+        if (_rotateByWall)
+            RotateIfDetectedWall();
+        else
+            RotateIfNotDetectedGround();
         //Debug.Log("Current Z Angles: " + WrapAngle(transform.eulerAngles.z));
         //transform.eulerAngles goes from 0-360
     }
@@ -113,7 +123,7 @@ public class SnailManager : MEnemiesManager
         _hasRotate = true;
         _doneRotate = false;
         _entryTime = Time.time;
-        //Debug.Log("dam wall");
+        Debug.Log("dam wall");
         yield return null;
     }
 
@@ -126,7 +136,7 @@ public class SnailManager : MEnemiesManager
         _hasRotate = true;
         _doneRotate = false;
         _entryTime = Time.time;
-        //Debug.Log("0 thay ground");
+        Debug.Log("0 thay ground");
     }
 
     private float WrapAngle(float angle)
@@ -199,8 +209,8 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = false;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        Debug.Log("Done RotateW4");
-                        transform.position = new Vector3(transform.position.x, transform.position.y + _offSet, transform.position.z);
+                        Debug.Log("Done RotateW4, deo snap Y");
+                        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                         //Debug.Log("OffsetY cho 3: " + _hasDetectedGround.distance);
                     }
                     else if (currentZAngles <= 0f && _direction == 2)
@@ -214,8 +224,8 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = false;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        transform.position = new Vector3(transform.position.x, transform.position.y - _offSet, transform.position.z);
-                        Debug.Log("Done RotateW2");
+                        //transform.position = new Vector3(transform.position.x, transform.position.y - _offSet, transform.position.z);
+                        Debug.Log("Done RotateW2, deo can snap");
                     }
                 }
 
@@ -237,9 +247,6 @@ public class SnailManager : MEnemiesManager
         //Từ 1->2->3 xoay 0 -> 90 -> 180 trục z tăng dần
         //Từ 3->4->1 xoay từ -180 -> -90 -> 0 trục z tăng dần
         //Vì khi đạt ngưỡng 180 độ thì ngoài Inspector nó chuyển về -180 ? :Đ
-
-        if (_rotateByWall) 
-            return;
 
         if (Time.time - _entryTime >= _timeEachRotation && _hasRotate && !_doneRotate)
         {
