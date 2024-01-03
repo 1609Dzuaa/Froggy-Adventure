@@ -17,6 +17,8 @@ public class SnailManager : MEnemiesManager
     //Solution: Kiểm tra những chỗ "snap" sao cho nó 0 khiến snail "lún" vào G,
     //hoặc vào Project Settings mục Physics2D chỉnh ở trong đó. 
 
+    //Con vk này vẫn còn bug rotate linh tinh khi thấy player ở edge @@
+
     [Header("Health Point")]
     [SerializeField] private int _healthPoint;
 
@@ -42,6 +44,11 @@ public class SnailManager : MEnemiesManager
 
     [Header("Offset")]
     [SerializeField] private float _offSet;
+    [Tooltip("Offset của box Trigger")]
+    [SerializeField] private Vector2 _boxColTriggerOffset;
+
+    [Header("Adjust Size Box Col")]
+    [SerializeField] private Vector2 _adjustSizeBoxCol;
 
     private SnailIdleState _snailIdleState = new();
     private SnailPatrolState _snailPatrolState = new();
@@ -50,6 +57,11 @@ public class SnailManager : MEnemiesManager
     private SnailGotHitState _snailGotHitState = new();
     private RaycastHit2D _hasDetectedGround;
     private SpriteRenderer _spriteRenderer;
+    private BoxCollider2D _boxCol2D;
+    private BoxCollider2D _boxCol2DTrigger;
+    private BoxCollider2D[] _arrBoxCol2D = new BoxCollider2D[2];
+    private Vector2 _originBoxSize;
+    private Vector2 _originOffset;
     private bool _hasRotate;
     private float _entryTime;
     private bool _doneRotate;
@@ -84,14 +96,41 @@ public class SnailManager : MEnemiesManager
 
     public SpriteRenderer SpriteRenderer { get { return _spriteRenderer; } set { _spriteRenderer = value; } }
 
+    public BoxCollider2D BoxCol2D { get => _boxCol2D; set => _boxCol2D = value; }
+
+    public BoxCollider2D BoxCol2DTrigger { get => _boxCol2DTrigger; set => _boxCol2DTrigger = value; }
+
+    public Vector2 AdjustBoxSize { get => _adjustSizeBoxCol; }
+
+    public Vector2 OriginBoxSize { get => _originBoxSize; }
+
+    public Vector2 OriginOffset { get => _originOffset; }
+
+    public Vector2 OffsetBoxTrigger { get => _boxColTriggerOffset; }
+
     protected override void Start()
+    {
+        GetRefAndSetUp();
+    }
+
+    private void GetRefAndSetUp()
     {
         _anim = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
-        _state = _snailIdleState;
-        _state.EnterState(this);
         _collider2D = GetComponent<Collider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _arrBoxCol2D = GetComponents<BoxCollider2D>();
+        foreach (var box in _arrBoxCol2D)
+        {
+            if (box.isTrigger)
+                _boxCol2DTrigger = box;
+            else
+                _boxCol2D = box;
+        }
+        _originBoxSize = _boxCol2D.size;
+        _originOffset = _boxCol2DTrigger.offset;
+        _state = _snailIdleState;
+        _state.EnterState(this);
     }
 
     protected override void Update()
@@ -100,6 +139,7 @@ public class SnailManager : MEnemiesManager
         if (_state is SnailGotHitState)
             return;
 
+        //Còn bug khi chết mà vẫn rotate ?:Đ
         DetectedPlayer();
         DetectWall();
         DetectGround();

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SnailIdleState : MEnemiesIdleState
 {
@@ -8,7 +8,10 @@ public class SnailIdleState : MEnemiesIdleState
     {
         base.EnterState(charactersManager);
         _snailManager = (SnailManager)charactersManager;
-        _snailManager.SnailAttackState.HasBeenHit = false; //Reset th n�y cho Attack
+        //Reset 3 thg dưới cho Attack
+        _snailManager.SnailAttackState.HasBeenHit = false;
+        _snailManager.BoxCol2D.size = _snailManager.OriginBoxSize;
+        _snailManager.BoxCol2DTrigger.offset = _snailManager.OriginOffset;
         Debug.Log("Idle");
     }
 
