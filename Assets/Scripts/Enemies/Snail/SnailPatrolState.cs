@@ -29,8 +29,8 @@ public class SnailPatrolState : MEnemiesPatrolState
         //Tham khảo:
         //https://gamedev.stackexchange.com/questions/87612/quaternion-rotation-clockwise-or-counter-clockwise
 
-        if (CheckIfCanAttack())
-            _snailManager.Invoke("AllowAttackPlayer", _snailManager.GetAttackDelay());
+        /*if (CheckIfCanAttack())
+            _snailManager.Invoke("AllowAttackPlayer", _snailManager.GetAttackDelay());*/
     }
 
     public override void FixedUpdate()

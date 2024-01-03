@@ -8,10 +8,10 @@ public class SnailShellHitState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _snailManager = (SnailManager)charactersManager;
-        _snailManager.SnailAttackState.HasBeenHit = true;
         _snailManager.Animator.SetInteger("state", (int)EnumState.ESnailState.shellHit);
         _snailManager.HealthPoint -= 1;
         _snailManager.SetHasGotHit(false);
+        _snailManager.GetRigidbody2D().velocity = Vector2.zero;
         Debug.Log("SH");
     }
 

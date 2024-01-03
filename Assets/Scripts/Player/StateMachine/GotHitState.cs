@@ -17,6 +17,7 @@ public class GotHitState : PlayerBaseState
             _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.gotHit);
         //Debug.Log("GotHit");
 
+        //Change layer trong đây để enemies có thể đâm xuyên qua khi đang bị thương ?
         //Chú ý khi làm việc với Any State
         //Tắt Transition To Self ở đoạn nối Transition từ Any State tới State cụ thể
         //Tránh bị đứng ngay frame đầu tiên
@@ -25,8 +26,10 @@ public class GotHitState : PlayerBaseState
     public override void ExitState() 
     { 
         _isHitByTrap = false;
+        _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.PLAYER_LAYER);
     }
 
+    //Phải handle change state trong đây chứ th animation event 0 đảm nhận việc đó đc
     public override void Update() { }
 
     public override void FixedUpdate() { }
@@ -57,6 +60,7 @@ public class GotHitState : PlayerBaseState
         _entryTime = Time.time;
         if (_isHitByTrap)
             KnockBack();
+        _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
         _playerStateManager.IsApplyGotHitEffect = true;
         _playerStateManager.GetGotHitSound().Play();
     }

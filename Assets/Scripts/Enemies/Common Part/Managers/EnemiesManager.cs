@@ -78,6 +78,8 @@ public abstract class EnemiesManager : CharactersManager
 
     protected virtual bool DetectedPlayer()
     {
+        //Cân nhắc có nên detect luôn cái layer Ignore 0 ?
+
         if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
             return _hasDetectedPlayer = false;
         

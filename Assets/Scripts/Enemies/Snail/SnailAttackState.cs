@@ -5,9 +5,6 @@ public class SnailAttackState : MEnemiesAttackState
 {
     private SnailManager _snailManager;
     private bool _hasChangedState;
-    private bool _hasBeenHit;
-
-    public bool HasBeenHit { set { _hasBeenHit = value; } }
 
     public override void EnterState(CharactersManager charactersManager)
     {
@@ -31,12 +28,9 @@ public class SnailAttackState : MEnemiesAttackState
         if (!_snailManager.HasDetectedPlayer && !_hasChangedState)
         {
             _hasChangedState = true;
-            if (!_hasBeenHit)
-                _snailManager.Invoke("ChangeToIdle", _snailManager.DelayIdleTime);
-            else
-                _snailManager.Invoke("ChangeToIdle", _snailManager.DelayIdleAfterGotHit);
+            _snailManager.Invoke("ChangeToIdle", _snailManager.DelayIdleAfterGotHit);
         }
-        else if(_snailManager.HasDetectedPlayer)
+        else if (_snailManager.HasDetectedPlayer)
         {
             _hasChangedState = false;
             _snailManager.CancelInvoke();

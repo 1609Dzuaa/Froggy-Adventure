@@ -18,6 +18,8 @@ public class SnailManager : MEnemiesManager
     //hoặc vào Project Settings mục Physics2D chỉnh ở trong đó. 
 
     //Con vk này vẫn còn bug rotate linh tinh khi thấy player ở edge @@
+    //Solution: Biến con vk này 0 defend dù thấy Player (0 sợ Player)
+    //Chỉ khi bị hit thì mới defend
 
     [Header("Health Point")]
     [SerializeField] private int _healthPoint;
@@ -28,8 +30,6 @@ public class SnailManager : MEnemiesManager
     //private bool _hasDetectedGround;
 
     [Header("Detect Player2")]
-    [Tooltip("Khoảng thgian mình muốn ốc chui ra sau khi 0 detect Player ở gần")]
-    [SerializeField] private float _idleDelay;
     [Tooltip("Khoảng thgian sau khi ốc bị hit mà mình muốn nó chui ra sau khi 0 detect Player ở gần")]
     [SerializeField] private float _idleDelayAfterGotHit;
 
@@ -81,8 +81,6 @@ public class SnailManager : MEnemiesManager
     public bool HasDetectedGround { get { return _hasDetectedGround; } }
 
     public float HealthPoint { get { return _healthPoint; } set { _healthPoint = (int)value; } }
-
-    public float DelayIdleTime { get { return _idleDelay; } }
 
     public float DelayIdleAfterGotHit { get { return _idleDelayAfterGotHit; } }
 

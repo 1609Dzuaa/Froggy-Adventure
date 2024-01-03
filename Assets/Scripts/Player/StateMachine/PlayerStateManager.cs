@@ -260,6 +260,7 @@ public class PlayerStateManager : MonoBehaviour
             _hasFlip = false;
         }
 
+        UpdateLayer();
         HandleInput();
         _state.Update();
         GroundAndWallCheck();
@@ -268,6 +269,18 @@ public class PlayerStateManager : MonoBehaviour
         HandleDustVelocity();
         SpawnDust();
         //Debug.Log("v: " + rb.velocity);
+    }
+
+    private void UpdateLayer()
+    {
+        //Cơ chế Invunerable của HK:
+        //Switch layer cho player trong khoảng thgian miễn dmg
+        //Cho phép enemies đâm xuyên qua player và ngược lại
+        //Đỡ việc 2 box va nhau, có thể gây khó chịu cho Player.
+        if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime)
+            gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
+        else if(_state is not DashState)
+            gameObject.layer = LayerMask.NameToLayer(GameConstants.PLAYER_LAYER);
     }
 
     private void UpdateInteractWithNPC()
