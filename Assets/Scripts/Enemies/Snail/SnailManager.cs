@@ -67,6 +67,9 @@ public class SnailManager : MEnemiesManager
     private int _direction = 1;
     private bool _hasStart;
     private bool _rotateByWall;
+    //Solution cho việc nếu hit snail khi nó đang/chbi rotate => bug
+    //Chỉ cho dmg nó nếu direction của nó là 1 (move ngang) - hạn chế bug
+    private bool _isVunerable;
 
     public bool HasRotate { get {  return _hasRotate; } }
 
@@ -135,7 +138,6 @@ public class SnailManager : MEnemiesManager
         if (_state is SnailGotHitState)
             return;
 
-        //Còn bug khi chết mà vẫn rotate ?:Đ
         DetectedPlayer();
         DetectWall();
         DetectGround();
@@ -152,7 +154,7 @@ public class SnailManager : MEnemiesManager
             RotateIfDetectedWall();
         else
             RotateIfNotDetectedGround();
-        //Debug.Log("Current Z Angles: " + WrapAngle(transform.eulerAngles.z));
+        //Debug.Log("isVun: " + _isVunerable);
         //transform.eulerAngles goes from 0-360
     }
 
@@ -160,6 +162,7 @@ public class SnailManager : MEnemiesManager
     {
         _rotateByWall = true;
         _hasStart = true; //Lock, only start coroutine once if detected W/ not detected G
+        _isVunerable = true;
         _hasRotate = true;
         _doneRotate = false;
         _entryTime = Time.time;
@@ -170,6 +173,7 @@ public class SnailManager : MEnemiesManager
     private IEnumerator StartTickGroundRotation()
     {
         _hasStart = true;
+        _isVunerable = true;
 
         yield return new WaitForSeconds(_delayRotate);
 
@@ -259,6 +263,7 @@ public class SnailManager : MEnemiesManager
                         //90* -> 0* (90* = -270*)
                         currentZAngles = 0f;
                         _direction = 1;
+                        _isVunerable = false;
                         _hasStart = false;
                         _doneRotate = true;
                         _isMovingVertical = false;
@@ -290,6 +295,11 @@ public class SnailManager : MEnemiesManager
 
         if (Time.time - _entryTime >= _timeEachRotation && _hasRotate && !_doneRotate)
         {
+            /*if (_state is SnailAttackState || _state is SnailShellHitState)
+            {
+                return;
+            }*/
+
             float currentZAngles = WrapAngle(transform.localEulerAngles.z);
             currentZAngles += _degreeEachRotation;
 
@@ -339,6 +349,7 @@ public class SnailManager : MEnemiesManager
                     //Nếu đang là dir 4 thì cố định góc là 0 độ và chuyển dir sang 1
                     currentZAngles = 0f;
                     _direction = 1;
+                    _isVunerable = false;
                     _hasStart = false;
                     _doneRotate = true;
                     _isMovingVertical = false;
@@ -539,7 +550,8 @@ public class SnailManager : MEnemiesManager
             else
             {
                 CancelInvoke();
-                ChangeState(_snailShellHitState);
+                if (!_isVunerable)
+                    ChangeState(_snailShellHitState);
             }
         }
     }

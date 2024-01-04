@@ -10,11 +10,7 @@ public class SnailAttackState : MEnemiesAttackState
     {
         base.EnterState(charactersManager);
         _snailManager = (SnailManager)charactersManager;
-        //Debug.Log("Attack, size bf: " + _snailManager.BoxCol2D.size);
-        //Chỉnh lại các thông số của Box collider khi defend
-        _snailManager.BoxCol2D.size += _snailManager.AdjustBoxSize;
-        _snailManager.BoxCol2DTrigger.offset = _snailManager.OffsetBoxTrigger;
-        //Debug.Log("Attack, size after: " + _snailManager.BoxCol2D.size);
+        AdjustBoxCollider();
     }
 
     public override void ExitState()
@@ -40,5 +36,12 @@ public class SnailAttackState : MEnemiesAttackState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
+    }
+
+    private void AdjustBoxCollider()
+    {
+        //Chỉnh lại các thông số của Box collider khi defend
+        _snailManager.BoxCol2D.size += _snailManager.AdjustBoxSize;
+        _snailManager.BoxCol2DTrigger.offset = _snailManager.OffsetBoxTrigger;
     }
 }

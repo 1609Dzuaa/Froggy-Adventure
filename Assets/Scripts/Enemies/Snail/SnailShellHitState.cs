@@ -8,10 +8,7 @@ public class SnailShellHitState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _snailManager = (SnailManager)charactersManager;
-        _snailManager.Animator.SetInteger("state", (int)EnumState.ESnailState.shellHit);
-        _snailManager.HealthPoint -= 1;
-        _snailManager.SetHasGotHit(false);
-        _snailManager.GetRigidbody2D().velocity = Vector2.zero;
+        HandleEnterShellHitState();
         Debug.Log("SH");
     }
 
@@ -20,4 +17,12 @@ public class SnailShellHitState : MEnemiesBaseState
     public override void Update() { }
 
     public override void FixedUpdate() { }
+
+    private void HandleEnterShellHitState()
+    {
+        _snailManager.Animator.SetInteger("state", (int)EnumState.ESnailState.shellHit);
+        _snailManager.HealthPoint -= 1;
+        _snailManager.SetHasGotHit(false);
+        _snailManager.GetRigidbody2D().velocity = Vector2.zero;
+    }
 }

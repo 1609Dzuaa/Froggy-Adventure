@@ -304,7 +304,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -362,11 +362,13 @@ MonoBehaviour:
   _patrolSpeed: {x: 2.5, y: 0}
   _chaseSpeed: {x: 0, y: 0}
   _parent: {fileID: 6166327868640575860}
-  _teleDistance: 3.5
+  _teleDistance: 2.5
+  _teleportableDistance: 0
   _playerRef: {fileID: 0}
   _damageRange: {x: 8.5, y: 0.5}
-  _dissapearEffect: {fileID: 1788658637889452120, guid: 888ce5db7a33a1344925738a880413af, type: 3}
-  _apearEffect: {fileID: 7628199232668580781, guid: d96dbfb5f41369a47b4a466afef923d2, type: 3}
+  _teleportableRange: {x: 5, y: 1}
+  _wallCheck2: {fileID: 0}
+  _distToWall: 0
 --- !u!61 &6166327868938373775
 BoxCollider2D:
   m_ObjectHideFlags: 0

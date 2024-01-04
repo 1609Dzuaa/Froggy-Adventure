@@ -8,9 +8,6 @@ public class GeckoManager : MEnemiesManager
     //Đối với các sprite có size khác bthg trong 1 sprite sheet thì điều chỉnh pivot
     //trong Sprite Editor của sprite đó
     //https://www.reddit.com/r/Unity2D/comments/2qtnzm/animating_sprites_of_different_sizes/
-    //Coi lại vẫn đụng wall
-    //Coi lại vẫn có thể tele mấy góc chết
-    //Solution: nếu vị trí tele mới rơi vào góc chết thì giữ nguyên vị trí tele
 
     [Header("Teleport Distance")]
     [SerializeField] private float _teleDistance;
@@ -29,8 +26,7 @@ public class GeckoManager : MEnemiesManager
     private GeckoPatrolState _geckoPatrolState = new();
     private GeckoHideState _geckoHideState = new();
     private GeckoAttackState _geckoAttackState = new();
-    private GeckoGotHitState _geckoGotHitState = new();
-    private bool _canTele2Ways;
+    private bool _canTeleport2Sides;
 
     //mò mãi đéo xác định đc collision side khi dùng overlapbox với playerRef
     //nên chia nó thành 2 phần: TRÁI/PHẢI
@@ -45,17 +41,12 @@ public class GeckoManager : MEnemiesManager
     private Vector2 _teleAbleRightPos;
     private bool _collideRight;
     private bool _collideLeft;
-    private Rect _teleAbleRect;
 
     public GeckoIdleState GetGeckoIdleState() { return _geckoIdleState; }
 
     public GeckoPatrolState GetGeckoPatrolState() { return _geckoPatrolState; }
 
     public GeckoHideState GetGeckoHideState() { return _geckoHideState; }
-
-    public GeckoAttackState GetGeckoAttackState() { return _geckoAttackState; }
-
-    public GeckoGotHitState GetGeckoGotHitState() { return _geckoGotHitState; }
 
     protected override void Awake()
     {
@@ -70,71 +61,10 @@ public class GeckoManager : MEnemiesManager
 
     protected override void Update()
     {
-        //WallCheck2();
-        //DrawWallCheck2();
         UpdateCheckTeleportablePosition();
-        CheckIfCanTeleport2Ways();
-        //Debug.Log("cantele2ways: " + _canTele2Ways);
+        CheckIfCanTeleport2Sides();
         base.Update();
-        //Collider2D col2D = Physics2D.OverlapBox(_playerRef.position, _teleportableRange, 0f, _wallLayer);
-
-
-
-        /*Collider2D leftCollider = Physics2D.OverlapBox(_teleAbleLeftPos, _teleportableRange, 0f, _wallLayer);
-        Collider2D rightCollider = Physics2D.OverlapBox(_teleAbleRightPos, _teleportableRange, 0f, _wallLayer);
-
-        if (leftCollider != null)
-        {
-            Debug.Log("va trai");
-        }
-        if (rightCollider != null)
-        {
-            Debug.Log("va phai");
-        }*/
-        /*Collider2D col2D = Physics2D.OverlapBox(_playerRef.position, _teleportableRange, 0f, _wallLayer);
-        if (col2D)
-        {
-            Rect rectBox = new Rect(_playerRef.position, _teleportableRange);
-
-            Debug.Log("rect size: " + rectBox.size.x);
-            if (rectBox.xMax >= col2D.bounds.center.x && rectBox.xMin < col2D.bounds.center.x)
-                Debug.Log("va cham phai");
-            else if (rectBox.xMin > col2D.bounds.center.x)
-                Debug.Log("va cham trai");
-
-            //prob still here
-            /*if (rectBox.xMax > transform.position.x && transform.position.x > _playerRef.position.x)
-                Debug.Log("Bi kep phai");
-            else if (rectBox.xMin < transform.position.x && transform.position.x < _playerRef.position.x)
-                Debug.Log("Bi kep trai");
-         }*/
     }
-
-    /*private void WallCheck2()
-    {
-        if (_isFacingRight)
-            _wallHit = Physics2D.Raycast(_wallCheck2.position, Vector2.right * _distToWall, _wallLayer);
-        else
-            _wallHit = Physics2D.Raycast(_wallCheck2.position, Vector2.left * _distToWall, _wallLayer);
-    }
-
-    private void DrawWallCheck2()
-    {
-        if (_isFacingRight)
-        {
-            if (_wallHit)
-                Debug.DrawRay(_wallCheck2.position, Vector2.right, Color.red);
-            else
-                Debug.DrawRay(_wallCheck2.position, Vector2.right, Color.green);
-        }
-        else
-        {
-            if (_wallHit)
-                Debug.DrawRay(_wallCheck2.position, Vector2.left, Color.red);
-            else
-                Debug.DrawRay(_wallCheck2.position, Vector2.left, Color.green);
-        }
-    }*/
 
     protected override void FixedUpdate()
     {
@@ -143,28 +73,14 @@ public class GeckoManager : MEnemiesManager
 
     private void HandleTeleportAndFlipSprite()
     {
-        //Cách tele hiện tại của con vk này phụ thuộc quá vào Player
-        //Nên tự tele vì có thế nhiều lúc Player vào góc khó/chết
-        //Khiến con vk này tele vào mấy chỗ đó => bug toè mồm
-        //Physics2D.OverlapBox(_playerRef.position, _teleportableRange, 0f, _wallLayer).bounds.max;
-        //Collider2D col2D = Physics2D.OverlapBox(_playerRef.position, _teleportableRange, 0f, _wallLayer);
-        //Rect rectBox = new Rect(_playerRef.position, _teleportableRange);
+        //Xử lý việc tele:
+        //Có thể tele trước/sau player nếu TeleableRange(vùng quanh Player) 0 detect ra Ground/Wall
+        //Nếu TeleableRange detect ra G/W thì xử lý sau:
+        //Giữ nguyên 0 tele hoặc tele ra đằng sau NẾU bị player ép vào góc chết
         int isTeleport = Random.Range(0, 2); //0: 0 tele | 1: Tele ra đằng sau
-        //Debug.Log(isTeleport);
         Vector3 newPos;
-        /*if (col2D)
-        {
-            /*if (col2D.bounds.center.x < _playerRef.transform.position.x)
-                Debug.Log("va trai");
-            else 
-                Debug.Log("va phai");*/
-        /*if (transform.position.x < col2D.bounds.max.x && transform.position.x > _playerRef.position.x)
-            Debug.Log("dang bi kep ben phai");
-        else if (transform.position.x > col2D.bounds.min.x && transform.position.x < _playerRef.position.x)
-            Debug.Log("dang bi kep ben trai");
-    }*/
 
-        if (isTeleport > 0 && _canTele2Ways)
+        if (isTeleport > 0 && _canTeleport2Sides)
         {
             FlippingSprite();
             if (_isFacingRight)
@@ -172,7 +88,7 @@ public class GeckoManager : MEnemiesManager
             else
                 newPos = new Vector3(_playerRef.position.x + _teleDistance, transform.position.y, 0f);
         }
-        else if(!_canTele2Ways)
+        else if(!_canTeleport2Sides)
         {
             //Bị player dồn vào góc thì tele ra sau lưng player
             if (_collideLeft) //chạm trái
@@ -248,20 +164,16 @@ public class GeckoManager : MEnemiesManager
 
     private void UpdateCheckTeleportablePosition()
     {
-        _teleAbleRect = new Rect(_playerRef.position, _teleportableRange * 2);
         _teleAbleLeftPos = new Vector2(_playerRef.position.x - _teleportableRange.x / 2, _playerRef.position.y);
         _teleAbleRightPos = new Vector2(_playerRef.position.x + _teleportableRange.x / 2, _playerRef.position.y);
     }
 
-    private bool CheckIfCanTeleport2Ways()
+    private bool CheckIfCanTeleport2Sides()
     {
-        //Như này chắc ổn r, đéo cần cầu kì, phức tạp thêm
         _collideLeft = Physics2D.OverlapBox(_teleAbleLeftPos, _teleportableRange, 0f, _wallLayer);
         _collideRight = Physics2D.OverlapBox(_teleAbleRightPos, _teleportableRange, 0f, _wallLayer);
 
-        return _canTele2Ways = !_collideLeft && !_collideRight;
-        //return _canTele2Ways = !Physics2D.OverlapBox(_teleAbleLeftPos, _teleportableRange, 0f, _wallLayer) && !Physics2D.OverlapBox(_teleAbleLeftPos, _teleportableRange, 0f, _wallLayer);
-        //return _canTele2Ways = !Physics2D.OverlapBox(_playerRef.position, _teleportableRange, 0f, _wallLayer);
+        return _canTeleport2Sides = !_collideLeft && !_collideRight;
     }
 
     private void ChangeToAttack()
@@ -281,9 +193,6 @@ public class GeckoManager : MEnemiesManager
         Gizmos.DrawWireCube(transform.position, _damageRange);
         Gizmos.DrawWireCube(_teleAbleRightPos, _teleportableRange);
         Gizmos.DrawWireCube(_teleAbleLeftPos, _teleportableRange);
-        //Gizmos.DrawWireCube(_playerRef.position, _teleportableRange);
-        //Collider2D col2D = Physics2D.OverlapBox(_playerRef.position, _teleportableRange, 0f, _wallLayer);
-        //Gizmos.DrawWireCube(_playerRef.position, _teleportableRange);
     }
 
     public IEnumerator Hide()

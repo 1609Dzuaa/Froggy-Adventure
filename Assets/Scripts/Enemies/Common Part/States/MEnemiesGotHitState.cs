@@ -31,7 +31,7 @@ public class MEnemiesGotHitState : MEnemiesBaseState
         //Debug.Log("Knock");
     }
 
-    protected void HandleBeforeDestroy()
+    protected virtual void HandleBeforeDestroy()
     {
         _mEnemiesManager.GetRigidbody2D().velocity = Vector2.zero; //Cố định vị trí
         KnockUpLeft();

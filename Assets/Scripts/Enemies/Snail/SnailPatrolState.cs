@@ -22,15 +22,8 @@ public class SnailPatrolState : MEnemiesPatrolState
 
     public override void Update()
     {
-        //Bàn tay phải:
-        //Cái -> y; Trỏ -> x; Giữa -> z
-        //Ngón Cái duỗi ra cùng chiều với trục quay
-        //Nắm 4 ngón kia lại vào lòng sẽ chỉ chiều (+) của trục quay
-        //Tham khảo:
+        //Tham khảo cách rotate:
         //https://gamedev.stackexchange.com/questions/87612/quaternion-rotation-clockwise-or-counter-clockwise
-
-        /*if (CheckIfCanAttack())
-            _snailManager.Invoke("AllowAttackPlayer", _snailManager.GetAttackDelay());*/
     }
 
     public override void FixedUpdate()
@@ -45,7 +38,7 @@ public class SnailPatrolState : MEnemiesPatrolState
                     _snailManager.GetRigidbody2D().velocity = new Vector2(-_snailManager.GetPatrolSpeed().x, -_snailManager.GetPatrolSpeed().y);
                     //Debug.Log("trai xuong");
                 }
-                else if (_snailManager.Direction == 3)
+                else
                 {
                     _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, _snailManager.GetPatrolSpeed().y);
                     //Debug.Log("phai len");
@@ -76,7 +69,7 @@ public class SnailPatrolState : MEnemiesPatrolState
                     _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.GetPatrolSpeed().x, - _snailManager.GetPatrolSpeed().y);
                     //Debug.Log("trai len2");
                 }
-                else if (_snailManager.Direction == 4)
+                else
                 {
                     _snailManager.GetRigidbody2D().velocity = new Vector2(-_snailManager.GetPatrolSpeed().x, _snailManager.GetPatrolSpeed().y);
                     //Debug.Log("phai len");
