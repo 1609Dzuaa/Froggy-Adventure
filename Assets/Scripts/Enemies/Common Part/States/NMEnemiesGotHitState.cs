@@ -9,7 +9,7 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _nmEnemiesManager.Animator.SetInteger("state", (int)EnumState.ENMEnemiesState.gotHit);
-        _nmEnemiesManager.Collider2D.enabled = false;
+        _nmEnemiesManager.GetCollider2D.enabled = false;
         lastRotateTime = Time.time;
         ApplyForce();
         //Debug.Log("GH");

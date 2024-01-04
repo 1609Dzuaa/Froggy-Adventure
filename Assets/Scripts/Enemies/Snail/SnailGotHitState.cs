@@ -13,7 +13,7 @@ public class SnailGotHitState : MEnemiesGotHitState
         _snailManager.SpriteRenderer.sortingOrder = 1;
         _snailManager.Animator.SetInteger("state", (int)EnumState.ESnailState.gotHit);
         _snailManager.GetRigidbody2D().velocity = Vector2.zero; //Cố định vị trí
-        _snailManager.Collider2D.enabled = false;
+        _snailManager.GetCollider2D.enabled = false;
         _snailManager.GetRigidbody2D().gravityScale = 1f;
         //Debug.Log("GH");
         //Chỉnh lại Box Trigger khi Defend

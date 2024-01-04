@@ -31,7 +31,7 @@ public abstract class EnemiesManager : CharactersManager
 
     public bool HasDetectedPlayer { get { return _hasDetectedPlayer; } }
 
-    public Collider2D Collider2D { get { return _collider2D; } set { _collider2D = value; } }
+    public Collider2D GetCollider2D { get { return _collider2D; } set { _collider2D = value; } }
 
     protected override void Awake()
     {
@@ -63,8 +63,7 @@ public abstract class EnemiesManager : CharactersManager
         if (collision.collider.name == GameConstants.PLAYER_NAME)
         {
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
-            if (PlayerHealthController.Instance.CurrentHP > 1)
-                playerScript.ChangeState(playerScript.gotHitState);
+            playerScript.ChangeState(playerScript.gotHitState);
 
             if(!PlayerAbsorbBuff.Instance.IsAllowToUpdate)
             {

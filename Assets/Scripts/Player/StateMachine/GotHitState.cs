@@ -26,7 +26,6 @@ public class GotHitState : PlayerBaseState
     public override void ExitState() 
     { 
         _isHitByTrap = false;
-        _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.PLAYER_LAYER);
     }
 
     //Phải handle change state trong đây chứ th animation event 0 đảm nhận việc đó đc

@@ -17,9 +17,7 @@ public class SnailManager : MEnemiesManager
     //Solution: Kiểm tra những chỗ "snap" sao cho nó 0 khiến snail "lún" vào G,
     //hoặc vào Project Settings mục Physics2D chỉnh ở trong đó. 
 
-    //Con vk này vẫn còn bug rotate linh tinh khi thấy player ở edge @@
-    //Solution: Biến con vk này 0 defend dù thấy Player (0 sợ Player)
-    //Chỉ khi bị hit thì mới defend
+    //Còn bug của snail khi bị hit ở rìa sẽ tự động rotate
 
     [Header("Health Point")]
     [SerializeField] private int _healthPoint;

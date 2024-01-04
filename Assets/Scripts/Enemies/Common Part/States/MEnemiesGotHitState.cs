@@ -35,6 +35,6 @@ public class MEnemiesGotHitState : MEnemiesBaseState
     {
         _mEnemiesManager.GetRigidbody2D().velocity = Vector2.zero; //Cố định vị trí
         KnockUpLeft();
-        _mEnemiesManager.Collider2D.enabled = false;
+        _mEnemiesManager.GetCollider2D.enabled = false;
     }
 }

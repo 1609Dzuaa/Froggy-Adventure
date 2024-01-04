@@ -198,7 +198,7 @@ public class PlayerStateManager : MonoBehaviour
 
         if (state is GotHitState && PlayerShieldBuff.Instance.IsAllowToUpdate)
         {
-            Debug.Log("Tao co khien");
+            //Debug.Log("Tao co khien");
             return;
         }
 

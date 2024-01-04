@@ -9,7 +9,7 @@ public class GeckoHideState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _geckoManager = (GeckoManager)charactersManager;
         _geckoManager.Animator.SetInteger("state", (int)EnumState.EGeckoState.hide);
-        _geckoManager.Collider2D.enabled = false;
+        _geckoManager.GetCollider2D.enabled = false;
         _geckoManager.GetRigidbody2D().bodyType = RigidbodyType2D.Kinematic;
         //Thêm Spawn effect khi Hide
         //Dùng PS
@@ -17,7 +17,7 @@ public class GeckoHideState : MEnemiesBaseState
 
     public override void ExitState() 
     {
-        _geckoManager.Collider2D.enabled = true;
+        _geckoManager.GetCollider2D.enabled = true;
         _geckoManager.GetRigidbody2D().bodyType = RigidbodyType2D.Dynamic;
     }
 
