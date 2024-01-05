@@ -7,8 +7,13 @@ public class SoundsManager : MonoBehaviour
     private static SoundsManager _smInstance;
     private Dictionary<string, AudioSource> _dictSounds = new();
 
-    [Header("Collect")]
+    [Header("Player's Sound")]
     [SerializeField] private AudioSource _collectSound;
+    [SerializeField] private AudioSource _jumpSound;
+    [SerializeField] private AudioSource _collectHPSound;
+    [SerializeField] private AudioSource _gotHitSound;
+    [SerializeField] private AudioSource _deadSound;
+    [SerializeField] private AudioSource _dashSound;
 
     public static SoundsManager Instance
     {
@@ -45,6 +50,11 @@ public class SoundsManager : MonoBehaviour
     private void InitSoundDictionary()
     {
         _dictSounds.Add(GameConstants.COLLECT_FRUITS_SOUND, _collectSound);
+        _dictSounds.Add(GameConstants.COLLECT_HP_SOUND, _collectHPSound);
+        _dictSounds.Add(GameConstants.PLAYER_DASH_SOUND, _dashSound);
+        _dictSounds.Add(GameConstants.PLAYER_DEAD_SOUND, _deadSound);
+        _dictSounds.Add(GameConstants.PLAYER_GOT_HIT_SOUND, _gotHitSound);
+        _dictSounds.Add(GameConstants.PLAYER_JUMP_SOUND, _jumpSound);
     }
 
     public AudioSource GetTypeOfSound(string soundType)

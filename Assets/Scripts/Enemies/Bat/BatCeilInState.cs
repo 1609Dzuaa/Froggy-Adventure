@@ -11,7 +11,7 @@ public class BatCeilInState : MEnemiesBaseState
         _batManager = (BatManager)charactersManager;
         //Cố định velo = 0 vì có thể còn thừa velo trước đó dẫn đến lúc ceil in vẫn move nhích từng tí
         _batManager.GetRigidbody2D().velocity = Vector2.zero;
-        Debug.Log("CI");
+        //Debug.Log("CI");
     }
 
     public override void ExitState() { }

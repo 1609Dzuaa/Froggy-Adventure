@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BatManager : MEnemiesManager
 {
-    //Vẫn còn bug
-
     [Header("Sleep Postion")]
     [SerializeField] private Transform _sleepPos;
 

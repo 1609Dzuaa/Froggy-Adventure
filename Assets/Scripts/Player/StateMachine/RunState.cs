@@ -36,7 +36,7 @@ public class RunState : PlayerBaseState
         else
         {
             //Vì thực sự để so hiệu x = 0 thì rất khó => sử dụng hằng số với giá trị rất nhỏ
-            if (Mathf.Abs(_playerStateManager.transform.position.x - _playerStateManager.InteractPosition.x) < GameConstants.STARTCONVERSATIONRANGE)
+            if (Mathf.Abs(_playerStateManager.transform.position.x - _playerStateManager.InteractPosition.x) < GameConstants.START_CONVERSATION_RANGE)
                 _playerStateManager.ChangeState(_playerStateManager.idleState);
         }
     }

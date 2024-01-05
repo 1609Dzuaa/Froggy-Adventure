@@ -86,7 +86,7 @@ public class DashState : PlayerBaseState
     {
         //Vô hiệu hoá grav khi dash (cho ảo hơn)
         _playerStateManager.GetRigidBody2D().gravityScale = 0f;
-        _playerStateManager.GetDashSound().Play();
+        SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_DASH_SOUND).Play();
         _playerStateManager.GetTrailRenderer().emitting = true; //Ch thấy effect đâu @@?
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
         PlayerShieldBuff.Instance.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);

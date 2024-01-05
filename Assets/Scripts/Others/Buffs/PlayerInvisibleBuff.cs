@@ -73,8 +73,8 @@ public class PlayerInvisibleBuff : MonoBehaviour
                 else
                     ResetBuffData();
             }
-            /*else
-                Debug.Log("PlayerColor: " + _playerSpriteRenderer.color.a);*/
+            else
+                Debug.Log("PlayerColor: " + _playerSpriteRenderer.color.a);
         }
     }
 
@@ -119,7 +119,7 @@ public class PlayerInvisibleBuff : MonoBehaviour
         _isAllowToUpdate = false;
         _hasTickRunOut = false;
         _playerSpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
-        Debug.Log("Timeout!");
+        //Debug.Log("Timeout!");
     }
 
 }

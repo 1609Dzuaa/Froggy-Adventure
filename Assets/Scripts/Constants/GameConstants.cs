@@ -1,8 +1,11 @@
 ﻿public static class GameConstants
 {
     #region Range Constants
-    public const float STARTCONVERSATIONRANGE = 0.05f;
-    public const float CAMERASAFERANGE = 0.01f; //Khcach để Cam ngưng tự động move khi move ra new pos
+    public const float START_CONVERSATION_RANGE = 0.05f;
+
+    //Range tối thiểu mà bat có thể flip khi chase player
+    //tránh flip loạn xạ khi dist to player quá gần
+    public const float BAT_FLIPABLE_RANGE = 0.15f;
 
     #endregion
 
@@ -80,5 +83,10 @@
 
     #region Sound
     public const string COLLECT_FRUITS_SOUND = "CollectFruitsSound";
+    public const string COLLECT_HP_SOUND = "CollectHPSound";
+    public const string PLAYER_GOT_HIT_SOUND = "PlayerGHSound";
+    public const string PLAYER_JUMP_SOUND = "PlayerJumpSound";
+    public const string PLAYER_DASH_SOUND = "PlayerDashSound";
+    public const string PLAYER_DEAD_SOUND = "PlayerDeadSound";
     #endregion
 }

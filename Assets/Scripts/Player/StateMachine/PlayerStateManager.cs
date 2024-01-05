@@ -48,16 +48,10 @@ public class PlayerStateManager : MonoBehaviour
     private ParticleSystem.VelocityOverLifetimeModule dustVelocity;
     //Simulation SPACE: Local/World:
     //Chọn Local sẽ làm các hạt di chuyển "link" với local ở đây là vật chứa nó
-    //Chọn World sẽ giải phóng các hạt, cho phép chúng di chuyển mà 0 bị "link" với vật chứa nó 
+    //Chọn World sẽ giải phóng các hạt, cho phép chúng di chuyển mà 0 bị "link" với vật chứa nó   
 
-    //Có class SoundManager r kh cần mấy thg Sound dưới nữa
-    [Header("Sound")]
-    [SerializeField] private AudioSource jumpSound;
-    [SerializeField] private AudioSource collectSound;
-    [SerializeField] private AudioSource _collectHPSound;
-    [SerializeField] private AudioSource gotHitSound;
-    [SerializeField] private AudioSource deadSound;
-    [SerializeField] private AudioSource _dashSound;
+    //Hiện có bug của Player khi dính dmg và ăn buff tàng hình thì alpha val = 1
+    //sau đó mới blink ?@
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
@@ -101,41 +95,31 @@ public class PlayerStateManager : MonoBehaviour
 
     public Transform DashableSignPosition { get { return _dashableSignPos; } }
 
-    public float GetDirX() { return this.dirX; }
+    public float GetDirX() { return dirX; }
 
-    public float GetDirY() { return this.dirY; }
+    public float GetDirY() { return dirY; }
 
-    public bool GetIsOnGround() { return this.isOnGround; }
+    public bool GetIsOnGround() { return isOnGround; }
 
-    public Rigidbody2D GetRigidBody2D() { return this.rb; }
+    public Rigidbody2D GetRigidBody2D() { return rb; }
 
-    public Animator GetAnimator() { return this.anim; }
+    public Animator GetAnimator() { return anim; }
 
-    public AudioSource GetJumpSound() { return this.jumpSound; }
+    public bool GetCanDbJump() { return _canDbJump; }
 
-    public AudioSource GetGotHitSound() { return this.gotHitSound; }
+    public bool GetIsWallTouch() { return IsWallTouch; }
 
-    public bool GetCanDbJump() { return this._canDbJump; }
-
-    public bool GetIsWallTouch() { return this.IsWallTouch; }
-
-    public bool GetPrevStateIsWallSlide() { return this.prevStateIsWallSlide; }
+    public bool GetPrevStateIsWallSlide() { return prevStateIsWallSlide; }
     
-    public bool GetIsFacingRight() { return this.isFacingRight; }
+    public bool GetIsFacingRight() { return isFacingRight; }
 
     public bool IsInteractingWithNPC { get { return _isInteractingWithNPC; } set { _isInteractingWithNPC = value; } }
 
-    public ParticleSystem GetDustPS() { return this.dustPS; }
+    public ParticleSystem GetDustPS() { return dustPS; }
 
-    public AudioSource GetCollectSound() { return this.collectSound; }
+    public TrailRenderer GetTrailRenderer() { return _trailRenderer; }
 
-    public AudioSource GetCollectHPSound() { return this._collectHPSound; }
-
-    public AudioSource GetDashSound() { return this._dashSound; }
-
-    public TrailRenderer GetTrailRenderer() { return this._trailRenderer; }
-
-    public RaycastHit2D WallHit { get { return this.wallHit; } }
+    public RaycastHit2D WallHit { get { return wallHit; } }
 
     public bool HasDetectedNPC { get { return _hasDetectedNPC; } }
 
@@ -177,6 +161,11 @@ public class PlayerStateManager : MonoBehaviour
 
     // Start is called before the first frame update
     private void Start()
+    {
+        SetupProperties();
+    }
+
+    private void SetupProperties()
     {
         _state = idleState;
         _state.EnterState(this);
@@ -292,7 +281,7 @@ public class PlayerStateManager : MonoBehaviour
             _hasFlip = true;
             if (isFacingRight)
             {
-                if (transform.position.x > InteractPosition.x + GameConstants.STARTCONVERSATIONRANGE)
+                if (transform.position.x > InteractPosition.x + GameConstants.START_CONVERSATION_RANGE)
                 {
                     FlippingSprite();
                     //Debug.Log("Flip to Left");
@@ -300,7 +289,7 @@ public class PlayerStateManager : MonoBehaviour
             }
             else
             {
-                if (transform.position.x < InteractPosition.x - GameConstants.STARTCONVERSATIONRANGE)
+                if (transform.position.x < InteractPosition.x - GameConstants.START_CONVERSATION_RANGE)
                 {
                     FlippingSprite();
                     //Debug.Log("Flip to Right");
@@ -468,7 +457,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
-        deadSound.Play();
+        SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_DEAD_SOUND).Play();
     }
 
     private void HandleCollideGround()
@@ -521,7 +510,14 @@ public class PlayerStateManager : MonoBehaviour
 
         yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
 
-        _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+        //Thêm check đây nữa 
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        {
+            _hasStartCoroutine = false;
+            yield return null;
+        }
+        else
+            _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
 
         yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
 
@@ -530,13 +526,22 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleAlphaValueGotHit()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate) 
+        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
             return;
 
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && !_hasStartCoroutine && _isApplyGotHitEffect)
             StartCoroutine(Twinkling());
         else if (Time.time - gotHitState.EntryTime > _playerStats.InvulnerableTime)
         {
+
+            //Hết thgian miễn dmg r thì trả màu về như cũ cho nó
+            //NẾU trên ng 0 có buff vô hình, còn có thì return và set lại bool
+            if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+            {
+                _isApplyGotHitEffect = false;
+                return;
+            }
+
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _isApplyGotHitEffect = false;
         }

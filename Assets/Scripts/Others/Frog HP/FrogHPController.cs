@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FrogHPController : MonoBehaviour //Tạo class Item
+public class FrogHPController : ItemsController //Tạo class Item
 {
     [Header("Parent")]
     [SerializeField] private GameObject _parent;
@@ -33,17 +33,21 @@ public class FrogHPController : MonoBehaviour //Tạo class Item
         transform.position += new Vector3(0f, _speedY, 0f) * Time.deltaTime;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.name == GameConstants.PLAYER_NAME)
         {
-            GameObject collectEff = EffectPool.Instance.GetObjectInPool(GameConstants.COLLECT_HP_EFFECT);
-            collectEff.SetActive(true);
-            collectEff.GetComponent<EffectController>().SetPosition(transform.position);
-            var playerScript = collision.GetComponent<PlayerStateManager>();
+            SpawnEffect();
             PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_NORMAL);
-            playerScript.GetCollectHPSound().Play();
+            SoundsManager.Instance.GetTypeOfSound(GameConstants.COLLECT_HP_SOUND).Play();
             Destroy(_parent);
         }
+    }
+
+    protected override void SpawnEffect()
+    {
+        GameObject collectEff = EffectPool.Instance.GetObjectInPool(GameConstants.COLLECT_HP_EFFECT);
+        collectEff.SetActive(true);
+        collectEff.GetComponent<EffectController>().SetPosition(transform.position);
     }
 }

@@ -11,7 +11,7 @@ public class BatSleepState : MEnemiesBaseState
         _batManager = (BatManager)charactersManager;
         _batManager.Animator.SetInteger("state", (int)EnumState.EBatState.sleep);
         _entryTime = Time.time;
-        Debug.Log("Sleep");
+        //Debug.Log("Sleep");
     }
 
     public override void ExitState() { }

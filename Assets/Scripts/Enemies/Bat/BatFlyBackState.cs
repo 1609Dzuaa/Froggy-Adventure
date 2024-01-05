@@ -10,7 +10,7 @@ public class BatFlyBackState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
         _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EBatState.patrol);
-        Debug.Log("Fly back");
+        //Debug.Log("Fly back");
     }
 
     public override void ExitState() { _hasFlip = false; }

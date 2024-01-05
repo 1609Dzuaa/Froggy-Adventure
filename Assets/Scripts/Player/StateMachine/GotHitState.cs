@@ -61,6 +61,6 @@ public class GotHitState : PlayerBaseState
             KnockBack();
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
         _playerStateManager.IsApplyGotHitEffect = true;
-        _playerStateManager.GetGotHitSound().Play();
+        SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_GOT_HIT_SOUND).Play();
     }
 }

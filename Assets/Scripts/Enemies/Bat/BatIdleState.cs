@@ -11,7 +11,7 @@ public class BatIdleState : MEnemiesIdleState
     {
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
     }
 
     public override void ExitState() 

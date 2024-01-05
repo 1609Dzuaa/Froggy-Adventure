@@ -11,7 +11,7 @@ public class BatAttackState : MEnemiesAttackState
         _batManager = (BatManager)charactersManager;
         _batManager.Animator.SetInteger("state", (int)EnumState.EBatState.attack);
         _batManager.GetRigidbody2D().velocity = Vector2.zero;
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
     }
 
     public override void ExitState() { }
@@ -38,9 +38,9 @@ public class BatAttackState : MEnemiesAttackState
     protected override void Attack()
     {
         _xAxisDistance = _batManager.transform.position.x - _batManager.Player.position.x;
-        if (_xAxisDistance < 0 && !_batManager.GetIsFacingRight())
+        if (_xAxisDistance < 0 && !_batManager.GetIsFacingRight() && Mathf.Abs(_xAxisDistance) >= GameConstants.BAT_FLIPABLE_RANGE)
             _batManager.FlipRight();
-        else if (_xAxisDistance > 0 && _batManager.GetIsFacingRight())
+        else if (_xAxisDistance > 0 && _batManager.GetIsFacingRight() && Mathf.Abs(_xAxisDistance) >= GameConstants.BAT_FLIPABLE_RANGE)
             _batManager.FlipLeft();
 
         //Move vật thể theo target

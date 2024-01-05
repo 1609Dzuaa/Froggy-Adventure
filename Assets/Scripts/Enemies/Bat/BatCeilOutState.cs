@@ -12,7 +12,7 @@ public class BatCeilOutState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
         _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EBatState.ceilOut);
-        Debug.Log("CO");
+        //Debug.Log("CO");
     }
 
     public override void ExitState() { _allowIdle = false; }
