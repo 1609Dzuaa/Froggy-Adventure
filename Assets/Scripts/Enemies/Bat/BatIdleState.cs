@@ -3,17 +3,21 @@
 public class BatIdleState : MEnemiesIdleState
 {
     private BatManager _batManager;
+    private bool _hasPatrol;
+
+    public bool HasPatrol { set => _hasPatrol = value; }
 
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
-        //Debug.Log("Idle " + _allowAttack);
+        Debug.Log("Idle");
     }
 
     public override void ExitState() 
     {
         base.ExitState();
+        _hasPatrol = false;
     }
 
     public override void Update()
@@ -23,8 +27,20 @@ public class BatIdleState : MEnemiesIdleState
         //Nếu kh, check xem hết giờ ngủ ch
         if (CheckIfCanAttack())
             _batManager.ChangeState(_batManager.BatAttackState);
-        else if (Time.time - _entryTime >= _batManager.GetRestTime())
+        else if (CheckIfCanPatrol())
             _batManager.ChangeState(_batManager.BatPatrolState);
+        else if (CheckIfCanFlyBack())
+            _batManager.ChangeState(_batManager.BatFlyBackState);
+    }
+
+    protected override bool CheckIfCanPatrol()
+    {
+        return base.CheckIfCanPatrol() && !_hasPatrol;
+    }
+
+    private bool CheckIfCanFlyBack()
+    {
+        return _hasPatrol && Time.time - _entryTime >= _batManager.GetRestTime();
     }
 
     public override void FixedUpdate() { }

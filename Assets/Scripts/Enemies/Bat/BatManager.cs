@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BatManager : MEnemiesManager
 {
+    //Vẫn còn bug
+
     [Header("Sleep Postion")]
     [SerializeField] private Transform _sleepPos;
 
@@ -23,6 +25,7 @@ public class BatManager : MEnemiesManager
     private BatCeilOutState _batCeilOutState = new();
     private BatIdleState _batIdleState = new();
     private BatPatrolState _batPatrolState = new();
+    private BatFlyBackState _batFlyBackState = new();
     private BatAttackState _batAttackState = new();
     private BatRetreatState _batRetreatState = new();
     private BatGotHitState _batGotHitState = new();
@@ -47,6 +50,8 @@ public class BatManager : MEnemiesManager
 
     public BatPatrolState BatPatrolState { get { return _batPatrolState; } }
 
+    public BatFlyBackState BatFlyBackState { get => _batFlyBackState; }
+
     public BatAttackState BatAttackState { get { return _batAttackState; } }
 
     public BatRetreatState BatRetreatState { get { return _batRetreatState; } }
@@ -67,8 +72,7 @@ public class BatManager : MEnemiesManager
     {
         _state.Update();
         DetectedPlayer();
-        //DetectWall();
-        //Debug.Log("DTP: " + _hasDetectedPlayer);
+        //Debug.Log("v: " + _rb.velocity);
     }
 
     protected override void FixedUpdate()
@@ -84,12 +88,10 @@ public class BatManager : MEnemiesManager
     protected override bool DetectedPlayer()
     {
         if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
-        {
-            //Debug.Log("here");
             return _hasDetectedPlayer = false;
-        }
+
         _distanceToPlayer = Vector2.Distance(transform.position, _playerCheck.position);
-        return _hasDetectedPlayer =  _distanceToPlayer <= _attackRange; //Quên mất gán _hasDT @
+        return _hasDetectedPlayer =  _distanceToPlayer <= _attackRange;
     }
 
     public void FlipLeft()

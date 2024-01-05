@@ -10,7 +10,8 @@ public class BatAttackState : MEnemiesAttackState
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
         _batManager.Animator.SetInteger("state", (int)EnumState.EBatState.attack);
-        //Debug.Log("Attack");
+        _batManager.GetRigidbody2D().velocity = Vector2.zero;
+        Debug.Log("Attack");
     }
 
     public override void ExitState() { }
@@ -27,6 +28,7 @@ public class BatAttackState : MEnemiesAttackState
 
     private bool CheckIfCanIdle()
     {
+        //Maybe prob here
         //Tương tự như bee, khi chase mà player tàng hình thì về idle
         return !_batManager.HasDetectedPlayer;
     }
@@ -57,7 +59,10 @@ public class BatAttackState : MEnemiesAttackState
             _batManager.FlipRight();
             return true;
         }
+
         return false;
+
+        //Trong lúc Attack mà vượt Boundaries thì Retreat về tổ
     }
 
 }

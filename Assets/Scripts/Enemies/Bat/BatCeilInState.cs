@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BatCeilInState : MEnemiesBaseState
 {
@@ -9,7 +9,8 @@ public class BatCeilInState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EBatState.ceilIn);
         _batManager = (BatManager)charactersManager;
-        _batManager.BatPatrolState.AllowBackToSleepPos = false;
+        //Cố định velo = 0 vì có thể còn thừa velo trước đó dẫn đến lúc ceil in vẫn move nhích từng tí
+        _batManager.GetRigidbody2D().velocity = Vector2.zero;
         Debug.Log("CI");
     }
 

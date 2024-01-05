@@ -39,7 +39,7 @@ public class MEnemiesIdleState : MEnemiesBaseState
         //Debug.Log("Update");
     }
 
-    protected bool CheckIfCanPatrol()
+    protected virtual bool CheckIfCanPatrol()
     {
         return Time.time - _entryTime >= _mEnemiesManager.GetRestTime();
     }
