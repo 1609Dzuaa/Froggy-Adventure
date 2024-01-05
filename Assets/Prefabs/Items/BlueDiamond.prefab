@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5245230247906276507}
   - component: {fileID: 5245230247906276506}
   - component: {fileID: 5245230247906276509}
-  - component: {fileID: 5245230247906276510}
+  - component: {fileID: -4577452117885672675}
   m_Layer: 0
   m_Name: BlueDiamond
   m_TagString: Untagged
@@ -124,7 +124,7 @@ CircleCollider2D:
   m_Offset: {x: 0.010849237, y: 0.04003465}
   serializedVersion: 2
   m_Radius: 0.37923753
---- !u!114 &5245230247906276510
+--- !u!114 &-4577452117885672675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,7 +133,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 5245230247906276505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56d20bf2c232baa4ca9e626b0be5fbb4, type: 3}
+  m_Script: {fileID: 11500000, guid: cd48a5fe0cc01b945811912456cddd70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectedEffect: {fileID: 7966323600143816872, guid: 72563b4f5b69419408221d60ac3d90fa, type: 3}

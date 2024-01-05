@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EffectController : MonoBehaviour
 {
-    private void Destroy()
+    private void Deactive()
     {
         gameObject.SetActive(false);
     }

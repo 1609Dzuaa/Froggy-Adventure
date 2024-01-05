@@ -18,7 +18,9 @@ public class EffectPool : MonoBehaviour
     [SerializeField] private int _hitShieldEffectCount; //nhiều HitShieldEff tí vì có thể bị bắn nhiều hướng
     [SerializeField] private GameObject _hitShieldEffect;
 
-    [Header("CollectHP")]
+    [Header("Collect")]
+    [SerializeField] private GameObject _collectFruitsEffect;
+    [SerializeField] private GameObject _collectDiamondEffect;
     [SerializeField] private GameObject _collectHPEffect;
 
     [Header("Brown Explosion")]
@@ -52,6 +54,8 @@ public class EffectPool : MonoBehaviour
         _dictEffectPool.Add(GameConstants.GECKO_APPEAR_EFFECT, new List<GameObject>());
         _dictEffectPool.Add(GameConstants.GECKO_DISAPPEAR_EFFECT, new List<GameObject>());
         _dictEffectPool.Add(GameConstants.HIT_SHIELD_EFFECT, new List<GameObject>());
+        _dictEffectPool.Add(GameConstants.COLLECT_FRUITS_EFFECT, new List<GameObject>());
+        _dictEffectPool.Add(GameConstants.COLLECT_DIAMOND_EFFECT, new List<GameObject>());
         _dictEffectPool.Add(GameConstants.COLLECT_HP_EFFECT, new List<GameObject>());
         _dictEffectPool.Add(GameConstants.BROWN_EXPLOSION, new List<GameObject>());
     }
@@ -80,6 +84,8 @@ public class EffectPool : MonoBehaviour
         InstantiateEffect(_geckoAppearEffect, GameConstants.GECKO_APPEAR_EFFECT);
         InstantiateEffect(_geckoDisappearEffect, GameConstants.GECKO_DISAPPEAR_EFFECT);
         InstantiateManyEffect(_hitShieldEffect, GameConstants.HIT_SHIELD_EFFECT, _hitShieldEffectCount);
+        InstantiateEffect(_collectFruitsEffect, GameConstants.COLLECT_FRUITS_EFFECT);
+        InstantiateEffect(_collectDiamondEffect, GameConstants.COLLECT_DIAMOND_EFFECT);
         InstantiateEffect(_collectHPEffect, GameConstants.COLLECT_HP_EFFECT);
         InstantiateManyEffect(_brownExplosionEffect, GameConstants.BROWN_EXPLOSION, _brownExplosionEffectCount);
     }

@@ -9,7 +9,9 @@ public class ShieldBuffController : ItemsController
         if (collision.name == "Player")
         {
             PlayerShieldBuff.Instance.ApplyBuff();
-            Instantiate(_collectedEffect, transform.position, Quaternion.identity, null);
+            GameObject collectEff = EffectPool.Instance.GetObjectInPool(GameConstants.COLLECT_FRUITS_EFFECT);
+            collectEff.SetActive(true);
+            collectEff.GetComponent<EffectController>().SetPosition(transform.position);
             Destroy(gameObject);
         }
     }

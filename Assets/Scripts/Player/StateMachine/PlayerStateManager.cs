@@ -50,6 +50,7 @@ public class PlayerStateManager : MonoBehaviour
     //Chọn Local sẽ làm các hạt di chuyển "link" với local ở đây là vật chứa nó
     //Chọn World sẽ giải phóng các hạt, cho phép chúng di chuyển mà 0 bị "link" với vật chứa nó 
 
+    //Có class SoundManager r kh cần mấy thg Sound dưới nữa
     [Header("Sound")]
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource collectSound;

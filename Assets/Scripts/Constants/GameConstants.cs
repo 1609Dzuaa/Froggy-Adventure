@@ -69,10 +69,16 @@
 
     #region Effect
     public const string DASHABLE_EFFECT = "DashableEffect";
-    public const string GECKO_APPEAR_EFFECT = "GeckoAppear";
-    public const string GECKO_DISAPPEAR_EFFECT = "GeckoDisappear";
+    public const string GECKO_APPEAR_EFFECT = "GeckoAppearEffect";
+    public const string GECKO_DISAPPEAR_EFFECT = "GeckoDisappearEffect";
     public const string HIT_SHIELD_EFFECT = "HitShieldEffect";
-    public const string COLLECT_HP_EFFECT = "CollectHP";
-    public const string BROWN_EXPLOSION = "BrownExplosion";
+    public const string COLLECT_FRUITS_EFFECT = "CollectFruitsEffect";
+    public const string COLLECT_DIAMOND_EFFECT = "CollectDiamondEffect";
+    public const string COLLECT_HP_EFFECT = "CollectHPEffect";
+    public const string BROWN_EXPLOSION = "BrownExplosionEffect";
+    #endregion
+
+    #region Sound
+    public const string COLLECT_FRUITS_SOUND = "CollectFruitsSound";
     #endregion
 }
