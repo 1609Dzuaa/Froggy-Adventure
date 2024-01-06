@@ -8,7 +8,7 @@ public class GeckoHideState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _geckoManager = (GeckoManager)charactersManager;
-        _geckoManager.Animator.SetInteger("state", (int)EnumState.EGeckoState.hide);
+        _geckoManager.Animator.SetInteger("state", (int)GameEnums.EGeckoState.hide);
         _geckoManager.GetCollider2D.enabled = false;
         _geckoManager.GetRigidbody2D().bodyType = RigidbodyType2D.Kinematic;
         //Thêm Spawn effect khi Hide

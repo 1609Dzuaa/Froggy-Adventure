@@ -47,6 +47,7 @@
     public const string BULLET_TAG = "Bullet";
     public const string SHIELD_TAG = "Shield";
     public const string ENEMIES_TAG = "Enemy";
+    public const string BUFF_TAG = "Buff";
     #endregion
 
     #region Name Constants

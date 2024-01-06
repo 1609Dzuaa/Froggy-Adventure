@@ -50,9 +50,6 @@ public class PlayerStateManager : MonoBehaviour
     //Chọn Local sẽ làm các hạt di chuyển "link" với local ở đây là vật chứa nó
     //Chọn World sẽ giải phóng các hạt, cho phép chúng di chuyển mà 0 bị "link" với vật chứa nó   
 
-    //Hiện có bug của Player khi dính dmg và ăn buff tàng hình thì alpha val = 1
-    //sau đó mới blink ?@
-
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 1.0f;
@@ -132,7 +129,7 @@ public class PlayerStateManager : MonoBehaviour
 
     public bool IsApplyGotHitEffect { set { _isApplyGotHitEffect = value; } }
     
-    //public static event Action OnAppliedBuff;
+    public static event Action OnAppliedBuff;
 
     private void Awake()
     {
@@ -220,9 +217,12 @@ public class PlayerStateManager : MonoBehaviour
         if (collision.CompareTag(GameConstants.PLATFORM_TAG))
             transform.SetParent(collision.gameObject.transform);
 
-        //Phần này đụng sau
-        /*else if (collision.CompareTag("Buff"))
-            OnAppliedBuff?.Invoke();*/
+        //It's time
+        else if (collision.CompareTag(GameConstants.BUFF_TAG))
+        {
+            OnAppliedBuff?.Invoke();
+            Debug.Log("call from here");
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)

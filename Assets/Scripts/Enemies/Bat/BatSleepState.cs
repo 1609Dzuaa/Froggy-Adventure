@@ -9,7 +9,7 @@ public class BatSleepState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
-        _batManager.Animator.SetInteger("state", (int)EnumState.EBatState.sleep);
+        _batManager.Animator.SetInteger("state", (int)GameEnums.EBatState.sleep);
         _entryTime = Time.time;
         //Debug.Log("Sleep");
     }

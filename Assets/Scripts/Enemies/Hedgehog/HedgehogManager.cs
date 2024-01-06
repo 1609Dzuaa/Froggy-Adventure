@@ -50,7 +50,7 @@ public class HedgehogManager : NMEnemiesManager
 
     private void ChangeToSpikeIn()
     {
-        _anim.SetInteger("state", (int)EnumState.EHedgehogState.spikeIn);
+        _anim.SetInteger("state", (int)GameEnums.EHedgehogState.spikeIn);
         //Dùng Invoke khi 0 detect Player trong _spikeInDelay (s)
     }
 

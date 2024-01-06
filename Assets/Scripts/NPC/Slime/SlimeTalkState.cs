@@ -9,7 +9,7 @@ public class SlimeTalkState : NPCTalkState
         //_npcManager = (NPCManagers)charactersManager;
         _slimeManager = (SlimeManager)charactersManager;
         _npcManager = _slimeManager;
-        _slimeManager.Animator.SetInteger("state", (int)EnumState.ESlimState.idle);
+        _slimeManager.Animator.SetInteger("state", (int)GameEnums.ESlimState.idle);
         _slimeManager.GetRigidbody2D().velocity = Vector2.zero;
 
         //Xử lý nếu SC bị động thì lấy IndexIfGH

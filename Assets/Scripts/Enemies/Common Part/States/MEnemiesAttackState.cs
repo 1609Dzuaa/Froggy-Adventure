@@ -9,7 +9,7 @@ public class MEnemiesAttackState : MEnemiesBaseState
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
-        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.attack);
+        _mEnemiesManager.Animator.SetInteger("state", (int)GameEnums.EMEnemiesState.attack);
         //Debug.Log("Attack");
     }
 

@@ -13,7 +13,7 @@ public class GhostWanderState : CharacterBaseState
     {
         base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
-        _ghostManager.Animator.SetInteger("state", (int)EnumState.EGhostState.wander);
+        _ghostManager.Animator.SetInteger("state", (int)GameEnums.EGhostState.wander);
         //Debug.Log("Can Rd: " + _canRd);
         if (_canRd)
             HandleRandomLeftRightDirection();

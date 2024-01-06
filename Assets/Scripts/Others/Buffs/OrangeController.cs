@@ -6,6 +6,8 @@ public class OrangeController : ItemsController
 {
     protected override void ApplyBuff()
     {
-        PlayerSpeedBuff.Instance.ApplyBuff();
+        //Cho phép Update(chạy) buff mà thằng này giữ
+        BuffsManager.Instance.GetTypeOfBuff(_buff).ApplyBuff();
+        Debug.Log("buff r");
     }
 }

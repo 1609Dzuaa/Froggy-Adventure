@@ -8,7 +8,7 @@ public class SnailPatrolState : MEnemiesPatrolState
     {
         //base.EnterState(charactersManager);
         _snailManager = (SnailManager)charactersManager;
-        _snailManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.patrol);
+        _snailManager.Animator.SetInteger("state", (int)GameEnums.EMEnemiesState.patrol);
         _entryTime = Time.time;
         //Debug.Log("Patrol, canRD, hasChangeDir, HW: " + _canRdDirection + ", " + _hasChangeDirection + ", " + _hasJustHitWall);
         //if (_canRdDirection)

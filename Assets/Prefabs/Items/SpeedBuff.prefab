@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4403645307345443389}
-  - component: {fileID: 4403645307345443390}
+  - component: {fileID: 215114234258715241}
   m_Layer: 0
   m_Name: SpeedBuff
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4403645307345443390
+--- !u!114 &215114234258715241
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b71ffe4ca6f89843b50bbad9485f64b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStats: {fileID: 11400000, guid: 6b3602e5d9a676d4eae9dd668b16f7c0, type: 2}
-  _speedMultiplier: 1.5
-  _duration: 3
+  _speedMultiplier: 1.7
+  _speedBuffIcon: {fileID: 0}
+  _speedBuffIconPos: {fileID: 0}

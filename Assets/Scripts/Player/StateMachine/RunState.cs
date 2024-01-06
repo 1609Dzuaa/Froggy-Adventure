@@ -5,7 +5,7 @@ public class RunState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.run);
+        playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
         //Debug.Log("Run");
     }
@@ -77,10 +77,10 @@ public class RunState : PlayerBaseState
         {
             if (_playerStateManager.GetDirX() != 0)
             {
-                if (!PlayerSpeedBuff.Instance.IsAllowToUpdate)
+                if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsAllowToUpdate)
                     _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
                 else
-                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX() * PlayerSpeedBuff.Instance.SpeedMultiplier, _playerStateManager.GetRigidBody2D().velocity.y);
+                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX() * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed)).SpeedMultiplier, _playerStateManager.GetRigidBody2D().velocity.y);
             }
         }
         else

@@ -13,7 +13,7 @@ public class MEnemiesIdleState : MEnemiesBaseState
         //Gọi hàm dưới thì tham số charactersManager sẽ đc convert
         //sang biến kiểu EnemiesManager là _enemiesManager;
         base.EnterState(charactersManager);
-        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.idle);
+        _mEnemiesManager.Animator.SetInteger("state", (int)GameEnums.EMEnemiesState.idle);
         _mEnemiesManager.GetRigidbody2D().velocity = Vector2.zero;
         _entryTime = Time.time;
         //Debug.Log("Idle, HitWall: " + _mEnemiesManager.HasCollidedWall);

@@ -14,7 +14,7 @@ public class GotHitState : PlayerBaseState
         base.EnterState(playerStateManager);
         HandleGotHit();
         if (PlayerHealthController.Instance.CurrentHP > 0)
-            _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.gotHit);
+            _playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.gotHit);
         //Debug.Log("GotHit");
 
         //Change layer trong đây để enemies có thể đâm xuyên qua khi đang bị thương ?

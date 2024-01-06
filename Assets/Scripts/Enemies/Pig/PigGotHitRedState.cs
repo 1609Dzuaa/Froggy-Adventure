@@ -13,7 +13,7 @@ public class PigGotHitRedState : MEnemiesGotHitState
     {
         _mEnemiesManager = (MEnemiesManager)charactersManager;
         _pigManager = (PigManager)charactersManager;
-        _pigManager.Animator.SetInteger("state", (int)EnumState.EPigState.gotHitRed);
+        _pigManager.Animator.SetInteger("state", (int)GameEnums.EPigState.gotHitRed);
         _pigManager.GetRigidbody2D().velocity = Vector2.zero;
         if (_pigManager.HP == 0)
         {

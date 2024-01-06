@@ -9,7 +9,7 @@ public class HedgehogSpikeIdleState : NMEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _hedgehogManager = (HedgehogManager)charactersManager;
-        _hedgehogManager.Animator.SetInteger("state", (int)EnumState.EHedgehogState.spikeIdle);
+        _hedgehogManager.Animator.SetInteger("state", (int)GameEnums.EHedgehogState.spikeIdle);
         _hedgehogManager.getBoxCollider2D.size += _hedgehogManager.getSizeIncrease;
     }
 

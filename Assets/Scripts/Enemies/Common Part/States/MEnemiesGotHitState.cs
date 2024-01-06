@@ -5,7 +5,7 @@ public class MEnemiesGotHitState : MEnemiesBaseState
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
-        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.gotHit);
+        _mEnemiesManager.Animator.SetInteger("state", (int)GameEnums.EMEnemiesState.gotHit);
         HandleBeforeDestroy();
         //Debug.Log("GH");
     }

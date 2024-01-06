@@ -8,7 +8,7 @@ public class TrunkIdleState : MEnemiesIdleState
     {
         base.EnterState(charactersManager);
         _trunkManager = (TrunkManager)charactersManager;
-        _trunkManager.Animator.SetInteger("state", (int)EnumState.ETrunkState.idle);
+        _trunkManager.Animator.SetInteger("state", (int)GameEnums.ETrunkState.idle);
         //Debug.Log("Idle");
     }
 

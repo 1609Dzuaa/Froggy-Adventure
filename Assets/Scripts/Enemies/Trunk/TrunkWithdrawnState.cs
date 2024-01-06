@@ -11,7 +11,7 @@ public class TrunkWithdrawnState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _trunkManager = (TrunkManager)charactersManager;
-        _trunkManager.Animator.SetInteger("state", (int)EnumState.ETrunkState.withdrawn);
+        _trunkManager.Animator.SetInteger("state", (int)GameEnums.ETrunkState.withdrawn);
         HandleWithdrawn();
         //Debug.Log("Rt");
     }

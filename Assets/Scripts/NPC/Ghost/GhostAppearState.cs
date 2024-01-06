@@ -8,7 +8,7 @@ public class GhostAppearState : CharacterBaseState
     {
         base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
-        _ghostManager.Animator.SetInteger("state", (int)EnumState.EGhostState.appear);
+        _ghostManager.Animator.SetInteger("state", (int)GameEnums.EGhostState.appear);
         _ghostManager.transform.position = RandomAppearPosition();
         //Debug.Log("App");
     }

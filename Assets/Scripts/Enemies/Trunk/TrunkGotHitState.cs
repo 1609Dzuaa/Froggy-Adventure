@@ -8,7 +8,7 @@ public class TrunkGotHitState : MEnemiesGotHitState
     {
         _mEnemiesManager = (MEnemiesManager)charactersManager;
         _trunkManager = (TrunkManager)charactersManager;
-        _trunkManager.Animator.SetInteger("state", (int)EnumState.ETrunkState.gotHit);
+        _trunkManager.Animator.SetInteger("state", (int)GameEnums.ETrunkState.gotHit);
         HandleBeforeDestroy();
     }
 

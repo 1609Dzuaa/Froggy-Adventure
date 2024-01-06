@@ -12,7 +12,7 @@ public class PigGotHitGreenState : MEnemiesGotHitState
     public override void EnterState(CharactersManager charactersManager)
     {
         _pigManager = (PigManager)charactersManager;
-        _pigManager.Animator.SetInteger("state", (int)EnumState.EPigState.gotHitGreen);
+        _pigManager.Animator.SetInteger("state", (int)GameEnums.EPigState.gotHitGreen);
         _pigManager.GetRigidbody2D().velocity = Vector2.zero;
         Debug.Log("GH Green");
     }

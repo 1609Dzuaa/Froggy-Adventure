@@ -12,7 +12,7 @@ public class JumpState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.jump);
+        _playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.jump);
         _playerStateManager.GetDustPS().Play();
         HandleJump();
         if (_playerStateManager.GetPrevStateIsWallSlide())
@@ -82,10 +82,10 @@ public class JumpState : PlayerBaseState
     public override void FixedUpdate()
     {
         if (_playerStateManager.GetDirX() != 0)
-            if (!PlayerSpeedBuff.Instance.IsAllowToUpdate)
+            if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsAllowToUpdate)
                 _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
             else
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * PlayerSpeedBuff.Instance.SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed)).SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 
 }

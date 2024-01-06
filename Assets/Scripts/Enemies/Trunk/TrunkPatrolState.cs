@@ -8,7 +8,7 @@ public class TrunkPatrolState : MEnemiesPatrolState
     {
         base.EnterState(charactersManager);
         _trunkManager = (TrunkManager)charactersManager;
-        _trunkManager.Animator.SetInteger("state", (int)EnumState.ETrunkState.patrol);
+        _trunkManager.Animator.SetInteger("state", (int)GameEnums.ETrunkState.patrol);
         //Debug.Log("Patrol");
     }
 

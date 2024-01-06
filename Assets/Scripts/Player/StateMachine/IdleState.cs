@@ -5,7 +5,7 @@ public class IdleState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.idle);
+        _playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.idle);
         _playerStateManager.GetRigidBody2D().velocity = Vector2.zero; //Cố định vị trí
         HandleIfInteractWithNPC();
         HandleIfPrevStateWallSlide();

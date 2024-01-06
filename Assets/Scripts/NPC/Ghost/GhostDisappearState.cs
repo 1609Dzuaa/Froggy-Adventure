@@ -9,7 +9,7 @@ public class GhostDisappearState : CharacterBaseState
     {
         base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
-        _ghostManager.Animator.SetInteger("state", (int)EnumState.EGhostState.disappear);
+        _ghostManager.Animator.SetInteger("state", (int)GameEnums.EGhostState.disappear);
         _ghostManager.GetRigidbody2D().velocity = Vector2.zero;
         _entryTime = Time.time;
         //Debug.Log("Dis");

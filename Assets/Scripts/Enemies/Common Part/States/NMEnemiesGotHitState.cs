@@ -8,7 +8,7 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
-        _nmEnemiesManager.Animator.SetInteger("state", (int)EnumState.ENMEnemiesState.gotHit);
+        _nmEnemiesManager.Animator.SetInteger("state", (int)GameEnums.ENMEnemiesState.gotHit);
         _nmEnemiesManager.GetCollider2D.enabled = false;
         lastRotateTime = Time.time;
         ApplyForce();

@@ -63,7 +63,7 @@ public class PlayerJumpBuff : MonoBehaviour
             {
                 _isAllowToUpdate = false;
                 _hasApplied = false;
-                Debug.Log("Timeout!");
+                //Debug.Log("Timeout!");
             }
         }
     }

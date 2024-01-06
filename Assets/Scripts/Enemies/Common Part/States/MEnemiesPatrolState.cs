@@ -19,7 +19,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
-        _mEnemiesManager.Animator.SetInteger("state", (int)EnumState.EMEnemiesState.patrol);
+        _mEnemiesManager.Animator.SetInteger("state", (int)GameEnums.EMEnemiesState.patrol);
         _entryTime = Time.time;
         //Debug.Log("Patrol, canRD, hasChangeDir, HW: " + _canRdDirection + ", " + _hasChangeDirection + ", " + _hasJustHitWall);
         if (_canRdDirection)

@@ -6,7 +6,7 @@ public class DoubleJumpState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        _playerStateManager.GetAnimator().SetInteger("state", (int)EnumState.EPlayerState.doubleJump);
+        _playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.doubleJump);
         HandleDbJump();
         //Debug.Log("DBJump");
     }
@@ -21,10 +21,10 @@ public class DoubleJumpState : PlayerBaseState
     private void PhysicsUpdate()
     {
         if (_playerStateManager.GetDirX() != 0)
-            if (!PlayerSpeedBuff.Instance.IsAllowToUpdate)
+            if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsAllowToUpdate)
                 _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
             else
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * PlayerSpeedBuff.Instance.SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed)).SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 
     private void LogicUpdate()

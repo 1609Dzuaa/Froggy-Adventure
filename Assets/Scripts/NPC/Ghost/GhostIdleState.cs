@@ -8,7 +8,7 @@ public class GhostIdleState : NPCIdleState
     public override void EnterState(CharactersManager charactersManager)
     {
         _ghostManager = (GhostManager)charactersManager;
-        _ghostManager.Animator.SetInteger("state", (int)EnumState.EGhostState.idle);
+        _ghostManager.Animator.SetInteger("state", (int)GameEnums.EGhostState.idle);
         _ghostManager.GetRigidbody2D().velocity = Vector2.zero;
         _entryTime = Time.time;
         //Debug.Log("Idle");
