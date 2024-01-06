@@ -65,7 +65,7 @@ public abstract class EnemiesManager : CharactersManager
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
             playerScript.ChangeState(playerScript.gotHitState);
 
-            if(!PlayerAbsorbBuff.Instance.IsAllowToUpdate)
+            if(!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb).IsAllowToUpdate)
             {
                 if (_isFacingRight)
                     playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetPlayerStats.KnockBackForce.x, 0f));

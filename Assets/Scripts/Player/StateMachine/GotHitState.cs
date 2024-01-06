@@ -43,8 +43,8 @@ public class GotHitState : PlayerBaseState
     }
 
     private void HandleGotHit()
-    {
-        if (!PlayerAbsorbBuff.Instance.IsAllowToUpdate)
+    {     
+        if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb).IsAllowToUpdate)
             PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
         else
             PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_TEMP);

@@ -55,6 +55,8 @@ public class BuffsManager : MonoBehaviour
         _dictBuffs.Add(GameEnums.EBuffs.Speed, FindObjectOfType<PlayerSpeedBuff>());
         _dictBuffs.Add(GameEnums.EBuffs.Jump, FindObjectOfType<PlayerJumpBuff>());
         _dictBuffs.Add(GameEnums.EBuffs.Invisible, FindObjectOfType<PlayerInvisibleBuff>());
+        _dictBuffs.Add(GameEnums.EBuffs.Shield, FindObjectOfType<PlayerShieldBuff>());
+        _dictBuffs.Add(GameEnums.EBuffs.Absorb, FindObjectOfType<PlayerAbsorbBuff>());
     }
 
     public PlayerBuffs GetTypeOfBuff(GameEnums.EBuffs buffType)

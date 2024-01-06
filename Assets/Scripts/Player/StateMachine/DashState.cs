@@ -31,7 +31,7 @@ public class DashState : PlayerBaseState
         _dashDelayStart = Time.time;
         _playerStateManager.GetTrailRenderer().emitting = false;
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.PLAYER_LAYER);
-        PlayerShieldBuff.Instance.gameObject.layer = LayerMask.NameToLayer(GameConstants.SHIELD_LAYER);
+        BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).gameObject.layer = LayerMask.NameToLayer(GameConstants.SHIELD_LAYER);
         //Thêm dòng dưới khi Exit phòng TH: dash nhưng ch update thì đã exit state 
         //dẫn đến grav scale = 0
         _playerStateManager.GetRigidBody2D().gravityScale = _playerStateManager.GetPlayerStats.GravScale;
@@ -89,7 +89,7 @@ public class DashState : PlayerBaseState
         SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_DASH_SOUND).Play();
         _playerStateManager.GetTrailRenderer().emitting = true; //Ch thấy effect đâu @@?
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
-        PlayerShieldBuff.Instance.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
+        BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
 
         //Note: 0 tick vô hiệu hoá collision trong collision matrix 
         //giữa 2 thằng Ignore Enemies thì dash 1 khoảng rất xa ?

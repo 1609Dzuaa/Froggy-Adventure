@@ -183,7 +183,7 @@ public class PlayerStateManager : MonoBehaviour
         //và đang có khiên thì 0 cho change vì có thể có TH
         //chọc xuyên qua collider của shield
 
-        if (state is GotHitState && PlayerShieldBuff.Instance.IsAllowToUpdate)
+        if (state is GotHitState &&         BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).IsAllowToUpdate)
         {
             //Debug.Log("Tao co khien");
             return;

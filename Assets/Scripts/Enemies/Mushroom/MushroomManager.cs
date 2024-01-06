@@ -41,7 +41,7 @@ public class MushroomManager : MEnemiesManager
 
     private void SafeCheck()
     {
-        if (PlayerShieldBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).IsAllowToUpdate)
             return;
 
         if (!_isFacingRight)

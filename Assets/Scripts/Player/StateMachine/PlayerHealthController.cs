@@ -266,14 +266,14 @@ public class PlayerHealthController : MonoBehaviour
     private void HandleIterateTempHP()
     {
         //Nếu hết thgian sử dụng tempHP
-        if (Time.time - _tempHPEntryTime >= PlayerAbsorbBuff.Instance.TempHPDuration && _hasGotTempHP)
+        if (Time.time - _tempHPEntryTime >=  ((PlayerAbsorbBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb)).TempHPDuration && _hasGotTempHP)
         {
             Debug.Log("TempHP Ready Run Out Of Time");
             //Bắt đầu bấm giờ cho RunOut
             StartTickRunOut();
 
             //Nếu vẫn đang trong thgian RunOut thì xử lý blink blink cho tempHP
-            if (Time.time - _tempHPRunOutEntryTime < PlayerAbsorbBuff.Instance.TempHPRunOutDuration)
+            if (Time.time - _tempHPRunOutEntryTime < ((PlayerAbsorbBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb)).TempHPRunOutDuration)
                 HandleTempHPRunOutState();
             else
             {

@@ -70,7 +70,7 @@ public class BulletController : MonoBehaviour
             {
                 var playerScript = collision.collider.GetComponent<PlayerStateManager>();
 
-                if (!PlayerAbsorbBuff.Instance.IsAllowToUpdate)
+                if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb).IsAllowToUpdate)
                 {
                     if (_isDirectionRight)
                         playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
