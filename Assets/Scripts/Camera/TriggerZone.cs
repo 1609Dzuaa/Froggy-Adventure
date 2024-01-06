@@ -18,6 +18,12 @@ public class TriggerZone : MonoBehaviour
     [SerializeField] private LayerMask _playerLayer;
 
     private bool _hasPlayed;
+    private PlayerStateManager _playerRef;
+
+    private void Start()
+    {
+        _playerRef = GetComponent<PlayerStateManager>();
+    }
 
     private void Update()
     {
@@ -30,7 +36,7 @@ public class TriggerZone : MonoBehaviour
 
     private bool CanPlayTimeline()
     {
-        return Physics2D.OverlapBox(transform.position, _sizeZone, 0f, _playerLayer) && PlayerStateManager.PlayerInstance.GetIsOnGround() && !_hasPlayed;
+        return Physics2D.OverlapBox(transform.position, _sizeZone, 0f, _playerLayer) && _playerRef.GetIsOnGround() && !_hasPlayed;
     }
 
     private void OnDrawGizmos()

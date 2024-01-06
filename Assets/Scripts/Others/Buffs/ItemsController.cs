@@ -23,7 +23,7 @@ public class ItemsController : MonoBehaviour
         {
             SoundsManager.Instance.GetTypeOfSound(GameConstants.COLLECT_FRUITS_SOUND).Play();
             SpawnEffect();
-            Debug.Log("type: " + _buff);
+            //Debug.Log("type: " + _buff);
             Destroy(gameObject);
         }
     }
@@ -32,7 +32,7 @@ public class ItemsController : MonoBehaviour
     {
         //huỷ đăng ký
         PlayerStateManager.OnAppliedBuff -= ApplyBuffToPlayer;
-        Debug.Log("Da huy dky event");
+        //Debug.Log("Da huy dky event");
     }
 
     protected virtual void ApplyBuffToPlayer()

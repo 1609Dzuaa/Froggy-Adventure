@@ -42,6 +42,8 @@ public class PlayerStateManager : MonoBehaviour
     private bool _isApplyGotHitEffect;
     private bool _hasStartCoroutine;
     private Vector2 _InteractPosition;
+    private bool _isVunerable;
+    private bool _isHitFromRightSide;
 
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
@@ -120,6 +122,10 @@ public class PlayerStateManager : MonoBehaviour
 
     public bool HasDetectedNPC { get { return _hasDetectedNPC; } }
 
+    public bool IsHitFromRightSide { get => _isHitFromRightSide; set => _isHitFromRightSide = value; }
+
+    public bool IsVunerable { set => _isVunerable = value; }
+
     //SET Functions
     public void SetCanDbJump(bool para) { this._canDbJump = para; }
 
@@ -135,6 +141,23 @@ public class PlayerStateManager : MonoBehaviour
     {
         CreatePlayerInstance();
         InitReference();
+        EnemiesManager.OnDamagePlayer += OnBeingDamaged;
+    }
+
+    private void OnBeingDamaged()
+    {
+        if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb).IsAllowToUpdate)
+        {
+            if (_isHitFromRightSide)
+                rb.AddForce(new Vector2(_playerStats.KnockBackForce.x, 0f));
+            else
+                rb.AddForce(new Vector2(-_playerStats.KnockBackForce.x, 0f));
+        }
+        ChangeState(gotHitState);
+        //Debug.Log("tao dc call");
+        //Đky event = func này, không phải gây tight-coupling ở class enemies
+        //Enemies đ' cần quan tâm về rb của player, nó chỉ việc phát thông báo (Invoke)
+        //Thằng nào có liên quan đến thì đăng ký và xử lý
     }
 
     private void CreatePlayerInstance()
@@ -176,14 +199,14 @@ public class PlayerStateManager : MonoBehaviour
             return;
 
         //Nếu state kế vẫn là GotHit mà đang trong thgian miễn dmg thì 0 change
-        if (state is GotHitState && Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime)
+        if (state is GotHitState && Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && _isVunerable)
             return;
 
         //Thêm đoạn check dưới nếu Upcoming state là GotHit
         //và đang có khiên thì 0 cho change vì có thể có TH
         //chọc xuyên qua collider của shield
 
-        if (state is GotHitState &&         BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).IsAllowToUpdate)
+        if (state is GotHitState && BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).IsAllowToUpdate)
         {
             //Debug.Log("Tao co khien");
             return;
@@ -216,8 +239,6 @@ public class PlayerStateManager : MonoBehaviour
     {
         if (collision.CompareTag(GameConstants.PLATFORM_TAG))
             transform.SetParent(collision.gameObject.transform);
-
-        //It's time
         else if (collision.CompareTag(GameConstants.BUFF_TAG))
         {
             ItemsController itemsController = collision.GetComponent<ItemsController>();
@@ -269,10 +290,14 @@ public class PlayerStateManager : MonoBehaviour
         //Switch layer cho player trong khoảng thgian miễn dmg
         //Cho phép enemies đâm xuyên qua player và ngược lại
         //Đỡ việc 2 box va nhau, có thể gây khó chịu cho Player.
-        if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime)
+        //Phải có 1 biến bool để chặn cửa cùng Time, 0 thì đầu game ĐK thoả mãn luôn ^.^
+        if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && _isVunerable)
             gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
-        else if(_state is not DashState)
+        else if (_state is not DashState)
+        {
+            _isVunerable = false;
             gameObject.layer = LayerMask.NameToLayer(GameConstants.PLAYER_LAYER);
+        }
     }
 
     private void UpdateInteractWithNPC()
@@ -513,7 +538,7 @@ public class PlayerStateManager : MonoBehaviour
         yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
 
         //Thêm check đây nữa 
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
         {
             _hasStartCoroutine = false;
             yield return null;
@@ -528,7 +553,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleAlphaValueGotHit()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && !_hasStartCoroutine && _isApplyGotHitEffect)
@@ -538,7 +563,7 @@ public class PlayerStateManager : MonoBehaviour
 
             //Hết thgian miễn dmg r thì trả màu về như cũ cho nó
             //NẾU trên ng 0 có buff vô hình, còn có thì return và set lại bool
-            if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+            if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             {
                 _isApplyGotHitEffect = false;
                 return;

@@ -3,7 +3,7 @@
 public class GotHitState : PlayerBaseState
 {
     private bool _isHitByTrap; //Nếu bị hit bởi Traps thì mới AddForce dựa vào hướng mặt của Player
-    private float _entryTime = 0;
+    private float _entryTime = 0; //Để đếm giờ lúc bị hit phục vụ cho việc miễn Dmg
 
     public bool IsHitByTrap { set { _isHitByTrap = value; } }
 
@@ -15,9 +15,8 @@ public class GotHitState : PlayerBaseState
         HandleGotHit();
         if (PlayerHealthController.Instance.CurrentHP > 0)
             _playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.gotHit);
-        //Debug.Log("GotHit");
+        Debug.Log("GotHit");
 
-        //Change layer trong đây để enemies có thể đâm xuyên qua khi đang bị thương ?
         //Chú ý khi làm việc với Any State
         //Tắt Transition To Self ở đoạn nối Transition từ Any State tới State cụ thể
         //Tránh bị đứng ngay frame đầu tiên
@@ -56,6 +55,7 @@ public class GotHitState : PlayerBaseState
             return;
         }
 
+        _playerStateManager.IsVunerable = true;
         _entryTime = Time.time;
         if (_isHitByTrap)
             KnockBack();

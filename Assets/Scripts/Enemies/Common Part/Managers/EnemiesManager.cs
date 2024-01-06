@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +34,8 @@ public abstract class EnemiesManager : CharactersManager
 
     public Collider2D GetCollider2D { get { return _collider2D; } set { _collider2D = value; } }
 
+    public static Action OnDamagePlayer;
+
     protected override void Awake()
     {
         base.Awake(); //Lấy anim và rb từ CharactersManager
@@ -63,6 +66,11 @@ public abstract class EnemiesManager : CharactersManager
         if (collision.collider.name == GameConstants.PLAYER_NAME)
         {
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
+            playerScript.IsHitFromRightSide = _isFacingRight;
+            DamagePlayer();
+
+            //Direct-access player's component, too tight-coupling
+            /*var playerScript = collision.collider.GetComponent<PlayerStateManager>();
             playerScript.ChangeState(playerScript.gotHitState);
 
             if(!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb).IsAllowToUpdate)
@@ -71,15 +79,26 @@ public abstract class EnemiesManager : CharactersManager
                     playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetPlayerStats.KnockBackForce.x, 0f));
                 else
                     playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetPlayerStats.KnockBackForce.x, 0f));
-            }
+            }*/
         }
+    }
+
+    protected virtual void DamagePlayer()
+    {
+        //Events are special types of delegates that can only be invoked/called
+        //from the scope of where it was declared at.
+
+        //0 gọi thẳng thằng dưới đc nên đóng nó vào trong 1 func để
+        //mấy thg con kế thừa có thể gọi và sử dụng đc
+        OnDamagePlayer?.Invoke();
+        //Debug.Log("Da invoke");
     }
 
     protected virtual bool DetectedPlayer()
     {
         //Cân nhắc có nên detect luôn cái layer Ignore 0 ?
 
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return _hasDetectedPlayer = false;
         
         if (!_isFacingRight)

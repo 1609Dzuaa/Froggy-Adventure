@@ -11,7 +11,6 @@ public class GeckoManager : MEnemiesManager
 
     [Header("Teleport Distance")]
     [SerializeField] private float _teleDistance;
-    [SerializeField] private float _teleportableDistance;
 
     [Header("Player Reference")]
     [SerializeField] private Transform _playerRef;
@@ -19,8 +18,6 @@ public class GeckoManager : MEnemiesManager
     [Header("Range")]
     [SerializeField] private Vector2 _damageRange;
     [SerializeField] private Vector2 _teleportableRange;
-    [SerializeField] private Transform _wallCheck2;
-    [SerializeField] private float _distToWall;
 
     private GeckoIdleState _geckoIdleState = new();
     private GeckoPatrolState _geckoPatrolState = new();
@@ -64,6 +61,7 @@ public class GeckoManager : MEnemiesManager
         UpdateCheckTeleportablePosition();
         CheckIfCanTeleport2Sides();
         base.Update();
+        //Debug.Log("has DtP: " + _hasDetectedPlayer);
     }
 
     protected override void FixedUpdate()
@@ -145,19 +143,19 @@ public class GeckoManager : MEnemiesManager
             if (_hasDetectedPlayer)
             {
                 var playerScript = _playerRef.GetComponent<PlayerStateManager>();
-                if (_isFacingRight)
+                playerScript.IsHitFromRightSide = _isFacingRight;
+                DamagePlayer();
+
+                /*if (_isFacingRight)
                     playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
                 else
                     playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
 
-                playerScript.ChangeState(playerScript.gotHitState);
-                if (_isFacingRight)
-                    playerScript.GetRigidBody2D().AddForce(new Vector2(playerScript.GetPlayerStats.KnockBackForce.x, 0f));
-                else
-                    playerScript.GetRigidBody2D().AddForce(new Vector2(-playerScript.GetPlayerStats.KnockBackForce.x, 0f));
-                //Debug.Log("Damage");
+                playerScript.ChangeState(playerScript.gotHitState);*/
+                Debug.Log("DamageTrong");
             }
         }
+            Debug.Log("EnableDMG");
 
         //Cũng là Event của animation Attack lúc vụt lưỡi
     }
@@ -178,7 +176,7 @@ public class GeckoManager : MEnemiesManager
 
     private void ChangeToAttack()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
         {
             ChangeState(_geckoIdleState);
             return;
