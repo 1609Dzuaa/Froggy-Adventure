@@ -79,7 +79,7 @@ public abstract class EnemiesManager : CharactersManager
     {
         //Cân nhắc có nên detect luôn cái layer Ignore 0 ?
 
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return _hasDetectedPlayer = false;
         
         if (!_isFacingRight)

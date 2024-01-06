@@ -85,7 +85,7 @@ public class BatManager : MEnemiesManager
 
     protected override bool DetectedPlayer()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return _hasDetectedPlayer = false;
 
         _distanceToPlayer = Vector2.Distance(transform.position, _playerCheck.position);
@@ -120,7 +120,7 @@ public class BatManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return;
 
         ChangeState(_batAttackState);

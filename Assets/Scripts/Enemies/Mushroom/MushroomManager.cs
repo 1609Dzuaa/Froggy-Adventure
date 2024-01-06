@@ -71,7 +71,7 @@ public class MushroomManager : MEnemiesManager
     //Hàm này dùng để Invoke trong state Attack
     private void AllowUpdateAttack()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
         {
             ChangeState(MEnemiesIdleState);
             return;

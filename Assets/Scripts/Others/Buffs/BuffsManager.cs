@@ -5,8 +5,7 @@ using UnityEngine;
 public class BuffsManager : MonoBehaviour
 {
     private static BuffsManager _buffsManagerInstance;
-    private Dictionary<GameEnums.EBuffs, Buffs> _dictBuffs = new();
-    //private PlayerSpeedBuff _speedBuff = new();
+    private Dictionary<GameEnums.EBuffs, PlayerBuffs> _dictBuffs = new();
 
     public static BuffsManager Instance
     {
@@ -54,9 +53,11 @@ public class BuffsManager : MonoBehaviour
     private void InitBuffDictionary()
     {
         _dictBuffs.Add(GameEnums.EBuffs.Speed, FindObjectOfType<PlayerSpeedBuff>());
+        _dictBuffs.Add(GameEnums.EBuffs.Jump, FindObjectOfType<PlayerJumpBuff>());
+        _dictBuffs.Add(GameEnums.EBuffs.Invisible, FindObjectOfType<PlayerInvisibleBuff>());
     }
 
-    public Buffs GetTypeOfBuff(GameEnums.EBuffs buffType)
+    public PlayerBuffs GetTypeOfBuff(GameEnums.EBuffs buffType)
     {
         return _dictBuffs[buffType];
     }

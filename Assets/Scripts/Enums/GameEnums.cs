@@ -50,7 +50,7 @@
     #region EnumBuffs
 
     public enum EBuffs
-    { Speed, Jump, Invisible, Shield, Absorb }
+    { None, Speed, Jump, Invisible, Shield, Absorb }
 
     #endregion
 }

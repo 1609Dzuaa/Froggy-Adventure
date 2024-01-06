@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSpeedBuff : Buffs
+public class PlayerSpeedBuff : PlayerBuffs
 {
     //Buff này chắc dùng PS/TR để tạo effect
     [SerializeField] private float _speedMultiplier;
@@ -10,8 +10,6 @@ public class PlayerSpeedBuff : Buffs
     [SerializeField] private Transform _speedBuffIconPos;
 
     public float SpeedMultiplier { get { return _speedMultiplier; } }
-
-    public float EntryTime { set { _entryTime = value; } }
 
     public override void Start()
     {
@@ -28,6 +26,8 @@ public class PlayerSpeedBuff : Buffs
                 _speedBuffIcon.gameObject.SetActive(false);
                 Debug.Log("Timeout!");
             }
+            /*else
+                Debug.Log("dang buff Speed");*/
             _speedBuffIcon.transform.position = _speedBuffIconPos.position;
         }
     }

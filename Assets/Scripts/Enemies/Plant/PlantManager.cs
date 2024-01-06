@@ -28,7 +28,7 @@ public class PlantManager : NMEnemiesManager
     //Event Func in Attack Animation
     private void SpawnBullet()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return;
 
         GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.PLANT_BULLET);

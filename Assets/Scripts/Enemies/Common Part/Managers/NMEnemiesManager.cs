@@ -63,7 +63,7 @@ public class NMEnemiesManager : EnemiesManager
 
     protected virtual void AllowAttackPlayer()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return;
 
         ChangeState(_nmEnemiesAttackState);

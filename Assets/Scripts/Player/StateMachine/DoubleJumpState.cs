@@ -63,9 +63,9 @@ public class DoubleJumpState : PlayerBaseState
     private void HandleDbJump()
     {
         _playerStateManager.SetCanDbJump(false);
-        if (!PlayerJumpBuff.Instance.IsAllowToUpdate)
+        if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Jump).IsAllowToUpdate)
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY * _playerStateManager.GetPlayerStats.DbJumpSpeedFactor);
         else
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY * PlayerJumpBuff.Instance.JumpMutiplier * _playerStateManager.GetPlayerStats.DbJumpSpeedFactor);
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY * ((PlayerJumpBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Jump)).JumpMutiplier * _playerStateManager.GetPlayerStats.DbJumpSpeedFactor);
     }
 }

@@ -368,7 +368,7 @@ public class SnailManager : MEnemiesManager
 
     protected override bool DetectedPlayer()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return _hasDetectedPlayer = false;
 
         if (!_isMovingVertical)
@@ -558,7 +558,7 @@ public class SnailManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
         {
             ChangeState(_snailIdleState);
             return;

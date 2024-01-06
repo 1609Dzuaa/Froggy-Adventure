@@ -2,69 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInvisibleBuff : MonoBehaviour
+public class PlayerInvisibleBuff : PlayerBuffs
 {
+    //Record xem lại tăng giảm alpha
+
     [SerializeField] Transform _playerRef;
     [SerializeField] private float _alphaApply;
     [SerializeField] private float _alphaApplyRunOut;
-    [SerializeField] private float _duration;
     [SerializeField] private float _runOutDuration;
     [SerializeField] private float _timeEachRunOutEffect;
 
-    private static PlayerInvisibleBuff _invisibleBuffInstance;
     private SpriteRenderer _playerSpriteRenderer;
-    private bool _isAllowToUpdate;
-    private float _entryTime;
 
     private float _entryRunOutTime;
     private float _entryEachRunOutTime;
     private bool _hasTickRunOut;
     private bool _isDecrease;
 
-    public static PlayerInvisibleBuff Instance
+    public override void Awake()
     {
-        get
-        {
-            if (!_invisibleBuffInstance)
-            {
-                //Tìm xem có Instance có trong Scene kh ?
-                _invisibleBuffInstance = FindObjectOfType<PlayerInvisibleBuff>();
-
-                if (!_invisibleBuffInstance)
-                    Debug.Log("No InvisibleBuff in scene");
-            }
-            return _invisibleBuffInstance;
-        }
-    }
-
-    public bool IsAllowToUpdate { get { return _isAllowToUpdate; } }
-
-    private void Awake()
-    {
-        CreateInstance();
         _playerSpriteRenderer = _playerRef.GetComponent<SpriteRenderer>();
     }
 
-    private void CreateInstance()
-    {
-        if (!_invisibleBuffInstance)
-        {
-            _invisibleBuffInstance = this;
-            DontDestroyOnLoad(gameObject); //Đảm bảo thằng này 0 bị huỷ khi chuyển Scene
-            //Docs: Don't destroy the target Object when loading a new Scene.
-        }
-        else
-        {
-            //Nếu đã tồn tại thằng Instance != ở trong game thì destroy thằng này
-            Destroy(gameObject);
-        }
-    }
-
-    private void Update()
+    public override void Update()
     {
         if (_isAllowToUpdate)
         {
-            if (Time.time - _entryTime >= _duration)
+            if (Time.time - _entryTime >= _buffDuration)
             {
                 StartTickRunOut();
 
@@ -73,17 +37,17 @@ public class PlayerInvisibleBuff : MonoBehaviour
                 else
                     ResetBuffData();
             }
-            else
-                Debug.Log("PlayerColor: " + _playerSpriteRenderer.color.a);
+            /*else
+                Debug.Log("PlayerColor: " + _playerSpriteRenderer.color.a);*/
         }
     }
 
-    public void ApplyBuff()
+    public override void ApplyBuff()
     {
-        _entryTime = Time.time;
-        _isAllowToUpdate = true;
+        base.ApplyBuff();
         _hasTickRunOut = false; //Vì có thể runout r lại ăn buff
         _playerSpriteRenderer.color = new Color(1f, 1f, 1f, _alphaApply);
+        Debug.Log("da apply Invi");
     }
 
     private void StartTickRunOut()

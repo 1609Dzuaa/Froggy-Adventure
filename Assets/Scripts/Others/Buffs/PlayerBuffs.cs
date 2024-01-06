@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Buffs : MonoBehaviour
+public abstract class PlayerBuffs : MonoBehaviour
 {
     [SerializeField] protected float _buffDuration;
     protected float _entryTime;
@@ -10,16 +10,17 @@ public abstract class Buffs : MonoBehaviour
 
     public bool IsAllowToUpdate { get => _isAllowToUpdate; set => _isAllowToUpdate = value; }
 
+    public virtual void Awake()
+    { 
+    }
+
     public virtual void Start()
     {
         //Xử lý các ref của buff đó (nếu có) trong đây
         //vd: disable th ref nào đó
     }
 
-    public virtual void Update()
-    {
-        //if(allowUpdate) ...
-    }
+    public virtual void Update() { }
 
     public virtual void ApplyBuff()
     {

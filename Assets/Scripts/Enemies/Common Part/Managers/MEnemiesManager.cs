@@ -109,7 +109,7 @@ public class MEnemiesManager : EnemiesManager
     //Hàm này dùng để Invoke khi detect ra Player
     protected virtual void AllowAttackPlayer()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return;
 
         ChangeState(_mEnemiesAttackState);

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -4577452117885672675}
   m_Layer: 0
   m_Name: BlueDiamond
-  m_TagString: Untagged
+  m_TagString: Buff
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,3 +136,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd48a5fe0cc01b945811912456cddd70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buff: 0

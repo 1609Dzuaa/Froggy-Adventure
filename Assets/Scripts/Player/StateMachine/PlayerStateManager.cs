@@ -220,8 +220,10 @@ public class PlayerStateManager : MonoBehaviour
         //It's time
         else if (collision.CompareTag(GameConstants.BUFF_TAG))
         {
+            ItemsController itemsController = collision.GetComponent<ItemsController>();
+            itemsController.AllowToApplyBuffToPlayer = true; //Chỉ định item mới buff chứ 0 nó gọi hết item
             OnAppliedBuff?.Invoke();
-            Debug.Log("call from here");
+            //Debug.Log("call from here");
         }
     }
 
@@ -511,7 +513,7 @@ public class PlayerStateManager : MonoBehaviour
         yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
 
         //Thêm check đây nữa 
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
         {
             _hasStartCoroutine = false;
             yield return null;
@@ -526,7 +528,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleAlphaValueGotHit()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return;
 
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && !_hasStartCoroutine && _isApplyGotHitEffect)
@@ -536,7 +538,7 @@ public class PlayerStateManager : MonoBehaviour
 
             //Hết thgian miễn dmg r thì trả màu về như cũ cho nó
             //NẾU trên ng 0 có buff vô hình, còn có thì return và set lại bool
-            if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+            if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             {
                 _isApplyGotHitEffect = false;
                 return;

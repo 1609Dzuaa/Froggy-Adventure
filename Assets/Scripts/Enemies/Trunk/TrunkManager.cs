@@ -55,7 +55,7 @@ public class TrunkManager : MEnemiesManager
 
     private bool WithDrawnCheck()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return _canWithDrawn = false;
 
         if (!_isFacingRight)
@@ -73,7 +73,7 @@ public class TrunkManager : MEnemiesManager
 
     private void SpawnBullet()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return;
 
         GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.TRUNK_BULLET);

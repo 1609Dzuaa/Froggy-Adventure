@@ -40,7 +40,7 @@ public class HedgehogManager : NMEnemiesManager
 
     private void ChangeToSpikeIdle()
     {
-        if (PlayerInvisibleBuff.Instance.IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
             return;
 
         _prevCollider2DSize = _boxCollider2D.size;

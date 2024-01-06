@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1886694591926022904}
   m_Layer: 0
   m_Name: Cherry
-  m_TagString: Untagged
+  m_TagString: Buff
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1886694591926022909}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5f2c186f723bc047ae6c5cb53b05d80, type: 3}
+  m_Script: {fileID: 11500000, guid: 56d20bf2c232baa4ca9e626b0be5fbb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collectedEffect: {fileID: 7284400035579609473, guid: 7c5a9912aa7f8114fbe024ed93a127f7, type: 3}
+  _buff: 3
