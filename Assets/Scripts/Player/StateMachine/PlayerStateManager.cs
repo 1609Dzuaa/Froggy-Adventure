@@ -142,6 +142,7 @@ public class PlayerStateManager : MonoBehaviour
         CreatePlayerInstance();
         InitReference();
         EnemiesManager.OnDamagePlayer += OnBeingDamaged;
+        MEnemiesManager.OnBeingDamaged += OnDamageEnemies;
     }
 
     private void OnBeingDamaged()
@@ -158,6 +159,13 @@ public class PlayerStateManager : MonoBehaviour
         //Đky event = func này, không phải gây tight-coupling ở class enemies
         //Enemies đ' cần quan tâm về rb của player, nó chỉ việc phát thông báo (Invoke)
         //Thằng nào có liên quan đến thì đăng ký và xử lý
+    }
+
+    private void OnDamageEnemies()
+    {
+        _canDbJump = true; //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
+        ChangeState(jumpState);
+        Debug.Log("Dmg Enemies");
     }
 
     private void CreatePlayerInstance()

@@ -24,11 +24,11 @@ public abstract class EnemiesManager : CharactersManager
     //Public Field
     public Vector2 KnockForce { get { return _knockForce; } }
 
-    public float GetAttackDelay() { return this._attackDelay; }
+    public float GetAttackDelay() { return _attackDelay; }
 
-    public float GetTimeEachRotate() { return this.timeEachRotate; }
+    public float GetTimeEachRotate() { return timeEachRotate; }
 
-    public float GetDegreeEachRotation() { return this.degreeEachRotation; }
+    public float GetDegreeEachRotation() { return degreeEachRotation; }
 
     public bool HasDetectedPlayer { get { return _hasDetectedPlayer; } }
 
@@ -129,7 +129,7 @@ public abstract class EnemiesManager : CharactersManager
 
     protected void DestroyItSelf()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
 }

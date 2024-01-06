@@ -145,17 +145,8 @@ public class GeckoManager : MEnemiesManager
                 var playerScript = _playerRef.GetComponent<PlayerStateManager>();
                 playerScript.IsHitFromRightSide = _isFacingRight;
                 DamagePlayer();
-
-                /*if (_isFacingRight)
-                    playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
-                else
-                    playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
-
-                playerScript.ChangeState(playerScript.gotHitState);*/
-                Debug.Log("DamageTrong");
             }
         }
-            Debug.Log("EnableDMG");
 
         //Cũng là Event của animation Attack lúc vụt lưỡi
     }

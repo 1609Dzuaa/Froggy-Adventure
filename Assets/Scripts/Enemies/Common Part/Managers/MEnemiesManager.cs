@@ -44,21 +44,23 @@ public class MEnemiesManager : EnemiesManager
 
     public MEnemiesGotHitState MEnemiesGotHitState { get { return _mEnemiesGotHitState; } set { _mEnemiesGotHitState = value; } }
 
-    public float GetRestTime() { return this._restTime; }
+    public float GetRestTime() { return _restTime; }
 
-    public float GetPatrolTime() { return this._patrolTime; }
+    public float GetPatrolTime() { return _patrolTime; }
 
-    public bool HasCollidedWall { get { return this._hasCollidedWall; } }
+    public bool HasCollidedWall { get { return _hasCollidedWall; } }
 
-    public Vector2 GetPatrolSpeed() { return this._patrolSpeed; }
+    public Vector2 GetPatrolSpeed() { return _patrolSpeed; }
 
-    public Vector2 GetChaseSpeed() { return this._chaseSpeed; }
+    public Vector2 GetChaseSpeed() { return _chaseSpeed; }
 
     public Transform BoundaryLeft { get { return _boundaryLeft; } }
 
     public Transform BoundaryRight { get { return _boundaryRight; } }
 
-    public void SetHasGotHit(bool para) { this._hasGotHit = para; }
+    public void SetHasGotHit(bool para) { _hasGotHit = para; }
+
+    public static Action OnBeingDamaged;
 
     protected override void Awake()
     {
@@ -92,9 +94,9 @@ public class MEnemiesManager : EnemiesManager
     public virtual void Move(float velo)
     {
         if (_isFacingRight)
-            this._rb.velocity = new Vector2(velo, _rb.velocity.y);
+            _rb.velocity = new Vector2(velo, _rb.velocity.y);
         else
-            this._rb.velocity = new Vector2(-velo, _rb.velocity.y);
+            _rb.velocity = new Vector2(-velo, _rb.velocity.y);
         //Debug.Log("Move");
     }
 
@@ -144,11 +146,18 @@ public class MEnemiesManager : EnemiesManager
         if(collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
         {
             _hasGotHit = true;
-            var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
-            playerScript.ChangeState(playerScript.jumpState);
+            BeingDamaged();
             ChangeState(_mEnemiesGotHitState);
+
+            /*var playerScript = collision.GetComponent<PlayerStateManager>();
+            playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
+            playerScript.ChangeState(playerScript.jumpState);*/
         }
+    }
+
+    protected virtual void BeingDamaged()
+    {
+        OnBeingDamaged?.Invoke();
     }
 
     //Event của Got Hit Animation
