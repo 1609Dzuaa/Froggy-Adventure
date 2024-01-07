@@ -53,4 +53,16 @@
     { None, Speed, Jump, Invisible, Shield, Absorb }
 
     #endregion
+
+    #region EnumEvents
+
+    public enum EEvents
+    {
+        EnemiesOnDamagePlayer,
+        EnemiesOnDie,
+        PlayerOnAbsorbBuffs,
+        PlayerOnInteractNPCs,
+    }
+
+    #endregion
 }

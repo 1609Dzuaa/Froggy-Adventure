@@ -109,7 +109,7 @@ public class MEnemiesManager : EnemiesManager
     //Hàm này dùng để Invoke khi detect ra Player
     protected virtual void AllowAttackPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 
         ChangeState(_mEnemiesAttackState);
@@ -132,7 +132,7 @@ public class MEnemiesManager : EnemiesManager
         base.OnCollisionEnter2D(collision);
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
-            EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, 1);
+            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.BULLET_ID);
             ChangeState(_mEnemiesGotHitState);
         }
     }
@@ -142,7 +142,7 @@ public class MEnemiesManager : EnemiesManager
         if(collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
         {
             _hasGotHit = true;
-            EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, 0);
+            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.PLAYER_ID);
             ChangeState(_mEnemiesGotHitState);
         }
     }

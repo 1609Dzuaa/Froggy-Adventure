@@ -20,9 +20,6 @@ public class PlayerStateManager : MonoBehaviour
     public WallJumpState wallJumpState = new();
     public DashState dashState = new();
 
-    //Xác định Gameplay chỉ có duy nhất 1 thằng Player nên dùng Singleton cho nó luôn
-    private static PlayerStateManager _playerInstance;
-
     private float dirX, dirY;
     private Rigidbody2D rb;
     private Animator anim;
@@ -79,21 +76,6 @@ public class PlayerStateManager : MonoBehaviour
 
     //GET Functions
 
-    public static PlayerStateManager PlayerInstance 
-    {
-        get
-        {
-            if (!_playerInstance)
-            {
-                _playerInstance = FindObjectOfType<PlayerStateManager>();
-
-                if (!_playerInstance)
-                    Debug.Log("No Player in scene");
-            }
-            return _playerInstance;
-        }
-    }
-
     public Transform DashableSignPosition { get { return _dashableSignPos; } }
 
     public float GetDirX() { return dirX; }
@@ -139,67 +121,16 @@ public class PlayerStateManager : MonoBehaviour
 
     public bool HasDamagedEnemy { set => _hasDamagedEnemy = value; }
     
-    public static event Action OnAppliedBuff;
-
     private void Awake()
     {
-        CreatePlayerInstance();
         InitReference();
         RegisterFunction();
     }
 
     private void RegisterFunction()
     {
-        EventsManager.Instance.SubcribeAnEvent(GameConstants.ENEMIES_ON_DAMAGE_PLAYER_EVENT, OnBeingDamaged);
-        EventsManager.Instance.SubcribeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, OnDamageEnemies);
-    }
-
-    private void OnBeingDamaged(object obj)
-    {
-        if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb).IsAllowToUpdate)
-        {
-            if (_isHitFromRightSide)
-                rb.AddForce(new Vector2(_playerStats.KnockBackForce.x, 0f));
-            else
-                rb.AddForce(new Vector2(-_playerStats.KnockBackForce.x, 0f));
-        }
-        ChangeState(gotHitState);
-        //Debug.Log("tao dc call");
-        //Đky event = func này, không phải gây tight-coupling ở class enemies
-        //Enemies đ' cần quan tâm về rb của player, nó chỉ việc phát thông báo (Invoke)
-        //Thằng nào có liên quan đến thì đăng ký và xử lý
-    }
-
-    int count = 1;
-
-    private void OnDamageEnemies(object obj)
-    {
-        //dafuq why this thing is being called twice @?@
-        if (_id != (int)obj)
-            return;
-
-        //Tạm để thế này, coi lại sao nó call 2 lần (count = 2) ?
-        if (_hasDamagedEnemy)
-            return;
-
-        _hasDamagedEnemy = true;
-        _canDbJump = true; //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
-        ChangeState(jumpState);
-        //EventsManager.Instance.UnsubcribeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, OnDamageEnemies);
-        //EventsManager.Instance.SubcribeAnEvent(GameConstants.ENEMIES_ON_DAMAGE_PLAYER_EVENT, OnBeingDamaged);
-        //Debug.Log("Dmg Enemies " + count);
-        count++;
-    }
-
-    private void CreatePlayerInstance()
-    {
-        if (!_playerInstance)
-        {
-            _playerInstance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
+        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
+        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
     }
 
     private void InitReference()
@@ -216,11 +147,18 @@ public class PlayerStateManager : MonoBehaviour
         SetupProperties();
     }
 
+    private void OnDestroy()
+    {
+        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
+        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
+    }
+
     private void SetupProperties()
     {
         _state = idleState;
         _state.EnterState(this);
         rb.gravityScale = _playerStats.GravScale;
+        _id = GameConstants.PLAYER_ID;
     }
 
     public void ChangeState(PlayerBaseState state)
@@ -273,16 +211,42 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.CompareTag(GameConstants.BUFF_TAG))
         {
             ItemsController itemsController = collision.GetComponent<ItemsController>();
-            itemsController.AllowToApplyBuffToPlayer = true; //Chỉ định item mới buff chứ 0 nó gọi hết item
-            OnAppliedBuff?.Invoke();
+            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.PlayerOnAbsorbBuffs, itemsController.Buff);
             //Debug.Log("call from here");
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.CompareTag(GameConstants.PLATFORM_TAG))
+        if (collision.CompareTag(GameConstants.PLATFORM_TAG))
             transform.SetParent(null);
+    }
+
+    private void OnBeingDamaged(object obj)
+    {
+        ChangeState(gotHitState);
+        //Đky event = func này, không phải gây tight-coupling ở class enemies
+        //Enemies đ' cần quan tâm về rb của player, nó chỉ việc phát thông báo (Invoke)
+        //Thằng nào có liên quan đến thì đăng ký và xử lý
+    }
+
+    int count = 1;
+
+    private void OnDamageEnemies(object obj)
+    {
+        //dafuq why this thing is being called twice @?@
+        if (_id != (int)obj)
+            return;
+
+        //Tạm để thế này, coi lại sao nó call 2 lần (count = 2) ?
+        if (_hasDamagedEnemy)
+            return;
+
+        _hasDamagedEnemy = true;
+        _canDbJump = true; //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
+        ChangeState(jumpState);
+        //Debug.Log("Dmg Enemies " + count);
+        count++;
     }
 
     void Update()
@@ -358,7 +322,7 @@ public class PlayerStateManager : MonoBehaviour
         {
             _hasChange = true;
             //Debug.Log("Change");
-            Invoke("ChangeToRun", GameConstants.DELAYPLAYERRUNSTATE);
+            Invoke(nameof(ChangeToRun), GameConstants.DELAYPLAYERRUNSTATE);
         }    
         _state.Update();
     }
@@ -366,10 +330,6 @@ public class PlayerStateManager : MonoBehaviour
     private void FixedUpdate()
     {
         _state.FixedUpdate();
-        //Unity Docs:
-        //If a hit starts occuring inside a collider, the collision normal is
-        //the OPPOSITE direction of the line/ray query.
-        //Giữ A va trái thì normalX = 1 (với isFr = false)
     }
 
     private void OnDrawGizmos()

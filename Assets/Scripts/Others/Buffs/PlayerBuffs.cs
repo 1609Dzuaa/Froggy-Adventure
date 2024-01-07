@@ -27,6 +27,6 @@ public abstract class PlayerBuffs : MonoBehaviour
         //Xử lý cơ bản là bắt đầu bấm giờ và cho phép Update buff
         _entryTime = Time.time;
         _isAllowToUpdate = true;
-        Debug.Log("bat dau bam gio buff");
+        //Debug.Log("bat dau bam gio buff");
     }
 }

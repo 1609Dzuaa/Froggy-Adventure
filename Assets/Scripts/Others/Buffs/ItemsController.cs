@@ -7,6 +7,8 @@ public class ItemsController : MonoBehaviour
     //Cho custom loại buff, đéo phải hard-code như trước
     [SerializeField] protected GameEnums.EBuffs _buff;
     private bool _allowApplyBuffToPlayer;
+    
+    public GameEnums.EBuffs Buff { get => _buff; }
 
     //Chỉ định item nào mới đc phép buff khi collide, chứ 0 thì nó gọi full item do register func từ trước
     public bool AllowToApplyBuffToPlayer { set => _allowApplyBuffToPlayer = value; }
@@ -14,7 +16,8 @@ public class ItemsController : MonoBehaviour
     private void Start()
     {
         //Register func, 0 GỌI, ApplyBuff đc gọi <=> Collide Trigger tag "Buff" trong PlayerManager
-        PlayerStateManager.OnAppliedBuff += ApplyBuffToPlayer;
+        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnAbsorbBuffs, ApplyBuffToPlayer);
+        //PlayerStateManager.OnAppliedBuff += ApplyBuffToPlayer;
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
@@ -31,13 +34,14 @@ public class ItemsController : MonoBehaviour
     protected virtual void OnDestroy()
     {
         //huỷ đăng ký
-        PlayerStateManager.OnAppliedBuff -= ApplyBuffToPlayer;
+        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.PlayerOnAbsorbBuffs, ApplyBuffToPlayer);
+        //PlayerStateManager.OnAppliedBuff -= ApplyBuffToPlayer;
         //Debug.Log("Da huy dky event");
     }
 
-    protected virtual void ApplyBuffToPlayer()
+    protected virtual void ApplyBuffToPlayer(object obj)
     {
-        if (_allowApplyBuffToPlayer)
+        if (_buff == (GameEnums.EBuffs)obj)
             BuffsManager.Instance.GetTypeOfBuff(_buff).ApplyBuff();
     }
 

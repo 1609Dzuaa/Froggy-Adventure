@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static GameEnums;
 
 public class GotHitState : PlayerBaseState
 {
@@ -14,7 +15,7 @@ public class GotHitState : PlayerBaseState
         base.EnterState(playerStateManager);
         HandleGotHit();
         if (PlayerHealthController.Instance.CurrentHP > 0)
-            _playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.gotHit);
+            _playerStateManager.GetAnimator().SetInteger("state", (int)EPlayerState.gotHit);
         Debug.Log("GotHit");
 
         //Chú ý khi làm việc với Any State
@@ -34,16 +35,29 @@ public class GotHitState : PlayerBaseState
 
     private void KnockBack()
     {
-        if (_playerStateManager.GetIsFacingRight())
-            _playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * _playerStateManager.GetPlayerStats.KnockBackForce.x, 0f));
-        else
-            _playerStateManager.GetRigidBody2D().AddForce(new Vector2(_playerStateManager.GetPlayerStats.KnockBackForce.x, 0f));
-        //Debug.Log("Knock");
+        if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Absorb).IsAllowToUpdate)
+        {
+            if (_isHitByTrap)
+            {
+                if (_playerStateManager.GetIsFacingRight())
+                    _playerStateManager.GetRigidBody2D().AddForce(new Vector2(-1 * _playerStateManager.GetPlayerStats.KnockBackForce.x, 0f));
+                else
+                    _playerStateManager.GetRigidBody2D().AddForce(new Vector2(_playerStateManager.GetPlayerStats.KnockBackForce.x, 0f));
+            }
+            else
+            {
+                if (_playerStateManager.IsHitFromRightSide)
+                    _playerStateManager.GetRigidBody2D().AddForce(new Vector2(_playerStateManager.GetPlayerStats.KnockBackForce.x, 0f));
+                else
+                    _playerStateManager.GetRigidBody2D().AddForce(new Vector2(-_playerStateManager.GetPlayerStats.KnockBackForce.x, 0f));
+            }
+        }
+        Debug.Log("Knocked");
     }
 
     private void HandleGotHit()
     {     
-        if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb).IsAllowToUpdate)
+        if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Absorb).IsAllowToUpdate)
             PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
         else
             PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_TEMP);
@@ -57,8 +71,7 @@ public class GotHitState : PlayerBaseState
 
         _playerStateManager.IsVunerable = true;
         _entryTime = Time.time;
-        if (_isHitByTrap)
-            KnockBack();
+        KnockBack();
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
         _playerStateManager.IsApplyGotHitEffect = true;
         SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_GOT_HIT_SOUND).Play();

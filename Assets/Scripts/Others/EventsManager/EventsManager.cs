@@ -8,7 +8,7 @@ public class EventsManager : MonoBehaviour
     private static EventsManager _instance;
     //You can assign values of any type to variables of type object
     //https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/reference-types
-    private Dictionary<string, Action<object>> _dictEvents = new();
+    private Dictionary<GameEnums.EEvents, Action<object>> _dictEvents = new();
 
     public static EventsManager Instance
     {
@@ -40,22 +40,22 @@ public class EventsManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void SubcribeAnEvent(string eventType, Action<object> function)
+    public void SubcribeAnEvent(GameEnums.EEvents eventType, Action<object> function)
     {
         if (!_dictEvents.ContainsKey(eventType))
             _dictEvents.Add(eventType, function); //Đảm bảo chỉ add cặp key-val này vào dict đúng 1 lần
         _dictEvents[eventType] += function;
     }
 
-    public void UnsubcribeAnEvent(string eventType, Action<object> function)
+    public void UnsubcribeAnEvent(GameEnums.EEvents eventType, Action<object> function)
     {
         _dictEvents[eventType] -= function;
     }
 
-    public void InvokeAnEvent(string eventType, object eventArgsType)
+    public void InvokeAnEvent(GameEnums.EEvents eventType, object eventArgsType)
     {
         //Gọi thằng event với tham số eventArgsType
         _dictEvents[eventType]?.Invoke(eventArgsType);
-        Debug.Log("eType, eArgsType: " + eventType + ", " + eventArgsType);
+        //Debug.Log("eType, eArgsType: " + eventType + ", " + eventArgsType);
     }
 }

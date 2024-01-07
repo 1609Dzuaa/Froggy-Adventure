@@ -37,13 +37,13 @@ public class BulletController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _id = 1;
+        _id = GameConstants.BULLET_ID;
     }
 
     private void OnEnable()
     {
         _entryTime = Time.time;
-        EventsManager.Instance.SubcribeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, OnDamageAllies);
+        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageAllies);
     }
 
     // Update is called once per frame
@@ -68,7 +68,7 @@ public class BulletController : MonoBehaviour
 
     private void OnDisable()
     {
-        EventsManager.Instance.UnsubcribeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, OnDamageAllies);
+        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageAllies);
         //Debug.Log("unsub event thanh cong");
     }
 
@@ -80,7 +80,7 @@ public class BulletController : MonoBehaviour
             {
                 var playerScript = collision.collider.GetComponent<PlayerStateManager>();
                 playerScript.IsHitFromRightSide = _isDirectionRight;
-                EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_DAMAGE_PLAYER_EVENT, null);
+                EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
             }
             SpawnBulletPieces();
             gameObject.SetActive(false);

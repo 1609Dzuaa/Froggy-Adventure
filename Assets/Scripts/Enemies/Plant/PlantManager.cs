@@ -30,7 +30,7 @@ public class PlantManager : NMEnemiesManager
         if (collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
         {
             _hasGotHit = true;
-            EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, 0);
+            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.PLAYER_ID);
             ChangeState(_nmEnemiesGotHitState);
         }
     }

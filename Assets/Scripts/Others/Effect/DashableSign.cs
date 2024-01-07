@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class DashableSign : MonoBehaviour
 {
+    PlayerStateManager _playerRef;
+
+    private void Start()
+    {
+        _playerRef = FindObjectOfType<PlayerStateManager>();
+    }
+
     private void OnEnable()
     {
-        transform.position = PlayerStateManager.PlayerInstance.DashableSignPosition.position; 
+        if (_playerRef)
+            transform.position = _playerRef.DashableSignPosition.position;
     }
 
     void Update()
     {
-        transform.position = PlayerStateManager.PlayerInstance.DashableSignPosition.position;
+        if (_playerRef)
+            transform.position = _playerRef.DashableSignPosition.position;
     }
 }

@@ -66,9 +66,9 @@
     #endregion
 
     #region Enemies Bullets Constants
-    public const int PLANT_BULLET = 0;
-    public const int BEE_BULLET = 1;
-    public const int TRUNK_BULLET = 2;
+    public const int PLANT_BULLET = 3;
+    public const int BEE_BULLET = 4;
+    public const int TRUNK_BULLET = 5;
     #endregion
 
     #region Effect
@@ -91,8 +91,9 @@
     public const string PLAYER_DEAD_SOUND = "PlayerDeadSound";
     #endregion
 
-    #region Event
-    public const string ENEMIES_ON_BEING_DAMAGED_EVENT = "EnemiesOnBeingDamaged";
-    public const string ENEMIES_ON_DAMAGE_PLAYER_EVENT = "EnemiesOnDamagePlayerEvent";
+    //Dùng để phân biệt function đã đky event OnEnemiesDie => Vì cả Player lẫn Bullet đều có thể dmg enemies
+    #region GameObjects ID 
+    public const int PLAYER_ID = 10;
+    public const int BULLET_ID = 11;
     #endregion
 }
