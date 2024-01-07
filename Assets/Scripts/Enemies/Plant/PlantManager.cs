@@ -25,23 +25,29 @@ public class PlantManager : NMEnemiesManager
         base.Update();
     }
 
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
+        {
+            _hasGotHit = true;
+            EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, 0);
+            ChangeState(_nmEnemiesGotHitState);
+        }
+    }
+
     //Event Func in Attack Animation
     private void SpawnBullet()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 
         GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.PLANT_BULLET);
 
-        if (bullet != null)
-        {
-            bullet.SetActive(true);
-            bullet.transform.position = _shootPosition.position;
-            bullet.GetComponent<BulletController>().IsDirectionRight = _isFacingRight;
-            bullet.GetComponent<BulletController>().Type = GameConstants.PLANT_BULLET;
-            //Debug.Log("I'm here");
-        }
-
+        bullet.SetActive(true);
+        bullet.transform.position = _shootPosition.position;
+        bullet.GetComponent<BulletController>().IsDirectionRight = _isFacingRight;
+        bullet.GetComponent<BulletController>().Type = GameConstants.PLANT_BULLET;
+        //Debug.Log("I'm here");
     }
 
 }

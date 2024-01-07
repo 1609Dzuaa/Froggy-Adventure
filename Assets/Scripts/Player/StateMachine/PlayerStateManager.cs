@@ -44,6 +44,8 @@ public class PlayerStateManager : MonoBehaviour
     private Vector2 _InteractPosition;
     private bool _isVunerable;
     private bool _isHitFromRightSide;
+    private int _id;
+    private bool _hasDamagedEnemy;
 
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
@@ -134,6 +136,8 @@ public class PlayerStateManager : MonoBehaviour
     public PlayerStats GetPlayerStats { get { return _playerStats; } set { _playerStats = value; } } 
 
     public bool IsApplyGotHitEffect { set { _isApplyGotHitEffect = value; } }
+
+    public bool HasDamagedEnemy { set => _hasDamagedEnemy = value; }
     
     public static event Action OnAppliedBuff;
 
@@ -141,11 +145,16 @@ public class PlayerStateManager : MonoBehaviour
     {
         CreatePlayerInstance();
         InitReference();
-        EnemiesManager.OnDamagePlayer += OnBeingDamaged;
-        MEnemiesManager.OnBeingDamaged += OnDamageEnemies;
+        RegisterFunction();
     }
 
-    private void OnBeingDamaged()
+    private void RegisterFunction()
+    {
+        EventsManager.Instance.SubcribeAnEvent(GameConstants.ENEMIES_ON_DAMAGE_PLAYER_EVENT, OnBeingDamaged);
+        EventsManager.Instance.SubcribeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, OnDamageEnemies);
+    }
+
+    private void OnBeingDamaged(object obj)
     {
         if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb).IsAllowToUpdate)
         {
@@ -161,11 +170,25 @@ public class PlayerStateManager : MonoBehaviour
         //Thằng nào có liên quan đến thì đăng ký và xử lý
     }
 
-    private void OnDamageEnemies()
+    int count = 1;
+
+    private void OnDamageEnemies(object obj)
     {
+        //dafuq why this thing is being called twice @?@
+        if (_id != (int)obj)
+            return;
+
+        //Tạm để thế này, coi lại sao nó call 2 lần (count = 2) ?
+        if (_hasDamagedEnemy)
+            return;
+
+        _hasDamagedEnemy = true;
         _canDbJump = true; //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
         ChangeState(jumpState);
-        Debug.Log("Dmg Enemies");
+        //EventsManager.Instance.UnsubcribeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, OnDamageEnemies);
+        //EventsManager.Instance.SubcribeAnEvent(GameConstants.ENEMIES_ON_DAMAGE_PLAYER_EVENT, OnBeingDamaged);
+        //Debug.Log("Dmg Enemies " + count);
+        count++;
     }
 
     private void CreatePlayerInstance()

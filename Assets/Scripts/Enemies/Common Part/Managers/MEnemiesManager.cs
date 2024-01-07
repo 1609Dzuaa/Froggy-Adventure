@@ -60,8 +60,6 @@ public class MEnemiesManager : EnemiesManager
 
     public void SetHasGotHit(bool para) { _hasGotHit = para; }
 
-    public static Action OnBeingDamaged;
-
     protected override void Awake()
     {
         base.Awake(); //Lấy anim, rb từ EnemiesManager
@@ -134,9 +132,7 @@ public class MEnemiesManager : EnemiesManager
         base.OnCollisionEnter2D(collision);
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
-            var BulletCtrl = collision.collider.GetComponent<BulletController>();
-            BulletCtrl.SpawnBulletPieces();
-            BulletCtrl.gameObject.SetActive(false);
+            EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, 1);
             ChangeState(_mEnemiesGotHitState);
         }
     }
@@ -146,24 +142,20 @@ public class MEnemiesManager : EnemiesManager
         if(collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
         {
             _hasGotHit = true;
-            BeingDamaged();
+            EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, 0);
             ChangeState(_mEnemiesGotHitState);
-
-            /*var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
-            playerScript.ChangeState(playerScript.jumpState);*/
         }
     }
 
-    protected virtual void BeingDamaged()
+    protected virtual void OnDestroy()
     {
-        OnBeingDamaged?.Invoke();
+
     }
 
-    //Event của Got Hit Animation
     protected void DestroyParent()
     {
         Destroy(_parent);
+        //Event của Got Hit Animation
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ public class BulletController : MonoBehaviour
     private float _entryTime;
     private bool _isDirectionRight = false;
     private int _type;
+    private int _id;
 
     public bool IsDirectionRight { set { _isDirectionRight = value; } }
 
@@ -35,11 +37,13 @@ public class BulletController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _id = 1;
     }
 
     private void OnEnable()
     {
         _entryTime = Time.time;
+        EventsManager.Instance.SubcribeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, OnDamageAllies);
     }
 
     // Update is called once per frame
@@ -62,6 +66,12 @@ public class BulletController : MonoBehaviour
             _rb.velocity = new Vector2(0, -_bulletSpeed);
     }
 
+    private void OnDisable()
+    {
+        EventsManager.Instance.UnsubcribeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, OnDamageAllies);
+        //Debug.Log("unsub event thanh cong");
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.name == GameConstants.PLAYER_NAME || collision.collider.CompareTag(GameConstants.GROUND_TAG))
@@ -69,17 +79,8 @@ public class BulletController : MonoBehaviour
             if (collision.collider.name == GameConstants.PLAYER_NAME)
             {
                 var playerScript = collision.collider.GetComponent<PlayerStateManager>();
-
-                if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Absorb).IsAllowToUpdate)
-                {
-                    if (_isDirectionRight)
-                        playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce);
-                    else
-                        playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.KnockBackForce * new Vector2(-1f, 1f));
-                }
-
-                if (PlayerHealthController.Instance.CurrentHP > 0)
-                    playerScript.ChangeState(playerScript.gotHitState);
+                playerScript.IsHitFromRightSide = _isDirectionRight;
+                EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_DAMAGE_PLAYER_EVENT, null);
             }
             SpawnBulletPieces();
             gameObject.SetActive(false);
@@ -115,5 +116,15 @@ public class BulletController : MonoBehaviour
         GameObject hitShieldEff = EffectPool.Instance.GetObjectInPool(GameConstants.HIT_SHIELD_EFFECT);
         hitShieldEff.SetActive(true);
         hitShieldEff.GetComponent<EffectController>().SetPosition(transform.position);
+    }
+
+    private void OnDamageAllies(object obj)
+    {
+        if (_id != (int)obj)
+            return;
+
+        SpawnBulletPieces();
+        gameObject.SetActive(false);
+        Debug.Log("ID cua tao la " + (int)obj);
     }
 }

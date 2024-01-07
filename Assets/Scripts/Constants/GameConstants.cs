@@ -90,4 +90,9 @@
     public const string PLAYER_DASH_SOUND = "PlayerDashSound";
     public const string PLAYER_DEAD_SOUND = "PlayerDeadSound";
     #endregion
+
+    #region Event
+    public const string ENEMIES_ON_BEING_DAMAGED_EVENT = "EnemiesOnBeingDamaged";
+    public const string ENEMIES_ON_DAMAGE_PLAYER_EVENT = "EnemiesOnDamagePlayerEvent";
+    #endregion
 }

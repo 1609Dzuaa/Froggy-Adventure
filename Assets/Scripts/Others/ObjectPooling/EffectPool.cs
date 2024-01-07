@@ -19,6 +19,7 @@ public class EffectPool : MonoBehaviour
     [SerializeField] private GameObject _hitShieldEffect;
 
     [Header("Collect")]
+    [SerializeField] private int _collectEffectCount;
     [SerializeField] private GameObject _collectFruitsEffect;
     [SerializeField] private GameObject _collectDiamondEffect;
     [SerializeField] private GameObject _collectHPEffect;
@@ -84,7 +85,7 @@ public class EffectPool : MonoBehaviour
         InstantiateEffect(_geckoAppearEffect, GameConstants.GECKO_APPEAR_EFFECT);
         InstantiateEffect(_geckoDisappearEffect, GameConstants.GECKO_DISAPPEAR_EFFECT);
         InstantiateManyEffect(_hitShieldEffect, GameConstants.HIT_SHIELD_EFFECT, _hitShieldEffectCount);
-        InstantiateEffect(_collectFruitsEffect, GameConstants.COLLECT_FRUITS_EFFECT);
+        InstantiateManyEffect(_collectFruitsEffect, GameConstants.COLLECT_FRUITS_EFFECT, _collectEffectCount);
         InstantiateEffect(_collectDiamondEffect, GameConstants.COLLECT_DIAMOND_EFFECT);
         InstantiateEffect(_collectHPEffect, GameConstants.COLLECT_HP_EFFECT);
         InstantiateManyEffect(_brownExplosionEffect, GameConstants.BROWN_EXPLOSION, _brownExplosionEffectCount);

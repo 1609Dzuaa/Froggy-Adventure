@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class NMEnemiesManager : EnemiesManager
 {
-    private NMEnemiesIdleState _nmEnemiesIdleState = new();
-    private NMEnemiesAttackState _nmEnemiesAttackState = new();
-    private NMEnemiesGotHitState _nmEnemiesGotHitState = new();
+    protected NMEnemiesIdleState _nmEnemiesIdleState = new();
+    protected NMEnemiesAttackState _nmEnemiesAttackState = new();
+    protected NMEnemiesGotHitState _nmEnemiesGotHitState = new();
 
     public NMEnemiesIdleState getNMEnemiesIdleState { get { return _nmEnemiesIdleState; } set { _nmEnemiesIdleState = value; } }
-
-    public NMEnemiesAttackState getNMEnemiesAttackState { get { return _nmEnemiesAttackState; } }
-
-    public NMEnemiesGotHitState getNMEnemiesGotHitState { get { return _nmEnemiesGotHitState; } }
 
     protected override void Awake()
     {
@@ -42,9 +38,7 @@ public class NMEnemiesManager : EnemiesManager
         }
         else if(collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
-            var BulletCtrl = collision.collider.GetComponent<BulletController>();
-            BulletCtrl.SpawnBulletPieces();
-            BulletCtrl.gameObject.SetActive(false);
+            EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, 1);
             ChangeState(_nmEnemiesGotHitState);
         }
     }
@@ -54,22 +48,20 @@ public class NMEnemiesManager : EnemiesManager
         if (collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
         {
             _hasGotHit = true;
-            var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
-            playerScript.ChangeState(playerScript.jumpState);
+            EventsManager.Instance.InvokeAnEvent(GameConstants.ENEMIES_ON_BEING_DAMAGED_EVENT, 0);
             ChangeState(_nmEnemiesGotHitState);
         }
     }
 
     protected virtual void AllowAttackPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 
         ChangeState(_nmEnemiesAttackState);
     }
 
-    private void SelfDestroy()
+    protected void SelfDestroy()
     {
         Destroy(this.gameObject);
     }
