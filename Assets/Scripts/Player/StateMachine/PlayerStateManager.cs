@@ -131,6 +131,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
         EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
+        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, OnInteractWithNPC);
     }
 
     private void InitReference()
@@ -151,6 +152,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
         EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
+        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, OnInteractWithNPC);
     }
 
     private void SetupProperties()
@@ -247,6 +249,11 @@ public class PlayerStateManager : MonoBehaviour
         ChangeState(jumpState);
         //Debug.Log("Dmg Enemies " + count);
         count++;
+    }
+
+    private void OnInteractWithNPC(object obj)
+    {
+        //refactor phần này
     }
 
     void Update()

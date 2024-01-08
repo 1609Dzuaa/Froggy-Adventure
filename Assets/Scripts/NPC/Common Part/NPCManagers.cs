@@ -35,6 +35,7 @@ public class NPCManagers : CharactersManager
     protected bool _isPlayerNearBy;
     protected bool _hasDetectedPlayer;
     protected Vector2 _conversationPos;
+    protected PlayerStateManager _playerReference;
 
     public float AdjustConversationRange { get { return _adjustConversationRange; } }
 
@@ -55,6 +56,7 @@ public class NPCManagers : CharactersManager
     protected override void Awake()
     {
         base.Awake();
+        _playerReference = FindObjectOfType<PlayerStateManager>();
     }
 
     protected override void Start()
@@ -106,16 +108,15 @@ public class NPCManagers : CharactersManager
         if (_dialog.Started && !_dialog.IsWaiting)
             _dialog.ToggleIndicator(false);
 
-        //Kết thúc thoại nếu Player 0 ở gần (rời đi)
-        //if (!_isPlayerNearBy)
-            //_dialog.EndDialog();
-
+        //Direct-Reference: Shouldn't do this
         //Thêm ĐK Player OnGround thì mới cho phép bắt đầu xl
         var playerScript = _playerRef.GetComponent<PlayerStateManager>();
         if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround() && _state is not NPCTalkState)
         {
-            playerScript.IsInteractingWithNPC = true;
+            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, null);
             ChangeState(_npcTalkState);
+            /*playerScript.IsInteractingWithNPC = true;
+            ChangeState(_npcTalkState);*/
         }
     }
 
