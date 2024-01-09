@@ -15,16 +15,16 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  _playerCheckDistance: 10
+  _playerCheckDistance: 8
   _wallLayer:
     serializedVersion: 2
     m_Bits: 64
   _wallCheckDistance: 0.8
-  _knockForce: {x: 0, y: 0}
-  _restTime: 0
-  _patrolTime: 0
-  _attackDelay: 0
-  _patrolSpeed: 0
-  _attackSpeed: 0
+  _knockForce: {x: 5, y: 2.5}
+  _restTime: 1.5
+  _patrolTime: 1.5
+  _attackDelay: 0.3
+  _patrolSpeed: 2.5
+  _attackSpeed: 5
   _degreeEachRotation: 0
   _timeEachRotate: 0

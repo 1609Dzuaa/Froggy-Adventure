@@ -8,7 +8,7 @@ public class PigAttackGreenState : MEnemiesAttackState
     {
         _mEnemiesManager = (MEnemiesManager)charactersManager;
         _pigManager = (PigManager)charactersManager;
-        _pigManager.Animator.SetInteger("state", (int)GameEnums.EPigState.attackGreen);
+        _pigManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPigState.attackGreen);
         Debug.Log("Atk Green");
     }
 

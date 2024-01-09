@@ -8,7 +8,7 @@ public class SlimeGotHitState : CharacterBaseState
     {
         base.EnterState(charactersManager);
         _slimeManager = (SlimeManager)charactersManager;
-        _slimeManager.Animator.SetInteger("state", (int)GameEnums.ESlimState.gotHit);
+        _slimeManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ESlimState.gotHit);
         //Nếu bị Player hit thì đánh dấu trong Dialog là SC bị động
         _slimeManager.GetDialog().StartConversationPassive = true;
         _slimeManager.GetDialog().StartDialog(_slimeManager.GetStartIndexIfGotHit());

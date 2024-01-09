@@ -9,7 +9,7 @@ public class BeeChaseState : MEnemiesAttackState
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
-        _mEnemiesManager.Animator.SetInteger("state", (int)GameEnums.EMEnemiesState.patrol);
+        _mEnemiesManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EMEnemiesState.patrol);
         _beeManager = (BeeManager)charactersManager;
         _attackPos = new Vector2(_beeManager.GetPlayer().position.x, _beeManager.GetPlayer().position.y + _beeManager.AdJustYAxisAttackRange());
         HandleLeftRightLogic();

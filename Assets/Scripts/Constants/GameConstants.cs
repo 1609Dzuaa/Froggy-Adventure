@@ -14,8 +14,12 @@
 
     #endregion
 
-    #region ANIMATION_CONSTANT
+    #region Animation Constants
     //-----------------------------//
+
+    #region Parameter State
+    public const string ANIM_PARA_STATE = "state";
+    #endregion
 
     #region Player
     public const string DEAD_ANIMATION = "dead";

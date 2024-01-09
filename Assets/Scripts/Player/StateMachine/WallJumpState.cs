@@ -11,7 +11,7 @@ public class WallJumpState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        _playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.wallJump);
+        _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.wallJump);
         _playerStateManager.FlipSpriteAfterWallSlide();
         HandleWallJump();
         //Debug.Log("WallJump");

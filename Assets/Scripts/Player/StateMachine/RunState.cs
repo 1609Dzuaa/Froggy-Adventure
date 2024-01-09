@@ -5,7 +5,7 @@ public class RunState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.run);
+        playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
         //Debug.Log("Run");
     }

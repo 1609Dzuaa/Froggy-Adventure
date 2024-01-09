@@ -23,7 +23,7 @@ public class EnemiesStats : ScriptableObject
 
     [Header("Speed")]
     [SerializeField] private float _patrolSpeed;
-    [SerializeField] private float _attackSpeed;
+    [SerializeField] private float _chaseSpeed;
 
     [Header("Z Rotation When Dead")]
     [SerializeField] private float _degreeEachRotation;
@@ -47,5 +47,5 @@ public class EnemiesStats : ScriptableObject
 
     public float PatrolSpeed { get { return _patrolSpeed; } }
 
-    public float AttackSpeed { get { return _attackSpeed; } }
+    public float ChaseSpeed { get { return _chaseSpeed; } }
 }

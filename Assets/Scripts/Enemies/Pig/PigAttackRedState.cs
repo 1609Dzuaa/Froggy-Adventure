@@ -10,7 +10,7 @@ public class PigAttackRedState : MEnemiesAttackState
     public override void EnterState(CharactersManager charactersManager)
     {
         _pigManager = (PigManager)charactersManager;
-        _pigManager.Animator.SetInteger("state", (int)GameEnums.EPigState.attackRed);
+        _pigManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPigState.attackRed);
         _pigManager.HasGotHit = false;
         Debug.Log("Atk Red");
     }

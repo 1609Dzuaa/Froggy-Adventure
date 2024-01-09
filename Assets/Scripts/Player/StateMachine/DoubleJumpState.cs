@@ -6,7 +6,7 @@ public class DoubleJumpState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        _playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.doubleJump);
+        _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.doubleJump);
         HandleDbJump();
         //Debug.Log("DBJump");
     }

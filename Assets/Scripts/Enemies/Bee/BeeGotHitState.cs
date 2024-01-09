@@ -10,7 +10,7 @@ public class BeeGotHitState : MEnemiesGotHitState
     {
         base.EnterState(charactersManager);
         _beeManager = (BeeManager)charactersManager;
-        _beeManager.Animator.SetInteger("state", (int)GameEnums.EMEnemiesState.gotHit);
+        _beeManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EMEnemiesState.gotHit);
         _beeManager.GetCollider2D.enabled = false;
         _beeManager.GetRigidbody2D().gravityScale = 1f;
         lastRotateTime = Time.time;

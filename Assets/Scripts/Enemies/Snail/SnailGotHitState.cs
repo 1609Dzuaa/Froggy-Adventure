@@ -23,7 +23,7 @@ public class SnailGotHitState : MEnemiesGotHitState
         //2 dòng dưới để vẽ đè snail lên map, giúp nó 0 bị map che khi die
         _snailManager.SpriteRenderer.sortingLayerName = GameConstants.RENDER_MAP_LAYER;
         _snailManager.SpriteRenderer.sortingOrder = 1;
-        _snailManager.Animator.SetInteger("state", (int)GameEnums.ESnailState.gotHit);
+        _snailManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ESnailState.gotHit);
         _snailManager.GetRigidbody2D().velocity = Vector2.zero; //Cố định vị trí
         _snailManager.GetCollider2D.enabled = false;
         _snailManager.GetRigidbody2D().gravityScale = 1f;

@@ -12,7 +12,7 @@ public class JumpState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        _playerStateManager.GetAnimator().SetInteger("state", (int)GameEnums.EPlayerState.jump);
+        _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.jump);
         _playerStateManager.GetDustPS().Play();
         HandleJump();
         if (_playerStateManager.GetPrevStateIsWallSlide())

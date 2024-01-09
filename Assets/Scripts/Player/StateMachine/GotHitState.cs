@@ -15,7 +15,7 @@ public class GotHitState : PlayerBaseState
         base.EnterState(playerStateManager);
         HandleGotHit();
         if (PlayerHealthController.Instance.CurrentHP > 0)
-            _playerStateManager.GetAnimator().SetInteger("state", (int)EPlayerState.gotHit);
+            _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)EPlayerState.gotHit);
         Debug.Log("GotHit");
 
         //Chú ý khi làm việc với Any State

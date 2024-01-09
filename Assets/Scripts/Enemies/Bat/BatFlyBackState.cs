@@ -9,7 +9,7 @@ public class BatFlyBackState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _batManager = (BatManager)charactersManager;
-        _mEnemiesManager.Animator.SetInteger("state", (int)GameEnums.EBatState.patrol);
+        _mEnemiesManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBatState.patrol);
         //Debug.Log("Fly back");
     }
 

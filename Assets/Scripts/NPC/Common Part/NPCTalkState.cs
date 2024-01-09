@@ -8,7 +8,7 @@ public class NPCTalkState : CharacterBaseState
     {
         base.EnterState(charactersManager);
         _npcManager = (NPCManagers)charactersManager;
-        _npcManager.Animator.SetInteger("state", (int)GameEnums.ENPCState.idle);
+        _npcManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ENPCState.idle);
         _npcManager.GetRigidbody2D().velocity = Vector2.zero;
         HandleInteractWithPlayer(_npcManager, _npcManager.GetStartIndex());
         Debug.Log("Talk");

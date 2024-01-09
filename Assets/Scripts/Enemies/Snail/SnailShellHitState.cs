@@ -20,7 +20,7 @@ public class SnailShellHitState : MEnemiesBaseState
 
     private void HandleEnterShellHitState()
     {
-        _snailManager.Animator.SetInteger("state", (int)GameEnums.ESnailState.shellHit);
+        _snailManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ESnailState.shellHit);
         _snailManager.HealthPoint -= 1;
         _snailManager.SetHasGotHit(false);
         _snailManager.GetRigidbody2D().velocity = Vector2.zero;

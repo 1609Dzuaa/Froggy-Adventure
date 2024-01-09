@@ -9,7 +9,7 @@ public class BunnyAttackFallState : MEnemiesAttackState
     {
         base.EnterState(charactersManager);
         _bunnyManager = (BunnyManager)charactersManager;
-        _bunnyManager.Animator.SetInteger("state", (int)GameEnums.EBunnyState.attackFall);
+        _bunnyManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBunnyState.attackFall);
     }
 
     public override void ExitState() { }

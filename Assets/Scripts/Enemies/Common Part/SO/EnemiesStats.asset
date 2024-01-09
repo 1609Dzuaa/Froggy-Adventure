@@ -12,6 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 026fcc1f296f2f7418f14d5297612bf8, type: 3}
   m_Name: EnemiesStats
   m_EditorClassIdentifier: 
-  _restTime: 2
-  _patrolTime: 2
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 8320
+  _playerCheckDistance: 7
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _wallCheckDistance: 0.7
+  _knockForce: {x: 2.5, y: 5}
+  _restTime: 1.5
+  _patrolTime: 1.5
+  _attackDelay: 0.3
   _patrolSpeed: 2
+  _chaseSpeed: 5
+  _degreeEachRotation: 0
+  _timeEachRotate: 0

@@ -7,7 +7,7 @@ public class NMEnemiesIdleState : NMEnemiesBaseState
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
-        _nmEnemiesManager.Animator.SetInteger("state", (int)GameEnums.ENMEnemiesState.idle);
+        _nmEnemiesManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ENMEnemiesState.idle);
         //Debug.Log("Idle");
     }
 
