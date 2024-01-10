@@ -27,7 +27,7 @@ public class PlantManager : NMEnemiesManager
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == GameConstants.PLAYER_NAME && !_hasGotHit)
+        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
         {
             _hasGotHit = true;
             EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.PLAYER_ID);

@@ -64,15 +64,16 @@ public class BoxController : GameObjectManager
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player" && !_isGotHit)
+        if (collision.gameObject.CompareTag(GameConstants.PLAYER_TAG) && !_isGotHit)
         {
             _healthPoint--;
+            //direct-ref: => nen thay = event
             var rbPlayer = collision.gameObject.GetComponent<PlayerStateManager>();
             rbPlayer.GetRigidBody2D().AddForce(new Vector2(0f, _forceApply));
             _isGotHit = true; //Mark this box has been hitted and make sure only applied force once
             if (_healthPoint == 0)
             {
-                Invoke("AllowSpawnPiece", _delaySpawnPiece);
+                Invoke(nameof(AllowSpawnPiece), _delaySpawnPiece);
                 _brokeSound.Play();
             }
             else
@@ -82,8 +83,9 @@ public class BoxController : GameObjectManager
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Bullet"))
+        if(collision.gameObject.CompareTag(GameConstants.BULLET_TAG))
         {
+            //thay = event luon
             var bulletCtrl = collision.gameObject.GetComponent<BulletController>();
             bulletCtrl.SpawnBulletPieces();
             Destroy(bulletCtrl.gameObject);
@@ -117,6 +119,7 @@ public class BoxController : GameObjectManager
     {
         _hasSpawnPiece = true;
 
+        //Object pool cho thang nay luon?
         Instantiate(_brPiece1, _pos1.position, Quaternion.identity, null);
         Instantiate(_brPiece2, _pos2.position, Quaternion.identity, null);
         Instantiate(_brPiece3, _pos3.position, Quaternion.identity, null);

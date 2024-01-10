@@ -216,6 +216,22 @@ public class PlayerStateManager : MonoBehaviour
             EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.PlayerOnAbsorbBuffs, itemsController.Buff);
             //Debug.Log("call from here");
         }
+        else if (collision.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
+        {
+            //Enemies/Trap sẽ áp lực vào Player theo hướng của nó chứ 0 phải của Player
+            gotHitState.IsHitByTrap = true;
+            ChangeState(gotHitState);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
+        {
+            gotHitState.IsHitByTrap = true;
+            ChangeState(gotHitState);
+        }
+        //Tránh TH Overlap
     }
 
     private void OnTriggerExit2D(Collider2D collision)

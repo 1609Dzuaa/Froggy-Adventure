@@ -11,7 +11,6 @@ public class FireTrapController : GameObjectManager
     [SerializeField] private GameObject _fire;
 
     private bool _hasGotHit;
-    private bool _isFireOn;
 
     protected override void Awake()
     {
@@ -23,18 +22,12 @@ public class FireTrapController : GameObjectManager
         base.Start();
     }
 
-    private void Update()
-    {
-        if (_isFireOn)
-            _fire.SetActive(true);
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "Player" && !_hasGotHit)
+        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
         {
             _hasGotHit = true;
-            _anim.SetTrigger("GotHit");
+            _anim.SetTrigger(GameConstants.FIRE_TRAP_ANIM_GOT_HIT);
             StartCoroutine(FireOn());
         }
     }
@@ -43,7 +36,7 @@ public class FireTrapController : GameObjectManager
     {
         yield return new WaitForSeconds(_delayFireOn);
 
-        _isFireOn = true;
-        _anim.SetTrigger("On");
+        _fire.SetActive(true);
+        _anim.SetTrigger(GameConstants.FIRE_TRAP_ANIM_ON);
     }
 }

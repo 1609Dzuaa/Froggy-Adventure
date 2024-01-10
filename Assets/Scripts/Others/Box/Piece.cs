@@ -17,12 +17,12 @@ public class Piece : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         if (rb != null)
             rb.AddForce(force);
-        Invoke("DestroyItSelf", time);
+        Invoke(nameof(DestroyItSelf), time);
     }
 
     private void DestroyItSelf()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
 }

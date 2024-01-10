@@ -36,7 +36,7 @@ public class FallingPlatformController : GameObjectManager
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "Player" && !_hasBeenStepOn)
+        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasBeenStepOn)
         {
             _hasBeenStepOn = true;
             StartCoroutine(Disable());
@@ -58,6 +58,6 @@ public class FallingPlatformController : GameObjectManager
     private IEnumerator Destroy()
     {
         yield return new WaitForSeconds(1.5f);
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }

@@ -7,9 +7,9 @@ public class CharactersManager : GameObjectManager
     protected bool _isFacingRight = false;
     protected Rigidbody2D _rb;
 
-    public bool GetIsFacingRight() { return this._isFacingRight; }
+    public bool GetIsFacingRight() { return _isFacingRight; }
 
-    public Rigidbody2D GetRigidbody2D() { return this._rb; }
+    public Rigidbody2D GetRigidbody2D() { return _rb; }
 
     protected CharacterBaseState _state;
 

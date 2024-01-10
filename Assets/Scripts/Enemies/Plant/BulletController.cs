@@ -74,9 +74,9 @@ public class BulletController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.name == GameConstants.PLAYER_NAME || collision.collider.CompareTag(GameConstants.GROUND_TAG))
+        if (collision.collider.CompareTag(GameConstants.PLAYER_TAG) || collision.collider.CompareTag(GameConstants.GROUND_TAG))
         {
-            if (collision.collider.name == GameConstants.PLAYER_NAME)
+            if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
             {
                 var playerScript = collision.collider.GetComponent<PlayerStateManager>();
                 playerScript.IsHitFromRightSide = _isDirectionRight;

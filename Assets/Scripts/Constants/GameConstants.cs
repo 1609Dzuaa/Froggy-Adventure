@@ -30,6 +30,11 @@
     public const string IDLE = "Idle";
     #endregion
 
+    #region Fire Trap Constants
+    public const string FIRE_TRAP_ANIM_GOT_HIT = "GotHit";
+    public const string FIRE_TRAP_ANIM_ON = "On";
+    #endregion
+
     //-----------------------------//
     #endregion
 
@@ -52,10 +57,7 @@
     public const string SHIELD_TAG = "Shield";
     public const string ENEMIES_TAG = "Enemy";
     public const string BUFF_TAG = "Buff";
-    #endregion
-
-    #region Name Constants
-    public const string PLAYER_NAME = "Player";
+    public const string PLAYER_TAG = "Player";
     #endregion
 
     #region Axis Constants

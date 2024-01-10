@@ -17,7 +17,7 @@ public class ItemsController : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == GameConstants.PLAYER_NAME)
+        if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             SoundsManager.Instance.GetTypeOfSound(GameConstants.COLLECT_FRUITS_SOUND).Play();
             SpawnEffect();

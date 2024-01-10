@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FrogHPController : ItemsController //Tạo class Item
+public class FrogHPController : ItemsController
 {
     [Header("Parent")]
     [SerializeField] private GameObject _parent;
@@ -35,7 +35,7 @@ public class FrogHPController : ItemsController //Tạo class Item
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.name == GameConstants.PLAYER_NAME)
+        if(collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             SpawnEffect();
             PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_NORMAL);
