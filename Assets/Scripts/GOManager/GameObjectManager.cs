@@ -11,13 +11,23 @@ public class GameObjectManager : MonoBehaviour
     //Awake should be use as constructor
     protected virtual void Awake()
     {
-        _anim = GetComponent<Animator>();
+        GetReferenceComponents();
     }
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        
+        SetUpProperties();
+    }
+
+    protected virtual void GetReferenceComponents()
+    {
+        _anim = GetComponent<Animator>();
+    }
+
+    protected virtual void SetUpProperties()
+    {
+
     }
 
 }

@@ -15,6 +15,11 @@ public class FallingPlatformController : GameObjectManager
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _rb = GetComponent<Rigidbody2D>();
     }

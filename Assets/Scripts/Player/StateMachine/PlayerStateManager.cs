@@ -131,6 +131,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
         EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
+        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, OnJumpPassive);
         EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, OnInteractWithNPC);
     }
 
@@ -261,10 +262,17 @@ public class PlayerStateManager : MonoBehaviour
             return;
 
         _hasDamagedEnemy = true;
-        _canDbJump = true; //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
-        ChangeState(jumpState);
         //Debug.Log("Dmg Enemies " + count);
         count++;
+    }
+
+    private void OnJumpPassive(object obj)
+    {
+        _canDbJump = true; //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
+        ChangeState(jumpState);
+        Debug.Log("JumpPassiv");
+        //Nhảy bị động
+        //Again being called twice @@?
     }
 
     private void OnInteractWithNPC(object obj)

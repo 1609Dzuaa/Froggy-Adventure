@@ -67,9 +67,8 @@ public class BoxController : GameObjectManager
         if (collision.gameObject.CompareTag(GameConstants.PLAYER_TAG) && !_isGotHit)
         {
             _healthPoint--;
-            //direct-ref: => nen thay = event
-            var rbPlayer = collision.gameObject.GetComponent<PlayerStateManager>();
-            rbPlayer.GetRigidBody2D().AddForce(new Vector2(0f, _forceApply));
+            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            
             _isGotHit = true; //Mark this box has been hitted and make sure only applied force once
             if (_healthPoint == 0)
             {

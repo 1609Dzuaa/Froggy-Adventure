@@ -143,6 +143,7 @@ public class MEnemiesManager : EnemiesManager
         {
             _hasGotHit = true;
             EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.PLAYER_ID);
+            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, null);
             ChangeState(_mEnemiesGotHitState);
         }
     }

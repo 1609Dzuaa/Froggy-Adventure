@@ -61,6 +61,7 @@
         EnemiesOnDamagePlayer,
         EnemiesOnDie,
         PlayerOnAbsorbBuffs,
+        PlayerOnJumpPassive,
         PlayerOnInteractNPCs,
     }
 

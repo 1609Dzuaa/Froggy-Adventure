@@ -45,12 +45,22 @@ public class SquareRockManager : GameObjectManager
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
         _rb = GetComponent<Rigidbody2D>();
     }
 
     protected override void Start()
     {
         base.Start();
+        SetUpProperties();
+    }
+
+    protected override void SetUpProperties()
+    {
         _isMovingLeft = true;
         _entryTime = Time.time;
         _scaleFactor = 0;
