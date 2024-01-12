@@ -21,6 +21,8 @@ public abstract class EnemiesManager : CharactersManager
     protected bool _hasGotHit; //Đánh dấu bị Hit, tránh Trigger nhiều lần
     protected Collider2D _collider2D;
 
+    public Action<object> OnDamagePlayer;
+        
     //Public Field
     public Vector2 KnockForce { get { return _knockForce; } }
 
@@ -38,8 +40,6 @@ public abstract class EnemiesManager : CharactersManager
     {
         base.Awake(); //Lấy anim và rb từ CharactersManager
         _collider2D = GetComponent<Collider2D>();
-        //Nên vứt hết các khởi tạo trong Awake tránh 1 số TH bị Null Ref khi để trong Start
-        //Vì Awake chạy trước Start và luôn chạy kể cả khi script bị disabled
     }
 
     // Start is called before the first frame update
@@ -48,8 +48,9 @@ public abstract class EnemiesManager : CharactersManager
         base.Start();
         if (transform.rotation.eulerAngles.y == 180f)
             _isFacingRight = true;
+        EventsManager.Instance.AddAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnDamagePlayer);
         //Debug.Log("IfR: " + _isFacingRight);
-        
+
     }
 
     protected override void Update()

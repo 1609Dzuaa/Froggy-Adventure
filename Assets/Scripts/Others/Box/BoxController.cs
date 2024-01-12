@@ -89,7 +89,7 @@ public class BoxController : GameObjectManager
             bulletCtrl.SpawnBulletPieces();
             Destroy(bulletCtrl.gameObject);
             _isGotHit = true; //Mark this box has been hitted and make sure only applied force once
-            Invoke("AllowSpawnPiece", _delaySpawnPiece);
+            Invoke(nameof(AllowSpawnPiece), _delaySpawnPiece);
         }
     }
 

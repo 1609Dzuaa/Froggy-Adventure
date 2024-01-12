@@ -11,8 +11,13 @@ public class ItemsController : MonoBehaviour
 
     private void Start()
     {
+
+    }
+
+    private void OnEnable()
+    {
         //Register func, 0 GỌI, ApplyBuff đc gọi <=> Collide Trigger tag "Buff" trong PlayerManager
-        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnAbsorbBuffs, ApplyBuffToPlayer);
+        //EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnAbsorbBuffs, ApplyBuffToPlayer);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)

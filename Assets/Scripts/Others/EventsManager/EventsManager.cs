@@ -40,10 +40,14 @@ public class EventsManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    public void AddAnEvent(GameEnums.EEvents eventType, Action<object> function)
+    {
+        //Val là cái event, còn thg nào quan tâm cái event đó thì gọi hàm dưới
+        _dictEvents.Add(eventType, function);
+    }
+
     public void SubcribeAnEvent(GameEnums.EEvents eventType, Action<object> function)
     {
-        if (!_dictEvents.ContainsKey(eventType))
-            _dictEvents.Add(eventType, function); //Đảm bảo chỉ add cặp key-val này vào dict đúng 1 lần
         _dictEvents[eventType] += function;
     }
 
@@ -54,8 +58,11 @@ public class EventsManager : MonoBehaviour
 
     public void InvokeAnEvent(GameEnums.EEvents eventType, object eventArgsType)
     {
-        //Gọi thằng event với tham số eventArgsType
+        //Gọi thằng đã sub cái eventType với tham số eventArgsType
+        //(tránh bị gọi tất cả func đã đki cùng 1 lúc)
         _dictEvents[eventType]?.Invoke(eventArgsType);
-        //Debug.Log("eType, eArgsType: " + eventType + ", " + eventArgsType);
+        /*if (eventType == GameEnums.EEvents.PlayerOnJumpPassive)
+            Debug.Log("count: " + _dictEvents.Count);
+        Debug.Log("eType, eArgsType: " + eventType + ", " + eventArgsType);*/
     }
 }

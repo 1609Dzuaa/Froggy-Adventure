@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class BuffsManager : MonoBehaviour
 {
     private static BuffsManager _buffsManagerInstance;
     private Dictionary<GameEnums.EBuffs, PlayerBuffs> _dictBuffs = new();
+
+    public Action<object> ApplyBuff;
 
     public static BuffsManager Instance
     {
@@ -29,6 +32,7 @@ public class BuffsManager : MonoBehaviour
 
     private void Start()
     {
+        //EventsManager.Instance.AddAnEvent(GameEnums.EEvents.PlayerOnAbsorbBuffs, ApplyBuff);
         foreach (var buff in _dictBuffs.Values)
             buff.Start();
     }

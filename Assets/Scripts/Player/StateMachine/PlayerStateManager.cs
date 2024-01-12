@@ -120,19 +120,12 @@ public class PlayerStateManager : MonoBehaviour
     public bool IsApplyGotHitEffect { set { _isApplyGotHitEffect = value; } }
 
     public bool HasDamagedEnemy { set => _hasDamagedEnemy = value; }
+
+    public Action<object> JumpPassive;
     
     private void Awake()
     {
         InitReference();
-        RegisterFunction();
-    }
-
-    private void RegisterFunction()
-    {
-        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
-        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
-        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, OnJumpPassive);
-        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, OnInteractWithNPC);
     }
 
     private void InitReference()
@@ -146,14 +139,20 @@ public class PlayerStateManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        RegisterFunction();
         SetupProperties();
     }
 
-    private void OnDestroy()
+    private void RegisterFunction()
     {
-        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
-        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
-        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, OnInteractWithNPC);
+        //có 4func nhưng log count ra 5 ? :))
+        EventsManager.Instance.AddAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
+
+        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
+        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
+        Debug.Log("Events b4 add JP: ");
+        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, OnJumpPassive);
+        //EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, OnInteractWithNPC);
     }
 
     private void SetupProperties()
@@ -162,6 +161,13 @@ public class PlayerStateManager : MonoBehaviour
         _state.EnterState(this);
         rb.gravityScale = _playerStats.GravScale;
         _id = GameConstants.PLAYER_ID;
+    }
+
+    private void OnDestroy()
+    {
+        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
+        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
+        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, OnInteractWithNPC);
     }
 
     public void ChangeState(PlayerBaseState state)
@@ -273,6 +279,7 @@ public class PlayerStateManager : MonoBehaviour
         Debug.Log("JumpPassiv");
         //Nhảy bị động
         //Again being called twice @@?
+        //log ra length của event xem thử
     }
 
     private void OnInteractWithNPC(object obj)

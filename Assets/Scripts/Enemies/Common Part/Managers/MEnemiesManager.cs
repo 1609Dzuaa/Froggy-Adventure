@@ -60,6 +60,8 @@ public class MEnemiesManager : EnemiesManager
 
     public void SetHasGotHit(bool para) { _hasGotHit = para; }
 
+    public Action<object> OnDie;
+
     protected override void Awake()
     {
         base.Awake(); //Lấy anim, rb từ EnemiesManager
@@ -72,6 +74,7 @@ public class MEnemiesManager : EnemiesManager
         base.Start();
         _state = _mEnemiesIdleState;
         _state.EnterState(this);
+        EventsManager.Instance.AddAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDie);
     }
 
     // Update is called once per frame
