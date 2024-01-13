@@ -34,11 +34,11 @@ public class NMEnemiesManager : EnemiesManager
         {
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
             playerScript.gotHitState.IsHitByTrap = true;
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
         }
         else if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.BULLET_ID);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, GameConstants.BULLET_ID);
             ChangeState(_nmEnemiesGotHitState);
         }
     }
@@ -48,7 +48,7 @@ public class NMEnemiesManager : EnemiesManager
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
         {
             _hasGotHit = true;
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.PLAYER_ID);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             ChangeState(_nmEnemiesGotHitState);
         }
     }

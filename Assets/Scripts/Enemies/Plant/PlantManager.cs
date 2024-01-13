@@ -25,16 +25,6 @@ public class PlantManager : NMEnemiesManager
         base.Update();
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
-        {
-            _hasGotHit = true;
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.PLAYER_ID);
-            ChangeState(_nmEnemiesGotHitState);
-        }
-    }
-
     //Event Func in Attack Animation
     private void SpawnBullet()
     {

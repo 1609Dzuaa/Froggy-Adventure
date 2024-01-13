@@ -27,7 +27,6 @@ public class BulletController : MonoBehaviour
     private float _entryTime;
     private bool _isDirectionRight = false;
     private int _type;
-    private int _id;
 
     public bool IsDirectionRight { set { _isDirectionRight = value; } }
 
@@ -37,13 +36,12 @@ public class BulletController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _id = GameConstants.BULLET_ID;
     }
 
     private void OnEnable()
     {
         _entryTime = Time.time;
-        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageAllies);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
     }
 
     // Update is called once per frame
@@ -68,7 +66,7 @@ public class BulletController : MonoBehaviour
 
     private void OnDisable()
     {
-        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageAllies);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
         //Debug.Log("unsub event thanh cong");
     }
 
@@ -78,9 +76,10 @@ public class BulletController : MonoBehaviour
         {
             if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
             {
+                //Tìm cách decoupling 2 thằng dưới
                 var playerScript = collision.collider.GetComponent<PlayerStateManager>();
                 playerScript.IsHitFromRightSide = _isDirectionRight;
-                EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
+                EventsManager.Instance.NotifyObservers(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
             }
             SpawnBulletPieces();
             gameObject.SetActive(false);
@@ -118,13 +117,10 @@ public class BulletController : MonoBehaviour
         hitShieldEff.GetComponent<EffectController>().SetPosition(transform.position);
     }
 
-    private void OnDamageAllies(object obj)
+    private void DamageTarget(object obj)
     {
-        if (_id != (int)obj)
-            return;
-
         SpawnBulletPieces();
         gameObject.SetActive(false);
-        Debug.Log("ID cua tao la " + (int)obj);
+        //Debug.Log("ID cua tao la " + (int)obj);
     }
 }

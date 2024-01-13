@@ -67,7 +67,7 @@ public class BoxController : GameObjectManager
         if (collision.gameObject.CompareTag(GameConstants.PLAYER_TAG) && !_isGotHit)
         {
             _healthPoint--;
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             
             _isGotHit = true; //Mark this box has been hitted and make sure only applied force once
             if (_healthPoint == 0)
@@ -84,11 +84,8 @@ public class BoxController : GameObjectManager
     {
         if(collision.gameObject.CompareTag(GameConstants.BULLET_TAG))
         {
-            //thay = event luon
-            var bulletCtrl = collision.gameObject.GetComponent<BulletController>();
-            bulletCtrl.SpawnBulletPieces();
-            Destroy(bulletCtrl.gameObject);
-            _isGotHit = true; //Mark this box has been hitted and make sure only applied force once
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, null);
+            _isGotHit = true;
             Invoke(nameof(AllowSpawnPiece), _delaySpawnPiece);
         }
     }
@@ -104,7 +101,7 @@ public class BoxController : GameObjectManager
         {
             SpawnPiece();
             SpawnGift(_boxType);
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 

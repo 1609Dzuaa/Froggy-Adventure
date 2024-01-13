@@ -66,7 +66,7 @@ public class BunnyManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 
         ChangeState(_bunnyAtkJumpState);

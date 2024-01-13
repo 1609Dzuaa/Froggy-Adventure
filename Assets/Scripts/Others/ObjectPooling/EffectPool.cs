@@ -67,6 +67,7 @@ public class EffectPool : MonoBehaviour
         {
             _EffectPoolInstance = this;
             DontDestroyOnLoad(gameObject);
+            //Debug.Log("Khoi tao 1st");
         }
         else
             Destroy(gameObject);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Có bug, quay 0 chạy
 public class MushroomManager : MEnemiesManager
 {
     [Header("Safe Check")]

@@ -20,8 +20,7 @@ public abstract class EnemiesManager : CharactersManager
     protected bool _hasDetectedPlayer;
     protected bool _hasGotHit; //Đánh dấu bị Hit, tránh Trigger nhiều lần
     protected Collider2D _collider2D;
-
-    public Action<object> OnDamagePlayer;
+    protected SpriteRenderer _spriteRenderer;
         
     //Public Field
     public Vector2 KnockForce { get { return _knockForce; } }
@@ -36,11 +35,21 @@ public abstract class EnemiesManager : CharactersManager
 
     public Collider2D GetCollider2D { get { return _collider2D; } set { _collider2D = value; } }
 
+    public SpriteRenderer GetSpriteRenderer { get => _spriteRenderer; }
+
     protected override void Awake()
     {
-        base.Awake(); //Lấy anim và rb từ CharactersManager
-        _collider2D = GetComponent<Collider2D>();
+        base.Awake(); //Lấy các ref components trong đây
     }
+
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
+        _collider2D = GetComponent<Collider2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    protected virtual void OnEnable() { }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -48,7 +57,6 @@ public abstract class EnemiesManager : CharactersManager
         base.Start();
         if (transform.rotation.eulerAngles.y == 180f)
             _isFacingRight = true;
-        EventsManager.Instance.AddAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnDamagePlayer);
         //Debug.Log("IfR: " + _isFacingRight);
 
     }
@@ -64,8 +72,10 @@ public abstract class EnemiesManager : CharactersManager
     {
         if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
         {
+            //Tìm cách lược bớt luôn 2 thằng dưới
             var playerScript = collision.collider.GetComponent<PlayerStateManager>();
             playerScript.IsHitFromRightSide = _isFacingRight;
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
         }
     }
 

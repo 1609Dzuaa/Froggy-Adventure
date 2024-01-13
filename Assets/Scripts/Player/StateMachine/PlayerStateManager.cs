@@ -41,8 +41,6 @@ public class PlayerStateManager : MonoBehaviour
     private Vector2 _InteractPosition;
     private bool _isVunerable;
     private bool _isHitFromRightSide;
-    private int _id;
-    private bool _hasDamagedEnemy;
 
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
@@ -118,10 +116,6 @@ public class PlayerStateManager : MonoBehaviour
     public PlayerStats GetPlayerStats { get { return _playerStats; } set { _playerStats = value; } } 
 
     public bool IsApplyGotHitEffect { set { _isApplyGotHitEffect = value; } }
-
-    public bool HasDamagedEnemy { set => _hasDamagedEnemy = value; }
-
-    public Action<object> JumpPassive;
     
     private void Awake()
     {
@@ -145,14 +139,9 @@ public class PlayerStateManager : MonoBehaviour
 
     private void RegisterFunction()
     {
-        //có 4func nhưng log count ra 5 ? :))
-        EventsManager.Instance.AddAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
-
-        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
-        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
-        Debug.Log("Events b4 add JP: ");
-        EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, OnJumpPassive);
-        //EventsManager.Instance.SubcribeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, OnInteractWithNPC);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, BeingDamaged);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, InteractWithNPC);
     }
 
     private void SetupProperties()
@@ -160,14 +149,13 @@ public class PlayerStateManager : MonoBehaviour
         _state = idleState;
         _state.EnterState(this);
         rb.gravityScale = _playerStats.GravScale;
-        _id = GameConstants.PLAYER_ID;
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, OnBeingDamaged);
-        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDamageEnemies);
-        EventsManager.Instance.UnsubcribeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, OnInteractWithNPC);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, BeingDamaged);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, InteractWithNPC);
     }
 
     public void ChangeState(PlayerBaseState state)
@@ -217,12 +205,6 @@ public class PlayerStateManager : MonoBehaviour
     {
         if (collision.CompareTag(GameConstants.PLATFORM_TAG))
             transform.SetParent(collision.gameObject.transform);
-        else if (collision.CompareTag(GameConstants.BUFF_TAG))
-        {
-            ItemsController itemsController = collision.GetComponent<ItemsController>();
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.PlayerOnAbsorbBuffs, itemsController.Buff);
-            //Debug.Log("call from here");
-        }
         else if (collision.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
         {
             //Enemies/Trap sẽ áp lực vào Player theo hướng của nó chứ 0 phải của Player
@@ -247,7 +229,7 @@ public class PlayerStateManager : MonoBehaviour
             transform.SetParent(null);
     }
 
-    private void OnBeingDamaged(object obj)
+    private void BeingDamaged(object obj)
     {
         ChangeState(gotHitState);
         //Đky event = func này, không phải gây tight-coupling ở class enemies
@@ -255,34 +237,13 @@ public class PlayerStateManager : MonoBehaviour
         //Thằng nào có liên quan đến thì đăng ký và xử lý
     }
 
-    int count = 1;
-
-    private void OnDamageEnemies(object obj)
+    private void JumpPassive(object obj)
     {
-        //dafuq why this thing is being called twice @?@
-        if (_id != (int)obj)
-            return;
-
-        //Tạm để thế này, coi lại sao nó call 2 lần (count = 2) ?
-        if (_hasDamagedEnemy)
-            return;
-
-        _hasDamagedEnemy = true;
-        //Debug.Log("Dmg Enemies " + count);
-        count++;
-    }
-
-    private void OnJumpPassive(object obj)
-    {
-        _canDbJump = true; //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
+        _canDbJump = true;
         ChangeState(jumpState);
-        Debug.Log("JumpPassiv");
-        //Nhảy bị động
-        //Again being called twice @@?
-        //log ra length của event xem thử
     }
 
-    private void OnInteractWithNPC(object obj)
+    private void InteractWithNPC(object obj)
     {
         //refactor phần này
     }

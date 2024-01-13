@@ -113,7 +113,7 @@ public class NPCManagers : CharactersManager
         var playerScript = _playerRef.GetComponent<PlayerStateManager>();
         if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround() && _state is not NPCTalkState)
         {
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnInteractNPCs, null);
             ChangeState(_npcTalkState);
             /*playerScript.IsInteractingWithNPC = true;
             ChangeState(_npcTalkState);*/

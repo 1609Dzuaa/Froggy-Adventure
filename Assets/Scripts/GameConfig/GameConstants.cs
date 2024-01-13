@@ -47,6 +47,7 @@
 
     #region Render Layer Constants
     public const string RENDER_MAP_LAYER = "Map_Layer";
+    public const int RENDER_MAP_ORDER = 5;
     #endregion
 
     #region Tag Constants

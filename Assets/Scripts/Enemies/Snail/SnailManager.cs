@@ -54,7 +54,6 @@ public class SnailManager : MEnemiesManager
     private SnailShellHitState _snailShellHitState = new();
     private SnailGotHitState _snailGotHitState = new();
     private RaycastHit2D _hasDetectedGround;
-    private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _boxCol2D;
     private BoxCollider2D _boxCol2DTrigger;
     private BoxCollider2D[] _arrBoxCol2D = new BoxCollider2D[2];
@@ -93,8 +92,6 @@ public class SnailManager : MEnemiesManager
 
     public SnailAttackState SnailAttackState { get { return _snailAttackState; } }
 
-    public SpriteRenderer SpriteRenderer { get { return _spriteRenderer; } set { _spriteRenderer = value; } }
-
     public BoxCollider2D BoxCol2D { get => _boxCol2D; set => _boxCol2D = value; }
 
     public BoxCollider2D BoxCol2DTrigger { get => _boxCol2DTrigger; set => _boxCol2DTrigger = value; }
@@ -107,17 +104,15 @@ public class SnailManager : MEnemiesManager
 
     public Vector2 OffsetBoxTrigger { get => _boxColTriggerOffset; }
 
-    protected override void Start()
+    protected override void Awake()
     {
-        GetRefAndSetUp();
+        base.Awake();
     }
 
-    private void GetRefAndSetUp()
+    protected override void GetReferenceComponents()
     {
-        _anim = GetComponent<Animator>();
-        _rb = GetComponent<Rigidbody2D>();
+        base.GetReferenceComponents();
         _collider2D = GetComponent<Collider2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         _arrBoxCol2D = GetComponents<BoxCollider2D>();
         foreach (var box in _arrBoxCol2D)
         {
@@ -128,6 +123,15 @@ public class SnailManager : MEnemiesManager
         }
         _originBoxSize = _boxCol2D.size;
         _originOffset = _boxCol2DTrigger.offset;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
         _state = _snailIdleState;
         _state.EnterState(this);
     }

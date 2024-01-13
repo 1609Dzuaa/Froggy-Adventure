@@ -15,7 +15,12 @@ public class CharactersManager : GameObjectManager
 
     protected override void Awake()
     {
-        base.Awake(); //Lấy anim từ GObjManager
+        base.Awake(); //Lấy Ref components
+    }
+
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
         _rb = GetComponent<Rigidbody2D>();
     }
 

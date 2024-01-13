@@ -59,8 +59,7 @@
     public enum EEvents
     {
         EnemiesOnDamagePlayer,
-        EnemiesOnDie,
-        PlayerOnAbsorbBuffs,
+        BulletOnHit,
         PlayerOnJumpPassive,
         PlayerOnInteractNPCs,
     }

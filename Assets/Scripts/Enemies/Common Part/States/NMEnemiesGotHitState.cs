@@ -9,9 +9,7 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _nmEnemiesManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ENMEnemiesState.gotHit);
-        _nmEnemiesManager.GetCollider2D.enabled = false;
-        lastRotateTime = Time.time;
-        ApplyForce();
+        HandleBeforeDead();
         //Debug.Log("GH");
     }
 
@@ -27,8 +25,12 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
         }
     }
 
-    protected void ApplyForce()
+    protected virtual void HandleBeforeDead()
     {
+        _nmEnemiesManager.GetCollider2D.enabled = false;
+        lastRotateTime = Time.time;
         _nmEnemiesManager.GetRigidbody2D().AddForce(_nmEnemiesManager.KnockForce, ForceMode2D.Impulse);
+        _nmEnemiesManager.GetSpriteRenderer.sortingLayerName = GameConstants.RENDER_MAP_LAYER;
+        _nmEnemiesManager.GetSpriteRenderer.sortingOrder = GameConstants.RENDER_MAP_ORDER;
     }
 }

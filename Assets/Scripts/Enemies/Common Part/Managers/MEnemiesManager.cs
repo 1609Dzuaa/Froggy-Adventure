@@ -60,8 +60,6 @@ public class MEnemiesManager : EnemiesManager
 
     public void SetHasGotHit(bool para) { _hasGotHit = para; }
 
-    public Action<object> OnDie;
-
     protected override void Awake()
     {
         base.Awake(); //Lấy anim, rb từ EnemiesManager
@@ -72,9 +70,13 @@ public class MEnemiesManager : EnemiesManager
     protected override void Start()
     {
         base.Start();
+        SetUpProperties();
+    }
+
+    protected override void SetUpProperties()
+    {
         _state = _mEnemiesIdleState;
         _state.EnterState(this);
-        EventsManager.Instance.AddAnEvent(GameEnums.EEvents.EnemiesOnDie, OnDie);
     }
 
     // Update is called once per frame
@@ -135,7 +137,7 @@ public class MEnemiesManager : EnemiesManager
         base.OnCollisionEnter2D(collision);
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.BULLET_ID);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, GameConstants.BULLET_ID);
             ChangeState(_mEnemiesGotHitState);
         }
     }
@@ -145,8 +147,7 @@ public class MEnemiesManager : EnemiesManager
         if(collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
         {
             _hasGotHit = true;
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.EnemiesOnDie, GameConstants.PLAYER_ID);
-            EventsManager.Instance.InvokeAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             ChangeState(_mEnemiesGotHitState);
         }
     }
