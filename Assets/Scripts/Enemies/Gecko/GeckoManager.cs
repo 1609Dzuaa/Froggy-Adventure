@@ -144,7 +144,7 @@ public class GeckoManager : MEnemiesManager
             {
                 var playerScript = _playerRef.GetComponent<PlayerStateManager>();
                 playerScript.IsHitFromRightSide = _isFacingRight;
-                EventsManager.Instance.NotifyObservers(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
+                EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
             }
         }
 

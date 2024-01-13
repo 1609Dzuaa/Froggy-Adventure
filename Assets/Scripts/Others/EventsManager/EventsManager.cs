@@ -10,10 +10,11 @@ public class EventsManager : MonoBehaviour
     //https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/reference-types
     private Dictionary<GameEnums.EEvents, Action<object>> _dictEvents = new();
     //Thêm sẵn các Action tương ứng với Event trong EnumEvents tại đây
-    private Action<object> EnemiesOnDamagePlayer;
+    private Action<object> PlayerOnTakeDamage;
     private Action<object> BulletOnHit;
     private Action<object> PlayerOnJumpPassive;
     private Action<object> PlayerOnInteractWithNPCs;
+    private Action<object> PlayerOnStopInteractWithNPCs;
 
     public static EventsManager Instance
     {
@@ -24,8 +25,6 @@ public class EventsManager : MonoBehaviour
 
             if (!_instance)
                 Debug.Log("0 co EventsManager trong Scene");
-            else
-                Debug.Log("Find 2nd");
 
             return _instance; 
         }
@@ -43,7 +42,6 @@ public class EventsManager : MonoBehaviour
         {
             _instance = this;
             DontDestroyOnLoad(gameObject);
-            Debug.Log("Khoi tao 1st");
         }
         else
             Destroy(gameObject);
@@ -51,10 +49,11 @@ public class EventsManager : MonoBehaviour
 
     public void AddEventsToDictionary()
     {
-        _dictEvents.Add(GameEnums.EEvents.EnemiesOnDamagePlayer, EnemiesOnDamagePlayer);
+        _dictEvents.Add(GameEnums.EEvents.PlayerOnTakeDamage, PlayerOnTakeDamage);
         _dictEvents.Add(GameEnums.EEvents.BulletOnHit, BulletOnHit);
         _dictEvents.Add(GameEnums.EEvents.PlayerOnJumpPassive, PlayerOnJumpPassive);
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnInteractNPCs, PlayerOnInteractWithNPCs);
+        _dictEvents.Add(GameEnums.EEvents.PlayerOnInteractWithNPCs, PlayerOnInteractWithNPCs);
+        _dictEvents.Add(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, PlayerOnStopInteractWithNPCs);
         //Val là cái event, còn thg nào quan tâm cái event đó thì gọi hàm dưới
     }
 

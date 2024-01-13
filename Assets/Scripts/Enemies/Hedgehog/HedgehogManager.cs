@@ -56,7 +56,7 @@ public class HedgehogManager : NMEnemiesManager
 
     private void ChangeToIdle()
     {
-        ChangeState(getNMEnemiesIdleState);
+        ChangeState(GetNMEnemiesIdleState);
         _boxCollider2D.size = _prevCollider2DSize;
     }
 

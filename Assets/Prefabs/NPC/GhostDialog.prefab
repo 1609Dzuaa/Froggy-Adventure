@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 14987053
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 219afd0f29ce4c7418ba6e6a863a432f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2d25f73cf2aea9147878e1305235f4c6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -119,8 +119,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0153, y: 0.5004}
-  m_SizeDelta: {x: 4.3184, y: 1.8279}
+  m_AnchoredPosition: {x: -0.0054, y: 0.3865}
+  m_SizeDelta: {x: 3.4316, y: 1.4344}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5974956396923830138
 MeshRenderer:
@@ -312,6 +312,7 @@ MonoBehaviour:
   - zzz
   _indicatorString: []
   _writingSpeed: 0.02
+  _dontNeedStartIndicatorTextAgain: 0
 --- !u!1 &5974956397902285047
 GameObject:
   m_ObjectHideFlags: 0

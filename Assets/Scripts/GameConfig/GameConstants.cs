@@ -1,7 +1,7 @@
 ﻿public static class GameConstants
 {
     #region Range Constants
-    public const float START_CONVERSATION_RANGE = 0.05f;
+    public const float CAN_START_CONVERSATION_RANGE = 0.05f;
 
     //Range tối thiểu mà bat có thể flip khi chase player
     //tránh flip loạn xạ khi dist to player quá gần

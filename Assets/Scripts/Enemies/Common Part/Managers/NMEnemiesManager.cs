@@ -8,7 +8,7 @@ public class NMEnemiesManager : EnemiesManager
     protected NMEnemiesAttackState _nmEnemiesAttackState = new();
     protected NMEnemiesGotHitState _nmEnemiesGotHitState = new();
 
-    public NMEnemiesIdleState getNMEnemiesIdleState { get { return _nmEnemiesIdleState; } set { _nmEnemiesIdleState = value; } }
+    public NMEnemiesIdleState GetNMEnemiesIdleState { get { return _nmEnemiesIdleState; } set { _nmEnemiesIdleState = value; } }
 
     protected override void Awake()
     {
@@ -18,6 +18,10 @@ public class NMEnemiesManager : EnemiesManager
     protected override void Start()
     {
         base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
         _state = _nmEnemiesIdleState;
         _state.EnterState(this);
     }
@@ -30,13 +34,8 @@ public class NMEnemiesManager : EnemiesManager
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
-        {
-            var playerScript = collision.collider.GetComponent<PlayerStateManager>();
-            playerScript.gotHitState.IsHitByTrap = true;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
-        }
-        else if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
+        base.OnCollisionEnter2D(collision);
+        if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, GameConstants.BULLET_ID);
             ChangeState(_nmEnemiesGotHitState);
@@ -63,6 +62,6 @@ public class NMEnemiesManager : EnemiesManager
 
     protected void SelfDestroy()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }

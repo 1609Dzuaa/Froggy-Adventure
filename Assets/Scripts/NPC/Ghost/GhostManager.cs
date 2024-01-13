@@ -79,9 +79,8 @@ public class GhostManager : NPCManagers
 
     protected override bool IsPlayerNearBy()
     {
-        var playerScript = _playerRef.GetComponent<PlayerStateManager>();
-        return _isPlayerNearBy = Vector2.Distance(transform.position, _playerRef.position) <= _triggerConversationRange 
-            && _state is not GhostDisappearState && playerScript.GetIsOnGround();
+        return _isPlayerNearBy = Vector2.Distance(transform.position, _playerReference.transform.position) <= _triggerConversationRange 
+            && _state is not GhostDisappearState && _playerReference.GetIsOnGround();
     }
 
 }

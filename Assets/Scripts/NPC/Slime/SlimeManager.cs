@@ -41,12 +41,12 @@ public class SlimeManager : NPCManagers
 
     private void HandleFlippingSprite()
     {
-        if (transform.position.x >= _playerRef.transform.position.x)
+        if (transform.position.x >= _playerReference.transform.position.x)
         {
             if (_isFacingRight)
                 FlippingSprite();
         }
-        else if (transform.position.x < _playerRef.transform.position.x)
+        else if (transform.position.x < _playerReference.transform.position.x)
         {
             if (!_isFacingRight)
                 FlippingSprite();
@@ -55,12 +55,10 @@ public class SlimeManager : NPCManagers
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "Player" && !_hasGotHit)
+        if (collision.name == GameConstants.PLAYER_TAG && !_hasGotHit)
         {
             _hasGotHit = true;
-            var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
-            playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.JumpOnEnemiesForce, ForceMode2D.Impulse);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             ChangeState(_slimeGotHitState);
             _hasStartConversationPassive = true;
         }

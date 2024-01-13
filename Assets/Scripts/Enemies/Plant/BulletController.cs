@@ -75,12 +75,7 @@ public class BulletController : MonoBehaviour
         if (collision.collider.CompareTag(GameConstants.PLAYER_TAG) || collision.collider.CompareTag(GameConstants.GROUND_TAG))
         {
             if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
-            {
-                //Tìm cách decoupling 2 thằng dưới
-                var playerScript = collision.collider.GetComponent<PlayerStateManager>();
-                playerScript.IsHitFromRightSide = _isDirectionRight;
-                EventsManager.Instance.NotifyObservers(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
-            }
+                EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isDirectionRight);
             SpawnBulletPieces();
             gameObject.SetActive(false);
         }

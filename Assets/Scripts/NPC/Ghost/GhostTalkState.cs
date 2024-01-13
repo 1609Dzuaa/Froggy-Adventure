@@ -21,8 +21,7 @@ public class GhostTalkState : NPCTalkState
         //Đéo tiếp chuyện nữa thì trả về Idle State
         if (!_ghostManager.GetDialog().Started)
         {
-            var playerScript = _ghostManager.PlayerRef.GetComponent<PlayerStateManager>();
-            playerScript.IsInteractingWithNPC = false;
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, null);
             _ghostManager.ChangeState(_ghostManager.GetGhostIdleState());
         }
     }

@@ -38,7 +38,7 @@ public class PlayerStateManager : MonoBehaviour
     private bool _hasBeenDisabled;
     private bool _isApplyGotHitEffect;
     private bool _hasStartCoroutine;
-    private Vector2 _InteractPosition;
+    private Vector2 _interactPosition;
     private bool _isVunerable;
     private bool _isHitFromRightSide;
 
@@ -111,7 +111,7 @@ public class PlayerStateManager : MonoBehaviour
     //SET Functions
     public void SetCanDbJump(bool para) { this._canDbJump = para; }
 
-    public Vector2 InteractPosition { get { return _InteractPosition; } set { _InteractPosition = value; } }
+    public Vector2 InteractPosition { get { return _interactPosition; } set { _interactPosition = value; } }
 
     public PlayerStats GetPlayerStats { get { return _playerStats; } set { _playerStats = value; } } 
 
@@ -139,9 +139,10 @@ public class PlayerStateManager : MonoBehaviour
 
     private void RegisterFunction()
     {
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, BeingDamaged);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnTakeDamage, BeingDamaged);
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, InteractWithNPC);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
     }
 
     private void SetupProperties()
@@ -153,9 +154,10 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.EnemiesOnDamagePlayer, BeingDamaged);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnTakeDamage, BeingDamaged);
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractNPCs, InteractWithNPC);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
     }
 
     public void ChangeState(PlayerBaseState state)
@@ -231,6 +233,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void BeingDamaged(object obj)
     {
+        _isHitFromRightSide = (bool)obj;
+        //Debug.Log("bi hit tu right: " + (bool)obj);
         ChangeState(gotHitState);
         //Đky event = func này, không phải gây tight-coupling ở class enemies
         //Enemies đ' cần quan tâm về rb của player, nó chỉ việc phát thông báo (Invoke)
@@ -245,7 +249,12 @@ public class PlayerStateManager : MonoBehaviour
 
     private void InteractWithNPC(object obj)
     {
-        //refactor phần này
+        _isInteractingWithNPC = true;
+    }
+
+    private void StopInteractWithNPC(object obj)
+    {
+        _isInteractingWithNPC = false;
     }
 
     void Update()
@@ -253,12 +262,13 @@ public class PlayerStateManager : MonoBehaviour
         if (_hasBeenDisabled)
             return;
 
+        //=========Handle things related to NPC==========//
         NPCCheck();
         DrawRayDetectNPC();
 
         if (_isInteractingWithNPC)
         {
-            UpdateInteractWithNPC();
+            HandleInteractWithNPC();
             return;
         }
         else
@@ -266,6 +276,7 @@ public class PlayerStateManager : MonoBehaviour
             _hasChange = false;
             _hasFlip = false;
         }
+        //===============================//
 
         UpdateLayer();
         HandleInput();
@@ -294,36 +305,41 @@ public class PlayerStateManager : MonoBehaviour
         }
     }
 
-    private void UpdateInteractWithNPC()
+    private void HandleInteractWithNPC()
     {
         //Tương tác với NPC thì chỉ xử lý 2 state là Idle và Run
-        if (IsInteractingWithNPC && !_hasFlip)
+        //Đơn giản là lật sprite (nếu có) về hướng InteractPosition
+        HandleFlipTowardsInteractPos();
+        AllowMoveTowardsInteractPos();
+        _state.Update();
+    }
+
+    private void HandleFlipTowardsInteractPos()
+    {
+        if (!_hasFlip)
         {
             _hasFlip = true;
-            if (isFacingRight)
+
+            if (isFacingRight && transform.position.x > InteractPosition.x + GameConstants.CAN_START_CONVERSATION_RANGE)
             {
-                if (transform.position.x > InteractPosition.x + GameConstants.START_CONVERSATION_RANGE)
-                {
-                    FlippingSprite();
-                    //Debug.Log("Flip to Left");
-                }
+                FlippingSprite();
+                //Debug.Log("Flip to Left");
             }
-            else
+            else if (!isFacingRight && transform.position.x < InteractPosition.x - GameConstants.CAN_START_CONVERSATION_RANGE)
             {
-                if (transform.position.x < InteractPosition.x - GameConstants.START_CONVERSATION_RANGE)
-                {
-                    FlippingSprite();
-                    //Debug.Log("Flip to Right");
-                }
+                FlippingSprite();
+                //Debug.Log("Flip to Right");
             }
         }
-        if(!_hasChange)
+    }
+
+    private void AllowMoveTowardsInteractPos()
+    {
+        if (!_hasChange)
         {
             _hasChange = true;
-            //Debug.Log("Change");
             Invoke(nameof(ChangeToRun), GameConstants.DELAYPLAYERRUNSTATE);
-        }    
-        _state.Update();
+        }
     }
 
     private void FixedUpdate()
@@ -550,7 +566,6 @@ public class PlayerStateManager : MonoBehaviour
             StartCoroutine(Twinkling());
         else if (Time.time - gotHitState.EntryTime > _playerStats.InvulnerableTime)
         {
-
             //Hết thgian miễn dmg r thì trả màu về như cũ cho nó
             //NẾU trên ng 0 có buff vô hình, còn có thì return và set lại bool
             if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)

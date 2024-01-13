@@ -71,12 +71,7 @@ public abstract class EnemiesManager : CharactersManager
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
-        {
-            //Tìm cách lược bớt luôn 2 thằng dưới
-            var playerScript = collision.collider.GetComponent<PlayerStateManager>();
-            playerScript.IsHitFromRightSide = _isFacingRight;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.EnemiesOnDamagePlayer, null);
-        }
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
     }
 
     protected virtual bool DetectedPlayer()

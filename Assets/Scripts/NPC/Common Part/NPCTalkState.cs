@@ -22,15 +22,14 @@ public class NPCTalkState : CharacterBaseState
         //Đéo tiếp chuyện nữa thì trả về Idle State
         if (!_npcManager.GetDialog().Started)
         {
-            var playerScript = _npcManager.PlayerRef.GetComponent<PlayerStateManager>();
-            playerScript.IsInteractingWithNPC = false;
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, null);
             _npcManager.ChangeState(_npcManager.GetNPCIdleState());
         }
     }
 
     protected virtual void HandleInteractWithPlayer(NPCManagers npcManagers, int startIndex)
     {
-        var playerScript = npcManagers.PlayerRef.GetComponent<PlayerStateManager>();
+        var playerScript = npcManagers.PlayerReference;
 
         //Tương tự bên Player, Raycast 0 phát hiện Player thì flip ngược lại
         //(Vì chỉ xét 2 hướng trái phải)
@@ -45,9 +44,6 @@ public class NPCTalkState : CharacterBaseState
 
         //Gán vị trí cần di chuyển cho Player
         playerScript.InteractPosition = npcManagers.ConversationPos;
-
-        //Đánh dấu đang tương tác với NPC, lock change state chủ động của Player
-        playerScript.IsInteractingWithNPC = true;
 
         //Lấy và bắt đầu Thoại
         npcManagers.GetDialog().StartDialog(startIndex);

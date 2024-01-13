@@ -21,32 +21,31 @@ public class RunState : PlayerBaseState
     {
         if (!_playerStateManager.IsInteractingWithNPC)
         {
-            if (CheckIfIdle())
+            if (CheckIfCanIdle())
                 _playerStateManager.ChangeState(_playerStateManager.idleState);
-            else if (CheckIfJump())
+            else if (CheckIfCanJump())
             {
                 _playerStateManager.jumpState.IsRunStateHitWall = _playerStateManager.GetIsWallTouch();
                 _playerStateManager.ChangeState(_playerStateManager.jumpState);
             }
-            else if (CheckIfFall())
+            else if (CheckIfCanFall())
                 _playerStateManager.ChangeState(_playerStateManager.fallState);
             else if (CheckIfCanDash())
                 _playerStateManager.ChangeState(_playerStateManager.dashState);
         }
         else
         {
-            //Vì thực sự để so hiệu x = 0 thì rất khó => sử dụng hằng số với giá trị rất nhỏ
-            if (Mathf.Abs(_playerStateManager.transform.position.x - _playerStateManager.InteractPosition.x) < GameConstants.START_CONVERSATION_RANGE)
-                _playerStateManager.ChangeState(_playerStateManager.idleState);
+            if (CheckIfNearInteractPosition())
+                _playerStateManager.ChangeState(_playerStateManager.idleState); //switch về idle nghe NPC sủa
         }
     }
 
-    private bool CheckIfIdle()
+    private bool CheckIfCanIdle()
     {
         return _playerStateManager.GetDirX() == 0;
     }
 
-    private bool CheckIfJump()
+    private bool CheckIfCanJump()
     {
         return Input.GetButtonDown("Jump") && _playerStateManager.GetIsOnGround();
         //Phải OnGround thì mới cho nhảy
@@ -55,7 +54,7 @@ public class RunState : PlayerBaseState
         return false;*/
     }
 
-    private bool CheckIfFall()
+    private bool CheckIfCanFall()
     {
         if (!_playerStateManager.GetIsOnGround())
             return true;
@@ -69,6 +68,13 @@ public class RunState : PlayerBaseState
         return Input.GetKeyDown(KeyCode.E)
             && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
             || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
+    }
+
+    private bool CheckIfNearInteractPosition()
+    {
+        //Vì thực sự để so hiệu x = 0 thì rất khó => sử dụng hằng số với giá trị rất nhỏ
+
+        return Mathf.Abs(_playerStateManager.transform.position.x - _playerStateManager.InteractPosition.x) < GameConstants.CAN_START_CONVERSATION_RANGE;
     }
 
     public override void FixedUpdate()

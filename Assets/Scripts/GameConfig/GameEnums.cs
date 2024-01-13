@@ -58,10 +58,11 @@
 
     public enum EEvents
     {
-        EnemiesOnDamagePlayer,
         BulletOnHit,
+        PlayerOnTakeDamage,
         PlayerOnJumpPassive,
-        PlayerOnInteractNPCs,
+        PlayerOnInteractWithNPCs,
+        PlayerOnStopInteractWithNPCs,
     }
 
     #endregion

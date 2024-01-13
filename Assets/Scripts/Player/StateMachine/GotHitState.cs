@@ -52,7 +52,6 @@ public class GotHitState : PlayerBaseState
                     _playerStateManager.GetRigidBody2D().AddForce(new Vector2(-_playerStateManager.GetPlayerStats.KnockBackForce.x, 0f));
             }
         }
-        Debug.Log("Knocked");
     }
 
     private void HandleGotHit()

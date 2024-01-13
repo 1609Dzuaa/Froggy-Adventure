@@ -145,10 +145,9 @@ public class DealerManager : NPCManagers
             _dialog.ToggleIndicator(false);
 
         //Thêm ĐK Player OnGround thì mới cho phép bắt đầu xl
-        var playerScript = _playerRef.GetComponent<PlayerStateManager>();
-        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && playerScript.GetIsOnGround() && _state is not NPCTalkState)
+        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && _playerReference.GetIsOnGround() && _state is not NPCTalkState)
         {
-            playerScript.IsInteractingWithNPC = true;
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnInteractWithNPCs, null);
             Debug.Log("Trading");
             //Hiện shop lúc này
             //ChangeState(_dealerTalkState);
@@ -162,8 +161,7 @@ public class DealerManager : NPCManagers
         else
             _conversationPos = new Vector2(transform.position.x - _adjustConversationRange, transform.position.y);
 
-        var PlayerScript = _playerRef.GetComponent<PlayerStateManager>();
-        PlayerScript.InteractPosition = _conversationPos;
+        _playerReference.InteractPosition = _conversationPos;
     }
 
 }
