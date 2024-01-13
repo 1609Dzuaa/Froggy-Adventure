@@ -18,11 +18,6 @@ public class MultipleRockManager : MEnemiesManager
     [SerializeField] private Transform _spawnPos3;
     [SerializeField] private Transform _spawnPos4;
 
-    [Header("Effect")]
-    [SerializeField] private GameObject _deadEffect;
-
-    public void SetIsFacingRight(bool isFacingRight) { this._isFacingRight = isFacingRight; }
-
     protected override void Awake()
     {
         base.Awake(); 

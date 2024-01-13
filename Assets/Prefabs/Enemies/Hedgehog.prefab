@@ -155,14 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCheck: {fileID: 2700627931489956143}
-  _checkDistance: 10
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  _knockForce: {x: 0, y: 3}
-  _attackDelay: 0.1
-  degreeEachRotation: 1.5
-  timeEachRotate: 0.1
+  _enemiesSO: {fileID: 11400000, guid: 46dfd30459b04774ab632670f7a2a217, type: 2}
   _spikeInDelay: 1
   _sizeIncrease: {x: 0.7, y: 0}
 --- !u!61 &2700627932623062157

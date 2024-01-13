@@ -17,7 +17,7 @@ public class GeckoPatrolState : MEnemiesPatrolState
 
     public override void Update()
     {
-        if (Time.time - _entryTime >= _geckoManager.GetRestTime() && !_hasChangedState)
+        if (Time.time - _entryTime >= _geckoManager.MEnemiesSO.RestTime && !_hasChangedState)
         {
             _hasChangedState = true;
             _geckoManager.ChangeState(_geckoManager.GetGeckoIdleState());

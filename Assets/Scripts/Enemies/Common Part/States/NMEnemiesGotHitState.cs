@@ -17,9 +17,9 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
 
     public override void Update()
     {
-        if (Time.time - lastRotateTime >= _nmEnemiesManager.GetTimeEachRotate())
+        if (Time.time - lastRotateTime >= _nmEnemiesManager.EnemiesSO.TimeEachRotate)
         {
-            Zdegree -= _nmEnemiesManager.GetDegreeEachRotation();
+            Zdegree -= _nmEnemiesManager.EnemiesSO.DegreeEachRotation;
             _nmEnemiesManager.transform.Rotate(0f, 0f, Zdegree);
             lastRotateTime = Time.time;
         }
@@ -29,7 +29,7 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
     {
         _nmEnemiesManager.GetCollider2D.enabled = false;
         lastRotateTime = Time.time;
-        _nmEnemiesManager.GetRigidbody2D().AddForce(_nmEnemiesManager.KnockForce, ForceMode2D.Impulse);
+        _nmEnemiesManager.GetRigidbody2D().AddForce(_nmEnemiesManager.EnemiesSO.KnockForce, ForceMode2D.Impulse);
         _nmEnemiesManager.GetSpriteRenderer.sortingLayerName = GameConstants.RENDER_MAP_LAYER;
         _nmEnemiesManager.GetSpriteRenderer.sortingOrder = GameConstants.RENDER_MAP_ORDER;
     }

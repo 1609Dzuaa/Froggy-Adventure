@@ -7,15 +7,9 @@ public abstract class EnemiesManager : CharactersManager
 {
     [Header("Player Check")]
     [SerializeField] protected Transform _playerCheck;
-    [SerializeField] protected float _checkDistance;
-    [SerializeField] protected LayerMask _playerLayer;
-    [SerializeField] protected Vector2 _knockForce; //Knock Force khi bị hit
-    [SerializeField] protected float _attackDelay;
 
-    //Rotate sprite after got hit
-    [Header("Z Rotation When Dead")]
-    [SerializeField] protected float degreeEachRotation;
-    [SerializeField] protected float timeEachRotate;
+    [Header("SO")]
+    [SerializeField] protected EnemiesStats _enemiesSO;
 
     protected bool _hasDetectedPlayer;
     protected bool _hasGotHit; //Đánh dấu bị Hit, tránh Trigger nhiều lần
@@ -23,19 +17,14 @@ public abstract class EnemiesManager : CharactersManager
     protected SpriteRenderer _spriteRenderer;
         
     //Public Field
-    public Vector2 KnockForce { get { return _knockForce; } }
-
-    public float GetAttackDelay() { return _attackDelay; }
-
-    public float GetTimeEachRotate() { return timeEachRotate; }
-
-    public float GetDegreeEachRotation() { return degreeEachRotation; }
 
     public bool HasDetectedPlayer { get { return _hasDetectedPlayer; } }
 
     public Collider2D GetCollider2D { get { return _collider2D; } set { _collider2D = value; } }
 
     public SpriteRenderer GetSpriteRenderer { get => _spriteRenderer; }
+
+    public EnemiesStats EnemiesSO { get => _enemiesSO; }
 
     protected override void Awake()
     {
@@ -82,9 +71,9 @@ public abstract class EnemiesManager : CharactersManager
             return _hasDetectedPlayer = false;
         
         if (!_isFacingRight)
-            _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _checkDistance, _playerLayer);
+            _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
         else
-            _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _checkDistance, _playerLayer);
+            _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
 
         return _hasDetectedPlayer;
     }
@@ -94,16 +83,16 @@ public abstract class EnemiesManager : CharactersManager
         if (_hasDetectedPlayer)
         {
             if (!_isFacingRight)
-                Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.red);
+                Debug.DrawRay(_playerCheck.position, Vector2.left * _enemiesSO.PlayerCheckDistance, Color.red);
             else
-                Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.red);
+                Debug.DrawRay(_playerCheck.position, Vector2.right * _enemiesSO.PlayerCheckDistance, Color.red);
         }
         else
         {
             if (!_isFacingRight)
-                Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.green);
+                Debug.DrawRay(_playerCheck.position, Vector2.left * _enemiesSO.PlayerCheckDistance, Color.green);
             else
-                Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.green);
+                Debug.DrawRay(_playerCheck.position, Vector2.right * _enemiesSO.PlayerCheckDistance, Color.green);
         }
     }
 

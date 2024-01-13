@@ -61,7 +61,7 @@ public class BeeChaseState : MEnemiesAttackState
     protected override void Attack()
     {
         _attackPos = new Vector2(_beeManager.GetPlayer().position.x, _beeManager.GetPlayer().position.y + _beeManager.AdJustYAxisAttackRange());
-        _beeManager.transform.position = Vector2.MoveTowards(_beeManager.transform.position, _attackPos, _beeManager.GetChaseSpeed().x * Time.deltaTime);
+        _beeManager.transform.position = Vector2.MoveTowards(_beeManager.transform.position, _attackPos, _beeManager.MEnemiesSO.ChaseSpeed.x * Time.deltaTime);
         //Debug.Log("Movinggg");
         //Move vật thể theo target
     }

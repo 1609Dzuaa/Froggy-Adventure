@@ -34,14 +34,14 @@ public class MEnemiesIdleState : MEnemiesBaseState
         else if (CheckIfCanAttack())
         {
             _hasChangedState = true;
-            _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());
+            _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.MEnemiesSO.AttackDelay);
         }
         //Debug.Log("Update");
     }
 
     protected virtual bool CheckIfCanPatrol()
     {
-        return Time.time - _entryTime >= _mEnemiesManager.GetRestTime();
+        return Time.time - _entryTime >= _mEnemiesManager.MEnemiesSO.RestTime;
     }
 
     protected virtual bool CheckIfCanAttack()

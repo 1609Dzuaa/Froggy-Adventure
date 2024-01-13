@@ -52,6 +52,11 @@ public class GeckoManager : MEnemiesManager
 
     protected override void Start()
     {
+        base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
         _state = _geckoIdleState;
         _state.EnterState(this);
     }
@@ -135,17 +140,13 @@ public class GeckoManager : MEnemiesManager
 
     private void EnableDamagePlayer()
     {
-        if (Physics2D.OverlapBox(transform.position, _damageRange, 0f, _playerLayer))
+        if (Physics2D.OverlapBox(transform.position, _damageRange, 0f, _enemiesSO.PlayerLayer))
         {
             //Vì thằng Overlap nó check cả 2 hướng trái/phải Gecko nên thêm đk dưới
             //để tránh việc dù Player ở sau lưng Gecko lúc nó attack
             //nhưng vẫn dính đòn
             if (_hasDetectedPlayer)
-            {
-                var playerScript = _playerRef.GetComponent<PlayerStateManager>();
-                playerScript.IsHitFromRightSide = _isFacingRight;
                 EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
-            }
         }
 
         //Cũng là Event của animation Attack lúc vụt lưỡi
@@ -159,8 +160,8 @@ public class GeckoManager : MEnemiesManager
 
     private bool CheckIfCanTeleport2Sides()
     {
-        _collideLeft = Physics2D.OverlapBox(_teleAbleLeftPos, _teleportableRange, 0f, _wallLayer);
-        _collideRight = Physics2D.OverlapBox(_teleAbleRightPos, _teleportableRange, 0f, _wallLayer);
+        _collideLeft = Physics2D.OverlapBox(_teleAbleLeftPos, _teleportableRange, 0f, _mEnemiesSO.WallLayer);
+        _collideRight = Physics2D.OverlapBox(_teleAbleRightPos, _teleportableRange, 0f, _mEnemiesSO.WallLayer);
 
         return _canTeleport2Sides = !_collideLeft && !_collideRight;
     }
@@ -186,7 +187,7 @@ public class GeckoManager : MEnemiesManager
 
     public IEnumerator Hide()
     {
-        yield return new WaitForSeconds(_attackDelay);
+        yield return new WaitForSeconds(_enemiesSO.AttackDelay);
 
         ChangeState(_geckoHideState);
     }

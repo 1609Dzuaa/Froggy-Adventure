@@ -59,9 +59,9 @@ public class TrunkManager : MEnemiesManager
             return _canWithDrawn = false;
 
         if (!_isFacingRight)
-            _canWithDrawn = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _withdrawnCheckDistance, _playerLayer);
+            _canWithDrawn = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _withdrawnCheckDistance, _enemiesSO.PlayerLayer);
         else
-            _canWithDrawn = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _withdrawnCheckDistance, _playerLayer);
+            _canWithDrawn = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _withdrawnCheckDistance, _enemiesSO.PlayerLayer);
 
         return _canWithDrawn;
     }

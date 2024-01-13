@@ -44,7 +44,7 @@ public class BatAttackState : MEnemiesAttackState
             _batManager.FlipLeft();
 
         //Move vật thể theo target
-        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.Player.position, _batManager.GetChaseSpeed().x * Time.deltaTime);
+        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.Player.position, _batManager.MEnemiesSO.ChaseSpeed.x * Time.deltaTime);
     }
 
     private bool CheckIfNeedRetreat()

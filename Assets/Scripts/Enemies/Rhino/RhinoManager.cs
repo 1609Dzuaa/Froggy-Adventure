@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class RhinoManager : MEnemiesManager
 {
-    //Rhino vẫn flip linh tinh ?@
-    [Header("SO")]
-    [SerializeField] private EnemiesStats _enemiesStats;
-
     private RhinoAttackState _rhinoAttackState = new();
     private RhinoWallHitState _rhinoWallHitState = new();
 
@@ -18,9 +14,9 @@ public class RhinoManager : MEnemiesManager
 
     public bool IsHitShield { get { return _isHitShield; } set { _isHitShield = value; } }
 
-    public RhinoWallHitState RhinoWallHitState { get { return this._rhinoWallHitState; } }
+    public RhinoWallHitState RhinoWallHitState { get { return _rhinoWallHitState; } }
 
-    public float RestDelay { get { return this._restDelay; } }
+    public float RestDelay { get { return _restDelay; } }
 
     protected override void Awake()
     {
@@ -51,10 +47,7 @@ public class RhinoManager : MEnemiesManager
         //Chỉ khi attack và va phải Shield thì mới change sang WH
         if (collision.collider.CompareTag(GameConstants.SHIELD_TAG) && _state is RhinoAttackState)
         {
-            if (_isFacingRight)
-                _rb.velocity = (_knockForce * new Vector2(-1f, 1f));
-            else
-                _rb.velocity = (_knockForce);
+            KnockBack();
             _isHitShield = true;
             ChangeState(_rhinoWallHitState);
         }
@@ -63,6 +56,14 @@ public class RhinoManager : MEnemiesManager
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+    }
+
+    private void KnockBack()
+    {
+        if (_isFacingRight)
+            _rb.velocity = (_enemiesSO.KnockForce * new Vector2(-1f, 1f));
+        else
+            _rb.velocity = (_enemiesSO.KnockForce);
     }
 
     //Event của Wall Hit animation

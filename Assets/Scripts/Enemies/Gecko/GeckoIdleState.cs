@@ -14,7 +14,7 @@ public class GeckoIdleState : MEnemiesIdleState
 
     public override void Update()
     {
-        if (Time.time - _entryTime >= _geckoManager.GetRestTime())
+        if (Time.time - _entryTime >= _geckoManager.MEnemiesSO.RestTime)
             _geckoManager.ChangeState(_geckoManager.GetGeckoPatrolState());
         else if (_geckoManager.HasDetectedPlayer)
             _geckoManager.ChangeState(_geckoManager.GetGeckoHideState());

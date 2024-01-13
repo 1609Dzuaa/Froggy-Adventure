@@ -55,8 +55,8 @@ public class MrAttackState : MEnemiesAttackState
     {
         //Mushroom 0 attack mà sẽ run away from player
         if(_mushroomManager.GetIsFacingRight())
-            _mushroomManager.GetRigidbody2D().velocity = new Vector2(_mushroomManager.GetChaseSpeed().x, _mushroomManager.GetRigidbody2D().velocity.y);
+            _mushroomManager.GetRigidbody2D().velocity = new Vector2(_mushroomManager.MEnemiesSO.ChaseSpeed.x, _mushroomManager.GetRigidbody2D().velocity.y);
         else
-            _mushroomManager.GetRigidbody2D().velocity = new Vector2(-_mushroomManager.GetChaseSpeed().x, _mushroomManager.GetRigidbody2D().velocity.y);
+            _mushroomManager.GetRigidbody2D().velocity = new Vector2(-_mushroomManager.MEnemiesSO.ChaseSpeed.x, _mushroomManager.GetRigidbody2D().velocity.y);
     }
 }

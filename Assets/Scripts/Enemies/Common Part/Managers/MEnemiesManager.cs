@@ -17,19 +17,12 @@ public class MEnemiesManager : EnemiesManager
     [SerializeField] protected Transform _boundaryLeft;
     [SerializeField] protected Transform _boundaryRight;
 
+    [Header("SO2")]
+    [SerializeField] protected MEnemiesStats _mEnemiesSO;
+
     [Header("Wall Check")]
     [SerializeField] protected Transform _wallCheck;
-    [SerializeField] protected float _wallCheckDistance;
-    [SerializeField] protected LayerMask _wallLayer;
     protected bool _hasCollidedWall;
-
-    [Header("Time")]
-    [SerializeField] protected float _restTime;
-    [SerializeField] protected float _patrolTime;
-
-    [Header("Speed")]
-    [SerializeField] protected Vector2 _patrolSpeed;
-    [SerializeField] protected Vector2 _chaseSpeed;
 
     [Header("Parent")]
     [SerializeField] protected GameObject _parent;
@@ -44,19 +37,13 @@ public class MEnemiesManager : EnemiesManager
 
     public MEnemiesGotHitState MEnemiesGotHitState { get { return _mEnemiesGotHitState; } set { _mEnemiesGotHitState = value; } }
 
-    public float GetRestTime() { return _restTime; }
-
-    public float GetPatrolTime() { return _patrolTime; }
-
     public bool HasCollidedWall { get { return _hasCollidedWall; } }
-
-    public Vector2 GetPatrolSpeed() { return _patrolSpeed; }
-
-    public Vector2 GetChaseSpeed() { return _chaseSpeed; }
 
     public Transform BoundaryLeft { get { return _boundaryLeft; } }
 
     public Transform BoundaryRight { get { return _boundaryRight; } }
+
+    public MEnemiesStats MEnemiesSO { get { return _mEnemiesSO; } }
 
     public void SetHasGotHit(bool para) { _hasGotHit = para; }
 
@@ -106,9 +93,9 @@ public class MEnemiesManager : EnemiesManager
     protected virtual void DetectWall()
     {
         if (!_isFacingRight)
-            _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.left, _wallCheckDistance, _wallLayer);
+            _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.left, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
         else
-            _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.right, _wallCheckDistance, _wallLayer);
+            _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.right, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
     }
 
     //Hàm này dùng để Invoke khi detect ra Player

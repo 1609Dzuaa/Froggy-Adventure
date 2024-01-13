@@ -80,9 +80,9 @@ public class BunnyManager : MEnemiesManager
     private void BackwardCheck()
     {
         if (!_isFacingRight)
-            _isPlayerBackward = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _checkDistance, _playerLayer);
+            _isPlayerBackward = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
         else
-            _isPlayerBackward = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _checkDistance, _playerLayer);
+            _isPlayerBackward = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
     }
 
     private void DrawBackwardCheckRay()
@@ -90,16 +90,16 @@ public class BunnyManager : MEnemiesManager
         if (_isPlayerBackward)
         {
             if (!_isFacingRight)
-                Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.yellow);
+                Debug.DrawRay(_playerCheck.position, Vector2.right * _enemiesSO.PlayerCheckDistance, Color.yellow);
             else
-                Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.yellow);
+                Debug.DrawRay(_playerCheck.position, Vector2.left * _enemiesSO.PlayerCheckDistance, Color.yellow);
         }
         else
         {
             if (!_isFacingRight)
-                Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.blue);
+                Debug.DrawRay(_playerCheck.position, Vector2.right * _enemiesSO.PlayerCheckDistance, Color.blue);
             else
-                Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.blue);
+                Debug.DrawRay(_playerCheck.position, Vector2.left * _enemiesSO.PlayerCheckDistance, Color.blue);
         }
     }
 }

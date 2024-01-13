@@ -378,16 +378,16 @@ public class SnailManager : MEnemiesManager
         if (!_isMovingVertical)
         {
             if (!_isFacingRight)
-                _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _checkDistance, _playerLayer);
+                _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
             else
-                _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _checkDistance, _playerLayer);
+                _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
         }
         else
         {
             if (!_isFacingRight)
-                _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.down, _checkDistance, _playerLayer);
+                _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.down, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
             else
-                _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.up, _checkDistance, _playerLayer);
+                _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.up, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
         }
 
         return _hasDetectedPlayer;
@@ -400,16 +400,16 @@ public class SnailManager : MEnemiesManager
             if (_hasDetectedPlayer)
             {
                 if (_direction == 1)
-                    Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.red);
+                    Debug.DrawRay(_playerCheck.position, Vector2.left * _enemiesSO.PlayerCheckDistance, Color.red);
                 else
-                    Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.red);
+                    Debug.DrawRay(_playerCheck.position, Vector2.right * _enemiesSO.PlayerCheckDistance, Color.red);
             }
             else
             {
                 if (_direction == 1)
-                    Debug.DrawRay(_playerCheck.position, Vector2.left * _checkDistance, Color.green);
+                    Debug.DrawRay(_playerCheck.position, Vector2.left * _enemiesSO.PlayerCheckDistance, Color.green);
                 else
-                    Debug.DrawRay(_playerCheck.position, Vector2.right * _checkDistance, Color.green);
+                    Debug.DrawRay(_playerCheck.position, Vector2.right * _enemiesSO.PlayerCheckDistance, Color.green);
             }
         }
         else
@@ -417,16 +417,16 @@ public class SnailManager : MEnemiesManager
             if (_hasDetectedPlayer)
             {
                 if (_direction == 2)
-                    Debug.DrawRay(_playerCheck.position, Vector2.down * _checkDistance, Color.red);
+                    Debug.DrawRay(_playerCheck.position, Vector2.down * _enemiesSO.PlayerCheckDistance, Color.red);
                 else
-                    Debug.DrawRay(_playerCheck.position, Vector2.up * _checkDistance, Color.red);
+                    Debug.DrawRay(_playerCheck.position, Vector2.up * _enemiesSO.PlayerCheckDistance, Color.red);
             }
             else
             {
                 if (_direction == 2)
-                    Debug.DrawRay(_playerCheck.position, Vector2.down * _checkDistance, Color.green);
+                    Debug.DrawRay(_playerCheck.position, Vector2.down * _enemiesSO.PlayerCheckDistance, Color.green);
                 else
-                    Debug.DrawRay(_playerCheck.position, Vector2.up * _checkDistance, Color.green);
+                    Debug.DrawRay(_playerCheck.position, Vector2.up * _enemiesSO.PlayerCheckDistance, Color.green);
             }
         }
     }
@@ -437,16 +437,16 @@ public class SnailManager : MEnemiesManager
         if (!_isMovingVertical)
         {
             if (_direction == 1)
-                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.left, _wallCheckDistance, _wallLayer);
+                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.left, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
             else
-                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.right, _wallCheckDistance, _wallLayer);
+                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.right, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
         }
         else
         {
             if (_direction == 2)
-                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.down, _wallCheckDistance, _wallLayer);
+                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.down, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
             else
-                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.up, _wallCheckDistance, _wallLayer);
+                _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.up, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
         }
     }
 
@@ -494,16 +494,16 @@ public class SnailManager : MEnemiesManager
         if (!_isMovingVertical)
         {
             if (_direction == 1)
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _wallLayer);
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _mEnemiesSO.WallLayer);
             else
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.up, _groundCheckDistance, _wallLayer);
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.up, _groundCheckDistance, _mEnemiesSO.WallLayer);
         }
         else
         {
             if (_direction == 2)
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _groundCheckDistance, _wallLayer);
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _groundCheckDistance, _mEnemiesSO.WallLayer);
             else
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _groundCheckDistance, _wallLayer);
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _groundCheckDistance, _mEnemiesSO.WallLayer);
         }
     }
 

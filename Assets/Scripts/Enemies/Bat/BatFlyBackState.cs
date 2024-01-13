@@ -35,7 +35,7 @@ public class BatFlyBackState : MEnemiesBaseState
         if (!_hasFlip)
             HandleFlipSprite();
 
-        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.SleepPos.position, _batManager.GetPatrolSpeed().x * Time.deltaTime);
+        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.SleepPos.position, _batManager.MEnemiesSO.PatrolSpeed.x * Time.deltaTime);
         if (CheckCanCeilIn())
             _batManager.ChangeState(_batManager.BatCeilInState);
         //Xử lý việc bay về chỗ ngủ và chuyển trạng thái Ceil In

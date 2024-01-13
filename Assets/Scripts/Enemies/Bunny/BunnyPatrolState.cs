@@ -33,7 +33,7 @@ public class BunnyPatrolState : MEnemiesPatrolState
         else if (CheckIfCanAttack())
         {
             _hasChangedState = true;
-            _bunnyManager.Invoke("AllowAttackPlayer", _bunnyManager.GetAttackDelay());
+            _bunnyManager.Invoke("AllowAttackPlayer", _bunnyManager.EnemiesSO.AttackDelay);
         }
     }
 

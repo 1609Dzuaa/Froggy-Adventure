@@ -198,14 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCheck: {fileID: 1006303769964934695}
-  _checkDistance: 10
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  _knockForce: {x: 0, y: 3}
-  _attackDelay: 0.15
-  degreeEachRotation: 1
-  timeEachRotate: 0.1
+  _enemiesSO: {fileID: 11400000, guid: 46dfd30459b04774ab632670f7a2a217, type: 2}
   _bullet: {fileID: 3972120368183892188, guid: d5bd51591c44bd945bfdec6b3d539063, type: 3}
   _shootPosition: {fileID: 152046509195764373}
 --- !u!1 &1006303769964934688

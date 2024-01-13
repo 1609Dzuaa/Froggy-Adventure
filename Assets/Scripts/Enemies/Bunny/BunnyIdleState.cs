@@ -25,7 +25,7 @@ public class BunnyIdleState : MEnemiesIdleState
             _hasChangedState = true;
             if (_bunnyManager.IsPlayerBackWard)
                 _bunnyManager.FlippingSprite();
-            _bunnyManager.Invoke("AllowAttackPlayer", _bunnyManager.GetAttackDelay());
+            _bunnyManager.Invoke("AllowAttackPlayer", _bunnyManager.EnemiesSO.AttackDelay);
         }
     }
 

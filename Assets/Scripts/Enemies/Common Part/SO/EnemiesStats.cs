@@ -9,21 +9,11 @@ public class EnemiesStats : ScriptableObject
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private float _playerCheckDistance;
 
-    [Header("Wall Check")]
-    [SerializeField] private LayerMask _wallLayer;
-    [SerializeField] private float _wallCheckDistance;
-
     [Header("Force")]
     [SerializeField] private Vector2 _knockForce;
 
     [Header("Time")]
-    [SerializeField] private float _restTime;
-    [SerializeField] private float _patrolTime;
     [SerializeField] private float _attackDelay;
-
-    [Header("Speed")]
-    [SerializeField] private float _patrolSpeed;
-    [SerializeField] private float _chaseSpeed;
 
     [Header("Z Rotation When Dead")]
     [SerializeField] private float _degreeEachRotation;
@@ -33,19 +23,11 @@ public class EnemiesStats : ScriptableObject
 
     public float PlayerCheckDistance { get { return _playerCheckDistance; } }
 
-    public LayerMask WallLayer { get { return _wallLayer; } }
-
-    public float WallCheckDistance { get { return _wallCheckDistance; } }
-
     public Vector2 KnockForce { get { return _knockForce; } }
-
-    public float RestTime { get { return _restTime; } }
-
-    public float PatrolTime { get { return _patrolTime; } }
 
     public float AttackDelay { get { return _attackDelay; } }
 
-    public float PatrolSpeed { get { return _patrolSpeed; } }
+    public float DegreeEachRotation { get { return _degreeEachRotation ; } }
 
-    public float ChaseSpeed { get { return _chaseSpeed; } }
+    public float TimeEachRotate { get { return _timeEachRotate; } }
 }

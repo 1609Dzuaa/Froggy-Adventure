@@ -46,9 +46,9 @@ public class MushroomManager : MEnemiesManager
             return;
 
         if (!_isFacingRight)
-            _isDetected = Physics2D.Raycast(new Vector2(_safeCheck.position.x, _safeCheck.position.y), Vector2.right, _safeCheckDistance, _playerLayer);
+            _isDetected = Physics2D.Raycast(new Vector2(_safeCheck.position.x, _safeCheck.position.y), Vector2.right, _safeCheckDistance, _enemiesSO.PlayerLayer);
         else
-            _isDetected = Physics2D.Raycast(new Vector2(_safeCheck.position.x, _safeCheck.position.y), Vector2.left, _safeCheckDistance, _playerLayer);
+            _isDetected = Physics2D.Raycast(new Vector2(_safeCheck.position.x, _safeCheck.position.y), Vector2.left, _safeCheckDistance, _enemiesSO.PlayerLayer);
     }
 
     private void DrawRaySafeCheck()

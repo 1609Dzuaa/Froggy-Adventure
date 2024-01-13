@@ -17,7 +17,7 @@ public class BatRetreatState : MEnemiesBaseState
     public override void Update() 
     {
         //Cập nhật vị trí bay về
-        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.SleepPos.position, _batManager.GetChaseSpeed().x * Time.deltaTime);
+        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.SleepPos.position, _batManager.MEnemiesSO.ChaseSpeed.x * Time.deltaTime);
 
         if (CheckIfBackHome(_batManager.transform.position, _batManager.SleepPos.position))
             _batManager.ChangeState(_batManager.BatCeilInState);

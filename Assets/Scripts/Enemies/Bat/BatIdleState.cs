@@ -40,7 +40,7 @@ public class BatIdleState : MEnemiesIdleState
 
     private bool CheckIfCanFlyBack()
     {
-        return _hasPatrol && Time.time - _entryTime >= _batManager.GetRestTime();
+        return _hasPatrol && Time.time - _entryTime >= _batManager.MEnemiesSO.RestTime;
     }
 
     public override void FixedUpdate() { }

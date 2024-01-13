@@ -22,9 +22,9 @@ public class BeeGotHitState : MEnemiesGotHitState
 
     public override void Update()
     {
-        if (Time.time - lastRotateTime >= _beeManager.GetTimeEachRotate())
+        if (Time.time - lastRotateTime >= _beeManager.EnemiesSO.TimeEachRotate)
         {
-            Zdegree -= _beeManager.GetDegreeEachRotation();
+            Zdegree -= _beeManager.EnemiesSO.DegreeEachRotation;
             _beeManager.transform.Rotate(0f, 0f, Zdegree);
             lastRotateTime = Time.time;
         }
@@ -32,6 +32,6 @@ public class BeeGotHitState : MEnemiesGotHitState
 
     protected void ApplyForce()
     {
-        _beeManager.GetRigidbody2D().AddForce(_beeManager.KnockForce, ForceMode2D.Impulse);
+        _beeManager.GetRigidbody2D().AddForce(_beeManager.EnemiesSO.KnockForce, ForceMode2D.Impulse);
     }
 }

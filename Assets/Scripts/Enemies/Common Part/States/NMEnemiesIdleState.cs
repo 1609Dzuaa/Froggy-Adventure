@@ -18,7 +18,7 @@ public class NMEnemiesIdleState : NMEnemiesBaseState
         if (_nmEnemiesManager.HasDetectedPlayer && !_hasChangedState)
         {
             _hasChangedState = true;
-            _nmEnemiesManager.Invoke("AllowAttackPlayer", _nmEnemiesManager.GetAttackDelay());
+            _nmEnemiesManager.Invoke("AllowAttackPlayer", _nmEnemiesManager.EnemiesSO.AttackDelay);
         }
     }
 

@@ -51,7 +51,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         else if (CheckIfCanAttack())
         {
             _hasChangedState = true;
-            _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.GetAttackDelay());
+            _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.EnemiesSO.AttackDelay);
         }
 
         //Flip Sprite Check
@@ -65,7 +65,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     protected bool CheckIfCanRest()
     {
-        return Time.time - _entryTime >= _mEnemiesManager.GetPatrolTime() 
+        return Time.time - _entryTime >= _mEnemiesManager.MEnemiesSO.PatrolTime 
             && !_mEnemiesManager.HasDetectedPlayer;
         //Thêm đk: !_mEnemiesManager.HasDetectedPlayer vì có thể giây cuối idle
     }
@@ -87,7 +87,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     public override void FixedUpdate()
     {
-        _mEnemiesManager.Move(_mEnemiesManager.GetPatrolSpeed().x);
+        _mEnemiesManager.Move(_mEnemiesManager.MEnemiesSO.PatrolSpeed.x);
     }
 
     protected virtual void HandleRandomChangeDirection()
