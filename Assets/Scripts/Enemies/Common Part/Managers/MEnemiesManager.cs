@@ -27,13 +27,11 @@ public class MEnemiesManager : EnemiesManager
 
     public MEnemiesAttackState MEnemiesAttackState { get { return _mEnemiesAttackState; } set { _mEnemiesAttackState = value; } }
 
-    public MEnemiesGotHitState MEnemiesGotHitState { get { return _mEnemiesGotHitState; } set { _mEnemiesGotHitState = value; } }
+    public MEnemiesGotHitState GetMEnemiesGotHitState { get { return _mEnemiesGotHitState; } set { _mEnemiesGotHitState = value; } }
 
     public bool HasCollidedWall { get { return _hasCollidedWall; } }
 
     public MEnemiesStats MEnemiesSO { get { return _mEnemiesSO; } }
-
-    public void SetHasGotHit(bool para) { _hasGotHit = para; }
 
     protected override void Awake()
     {
@@ -45,11 +43,11 @@ public class MEnemiesManager : EnemiesManager
     protected override void Start()
     {
         base.Start();
-        SetUpProperties();
     }
 
     protected override void SetUpProperties()
     {
+        base.SetUpProperties();
         _state = _mEnemiesIdleState;
         _state.EnterState(this);
     }
@@ -66,16 +64,6 @@ public class MEnemiesManager : EnemiesManager
     {
         _state.FixedUpdate();
         //Debug.Log("Called");
-    }
-
-    //Call this in Patrol State
-    public virtual void Move(float velo)
-    {
-        if (_isFacingRight)
-            _rb.velocity = new Vector2(velo, _rb.velocity.y);
-        else
-            _rb.velocity = new Vector2(-velo, _rb.velocity.y);
-        //Debug.Log("Move");
     }
 
     protected virtual void DetectWall()
@@ -119,7 +107,7 @@ public class MEnemiesManager : EnemiesManager
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
+        if(collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)
         {
             _hasGotHit = true;
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);

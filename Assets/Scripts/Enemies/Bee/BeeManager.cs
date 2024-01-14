@@ -59,12 +59,22 @@ public class BeeManager : MEnemiesManager
         base.Awake();
     }
 
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
+        _playerCheck = FindObjectOfType<PlayerStateManager>().transform;
+    }
+
     protected override void Start()
     {
-        _state = _beeIdleState;
-        _state.EnterState(this);
-        MEnemiesGotHitState = _beeGotHitState;
-        _playerCheck = FindObjectOfType<PlayerStateManager>().transform;
+        base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
+        _mEnemiesIdleState = _beeIdleState;
+        _mEnemiesGotHitState = _beeGotHitState;
+        base.SetUpProperties();
     }
 
     protected override void Update()

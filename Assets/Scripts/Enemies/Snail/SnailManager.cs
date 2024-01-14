@@ -105,6 +105,8 @@ public class SnailManager : MEnemiesManager
 
     public Vector2 OffsetBoxTrigger { get => _boxColTriggerOffset; }
 
+    public bool HasGotHit { set => _hasGotHit = value; }
+
     protected override void Awake()
     {
         base.Awake();

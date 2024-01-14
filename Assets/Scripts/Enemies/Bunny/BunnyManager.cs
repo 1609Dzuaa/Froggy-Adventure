@@ -35,12 +35,22 @@ public class BunnyManager : MEnemiesManager
         base.Awake();
     }
 
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
+        _playerRef = FindObjectOfType<PlayerStateManager>().transform;
+    }
+
     protected override void Start()
     {
-        _state = _bunnyIdleState;
-        _state.EnterState(this);
-        MEnemiesGotHitState = _bunnyGotHitState;
-        _playerRef = FindObjectOfType<PlayerStateManager>().transform;
+        base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
+        _mEnemiesIdleState = _bunnyIdleState;
+        _mEnemiesGotHitState = _bunnyGotHitState;
+        base.SetUpProperties();
     }
 
     protected override void Update()
@@ -68,11 +78,6 @@ public class BunnyManager : MEnemiesManager
             return;
 
         ChangeState(_bunnyAtkJumpState);
-    }
-
-    protected override bool DetectedPlayer()
-    {
-        return base.DetectedPlayer();
     }
 
     private void BackwardCheck()

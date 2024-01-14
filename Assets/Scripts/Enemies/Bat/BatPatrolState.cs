@@ -40,6 +40,7 @@ public class BatPatrolState : MEnemiesPatrolState
         else if (!_hasChangedState)
             HandleFlyPatrol();
 
+        Debug.Log("Bat PT Call");
         //Debug.Log("Allow back, hasPT: " + _allowBackToSleepPos + _batManager.BatIdleState.HasPatrol);
     }
 

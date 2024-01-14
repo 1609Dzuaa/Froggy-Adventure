@@ -15,8 +15,8 @@ public abstract class EnemiesManager : CharactersManager
     protected bool _hasGotHit; //Đánh dấu bị Hit, tránh Trigger nhiều lần
     protected Collider2D _collider2D;
     protected SpriteRenderer _spriteRenderer;
-        
-    //Public Field
+
+    #region PUBLIC FUNC
 
     public bool HasDetectedPlayer { get { return _hasDetectedPlayer; } }
 
@@ -25,6 +25,8 @@ public abstract class EnemiesManager : CharactersManager
     public SpriteRenderer GetSpriteRenderer { get => _spriteRenderer; }
 
     public EnemiesStats EnemiesSO { get => _enemiesSO; }
+
+    #endregion
 
     protected override void Awake()
     {
@@ -38,16 +40,17 @@ public abstract class EnemiesManager : CharactersManager
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    protected virtual void OnEnable() { }
-
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        if (transform.rotation.eulerAngles.y == 180f)
-            _isFacingRight = true;
-        //Debug.Log("IfR: " + _isFacingRight);
+    }
 
+    protected override void SetUpProperties()
+    {
+        if (Math.Abs(transform.rotation.eulerAngles.y) >= 180f)
+            _isFacingRight = true;
+        //Debug.Log("IfR, yAngles: " + _isFacingRight + ", " + transform.rotation.eulerAngles.y);
     }
 
     protected override void Update()

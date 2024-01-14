@@ -22,6 +22,7 @@ public class NMEnemiesManager : EnemiesManager
 
     protected override void SetUpProperties()
     {
+        base.SetUpProperties();
         _state = _nmEnemiesIdleState;
         _state.EnterState(this);
     }
@@ -37,15 +38,19 @@ public class NMEnemiesManager : EnemiesManager
         base.OnCollisionEnter2D(collision);
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, GameConstants.BULLET_ID);
+            int bulletID = collision.collider.GetComponent<BulletController>().BulletID;
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, bulletID);
             ChangeState(_nmEnemiesGotHitState);
         }
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
+        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState)
         {
+            //Thêm ĐK: _state is not NMEnemiesGotHitState vì:
+            //có thể enemy này dính đòn từ bullet => rotate z khi GotHit
+            //và Trigger collider của Player dẫn đến JumpPassive
             _hasGotHit = true;
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             ChangeState(_nmEnemiesGotHitState);

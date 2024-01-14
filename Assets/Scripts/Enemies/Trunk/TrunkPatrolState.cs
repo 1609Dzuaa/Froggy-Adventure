@@ -28,7 +28,6 @@ public class TrunkPatrolState : MEnemiesPatrolState
         {
             _trunkManager.ChangeState(_trunkManager.GetTrunkWithState());
         }
-        //base.Update();
     }
 
     private bool CheckIfCanWithdrawn()

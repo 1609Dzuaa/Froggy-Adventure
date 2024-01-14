@@ -26,11 +26,16 @@ public class HedgehogManager : NMEnemiesManager
         base.Awake();
     }
 
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+        //Muốn chỉnh collider trục y thì cần chỉnh thêm offset
+    }
+
     protected override void Start()
     {
         base.Start();
-        _boxCollider2D = GetComponent<BoxCollider2D>();
-        //Muốn chỉnh collider trục y thì cần chỉnh thêm offset
     }
 
     protected override void Update()
@@ -40,7 +45,7 @@ public class HedgehogManager : NMEnemiesManager
 
     private void ChangeToSpikeIdle()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 
         _prevCollider2DSize = _boxCollider2D.size;

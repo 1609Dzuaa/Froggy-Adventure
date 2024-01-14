@@ -58,6 +58,7 @@
 
     public enum EEvents
     {
+        BulletOnCreate,
         BulletOnHit,
         BulletOnReceiveInfo,
         PlayerOnTakeDamage,

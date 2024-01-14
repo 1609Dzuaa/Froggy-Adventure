@@ -25,9 +25,6 @@ public class GameObjectManager : MonoBehaviour
         _anim = GetComponent<Animator>();
     }
 
-    protected virtual void SetUpProperties()
-    {
-
-    }
+    protected virtual void SetUpProperties() { }
 
 }

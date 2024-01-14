@@ -156,7 +156,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 4
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -235,7 +235,7 @@ MonoBehaviour:
   _wallCheck: {fileID: 5796051414966575312}
   _bullet: {fileID: 2051569452801589770, guid: 562293350eb8cc343a18c82e707cfcfe, type: 3}
   _shootPosition: {fileID: 5796051415553812983}
-  _withdrawnCheckDistance: 6
+  _withdrawnCheckDistance: 5
   _withdrawnForce: {x: 4, y: 4}
 --- !u!1 &5796051415553812982
 GameObject:

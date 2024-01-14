@@ -28,6 +28,11 @@ public class SnailPatrolState : MEnemiesPatrolState
 
     public override void FixedUpdate()
     {
+        base.FixedUpdate();
+    }
+
+    protected override void Move()
+    {
         if (!_snailManager.IsMovingVertical) //move ngang
         {
             //trong thgian rotate
@@ -62,11 +67,11 @@ public class SnailPatrolState : MEnemiesPatrolState
         else //move doc
         {
             //trong thgian rotate
-            if(_snailManager.HasRotate && !_snailManager.DoneRotate)
+            if (_snailManager.HasRotate && !_snailManager.DoneRotate)
             {
                 if (_snailManager.Direction == 2)
                 {
-                    _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.MEnemiesSO.PatrolSpeed.x, - _snailManager.MEnemiesSO.PatrolSpeed.y);
+                    _snailManager.GetRigidbody2D().velocity = new Vector2(_snailManager.MEnemiesSO.PatrolSpeed.x, -_snailManager.MEnemiesSO.PatrolSpeed.y);
                     //Debug.Log("trai len2");
                 }
                 else

@@ -17,6 +17,9 @@ public class BatManager : MEnemiesManager
     [SerializeField] private Transform _boundaryLeft;
     [SerializeField] private Transform _boundaryRight;
 
+    [Header("Parent")]
+    [SerializeField] private Transform _parent;
+
     private BatSleepState _batSleepState = new();
     private BatCeilInState _batCeilInState = new();
     private BatCeilOutState _batCeilOutState = new();
@@ -62,7 +65,7 @@ public class BatManager : MEnemiesManager
     {
         _state = _batSleepState;
         _state.EnterState(this);
-        MEnemiesGotHitState = _batGotHitState; //convert chứ 0 nó lại xài state GotHit chung
+        _mEnemiesGotHitState = _batGotHitState; //convert chứ 0 nó lại xài state GotHit chung
         _playerCheck = FindObjectOfType<PlayerStateManager>().transform;
     }
 
@@ -124,6 +127,11 @@ public class BatManager : MEnemiesManager
             return;
 
         ChangeState(_batAttackState);
+    }
+
+    protected override void SelfDestroy()
+    {
+        Destroy(_parent);
     }
 
 }

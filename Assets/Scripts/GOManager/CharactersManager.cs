@@ -27,7 +27,7 @@ public class CharactersManager : GameObjectManager
     // Start is called before the first frame update
     protected override void Start()
     {
-
+        base.Start();
     }
 
     protected virtual void Update()

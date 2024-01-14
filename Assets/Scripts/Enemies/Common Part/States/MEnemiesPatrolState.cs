@@ -59,8 +59,9 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         {
             _hasChangeDirection = true;
             _mEnemiesManager.FlippingSprite();
-            //Debug.Log("Flip Patrol, Has Hit Wall: " + _hasJustHitWall);
         }
+
+        Debug.Log("Common Call");
     }
 
     protected bool CheckIfCanRest()
@@ -87,7 +88,15 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     public override void FixedUpdate()
     {
-        _mEnemiesManager.Move(_mEnemiesManager.MEnemiesSO.PatrolSpeed.x);
+        Move();
+    }
+
+    protected virtual void Move()
+    {
+        if (_mEnemiesManager.GetIsFacingRight())
+            _mEnemiesManager.GetRigidbody2D().velocity = new Vector2(_mEnemiesManager.MEnemiesSO.PatrolSpeed.x, _mEnemiesManager.GetRigidbody2D().velocity.y);
+        else
+            _mEnemiesManager.GetRigidbody2D().velocity = new Vector2(-_mEnemiesManager.MEnemiesSO.PatrolSpeed.x, _mEnemiesManager.GetRigidbody2D().velocity.y);
     }
 
     protected virtual void HandleRandomChangeDirection()
@@ -100,7 +109,6 @@ public class MEnemiesPatrolState : MEnemiesBaseState
         //Random change direction
         //Các TH 0 thể Rd:
         //Vừa tông vào wall => bắt buộc phải flip và patrol hướng ngược lại vs tường
-        //Vừa flip vì vượt quá min, max boundaries
     }
 
     private void HandleCanRandomNextPatrolState()

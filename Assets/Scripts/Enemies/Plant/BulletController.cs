@@ -39,11 +39,22 @@ public class BulletController : MonoBehaviour
     private float _entryTime;
     private bool _isDirectionRight = false;
     private int _type;
+    private int _bulletID;
+
+    public int BulletID { get { return _bulletID; } set { _bulletID = value; } }
 
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BulletOnCreate, ReceiveBulletID);
+        Debug.Log("Id cua tao la: " + _bulletID);
+    }
+
+    private void ReceiveBulletID(object obj)
+    {
+        _bulletID = (int)obj;
+        //Debug.Log("Id cua tao la: " + _bulletID);
     }
 
     private void OnEnable()
@@ -124,9 +135,11 @@ public class BulletController : MonoBehaviour
 
     private void DamageTarget(object obj)
     {
+        if ((int)obj != _bulletID)
+            return;
+
         SpawnBulletPieces();
         gameObject.SetActive(false);
-        //Debug.Log("ID cua tao la " + (int)obj);
     }
 
     private void ReceiveInfo(object  obj)

@@ -42,6 +42,7 @@ public class BulletPool : MonoBehaviour
     {
         CreateInstance();
         InitDictionary();
+        AddBulletsToPool();
     }
 
     private void InitDictionary()
@@ -65,27 +66,30 @@ public class BulletPool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AddBulletsToPool();
+        //AddBulletsToPool();
     }
 
     private void AddBulletsToPool()
     {
         //Add bullet vào pool và đánh dấu chưa active nó
-        for (int i = 0; i < _poolPlantBulletCount; i++)
-            InstantiateBullet(_plantBulletPrefabs, GameConstants.PLANT_BULLET);
+        /*for (int i = 0; i < _poolPlantBulletCount; i++)
+            InstantiateBullet(_plantBulletPrefabs, GameConstants.PLANT_BULLET, i);
+
 
         for (int i = 0; i < _poolBeeBulletCount; i++)
-            InstantiateBullet(_beeBulletPrefabs, GameConstants.BEE_BULLET);
+            InstantiateBullet(_beeBulletPrefabs, GameConstants.BEE_BULLET, i);*/
 
         for (int i = 0; i < _poolTrunkBulletCount; i++)
-            InstantiateBullet(_trunkBulletPrefabs, GameConstants.TRUNK_BULLET);
+            InstantiateBullet(_trunkBulletPrefabs, GameConstants.TRUNK_BULLET, i);
     }
 
-    private void InstantiateBullet(GameObject gameObject, int bulletType)
+    private void InstantiateBullet(GameObject gameObject, int bulletType, int bulletID)
     {
         GameObject gObj = Instantiate(gameObject);
         gObj.SetActive(false);
         _dictBulletPool[bulletType].Add(gObj);
+        gObj.GetComponent<BulletController>().BulletID = bulletID;
+        //EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnCreate, bulletID);
     }
 
     public GameObject GetObjectInPool(int bulletType)

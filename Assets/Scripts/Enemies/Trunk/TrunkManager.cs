@@ -41,9 +41,15 @@ public class TrunkManager : MEnemiesManager
 
     protected override void Start()
     {
-        _state = _trunkIdleState;
-        _state.EnterState(this);
-        MEnemiesGotHitState = _trunkGotHitState;
+        base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
+        _mEnemiesIdleState = _trunkIdleState;
+        _mEnemiesGotHitState = _trunkGotHitState;
+        base.SetUpProperties();
+        //Debug.Log("SetProp");
     }
 
     protected override void Update()
