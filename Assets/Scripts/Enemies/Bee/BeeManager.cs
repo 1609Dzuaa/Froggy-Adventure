@@ -108,8 +108,9 @@ public class BeeManager : MEnemiesManager
         {
             bullet.SetActive(true);
             bullet.transform.position = _shootPosition.position;
-            bullet.GetComponent<BulletController>().IsDirectionRight = _isFacingRight;
-            bullet.GetComponent<BulletController>().Type = GameConstants.BEE_BULLET;
+
+            BulletInfor info = new(GameConstants.BEE_BULLET, _isFacingRight);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
             //Debug.Log("I'm here");
         }
     }

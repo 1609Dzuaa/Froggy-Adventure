@@ -37,7 +37,7 @@ public class BatManager : MEnemiesManager
 
     public Transform BoundaryRight { get { return _boundaryRight; } }
 
-    public Transform Player { get { return _playerCheck; } }
+    public Transform PlayerRef { get { return _playerCheck; } }
 
     public BatCeilInState BatCeilInState { get { return _batCeilInState; } }
 

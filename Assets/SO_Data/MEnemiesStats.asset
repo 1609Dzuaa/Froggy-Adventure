@@ -12,19 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8048037d2c9fa7428ef86b9f908b117, type: 3}
   m_Name: MEnemiesStats
   m_EditorClassIdentifier: 
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 8320
-  _playerCheckDistance: 8
-  _knockForce: {x: 5, y: 2.5}
-  _attackDelay: 0.3
-  _degreeEachRotation: 0
-  _timeEachRotate: 0
   _wallCheckDistance: 0.8
   _wallLayer:
     serializedVersion: 2
     m_Bits: 64
   _restTime: 1.5
   _patrolTime: 1.5
-  _patrolSpeed: {x: 2, y: 0}
+  _patrolSpeed: {x: 2, y: 4}
   _chaseSpeed: {x: 5, y: 0}

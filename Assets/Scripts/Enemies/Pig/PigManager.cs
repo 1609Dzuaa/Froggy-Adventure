@@ -9,8 +9,6 @@ public class PigManager : MEnemiesManager
     [Header("HP")]
     [SerializeField] private int _hp;
 
-    [Header("Time")]
-    [SerializeField] private float _flipDelay;
     [SerializeField] private float _destroyDelay;
 
     [Header("Chase Speed Red Form")]
@@ -100,11 +98,4 @@ public class PigManager : MEnemiesManager
         transform.Rotate(0, 180, 0);
     }
 
-    public IEnumerator AllowFlip()
-    {
-        yield return new WaitForSeconds(_flipDelay);
-
-        _pigAtkRedState.AllowFlip = true;
-        //Delay việc Flip 1 xíu để khỏi flip loạn xạ khi thoả mãn đk flip
-    }
 }

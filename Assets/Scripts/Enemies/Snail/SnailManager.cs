@@ -69,6 +69,7 @@ public class SnailManager : MEnemiesManager
     //Solution cho việc nếu hit snail khi nó đang/chbi rotate => bug
     //Chỉ cho dmg nó nếu direction của nó là 1 (move ngang) - hạn chế bug
     private bool _isVunerable;
+    private RaycastHit2D _groundHit;
 
     public bool HasRotate { get {  return _hasRotate; } }
 
@@ -145,6 +146,7 @@ public class SnailManager : MEnemiesManager
         DetectedPlayer();
         DetectWall();
         DetectGround();
+        Debug.Log("Dist: " + _groundHit.distance);
         DrawRayDetectPlayer();
         DrawRayDetectWall();
         DrawRayDetectGround();
@@ -299,11 +301,6 @@ public class SnailManager : MEnemiesManager
 
         if (Time.time - _entryTime >= _timeEachRotation && _hasRotate && !_doneRotate)
         {
-            /*if (_state is SnailAttackState || _state is SnailShellHitState)
-            {
-                return;
-            }*/
-
             float currentZAngles = WrapAngle(transform.localEulerAngles.z);
             currentZAngles += _degreeEachRotation;
 
@@ -494,16 +491,28 @@ public class SnailManager : MEnemiesManager
         if (!_isMovingVertical)
         {
             if (_direction == 1)
+            {
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _mEnemiesSO.WallLayer);
+                _groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _mEnemiesSO.WallLayer);
+            }
             else
+            {
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.up, _groundCheckDistance, _mEnemiesSO.WallLayer);
+                _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.up, _groundCheckDistance, _mEnemiesSO.WallLayer);
+            }
         }
         else
         {
             if (_direction == 2)
+            {
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _groundCheckDistance, _mEnemiesSO.WallLayer);
+                _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.right, _groundCheckDistance, _mEnemiesSO.WallLayer);
+            }
             else
+            {
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _groundCheckDistance, _mEnemiesSO.WallLayer);
+                _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.left, _groundCheckDistance, _mEnemiesSO.WallLayer);
+            }
         }
     }
 

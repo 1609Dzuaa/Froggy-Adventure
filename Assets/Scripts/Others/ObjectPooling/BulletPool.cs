@@ -65,6 +65,11 @@ public class BulletPool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AddBulletsToPool();
+    }
+
+    private void AddBulletsToPool()
+    {
         //Add bullet vào pool và đánh dấu chưa active nó
         for (int i = 0; i < _poolPlantBulletCount; i++)
             InstantiateBullet(_plantBulletPrefabs, GameConstants.PLANT_BULLET);

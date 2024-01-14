@@ -6,6 +6,7 @@
     //Range tối thiểu mà bat có thể flip khi chase player
     //tránh flip loạn xạ khi dist to player quá gần
     public const float BAT_FLIPABLE_RANGE = 0.15f;
+    public const float PIG_FLIPABLE_RANGE = 0.6f;
 
     #endregion
 

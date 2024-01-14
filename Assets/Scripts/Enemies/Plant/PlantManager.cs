@@ -36,8 +36,9 @@ public class PlantManager : NMEnemiesManager
 
         bullet.SetActive(true);
         bullet.transform.position = _shootPosition.position;
-        bullet.GetComponent<BulletController>().IsDirectionRight = _isFacingRight;
-        bullet.GetComponent<BulletController>().Type = GameConstants.PLANT_BULLET;
+
+        BulletInfor info = new BulletInfor(GameConstants.PLANT_BULLET, _isFacingRight);
+        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
         //Debug.Log("I'm here");
     }
 

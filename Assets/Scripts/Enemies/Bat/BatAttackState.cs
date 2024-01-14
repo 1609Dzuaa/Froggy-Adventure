@@ -37,14 +37,14 @@ public class BatAttackState : MEnemiesAttackState
 
     protected override void Attack()
     {
-        _xAxisDistance = _batManager.transform.position.x - _batManager.Player.position.x;
+        _xAxisDistance = _batManager.transform.position.x - _batManager.PlayerRef.position.x;
         if (_xAxisDistance < 0 && !_batManager.GetIsFacingRight() && Mathf.Abs(_xAxisDistance) >= GameConstants.BAT_FLIPABLE_RANGE)
             _batManager.FlipRight();
         else if (_xAxisDistance > 0 && _batManager.GetIsFacingRight() && Mathf.Abs(_xAxisDistance) >= GameConstants.BAT_FLIPABLE_RANGE)
             _batManager.FlipLeft();
 
         //Move vật thể theo target
-        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.Player.position, _batManager.MEnemiesSO.ChaseSpeed.x * Time.deltaTime);
+        _batManager.transform.position = Vector2.MoveTowards(_batManager.transform.position, _batManager.PlayerRef.position, _batManager.MEnemiesSO.ChaseSpeed.x * Time.deltaTime);
     }
 
     private bool CheckIfNeedRetreat()

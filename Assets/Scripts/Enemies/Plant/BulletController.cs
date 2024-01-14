@@ -3,6 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct BulletInfor
+{
+    int _type;
+    bool _isDirectionRight;
+
+    public BulletInfor(int type, bool isDirectionRight) { _type = type; _isDirectionRight = isDirectionRight; }
+
+    public int Type { get { return _type; } }
+
+    public bool IsDirectionRight { get { return _isDirectionRight; } }
+}
+
 public class BulletController : MonoBehaviour
 {
     [Header("Speed")]
@@ -28,10 +40,6 @@ public class BulletController : MonoBehaviour
     private bool _isDirectionRight = false;
     private int _type;
 
-    public bool IsDirectionRight { set { _isDirectionRight = value; } }
-
-    public int Type { set {  _type = value; } }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +49,7 @@ public class BulletController : MonoBehaviour
     private void OnEnable()
     {
         _entryTime = Time.time;
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BulletOnReceiveInfo, ReceiveInfo);
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
     }
 
@@ -67,6 +76,7 @@ public class BulletController : MonoBehaviour
     private void OnDisable()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BulletOnReceiveInfo, ReceiveInfo);
         //Debug.Log("unsub event thanh cong");
     }
 
@@ -117,5 +127,15 @@ public class BulletController : MonoBehaviour
         SpawnBulletPieces();
         gameObject.SetActive(false);
         //Debug.Log("ID cua tao la " + (int)obj);
+    }
+
+    private void ReceiveInfo(object  obj)
+    {
+        BulletInfor bulletInfo = (BulletInfor)obj;
+
+        if (_isDirectionRight != bulletInfo.IsDirectionRight && bulletInfo.Type != GameConstants.BEE_BULLET)
+            transform.Rotate(0, 180, 0);
+        _isDirectionRight = bulletInfo.IsDirectionRight;
+        _type = bulletInfo.Type;
     }
 }

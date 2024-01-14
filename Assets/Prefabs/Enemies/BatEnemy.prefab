@@ -304,32 +304,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d399151300d95d488f296503650b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerCheck: {fileID: 8824840369338483486, guid: 808843004ac583d4d9cbde381e1d51d8, type: 3}
-  _checkDistance: 0
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _knockForce: {x: 0, y: 100}
-  _attackDelay: 0
-  degreeEachRotation: 0
-  timeEachRotate: 0
-  _boundaryLeft: {fileID: 8819631318811798698}
-  _boundaryRight: {fileID: 8819631318925522419}
+  _playerCheck: {fileID: 0}
+  _enemiesSO: {fileID: 11400000, guid: 46dfd30459b04774ab632670f7a2a217, type: 2}
+  _mEnemiesSO: {fileID: 11400000, guid: 115d47f41ff81554fb869b615e6db30a, type: 2}
   _wallCheck: {fileID: 0}
-  _wallCheckDistance: 0
-  _wallLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _restTime: 2
-  _patrolTime: 2
-  _patrolSpeed: {x: 0, y: 0}
-  _chaseSpeed: {x: 0, y: 0}
-  _parent: {fileID: 8819631318198135883}
   _sleepPos: {fileID: 8819631318022016802}
   _sleepTime: 3
-  _degreeEachRotation: 1.5
-  _timeEachRotate: 0.1
   _attackRange: 10
+  _boundaryLeft: {fileID: 8819631318811798698}
+  _boundaryRight: {fileID: 8819631318925522419}
 --- !u!1 &8819631318811798699
 GameObject:
   m_ObjectHideFlags: 0

@@ -59,6 +59,7 @@
     public enum EEvents
     {
         BulletOnHit,
+        BulletOnReceiveInfo,
         PlayerOnTakeDamage,
         PlayerOnJumpPassive,
         PlayerOnInteractWithNPCs,

@@ -3,9 +3,7 @@
 public class PigAttackRedState : MEnemiesAttackState
 {
     private PigManager _pigManager;
-    private bool _allowFlip = true;
-
-    public bool AllowFlip { set { _allowFlip = value; } }
+    private float _xAxisDistance;
 
     public override void EnterState(CharactersManager charactersManager)
     {
@@ -22,19 +20,11 @@ public class PigAttackRedState : MEnemiesAttackState
 
     public override void Update()
     {
-        //StartCor để delay việc bật lại cờ cho phép flip nhằm tránh flip loạn xạ
-        if (_pigManager.transform.position.x >= _pigManager.PlayerRef.position.x && _pigManager.GetIsFacingRight() && _allowFlip)
-        {
-            _allowFlip = false;
-            _pigManager.FlipLeft();
-            _pigManager.StartCoroutine(_pigManager.AllowFlip());
-        }
-        else if (_pigManager.transform.position.x < _pigManager.PlayerRef.position.x && !_pigManager.GetIsFacingRight() && _allowFlip)
-        {
-            _allowFlip = false;
+        _xAxisDistance = _pigManager.transform.position.x - _pigManager.PlayerRef.position.x;
+        if (_xAxisDistance < 0 && !_pigManager.GetIsFacingRight() && Mathf.Abs(_xAxisDistance) >= GameConstants.PIG_FLIPABLE_RANGE)
             _pigManager.FlipRight();
-            _pigManager.StartCoroutine(_pigManager.AllowFlip());
-        }
+        else if (_xAxisDistance > 0 && _pigManager.GetIsFacingRight() && Mathf.Abs(_xAxisDistance) >= GameConstants.PIG_FLIPABLE_RANGE)
+            _pigManager.FlipLeft();
     }
 
     public override void FixedUpdate()

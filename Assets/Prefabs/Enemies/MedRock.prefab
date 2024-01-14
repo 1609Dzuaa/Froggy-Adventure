@@ -210,33 +210,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCheck: {fileID: 5355335732717428498}
-  _checkDistance: 9
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  _knockForce: {x: 0, y: 0}
-  _attackDelay: 0
-  degreeEachRotation: 0
-  timeEachRotate: 0
-  _boundaryLeft: {fileID: 0}
-  _boundaryRight: {fileID: 0}
+  _enemiesSO: {fileID: 11400000, guid: 46dfd30459b04774ab632670f7a2a217, type: 2}
+  _mEnemiesSO: {fileID: 11400000, guid: 115d47f41ff81554fb869b615e6db30a, type: 2}
   _wallCheck: {fileID: 5355335733681644958}
-  _wallCheckDistance: 1
-  _wallLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _restTime: 2
-  _patrolTime: 2
-  _patrolSpeed: {x: 2.5, y: 0}
-  _chaseSpeed: {x: 5, y: 0}
-  _parent: {fileID: 0}
   _type: 1
   _rockClone: {fileID: 2431947300259721221, guid: 089672de0b57f9446948c3034919f481, type: 3}
   _spawnPos1: {fileID: 5355335733451792046}
   _spawnPos2: {fileID: 5355335733369496577}
   _spawnPos3: {fileID: 0}
   _spawnPos4: {fileID: 0}
-  _deadEffect: {fileID: 2734915209682569357, guid: a08f4f01407b578438bed11dc83f17da, type: 3}
 --- !u!95 &5355335732838467040
 Animator:
   serializedVersion: 5
