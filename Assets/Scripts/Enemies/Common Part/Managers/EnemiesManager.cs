@@ -65,8 +65,6 @@ public abstract class EnemiesManager : CharactersManager
 
     protected virtual bool DetectedPlayer()
     {
-        //Cân nhắc có nên detect luôn cái layer Ignore 0 ?
-
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return _hasDetectedPlayer = false;
         
@@ -96,7 +94,7 @@ public abstract class EnemiesManager : CharactersManager
         }
     }
 
-    protected void DestroyItSelf()
+    protected virtual void SelfDestroy()
     {
         Destroy(gameObject);
     }

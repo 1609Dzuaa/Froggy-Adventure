@@ -7,15 +7,10 @@ using UnityEngine;
 public class MEnemiesManager : EnemiesManager
 {
     //MEnemies <-> MoveableEnemies
-    private MEnemiesIdleState _mEnemiesIdleState = new();
-    private MEnemiesPatrolState _mEnemiesPatrolState = new();
-    private MEnemiesAttackState _mEnemiesAttackState = new();
-    private MEnemiesGotHitState _mEnemiesGotHitState = new();
-
-    //Chắc vứt boundaries và check dựa vào wall check ?
-    [Header("Boundaries")]
-    [SerializeField] protected Transform _boundaryLeft;
-    [SerializeField] protected Transform _boundaryRight;
+    protected MEnemiesIdleState _mEnemiesIdleState = new();
+    protected MEnemiesPatrolState _mEnemiesPatrolState = new();
+    protected MEnemiesAttackState _mEnemiesAttackState = new();
+    protected MEnemiesGotHitState _mEnemiesGotHitState = new();
 
     [Header("SO2")]
     [SerializeField] protected MEnemiesStats _mEnemiesSO;
@@ -23,9 +18,6 @@ public class MEnemiesManager : EnemiesManager
     [Header("Wall Check")]
     [SerializeField] protected Transform _wallCheck;
     protected bool _hasCollidedWall;
-
-    [Header("Parent")]
-    [SerializeField] protected GameObject _parent;
 
     //Public Field
 
@@ -38,10 +30,6 @@ public class MEnemiesManager : EnemiesManager
     public MEnemiesGotHitState MEnemiesGotHitState { get { return _mEnemiesGotHitState; } set { _mEnemiesGotHitState = value; } }
 
     public bool HasCollidedWall { get { return _hasCollidedWall; } }
-
-    public Transform BoundaryLeft { get { return _boundaryLeft; } }
-
-    public Transform BoundaryRight { get { return _boundaryRight; } }
 
     public MEnemiesStats MEnemiesSO { get { return _mEnemiesSO; } }
 
@@ -142,12 +130,6 @@ public class MEnemiesManager : EnemiesManager
     protected virtual void OnDestroy()
     {
 
-    }
-
-    protected void DestroyParent()
-    {
-        Destroy(_parent);
-        //Event của Got Hit Animation
     }
 
 }

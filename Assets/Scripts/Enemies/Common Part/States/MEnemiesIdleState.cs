@@ -34,7 +34,7 @@ public class MEnemiesIdleState : MEnemiesBaseState
         else if (CheckIfCanAttack())
         {
             _hasChangedState = true;
-            _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.MEnemiesSO.AttackDelay);
+            _mEnemiesManager.Invoke("AllowAttackPlayer", _mEnemiesManager.EnemiesSO.AttackDelay);
         }
         //Debug.Log("Update");
     }

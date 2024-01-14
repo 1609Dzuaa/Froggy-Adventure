@@ -10,13 +10,12 @@ public class BatManager : MEnemiesManager
     [Header("Time2")]
     [SerializeField] private float _sleepTime;
 
-    //Rotate sprite after got hit
-    [Header("Z Rotation When Dead")]
-    [SerializeField] private float _degreeEachRotation;
-    [SerializeField] private float _timeEachRotate;
-
     [Header("AttackRange")]
     [SerializeField] private float _attackRange;
+
+    [Header("Boundaries")]
+    [SerializeField] private Transform _boundaryLeft;
+    [SerializeField] private Transform _boundaryRight;
 
     private BatSleepState _batSleepState = new();
     private BatCeilInState _batCeilInState = new();
@@ -34,9 +33,9 @@ public class BatManager : MEnemiesManager
 
     public float SleepTime { get { return _sleepTime; } }
 
-    public float DegreeEachRotation { get { return _degreeEachRotation; } }
+    public Transform BoundaryLeft { get { return _boundaryLeft; } }
 
-    public float TimeEachRotate { get { return _timeEachRotate; } }
+    public Transform BoundaryRight { get { return _boundaryRight; } }
 
     public Transform Player { get { return _playerCheck; } }
 
@@ -64,6 +63,7 @@ public class BatManager : MEnemiesManager
         _state = _batSleepState;
         _state.EnterState(this);
         MEnemiesGotHitState = _batGotHitState; //convert chứ 0 nó lại xài state GotHit chung
+        _playerCheck = FindObjectOfType<PlayerStateManager>().transform;
     }
 
     protected override void Update()

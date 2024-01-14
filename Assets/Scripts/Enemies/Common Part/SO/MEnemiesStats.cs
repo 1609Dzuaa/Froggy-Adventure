@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ScriptableObject", menuName = "ScriptableObject/MEnemiesStats")]
-public class MEnemiesStats : EnemiesStats
+public class MEnemiesStats : ScriptableObject
 {
     [Header("Wall Check")]
     [SerializeField] private float _wallCheckDistance;

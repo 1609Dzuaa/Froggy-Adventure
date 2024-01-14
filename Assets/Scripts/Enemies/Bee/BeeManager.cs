@@ -9,6 +9,10 @@ public class BeeManager : MEnemiesManager
     [Header("Nest")]
     [SerializeField] private Transform _beeNest;
 
+    [Header("Boundaries")]
+    [SerializeField] private Transform _boundaryLeft;
+    [SerializeField] private Transform _boundaryRight;
+
     [Header("Weapon Field")]
     [SerializeField] private GameObject _bullet;
     [SerializeField] private Transform _shootPosition;
@@ -32,6 +36,10 @@ public class BeeManager : MEnemiesManager
 
     public float YOffSet { get { return _yOffset; } }
 
+    public Transform BoundaryLeft { get { return _boundaryLeft; } }
+
+    public Transform BoundaryRight { get { return _boundaryRight; } }
+
     public BeeIdleState GetBeeIdleState() { return _beeIdleState; }
 
     public BeePatrolState GetBeePatrolState() { return _beePatrolState; }
@@ -39,8 +47,6 @@ public class BeeManager : MEnemiesManager
     public BeeChaseState GetBeeChaseState() { return _beeChaseState; }
 
     public BeeAttackState GetBeeAttackState() { return _beeAttackState; }
-
-    public BeeGotHitState GetBeeGotHitState() { return _beeGotHitState; }
 
     public Transform GetPlayer() { return _playerCheck; }
 
@@ -58,6 +64,7 @@ public class BeeManager : MEnemiesManager
         _state = _beeIdleState;
         _state.EnterState(this);
         MEnemiesGotHitState = _beeGotHitState;
+        _playerCheck = FindObjectOfType<PlayerStateManager>().transform;
     }
 
     protected override void Update()
@@ -74,7 +81,7 @@ public class BeeManager : MEnemiesManager
 
     protected override bool DetectedPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return _hasDetectedPlayer = false;
 
         return _hasDetectedPlayer = Vector2.Distance(_playerCheck.position, _beeNest.position) <= _triggerAttackRange;
@@ -88,7 +95,7 @@ public class BeeManager : MEnemiesManager
 
     public void SpawnBullet()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
         {
             ChangeState(_beeIdleState);
             _mustAttack = false;

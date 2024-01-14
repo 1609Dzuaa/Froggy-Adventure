@@ -5,7 +5,7 @@ public class RhinoWallHitState : MEnemiesBaseState
     private bool _allowUpdate;
     private RhinoManager _rhinoManager;
 
-    public void AllowUpdate() { this._allowUpdate = true; }
+    public void AllowUpdate() { _allowUpdate = true; }
 
     public override void EnterState(CharactersManager charactersManager)
     {
@@ -13,7 +13,6 @@ public class RhinoWallHitState : MEnemiesBaseState
         _rhinoManager = (RhinoManager)charactersManager;
         _rhinoManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ERhinoState.wallHit);
         
-        //Nên vứt 2 thằng này ngoài Manager cho thằng event của animation xử lý
         _rhinoManager.MEnemiesPatrolState.SetCanRdDirection(false);
         _rhinoManager.MEnemiesPatrolState.SetHasJustHitWall(true);
         Debug.Log("WH");

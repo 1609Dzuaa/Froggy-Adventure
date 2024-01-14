@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Có bug, quay 0 chạy
 public class MushroomManager : MEnemiesManager
 {
     [Header("Safe Check")]
@@ -23,7 +22,7 @@ public class MushroomManager : MEnemiesManager
     protected override void Start()
     {
         base.Start();
-        MEnemiesAttackState = _mrAttackState; //Convert EnemiesAttack sang MushroomAttack
+        _mEnemiesAttackState = _mrAttackState; //Convert EnemiesAttack sang MushroomAttack
     }
 
     // Update is called once per frame
@@ -42,13 +41,13 @@ public class MushroomManager : MEnemiesManager
 
     private void SafeCheck()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 
         if (!_isFacingRight)
-            _isDetected = Physics2D.Raycast(new Vector2(_safeCheck.position.x, _safeCheck.position.y), Vector2.right, _safeCheckDistance, _enemiesSO.PlayerLayer);
+            _isDetected = Physics2D.Raycast(_safeCheck.position, Vector2.right, _safeCheckDistance, _enemiesSO.PlayerLayer);
         else
-            _isDetected = Physics2D.Raycast(new Vector2(_safeCheck.position.x, _safeCheck.position.y), Vector2.left, _safeCheckDistance, _enemiesSO.PlayerLayer);
+            _isDetected = Physics2D.Raycast(_safeCheck.position, Vector2.left, _safeCheckDistance, _enemiesSO.PlayerLayer);
     }
 
     private void DrawRaySafeCheck()
@@ -72,7 +71,7 @@ public class MushroomManager : MEnemiesManager
     //Hàm này dùng để Invoke trong state Attack
     private void AllowUpdateAttack()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
         {
             ChangeState(MEnemiesIdleState);
             return;

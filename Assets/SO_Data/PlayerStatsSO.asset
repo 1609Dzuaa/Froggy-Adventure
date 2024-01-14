@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c0d194639ff9124ea2628f814055866, type: 3}
+  m_Name: PlayerStatsSO
+  m_EditorClassIdentifier: 
+  _speedX: 4
+  _speedY: 9
+  _wallSlideSpeed: 2
+  _wallJumpSpeed: {x: 7, y: 12}
+  _knockBackForce: {x: 300, y: 0}
+  _jumpOnEnemiesForce: {x: 0, y: 12}
+  _dashForce: {x: 17, y: 0}
+  _HP: 2
+  _maxHP: 3
+  _dbJumpSpeedFactor: 0.9
+  _gravScale: 1.7
+  _disableTime: 0.25
+  _delayDashTime: 1
+  _invulnerableTime: 2
+  _timeEachApplyAlpha: 0.1
+  _alphaValueGotHit: 0.3

@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class BunnyManager : MEnemiesManager
 {
-    //Bật cao như Bunny => Cân nhắc việc design kill 1 lượng enemies Bunny thì unlock DbJump
-    //Vẫn còn bug flip sprite lung tung khi attack @@
-    
-    [Header("PlayerRef")]
-    [SerializeField] private Transform _playerRef;
-
+    //Vẫn còn bug flip sprite lung tung khi attack @@ - con
     [Header("JumpHeight")]
     [SerializeField] private float _jumpHeight;
 
+    private Transform _playerRef;
     private BunnyIdleState _bunnyIdleState = new();
     private BunnyPatrolState _bunnyPatrolState = new();
     private BunnyAttackJumpState _bunnyAtkJumpState = new();
@@ -22,17 +18,17 @@ public class BunnyManager : MEnemiesManager
 
     public Transform PlayerRef { get { return _playerRef; } }
 
-    public BunnyIdleState BunnyIdleState { get { return this._bunnyIdleState; } }
+    public BunnyIdleState BunnyIdleState { get { return _bunnyIdleState; } }
 
-    public BunnyPatrolState BunnyPatrolState { get { return this._bunnyPatrolState; } }
+    public BunnyPatrolState BunnyPatrolState { get { return _bunnyPatrolState; } }
 
-    public BunnyAttackJumpState BunnyAttackJumpState { get { return this._bunnyAtkJumpState; } }
+    public BunnyAttackJumpState BunnyAttackJumpState { get { return _bunnyAtkJumpState; } }
 
-    public BunnyAttackFallState BunnyAttackFallState { get { return this._bunnyAtkFallState; } }
+    public BunnyAttackFallState BunnyAttackFallState { get { return _bunnyAtkFallState; } }
 
-    public bool IsPlayerBackWard { get { return this._isPlayerBackward; } }
+    public bool IsPlayerBackWard { get { return _isPlayerBackward; } }
 
-    public float JumpHeight { get { return this._jumpHeight; } }
+    public float JumpHeight { get { return _jumpHeight; } }
 
     protected override void Awake()
     {
@@ -44,6 +40,7 @@ public class BunnyManager : MEnemiesManager
         _state = _bunnyIdleState;
         _state.EnterState(this);
         MEnemiesGotHitState = _bunnyGotHitState;
+        _playerRef = FindObjectOfType<PlayerStateManager>().transform;
     }
 
     protected override void Update()
@@ -66,6 +63,7 @@ public class BunnyManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
+        //coi lai
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 

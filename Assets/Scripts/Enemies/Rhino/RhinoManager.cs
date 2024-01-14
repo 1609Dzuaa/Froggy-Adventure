@@ -10,6 +10,9 @@ public class RhinoManager : MEnemiesManager
     [Tooltip("Mở rộng từ phần Time ở class MEnemiesManager")]
     [SerializeField] protected float _restDelay;
 
+    [Header("KnockBackForce"), Tooltip("Lực áp vào khi HitShield")]
+    [SerializeField] private Vector2 _knockBackForce;
+
     private bool _isHitShield;
 
     public bool IsHitShield { get { return _isHitShield; } set { _isHitShield = value; } }
@@ -27,7 +30,7 @@ public class RhinoManager : MEnemiesManager
     protected override void Start()
     {
         base.Start();
-        MEnemiesAttackState = _rhinoAttackState;
+        _mEnemiesAttackState = _rhinoAttackState;
     }
 
     // Update is called once per frame
@@ -61,9 +64,9 @@ public class RhinoManager : MEnemiesManager
     private void KnockBack()
     {
         if (_isFacingRight)
-            _rb.velocity = (_enemiesSO.KnockForce * new Vector2(-1f, 1f));
+            _rb.AddForce(_knockBackForce * new Vector2(-1f, 1f), ForceMode2D.Impulse);
         else
-            _rb.velocity = (_enemiesSO.KnockForce);
+            _rb.AddForce(_knockBackForce, ForceMode2D.Impulse);
     }
 
     //Event của Wall Hit animation

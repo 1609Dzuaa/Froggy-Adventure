@@ -11,15 +11,14 @@ public class PigManager : MEnemiesManager
 
     [Header("Time")]
     [SerializeField] private float _flipDelay;
-    [SerializeField] private float _destroyParentDelay;
-
-    [Header("Player Reference")]
-    [SerializeField] private Transform _playerRef;
+    [SerializeField] private float _destroyDelay;
 
     [Header("Chase Speed Red Form")]
     [SerializeField] private float _chaseSpeedRed;
 
     //private PigAttackGreenState _pigAtkGreenState = new();
+    private Transform _playerRef;
+
     private PigAttackRedState _pigAtkRedState = new();
     private PigGotHitGreenState _pigGotHitGreenState = new();
     private PigGotHitRedState _pigGotHitRedState = new();
@@ -29,6 +28,8 @@ public class PigManager : MEnemiesManager
     public PigAttackRedState GetPigAttackRedState() { return _pigAtkRedState; }
 
     public bool HasGotHit { set { _hasGotHit = value; } }
+
+    public float DestroyDelay { get { return _destroyDelay; } }
 
     public int HP { get { return _hp; } }
 
@@ -44,6 +45,7 @@ public class PigManager : MEnemiesManager
     protected override void Start()
     {
         base.Start();
+        _playerRef = FindObjectOfType<PlayerStateManager>().transform;
     }
 
     protected override void Update()
@@ -58,13 +60,11 @@ public class PigManager : MEnemiesManager
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "Player" && !_hasGotHit)
+        if (collision.name == GameConstants.PLAYER_TAG && !_hasGotHit)
         {
             _hasGotHit = true;
             _hp--;
-            var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.SetCanDbJump(true); //Nhảy lên đầu Enemies thì cho phép DbJump tiếp
-            playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.JumpOnEnemiesForce, ForceMode2D.Impulse);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             
             if(!_isTurnRed)
             {
@@ -86,13 +86,6 @@ public class PigManager : MEnemiesManager
     {
         _pigGotHitRedState.AllowUpdate = true;
         //Event của animation GotHit Red
-    }
-
-    public IEnumerator DeleteParent()
-    {
-        yield return new WaitForSeconds(_destroyParentDelay);
-
-        DestroyParent();
     }
 
     public void FlipLeft()

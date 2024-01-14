@@ -59,9 +59,4 @@ public class NMEnemiesManager : EnemiesManager
 
         ChangeState(_nmEnemiesAttackState);
     }
-
-    protected void SelfDestroy()
-    {
-        Destroy(gameObject);
-    }
 }

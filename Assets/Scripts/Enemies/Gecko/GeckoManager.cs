@@ -12,13 +12,11 @@ public class GeckoManager : MEnemiesManager
     [Header("Teleport Distance")]
     [SerializeField] private float _teleDistance;
 
-    [Header("Player Reference")]
-    [SerializeField] private Transform _playerRef;
-
     [Header("Range")]
     [SerializeField] private Vector2 _damageRange;
     [SerializeField] private Vector2 _teleportableRange;
 
+    private Transform _playerRef;
     private GeckoIdleState _geckoIdleState = new();
     private GeckoPatrolState _geckoPatrolState = new();
     private GeckoHideState _geckoHideState = new();
@@ -53,6 +51,7 @@ public class GeckoManager : MEnemiesManager
     protected override void Start()
     {
         base.Start();
+        _playerRef = FindObjectOfType<PlayerStateManager>().transform;
     }
 
     protected override void SetUpProperties()

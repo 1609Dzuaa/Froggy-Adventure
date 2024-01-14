@@ -18,7 +18,7 @@ public class PigGotHitRedState : MEnemiesGotHitState
         if (_pigManager.HP == 0)
         {
             HandleBeforeDestroy();
-            _pigManager.StartCoroutine(_pigManager.DeleteParent());
+            _pigManager.Invoke("SelfDestroy", _pigManager.DestroyDelay);
         }
         Debug.Log("GH Red");
     }

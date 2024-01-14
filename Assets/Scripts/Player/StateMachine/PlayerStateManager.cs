@@ -192,12 +192,18 @@ public class PlayerStateManager : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag(GameConstants.GROUND_TAG) || collision.collider.CompareTag(GameConstants.PLATFORM_TAG))
-        {
             HandleCollideGround();
-        }
         else if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
         {
-            //Enemies/Trap sẽ áp lực vào Player theo hướng của nó chứ 0 phải của Player
+            gotHitState.IsHitByTrap = true;
+            ChangeState(gotHitState);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
+        {
             gotHitState.IsHitByTrap = true;
             ChangeState(gotHitState);
         }
@@ -209,7 +215,6 @@ public class PlayerStateManager : MonoBehaviour
             transform.SetParent(collision.gameObject.transform);
         else if (collision.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
         {
-            //Enemies/Trap sẽ áp lực vào Player theo hướng của nó chứ 0 phải của Player
             gotHitState.IsHitByTrap = true;
             ChangeState(gotHitState);
         }
@@ -276,7 +281,7 @@ public class PlayerStateManager : MonoBehaviour
             _hasChange = false;
             _hasFlip = false;
         }
-        //===============================//
+        //=========Handle things related to NPC==========//
 
         UpdateLayer();
         HandleInput();

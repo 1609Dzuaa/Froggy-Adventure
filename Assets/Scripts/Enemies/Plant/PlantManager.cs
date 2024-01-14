@@ -18,6 +18,7 @@ public class PlantManager : NMEnemiesManager
     protected override void Start()
     {
         base.Start();
+        SetUpProperties(); //xem lại th này
     }
 
     protected override void Update()

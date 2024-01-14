@@ -18,9 +18,9 @@ public class BatGotHitState : MEnemiesGotHitState
 
     public override void Update() 
     {
-        if (Time.time - lastRotateTime >= _batManager.TimeEachRotate)
+        if (Time.time - lastRotateTime >= _batManager.EnemiesSO.TimeEachRotate)
         {
-            Zdegree -= _batManager.DegreeEachRotation;
+            Zdegree -= _batManager.EnemiesSO.DegreeEachRotation;
             _batManager.transform.Rotate(0f, 0f, Zdegree);
             lastRotateTime = Time.time;
         }
