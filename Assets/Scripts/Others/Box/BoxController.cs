@@ -29,8 +29,6 @@ public class BoxController : GameObjectManager
     [SerializeField] private Transform _mushroom;
     [SerializeField] private Transform _hp;
 
-    [Header("Force Apply To Player")]
-    [SerializeField] private float _forceApply; //Force apply to player when jump on this
     //Có bug(?) khi nhảy lên box và bấm nhảy tiếp thì bật rất cao! @@
     //Chỉnh lại sound
 
@@ -52,6 +50,11 @@ public class BoxController : GameObjectManager
     }
 
     protected override void Start()
+    {
+        base.Start();
+    }
+
+    protected override void SetUpProperties()
     {
         _healthPoint = _boxType;
     }

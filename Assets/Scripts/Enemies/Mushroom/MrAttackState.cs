@@ -30,12 +30,12 @@ public class MrAttackState : MEnemiesAttackState
             if(!_mushroomManager.IsDetected && !_hasChangeState) //*
             {
                 if (!_mushroomManager.HasCollidedWall)
-                    _mushroomManager.MEnemiesPatrolState.SetCanRdDirection(true);
+                    _mushroomManager.MEnemiesPatrolState.CanRdDirection = true;
                 else
                 {
                     //Flip ở đây luôn để tạo cảm giác nó quay mặt lại nhưng 0 thấy Player đâu
                     _mushroomManager.FlippingSprite();
-                    _mushroomManager.MEnemiesPatrolState.SetCanRdDirection(false);
+                    _mushroomManager.MEnemiesPatrolState.CanRdDirection = false;
                     _mushroomManager.MEnemiesPatrolState.SetHasJustHitWall(true);
                     //Debug.Log("Flip here");
                 }

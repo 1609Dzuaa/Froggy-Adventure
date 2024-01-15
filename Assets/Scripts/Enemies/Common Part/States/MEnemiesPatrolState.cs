@@ -9,12 +9,10 @@ public class MEnemiesPatrolState : MEnemiesBaseState
     protected bool _hasJustHitWall = false; //Hitwall thì 0 cho Rd hướng
     protected int _rdLeftRight; //0: Left; 1: Right
 
-    public void SetCanRdDirection(bool para) { this._canRdDirection = para; }
-
-    public bool HasChangedDirection { get { return _hasChangeDirection; } set { _hasChangeDirection = value; } }
+    public bool CanRdDirection { set => _canRdDirection = value; }
 
     //Mọi quái moveable cần func dưới, mục đích đụng tường thì 0 cho rd direction 
-    public void SetHasJustHitWall(bool para) { this._hasJustHitWall = para; }
+    public void SetHasJustHitWall(bool para) { _hasJustHitWall = para; }
 
     public override void EnterState(CharactersManager charactersManager)
     {

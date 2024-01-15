@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a9fb34388f75b4896444372678ae64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buffDuration: 6
   _playerRef: {fileID: 0}
   _alphaApply: 0.2
-  _duration: 5
+  _alphaApplyRunOut: 0.4
+  _runOutDuration: 3
+  _timeEachRunOutEffect: 0.3

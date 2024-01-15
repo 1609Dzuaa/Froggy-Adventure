@@ -5,18 +5,21 @@ public class BeePatrolState : MEnemiesPatrolState
     private BeeManager _beeManager;
     private float _yOffset;
 
+    public bool HasChangedDirection { set { _hasChangeDirection = value; } }
+
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
         _beeManager = (BeeManager)charactersManager;
         _beeManager.MustAttack = false; //Về state này r thì tha cho Player
         _yOffset = Random.Range(-_beeManager.YOffSet, _beeManager.YOffSet);
-        //Debug.Log("Bee Pt: " + _canRdDirection + ", " + _hasChangeDirection);
+        Debug.Log("Bee PT");
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        _hasChangeDirection = false;
     }
 
     public override void Update()
@@ -39,10 +42,8 @@ public class BeePatrolState : MEnemiesPatrolState
 
     protected override bool CheckIfCanChangeDirection()
     {
-        if (_beeManager.transform.position.x >= _beeManager.BoundaryRight.position.x && !_hasChangeDirection
-            || _beeManager.transform.position.x <= _beeManager.BoundaryLeft.position.x && !_hasChangeDirection)
-            return true;
-        return false;
+        return _beeManager.transform.position.x >= _beeManager.BoundaryRight.position.x && !_hasChangeDirection
+        || _beeManager.transform.position.x <= _beeManager.BoundaryLeft.position.x && !_hasChangeDirection;
     }
 
     public override void FixedUpdate()

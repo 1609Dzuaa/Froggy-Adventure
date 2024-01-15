@@ -16,7 +16,8 @@ public class BeeChaseState : MEnemiesAttackState
         //1 khi vào chase r thì phải chase & shoot đến khi nào vượt min/max Nest thì tha
         //Hoặc khi 0 detect ra player nữa (Player tàng hình)
         _beeManager.MustAttack = true;
-        //Debug.Log("Bee Chase");
+        _beeManager.GetRigidbody2D().velocity = Vector2.zero;
+        Debug.Log("Bee Chase");
     }
 
     public override void ExitState()
@@ -32,10 +33,11 @@ public class BeeChaseState : MEnemiesAttackState
             _beeManager.ChangeState(_beeManager.GetBeeAttackState());
         else if (CheckIfOutOfMinMaxRange())
         {
-            //_beeManager.GetBeePatrolState().SetHasChangeDirection(true);
-            _beeManager.GetBeePatrolState().SetCanRdDirection(false);
+            _beeManager.GetBeePatrolState().HasChangedDirection = true;
+            _beeManager.GetBeePatrolState().CanRdDirection = false;
             _beeManager.FlippingSprite();
             _beeManager.ChangeState(_beeManager.GetBeePatrolState());
+            //Debug.Log("Out");
         }
         else
             Attack();

@@ -22,8 +22,6 @@ public class BunnyManager : MEnemiesManager
 
     public BunnyPatrolState BunnyPatrolState { get { return _bunnyPatrolState; } }
 
-    public BunnyAttackJumpState BunnyAttackJumpState { get { return _bunnyAtkJumpState; } }
-
     public BunnyAttackFallState BunnyAttackFallState { get { return _bunnyAtkFallState; } }
 
     public bool IsPlayerBackWard { get { return _isPlayerBackward; } }
@@ -66,11 +64,6 @@ public class BunnyManager : MEnemiesManager
         base.FixedUpdate();
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        base.OnTriggerEnter2D(collision);
-    }
-
     protected override void AllowAttackPlayer()
     {
         //coi lai
@@ -82,6 +75,9 @@ public class BunnyManager : MEnemiesManager
 
     private void BackwardCheck()
     {
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+            return;
+
         if (!_isFacingRight)
             _isPlayerBackward = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
         else

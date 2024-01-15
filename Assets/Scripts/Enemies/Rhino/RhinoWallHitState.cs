@@ -13,7 +13,7 @@ public class RhinoWallHitState : MEnemiesBaseState
         _rhinoManager = (RhinoManager)charactersManager;
         _rhinoManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ERhinoState.wallHit);
         
-        _rhinoManager.MEnemiesPatrolState.SetCanRdDirection(false);
+        _rhinoManager.MEnemiesPatrolState.CanRdDirection = false;
         _rhinoManager.MEnemiesPatrolState.SetHasJustHitWall(true);
         Debug.Log("WH");
     }

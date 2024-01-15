@@ -21,9 +21,11 @@ public class BeeManager : MEnemiesManager
     [SerializeField] private float _triggerAttackRange;
     [SerializeField] private float _adjustYAxisAttackRange;
 
-    //Đổi Enemies speed thành kiểu Vector2 hết, chỗ nào cần xài thì xài, 0 cần thì Rb.velo.y giữ nguyên
     [Header("YOffset")]
     [SerializeField] private float _yOffset;
+
+    [Header("Attack Pos Radius")]
+    [SerializeField] private float _atkPosRad;
 
     private BeeIdleState _beeIdleState = new();
     private BeePatrolState _beePatrolState = new();
@@ -73,6 +75,7 @@ public class BeeManager : MEnemiesManager
     protected override void SetUpProperties()
     {
         _mEnemiesIdleState = _beeIdleState;
+        _mEnemiesPatrolState = _beePatrolState;
         _mEnemiesGotHitState = _beeGotHitState;
         base.SetUpProperties();
     }
@@ -99,8 +102,11 @@ public class BeeManager : MEnemiesManager
 
     private void OnDrawGizmos()
     {
-        Vector2 _attackPos = new Vector2(_playerCheck.position.x, _playerCheck.position.y + _adjustYAxisAttackRange);
-        Gizmos.DrawSphere(_attackPos, 1.0f);
+        if (_playerCheck)
+        {
+            Vector2 _attackPos = new Vector2(_playerCheck.position.x, _playerCheck.position.y + _adjustYAxisAttackRange);
+            Gizmos.DrawSphere(_attackPos, _atkPosRad);
+        }
     }
 
     public void SpawnBullet()
@@ -118,7 +124,6 @@ public class BeeManager : MEnemiesManager
 
         BulletInfor info = new(GameConstants.BEE_BULLET, bulletID, _isFacingRight, _shootPosition.position);
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
-        //Debug.Log("I'm here");
     }
 
     public void AllowUpdateAttackState()

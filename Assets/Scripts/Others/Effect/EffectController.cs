@@ -7,6 +7,7 @@ public class EffectController : MonoBehaviour
     private void Deactive()
     {
         gameObject.SetActive(false);
+        //Event của animation effect
     }
 
     //Vị trí mà mình muốn effect xuất hiện

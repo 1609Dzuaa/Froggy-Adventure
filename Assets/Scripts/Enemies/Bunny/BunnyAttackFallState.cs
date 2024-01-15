@@ -28,9 +28,4 @@ public class BunnyAttackFallState : MEnemiesAttackState
 
     public override void FixedUpdate() { }
 
-    protected override void Attack()
-    {
-        
-    }
-
 }
