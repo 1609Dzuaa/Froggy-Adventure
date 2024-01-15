@@ -7,6 +7,7 @@ using UnityEngine;
 public class MEnemiesManager : EnemiesManager
 {
     //MEnemies <-> MoveableEnemies
+    //Thêm detectGround cho MEnemies -> đỡ phải phụ thuộc bound
     protected MEnemiesIdleState _mEnemiesIdleState = new();
     protected MEnemiesPatrolState _mEnemiesPatrolState = new();
     protected MEnemiesAttackState _mEnemiesAttackState = new();
@@ -19,20 +20,18 @@ public class MEnemiesManager : EnemiesManager
     [SerializeField] protected Transform _wallCheck;
     protected bool _hasCollidedWall;
 
-    //Public Field
+    #region GETTER
 
     public MEnemiesIdleState MEnemiesIdleState { get { return _mEnemiesIdleState; } }
     
     public MEnemiesPatrolState MEnemiesPatrolState { get { return _mEnemiesPatrolState;} set { _mEnemiesPatrolState = value; } }
 
-    public MEnemiesAttackState MEnemiesAttackState { get { return _mEnemiesAttackState; } set { _mEnemiesAttackState = value; } }
-
-    public MEnemiesGotHitState GetMEnemiesGotHitState { get { return _mEnemiesGotHitState; } set { _mEnemiesGotHitState = value; } }
-
     public bool HasCollidedWall { get { return _hasCollidedWall; } }
 
     public MEnemiesStats MEnemiesSO { get { return _mEnemiesSO; } }
-
+    
+    #endregion
+    
     protected override void Awake()
     {
         base.Awake(); //Lấy anim, rb từ EnemiesManager
