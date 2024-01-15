@@ -109,7 +109,7 @@ public class BeeManager : MEnemiesManager
         }
     }
 
-    public void SpawnBullet()
+    private void SpawnBullet()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
         {
