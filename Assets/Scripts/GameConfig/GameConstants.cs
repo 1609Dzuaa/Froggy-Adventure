@@ -74,9 +74,9 @@
     #endregion
 
     #region Enemies Bullets Constants
-    public const int PLANT_BULLET = 3;
-    public const int BEE_BULLET = 4;
-    public const int TRUNK_BULLET = 5;
+    public const string PLANT_BULLET = "PlantBullet";
+    public const string BEE_BULLET = "BeeBullet";
+    public const string TRUNK_BULLET = "TrunkBullet";
     #endregion
 
     #region Effect

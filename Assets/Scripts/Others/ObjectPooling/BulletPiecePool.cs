@@ -21,7 +21,7 @@ public struct BulletPiecePair
 public class BulletPiecePool : MonoBehaviour
 {
     private static BulletPiecePool _BulletPiecePiecePoolInstance;
-    private Dictionary<int, List<BulletPiecePair>> _dictBulletPiecePiecePool = new Dictionary<int, List<BulletPiecePair>>();
+    private Dictionary<string, List<BulletPiecePair>> _dictBulletPiecePiecePool = new Dictionary<string, List<BulletPiecePair>>();
 
     [Header("Plant")]
     [SerializeField] private int _poolPlantBulletPieceCount;
@@ -88,7 +88,7 @@ public class BulletPiecePool : MonoBehaviour
             InstantiateBulletPiece(new BulletPiecePair(_trunkBulletPiecePrefabs1, _trunkBulletPiecePrefabs2), GameConstants.TRUNK_BULLET);
     }
 
-    private void InstantiateBulletPiece(BulletPiecePair gameObjectPair, int BulletPieceType)
+    private void InstantiateBulletPiece(BulletPiecePair gameObjectPair, string BulletPieceType)
     {
         GameObject gObj1 = Instantiate(gameObjectPair.Pair1);
         gObj1.SetActive(false);
@@ -98,7 +98,7 @@ public class BulletPiecePool : MonoBehaviour
         _dictBulletPiecePiecePool[BulletPieceType].Add(piecePair);
     }
 
-    public BulletPiecePair GetObjectInPool(int BulletPieceType)
+    public BulletPiecePair GetObjectInPool(string BulletPieceType)
     {
         BulletPiecePair bulletPiecePair = new BulletPiecePair();
 

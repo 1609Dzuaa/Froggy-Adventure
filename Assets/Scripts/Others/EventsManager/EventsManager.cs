@@ -11,7 +11,6 @@ public class EventsManager : MonoBehaviour
     private Dictionary<GameEnums.EEvents, Action<object>> _dictEvents = new();
     //Thêm sẵn các Action tương ứng với Event trong EnumEvents tại đây
     private Action<object> PlayerOnTakeDamage;
-    private Action<object> BulletOnCreate;
     private Action<object> BulletOnHit;
     private Action<object> BulletOnReceiveInfo;
     private Action<object> PlayerOnJumpPassive;
@@ -53,7 +52,6 @@ public class EventsManager : MonoBehaviour
     {
         _dictEvents.Add(GameEnums.EEvents.PlayerOnTakeDamage, PlayerOnTakeDamage);
         _dictEvents.Add(GameEnums.EEvents.BulletOnHit, BulletOnHit);
-        _dictEvents.Add(GameEnums.EEvents.BulletOnCreate, BulletOnCreate);
         _dictEvents.Add(GameEnums.EEvents.BulletOnReceiveInfo, BulletOnReceiveInfo);
         _dictEvents.Add(GameEnums.EEvents.PlayerOnJumpPassive, PlayerOnJumpPassive);
         _dictEvents.Add(GameEnums.EEvents.PlayerOnInteractWithNPCs, PlayerOnInteractWithNPCs);

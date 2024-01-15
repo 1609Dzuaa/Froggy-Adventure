@@ -5,12 +5,12 @@ using UnityEngine;
 
 public struct BulletInfor
 {
-    int _type;
+    string _type;
     bool _isDirectionRight;
 
-    public BulletInfor(int type, bool isDirectionRight) { _type = type; _isDirectionRight = isDirectionRight; }
+    public BulletInfor(string type, bool isDirectionRight) { _type = type; _isDirectionRight = isDirectionRight; }
 
-    public int Type { get { return _type; } }
+    public string Type { get { return _type; } }
 
     public bool IsDirectionRight { get { return _isDirectionRight; } }
 }
@@ -38,23 +38,16 @@ public class BulletController : MonoBehaviour
     private Rigidbody2D _rb;
     private float _entryTime;
     private bool _isDirectionRight = false;
-    private int _type;
-    private int _bulletID;
+    private string _type;
+    private string _bulletID;
 
-    public int BulletID { get { return _bulletID; } set { _bulletID = value; } }
+    public string BulletID { get { return _bulletID; } set { _bulletID = value; } }
 
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BulletOnCreate, ReceiveBulletID);
         Debug.Log("Id cua tao la: " + _bulletID);
-    }
-
-    private void ReceiveBulletID(object obj)
-    {
-        _bulletID = (int)obj;
-        //Debug.Log("Id cua tao la: " + _bulletID);
     }
 
     private void OnEnable()
@@ -135,7 +128,7 @@ public class BulletController : MonoBehaviour
 
     private void DamageTarget(object obj)
     {
-        if ((int)obj != _bulletID)
+        if ((string)obj != _bulletID)
             return;
 
         SpawnBulletPieces();

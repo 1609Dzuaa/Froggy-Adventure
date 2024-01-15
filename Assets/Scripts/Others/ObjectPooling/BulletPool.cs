@@ -9,7 +9,7 @@ public class BulletPool : MonoBehaviour
     //Ref: https://gameprogrammingpatterns.com/object-pool.html
 
     private static BulletPool _bulletPoolInstance;
-    private Dictionary<int, List<GameObject>> _dictBulletPool = new Dictionary<int, List<GameObject>>();
+    private Dictionary<string, List<GameObject>> _dictBulletPool = new Dictionary<string, List<GameObject>>();
 
     [Header("Plant")]
     [SerializeField] private int _poolPlantBulletCount;
@@ -42,7 +42,6 @@ public class BulletPool : MonoBehaviour
     {
         CreateInstance();
         InitDictionary();
-        AddBulletsToPool();
     }
 
     private void InitDictionary()
@@ -66,33 +65,40 @@ public class BulletPool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //AddBulletsToPool();
+        AddBulletsToPool();
     }
 
     private void AddBulletsToPool()
     {
         //Add bullet vào pool và đánh dấu chưa active nó
-        /*for (int i = 0; i < _poolPlantBulletCount; i++)
-            InstantiateBullet(_plantBulletPrefabs, GameConstants.PLANT_BULLET, i);
-
+        for (int i = 0; i < _poolPlantBulletCount; i++)
+        {
+            string bulletID = GameConstants.PLANT_BULLET + i.ToString();
+            InstantiateBullet(_plantBulletPrefabs, GameConstants.PLANT_BULLET, bulletID);
+        }
 
         for (int i = 0; i < _poolBeeBulletCount; i++)
-            InstantiateBullet(_beeBulletPrefabs, GameConstants.BEE_BULLET, i);*/
+        {
+            string bulletID = GameConstants.BEE_BULLET + i.ToString();
+            InstantiateBullet(_beeBulletPrefabs, GameConstants.BEE_BULLET, bulletID);
+        }
 
         for (int i = 0; i < _poolTrunkBulletCount; i++)
-            InstantiateBullet(_trunkBulletPrefabs, GameConstants.TRUNK_BULLET, i);
+        {
+            string bulletID = GameConstants.TRUNK_BULLET + i.ToString();
+            InstantiateBullet(_trunkBulletPrefabs, GameConstants.TRUNK_BULLET, bulletID);
+        }
     }
 
-    private void InstantiateBullet(GameObject gameObject, int bulletType, int bulletID)
+    private void InstantiateBullet(GameObject gameObject, string bulletType, string bulletID)
     {
         GameObject gObj = Instantiate(gameObject);
         gObj.SetActive(false);
         _dictBulletPool[bulletType].Add(gObj);
         gObj.GetComponent<BulletController>().BulletID = bulletID;
-        //EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnCreate, bulletID);
     }
 
-    public GameObject GetObjectInPool(int bulletType)
+    public GameObject GetObjectInPool(string bulletType)
     {
         for (int i = 0; i < _dictBulletPool[bulletType].Count; i++)
         {

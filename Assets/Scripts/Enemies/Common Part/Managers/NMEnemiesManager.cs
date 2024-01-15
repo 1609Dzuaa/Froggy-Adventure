@@ -38,7 +38,7 @@ public class NMEnemiesManager : EnemiesManager
         base.OnCollisionEnter2D(collision);
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
-            int bulletID = collision.collider.GetComponent<BulletController>().BulletID;
+            string bulletID = collision.collider.GetComponent<BulletController>().BulletID;
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, bulletID);
             ChangeState(_nmEnemiesGotHitState);
         }
