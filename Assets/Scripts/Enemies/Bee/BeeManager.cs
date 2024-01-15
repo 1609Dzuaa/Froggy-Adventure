@@ -113,16 +113,12 @@ public class BeeManager : MEnemiesManager
         }
 
         GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.BEE_BULLET);
+        bullet.SetActive(true);
+        string bulletID = bullet.GetComponent<BulletController>().BulletID;
 
-        if (bullet != null)
-        {
-            bullet.SetActive(true);
-            bullet.transform.position = _shootPosition.position;
-
-            BulletInfor info = new(GameConstants.BEE_BULLET, _isFacingRight);
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
-            //Debug.Log("I'm here");
-        }
+        BulletInfor info = new(GameConstants.BEE_BULLET, bulletID, _isFacingRight, _shootPosition.position);
+        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
+        //Debug.Log("I'm here");
     }
 
     public void AllowUpdateAttackState()

@@ -17,6 +17,10 @@ public class EventsManager : MonoBehaviour
     private Action<object> PlayerOnInteractWithNPCs;
     private Action<object> PlayerOnStopInteractWithNPCs;
 
+    //Làm việc với Event thì nên phân biệt với nhau bằng key là object
+    //Tránh cùng 1 lúc nó Notify tất cả Func đã đky event đó
+    //thay vì chỉ Notify những Func cần
+
     public static EventsManager Instance
     {
         get 

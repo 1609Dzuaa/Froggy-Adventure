@@ -101,14 +101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55a56f0d49e1e44f9f635b38ec8fb59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletSpeed: 4
-  _existTime: 2
+  _bulletStats: {fileID: 11400000, guid: 7d1b9fcb98c54ac4e96feb30768a3268, type: 2}
   _piece1: {fileID: 4806655100078702092, guid: 97333e662235b1a4496f6b6a57333c55, type: 3}
   _piece2: {fileID: 2172459424836121424, guid: cc9c8eba376da1e4e9e784124c5c4850, type: 3}
   _piece1Position: {fileID: 2051569452899285292}
   _piece2Position: {fileID: 2051569453943108740}
   _isHorizontal: 1
-  _hitShieldEffect: {fileID: 9098549349965404685, guid: 574193a7d551f8b41a146c3e0c76ea83, type: 3}
 --- !u!50 &-6797268322281546210
 Rigidbody2D:
   serializedVersion: 4

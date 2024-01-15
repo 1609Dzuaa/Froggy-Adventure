@@ -6,22 +6,31 @@ using UnityEngine;
 public struct BulletInfor
 {
     string _type;
+    string _id;
     bool _isDirectionRight;
+    Vector3 _shootPosition;
 
-    public BulletInfor(string type, bool isDirectionRight) { _type = type; _isDirectionRight = isDirectionRight; }
+    public BulletInfor(string type, string id, bool isDirectionRight, Vector3 shootPosition)
+    {
+        _type = type;
+        _id = id;
+        _isDirectionRight = isDirectionRight;
+        _shootPosition = shootPosition;
+    }
 
     public string Type { get { return _type; } }
 
+    public string ID { get { return _id; } }
+
     public bool IsDirectionRight { get { return _isDirectionRight; } }
+
+    public Vector3 ShootPosition { get { return _shootPosition; } }
 }
 
 public class BulletController : MonoBehaviour
 {
-    [Header("Speed")]
-    [SerializeField] private float _bulletSpeed;
-
-    [Header("Time")]
-    [SerializeField] private float _existTime;
+    [Header("Bullet SO")]
+    [SerializeField] BulletStats _bulletStats;
 
     [Header("Pieces & Position")]
     [SerializeField] private GameObject _piece1;
@@ -31,9 +40,6 @@ public class BulletController : MonoBehaviour
 
     [Header("Horizontal Or Vertical")]
     [SerializeField] private bool _isHorizontal;
-
-    [Header("Effect")]
-    [SerializeField] private GameObject _hitShieldEffect;
 
     private Rigidbody2D _rb;
     private float _entryTime;
@@ -47,7 +53,7 @@ public class BulletController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        Debug.Log("Id cua tao la: " + _bulletID);
+        //Debug.Log("Id cua tao la: " + _bulletID);
     }
 
     private void OnEnable()
@@ -60,7 +66,7 @@ public class BulletController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time - _entryTime >= _existTime)
+        if (Time.time - _entryTime >= _bulletStats.ExistTime)
             gameObject.SetActive(false);
     }
 
@@ -69,12 +75,12 @@ public class BulletController : MonoBehaviour
         if (_isHorizontal)
         {
             if (_isDirectionRight)
-                _rb.velocity = new Vector2(_bulletSpeed, 0f);
+                _rb.velocity = new Vector2(_bulletStats.BulletSpeed, 0f);
             else
-                _rb.velocity = new Vector2(-_bulletSpeed, 0f);
+                _rb.velocity = new Vector2(-_bulletStats.BulletSpeed, 0f);
         }
         else
-            _rb.velocity = new Vector2(0, -_bulletSpeed);
+            _rb.velocity = new Vector2(0, -_bulletStats.BulletSpeed);
     }
 
     private void OnDisable()
@@ -137,11 +143,15 @@ public class BulletController : MonoBehaviour
 
     private void ReceiveInfo(object  obj)
     {
+        //prob here
         BulletInfor bulletInfo = (BulletInfor)obj;
+        if (_bulletID != bulletInfo.ID) 
+            return;
 
         if (_isDirectionRight != bulletInfo.IsDirectionRight && bulletInfo.Type != GameConstants.BEE_BULLET)
             transform.Rotate(0, 180, 0);
         _isDirectionRight = bulletInfo.IsDirectionRight;
         _type = bulletInfo.Type;
+        transform.position = bulletInfo.ShootPosition;
     }
 }

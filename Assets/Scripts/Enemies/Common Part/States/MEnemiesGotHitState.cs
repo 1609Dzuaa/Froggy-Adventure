@@ -2,6 +2,8 @@
 
 public class MEnemiesGotHitState : MEnemiesBaseState
 {
+    protected float _lastRotateTime;
+    protected float _Zdegree;
     public override void EnterState(CharactersManager charactersManager)
     {
         base.EnterState(charactersManager);
@@ -17,7 +19,12 @@ public class MEnemiesGotHitState : MEnemiesBaseState
 
     public override void Update()
     {
-        base.Update();
+        if (Time.time - _lastRotateTime >= _mEnemiesManager.EnemiesSO.TimeEachRotate)
+        {
+            _Zdegree -= _mEnemiesManager.EnemiesSO.DegreeEachRotation;
+            _mEnemiesManager.transform.Rotate(0f, 0f, _Zdegree);
+            _lastRotateTime = Time.time;
+        }
     }
 
     public override void FixedUpdate()

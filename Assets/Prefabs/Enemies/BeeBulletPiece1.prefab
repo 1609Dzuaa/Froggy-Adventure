@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3663474d0ab93894a89501c0722b140d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bouncingForce: {x: 0, y: 100}
-  _existTime: 2
+  _bouncingForce: {x: -50, y: 150}
+  _existTime: 1.5
 --- !u!50 &501127545072022264
 Rigidbody2D:
   serializedVersion: 4

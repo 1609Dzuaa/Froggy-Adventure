@@ -169,14 +169,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55a56f0d49e1e44f9f635b38ec8fb59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletSpeed: 5
-  _existTime: 3
+  _bulletStats: {fileID: 11400000, guid: 7d1b9fcb98c54ac4e96feb30768a3268, type: 2}
   _piece1: {fileID: 4947116023734144812, guid: 8d1a916095ed2aa469e589971232746f, type: 3}
   _piece2: {fileID: 3204134005195933035, guid: 7999f829e4b964c409d79cda253f13ab, type: 3}
   _piece1Position: {fileID: 9022202703717319241}
   _piece2Position: {fileID: 1876451571781534721}
   _isHorizontal: 1
-  _hitShieldEffect: {fileID: 9098549349965404685, guid: 574193a7d551f8b41a146c3e0c76ea83, type: 3}
 --- !u!1 &8407056456042548788
 GameObject:
   m_ObjectHideFlags: 0

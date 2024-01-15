@@ -100,7 +100,8 @@ public class MEnemiesManager : EnemiesManager
         base.OnCollisionEnter2D(collision);
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, GameConstants.BULLET_ID);
+            string bulletID = collision.collider.GetComponent<BulletController>().BulletID;
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, bulletID);
             ChangeState(_mEnemiesGotHitState);
         }
     }

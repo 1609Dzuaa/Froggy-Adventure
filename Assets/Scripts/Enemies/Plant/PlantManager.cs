@@ -33,11 +33,10 @@ public class PlantManager : NMEnemiesManager
             return;
 
         GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.PLANT_BULLET);
-
         bullet.SetActive(true);
-        bullet.transform.position = _shootPosition.position;
+        string bulletID = bullet.GetComponent<BulletController>().BulletID;
 
-        BulletInfor info = new BulletInfor(GameConstants.PLANT_BULLET, _isFacingRight);
+        BulletInfor info = new BulletInfor(GameConstants.PLANT_BULLET, bulletID, _isFacingRight, _shootPosition.position);
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
         //Debug.Log("I'm here");
     }
