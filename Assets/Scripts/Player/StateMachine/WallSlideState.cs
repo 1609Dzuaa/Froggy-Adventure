@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WallSlideState : PlayerBaseState
 {
@@ -44,8 +43,8 @@ public class WallSlideState : PlayerBaseState
 
     private bool CheckIfCanIdle()
     {
-        return Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < GameConstants.NEAR_ZERO_THRESHOLD
-            && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < GameConstants.NEAR_ZERO_THRESHOLD
+        return Mathf.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < GameConstants.NEAR_ZERO_THRESHOLD
+            && Mathf.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < GameConstants.NEAR_ZERO_THRESHOLD
             && _playerStateManager.GetIsOnGround();
     }
 
