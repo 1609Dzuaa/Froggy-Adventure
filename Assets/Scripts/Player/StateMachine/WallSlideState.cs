@@ -30,7 +30,10 @@ public class WallSlideState : PlayerBaseState
         //nếu 0 thuộc các TH trên thì slide như bthg
 
         if (CheckIfCanIdle())
+        {
+            SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_LAND_SOUND).Play();
             _playerStateManager.ChangeState(_playerStateManager.idleState);
+        }
         else if (CheckIfCanWallJump())
             _playerStateManager.ChangeState(_playerStateManager.wallJumpState);
         else if (CheckIfCanFall())

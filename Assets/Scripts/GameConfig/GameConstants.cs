@@ -98,10 +98,13 @@
     public const string PLAYER_JUMP_SOUND = "PlayerJumpSound";
     public const string PLAYER_DASH_SOUND = "PlayerDashSound";
     public const string PLAYER_DEAD_SOUND = "PlayerDeadSound";
+    public const string PLAYER_LAND_SOUND = "PlayerLandSound";
 
     public const string PLANT_SHOOT_SOUND = "PlantShootSound";
     public const string TRUNK_SHOOT_SOUND = "TrunkShootSound";
     public const string ENEMIES_DEAD_SOUND = "EnemiesDeadSound";
+
+    public const string GECKO_ATTACK_SOUND = "GeckoAttackSound";
     #endregion
 
     //Dùng để phân biệt function đã đky event OnEnemiesDie => Vì cả Player lẫn Bullet đều có thể dmg enemies

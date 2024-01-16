@@ -24,11 +24,14 @@ public class FallState : PlayerBaseState
 
         if (CheckIfCanIdle())
         {
-            //Debug.Log("Idle Fall");
+            SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_LAND_SOUND).Play();
             _playerStateManager.ChangeState(_playerStateManager.idleState);
         }
         else if (CheckIfCanRun())
+        {
+            SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_LAND_SOUND).Play();
             _playerStateManager.ChangeState(_playerStateManager.runState);
+        }
         else if (CheckIfCanDbJump())
             _playerStateManager.ChangeState(_playerStateManager.doubleJumpState);
         else if (CheckIfCanWallSlide())

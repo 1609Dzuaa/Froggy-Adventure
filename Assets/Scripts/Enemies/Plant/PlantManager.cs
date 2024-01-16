@@ -29,6 +29,9 @@ public class PlantManager : NMEnemiesManager
     //Event Func in Attack Animation
     private void SpawnBullet()
     {
+        //prob here 
+        //enemy's bug khi player vô hình lúc chbi attack khiến cho
+        //dù hết buff vô hình và bị detect nhưng enemy vẫn 0 attack player
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 

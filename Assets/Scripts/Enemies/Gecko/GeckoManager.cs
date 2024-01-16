@@ -145,7 +145,10 @@ public class GeckoManager : MEnemiesManager
             //để tránh việc dù Player ở sau lưng Gecko lúc nó attack
             //nhưng vẫn dính đòn
             if (_hasDetectedPlayer)
+            {
+                SoundsManager.Instance.GetTypeOfSound(GameConstants.GECKO_ATTACK_SOUND).Play();
                 EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
+            }
         }
 
         //Cũng là Event của animation Attack lúc vụt lưỡi
