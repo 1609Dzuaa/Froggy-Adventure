@@ -28,6 +28,13 @@ public class TrunkPatrolState : MEnemiesPatrolState
         {
             _trunkManager.ChangeState(_trunkManager.GetTrunkWithState());
         }
+
+        //Flip Sprite Check
+        if (CheckIfCanChangeDirection())
+        {
+            _hasChangeDirection = true;
+            _trunkManager.FlippingSprite();
+        }
     }
 
     private bool CheckIfCanWithdrawn()

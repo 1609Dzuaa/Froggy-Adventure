@@ -9,6 +9,9 @@ public class MEnemiesStats : ScriptableObject
     [SerializeField] private float _wallCheckDistance;
     [SerializeField] private LayerMask _wallLayer;
 
+    [Header("Ground Check")]
+    [SerializeField] private float _groundCheckDistance;
+
     [Header("Time")]
     [SerializeField] private float _restTime;
     [SerializeField] private float _patrolTime;
@@ -18,6 +21,8 @@ public class MEnemiesStats : ScriptableObject
     [SerializeField] private Vector2 _chaseSpeed;
 
     public float WallCheckDistance { get { return _wallCheckDistance; } }
+
+    public float GroundCheckDistance { get { return _groundCheckDistance; } }
 
     public LayerMask WallLayer { get { return _wallLayer; } }
 

@@ -59,7 +59,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
             _mEnemiesManager.FlippingSprite();
         }
 
-        Debug.Log("Common Call");
+        //Debug.Log("Common Call");
     }
 
     protected bool CheckIfCanRest()
@@ -76,12 +76,7 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     protected virtual bool CheckIfCanChangeDirection()
     {
-        //ổn r
-        return _mEnemiesManager.HasCollidedWall;
-
-        //Check nếu đi quá giới hạn trái/phải, CHƯA đổi hướng ở state này và CHƯA hit wall
-        //Thì lật sprite đổi hướng
-        //_hasChangeDirection ở đây để lock việc changeDir(chỉ 1 lần duy nhất)
+        return _mEnemiesManager.HasCollidedWall || !_mEnemiesManager.HasDetectedGround;
     }
 
     public override void FixedUpdate()

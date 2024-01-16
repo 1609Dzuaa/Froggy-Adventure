@@ -20,6 +20,10 @@ public class MEnemiesManager : EnemiesManager
     [SerializeField] protected Transform _wallCheck;
     protected bool _hasCollidedWall;
 
+    [Header("Ground Check")]
+    [SerializeField] protected Transform _groundCheck;
+    protected bool _hasDetectedGround;
+
     #region GETTER
 
     public MEnemiesIdleState MEnemiesIdleState { get { return _mEnemiesIdleState; } }
@@ -27,6 +31,8 @@ public class MEnemiesManager : EnemiesManager
     public MEnemiesPatrolState MEnemiesPatrolState { get { return _mEnemiesPatrolState;} set { _mEnemiesPatrolState = value; } }
 
     public bool HasCollidedWall { get { return _hasCollidedWall; } }
+
+    public bool HasDetectedGround { get { return _hasDetectedGround; } }
 
     public MEnemiesStats MEnemiesSO { get { return _mEnemiesSO; } }
     
@@ -56,6 +62,8 @@ public class MEnemiesManager : EnemiesManager
     {
         base.Update(); //Đã bao gồm việc Update state và detect Player trong đây
         DetectWall();
+        DetectGround();
+        DrawRayDetectGround();
         //Debug.Log("Hit Wall: " + _hasCollidedWall);
     }
 
@@ -68,9 +76,22 @@ public class MEnemiesManager : EnemiesManager
     protected virtual void DetectWall()
     {
         if (!_isFacingRight)
-            _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.left, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
+            _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.left, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
         else
-            _hasCollidedWall = Physics2D.Raycast(new Vector2(_wallCheck.position.x, _wallCheck.position.y), Vector2.right, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
+            _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.right, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
+    }
+
+    protected virtual void DetectGround()
+    {
+        _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
+    }
+
+    protected virtual void DrawRayDetectGround()
+    {
+        if (!_hasDetectedGround)
+            Debug.DrawRay(_groundCheck.position, Vector2.down * _mEnemiesSO.GroundCheckDistance, Color.green);
+        else
+            Debug.DrawRay(_groundCheck.position, Vector2.down * _mEnemiesSO.GroundCheckDistance, Color.red);
     }
 
     //Hàm này dùng để Invoke khi detect ra Player

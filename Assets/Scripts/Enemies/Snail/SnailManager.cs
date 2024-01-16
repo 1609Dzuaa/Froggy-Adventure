@@ -22,11 +22,6 @@ public class SnailManager : MEnemiesManager
     [Header("Health Point")]
     [SerializeField] private int _healthPoint;
 
-    [Header("Ground Check")]
-    [SerializeField] private Transform _groundCheck;
-    [SerializeField] private float _groundCheckDistance;
-    //private bool _hasDetectedGround;
-
     [Header("Detect Player2")]
     [Tooltip("Khoảng thgian sau khi ốc bị hit mà mình muốn nó chui ra sau khi 0 detect Player ở gần")]
     [SerializeField] private float _idleDelayAfterGotHit;
@@ -53,7 +48,6 @@ public class SnailManager : MEnemiesManager
     private SnailAttackState _snailAttackState = new();
     private SnailShellHitState _snailShellHitState = new();
     private SnailGotHitState _snailGotHitState = new();
-    private RaycastHit2D _hasDetectedGround;
     private BoxCollider2D _boxCol2D;
     private BoxCollider2D _boxCol2DTrigger;
     private BoxCollider2D[] _arrBoxCol2D = new BoxCollider2D[2];
@@ -79,19 +73,11 @@ public class SnailManager : MEnemiesManager
 
     public int Direction { get {  return _direction; } }    
 
-    public bool HasDetectedGround { get { return _hasDetectedGround; } }
-
     public float HealthPoint { get { return _healthPoint; } set { _healthPoint = (int)value; } }
 
     public float DelayIdleAfterGotHit { get { return _idleDelayAfterGotHit; } }
 
-    public float DegreeEachRotation { get { return _degreeEachRotation; } }
-
-    public float TimeEachRotation { get { return _timeEachRotation; } }
-
     public SnailPatrolState SnailPatrolState { get { return _snailPatrolState; } }
-
-    public SnailAttackState SnailAttackState { get { return _snailAttackState; } }
 
     public BoxCollider2D BoxCol2D { get => _boxCol2D; set => _boxCol2D = value; }
 
@@ -371,7 +357,7 @@ public class SnailManager : MEnemiesManager
 
     protected override bool DetectedPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return _hasDetectedPlayer = false;
 
         if (!_isMovingVertical)
@@ -487,38 +473,38 @@ public class SnailManager : MEnemiesManager
         }
     }
 
-    private void DetectGround()
+    protected override void DetectGround()
     {
         //Move vertical thì chỉnh left/right thành 2 vector down/up
         if (!_isMovingVertical)
         {
             if (_direction == 1)
             {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _mEnemiesSO.WallLayer);
-                _groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _mEnemiesSO.WallLayer);
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
+                _groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.down, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
             }
             else
             {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.up, _groundCheckDistance, _mEnemiesSO.WallLayer);
-                _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.up, _groundCheckDistance, _mEnemiesSO.WallLayer);
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.up, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
+                _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.up, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
             }
         }
         else
         {
             if (_direction == 2)
             {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _groundCheckDistance, _mEnemiesSO.WallLayer);
-                _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.right, _groundCheckDistance, _mEnemiesSO.WallLayer);
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
+                _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.right, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
             }
             else
             {
-                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _groundCheckDistance, _mEnemiesSO.WallLayer);
-                _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.left, _groundCheckDistance, _mEnemiesSO.WallLayer);
+                _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
+                _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.left, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
             }
         }
     }
 
-    private void DrawRayDetectGround()
+    protected override void DrawRayDetectGround()
     {
         if (!_isMovingVertical)
         {
@@ -558,8 +544,7 @@ public class SnailManager : MEnemiesManager
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
         {
             _hasGotHit = true;
-            var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.GetRigidBody2D().AddForce(playerScript.GetPlayerStats.JumpOnEnemiesForce, ForceMode2D.Impulse);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             if (_healthPoint == 0)
                 ChangeState(_snailGotHitState);
             else
@@ -573,7 +558,7 @@ public class SnailManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible))
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
         {
             ChangeState(_snailIdleState);
             return;

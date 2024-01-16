@@ -16,7 +16,7 @@ public abstract class EnemiesManager : CharactersManager
     protected Collider2D _collider2D;
     protected SpriteRenderer _spriteRenderer;
 
-    #region PUBLIC FUNC
+    #region GETTER
 
     public bool HasDetectedPlayer { get { return _hasDetectedPlayer; } }
 

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2777655846734312330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1141977695089695707}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1141977695089695707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777655846734312330}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.3, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5796051415067595057}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5796051414966575319
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,6 +99,7 @@ Transform:
   - {fileID: 5796051416360746379}
   - {fileID: 5796051414966575312}
   - {fileID: 5796051415553812983}
+  - {fileID: 1141977695089695707}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -233,6 +265,7 @@ MonoBehaviour:
   _enemiesSO: {fileID: 11400000, guid: 46dfd30459b04774ab632670f7a2a217, type: 2}
   _mEnemiesSO: {fileID: 11400000, guid: 115d47f41ff81554fb869b615e6db30a, type: 2}
   _wallCheck: {fileID: 5796051414966575312}
+  _groundCheck: {fileID: 1141977695089695707}
   _bullet: {fileID: 2051569452801589770, guid: 562293350eb8cc343a18c82e707cfcfe, type: 3}
   _shootPosition: {fileID: 5796051415553812983}
   _withdrawnCheckDistance: 5
