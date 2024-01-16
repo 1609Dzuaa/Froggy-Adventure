@@ -62,17 +62,17 @@ public class DashState : PlayerBaseState
 
     private bool CheckIfCanIdle()
     {
-        return Mathf.Abs(_playerStateManager.GetDirX()) < 0.1f && _playerStateManager.GetIsOnGround();
+        return Mathf.Abs(_playerStateManager.GetDirX()) < GameConstants.NEAR_ZERO_THRESHOLD && _playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanRun()
     {
-        return Mathf.Abs(_playerStateManager.GetDirX()) > 0.1f && _playerStateManager.GetIsOnGround(); 
+        return Mathf.Abs(_playerStateManager.GetDirX()) > GameConstants.NEAR_ZERO_THRESHOLD && _playerStateManager.GetIsOnGround(); 
     }
 
     private bool CheckIfCanFall()
     {
-        return _playerStateManager.GetRigidBody2D().velocity.y < -0.1f;
+        return _playerStateManager.GetRigidBody2D().velocity.y < -GameConstants.NEAR_ZERO_THRESHOLD;
     }
 
     private bool CheckIfCanWallSlide()
@@ -87,7 +87,7 @@ public class DashState : PlayerBaseState
         //Vô hiệu hoá grav khi dash (cho ảo hơn)
         _playerStateManager.GetRigidBody2D().gravityScale = 0f;
         SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_DASH_SOUND).Play();
-        _playerStateManager.GetTrailRenderer().emitting = true; //Ch thấy effect đâu @@?
+        _playerStateManager.GetTrailRenderer().emitting = true;
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
         BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
 

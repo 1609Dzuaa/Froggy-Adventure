@@ -39,7 +39,7 @@ public class DoubleJumpState : PlayerBaseState
 
     private bool CheckIfCanFall()
     {
-        return _playerStateManager.GetRigidBody2D().velocity.y < -0.1f;
+        return _playerStateManager.GetRigidBody2D().velocity.y < -GameConstants.NEAR_ZERO_THRESHOLD;
     }
 
     private bool CheckIfCanWallSlide()
@@ -50,9 +50,9 @@ public class DoubleJumpState : PlayerBaseState
     private bool CheckIfCanDash()
     {
         //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
-        return Input.GetKeyDown(KeyCode.E)
+        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
              && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-             || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
+             || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     public override void FixedUpdate()

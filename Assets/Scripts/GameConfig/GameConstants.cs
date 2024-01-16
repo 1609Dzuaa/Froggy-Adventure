@@ -8,6 +8,7 @@
     public const float BAT_FLIPABLE_RANGE = 0.15f;
     public const float PIG_FLIPABLE_RANGE = 0.6f;
     public const float BUNNY_KNOCK_FORCE_DECREASE = 3.0f;
+    public const float NEAR_ZERO_THRESHOLD = 0.1f;
 
     #endregion
 
@@ -107,9 +108,10 @@
     public const string GECKO_ATTACK_SOUND = "GeckoAttackSound";
     #endregion
 
-    //Dùng để phân biệt function đã đky event OnEnemiesDie => Vì cả Player lẫn Bullet đều có thể dmg enemies
-    #region GameObjects ID 
-    public const int PLAYER_ID = 10;
-    public const int BULLET_ID = 11;
+    #region Button Constants
+
+    public const string JUMP_BUTTON = "Jump";
+    public const string DASH_BUTTON = "Dash";
+        
     #endregion
 }

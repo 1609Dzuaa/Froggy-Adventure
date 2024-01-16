@@ -7,7 +7,7 @@ public class WallSlideState : PlayerBaseState
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.wallSlide);
-        //Debug.Log("WS");
+        Debug.Log("WS");
         //Flip sprite khi chuyển từ state này sang state bất kì
         //Theo đúng chiều của nhân vật khi đang slide
         //WS còn vài chỗ lăn tăn nhỏ nữa nhưng chắc thế này là đủ ^^
@@ -44,14 +44,14 @@ public class WallSlideState : PlayerBaseState
 
     private bool CheckIfCanIdle()
     {
-        return Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < .1f
-            && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < .1f
+        return Math.Abs(_playerStateManager.GetRigidBody2D().velocity.x) < GameConstants.NEAR_ZERO_THRESHOLD
+            && Math.Abs(_playerStateManager.GetRigidBody2D().velocity.y) < GameConstants.NEAR_ZERO_THRESHOLD
             && _playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanWallJump()
     {
-        return Input.GetButtonDown("Jump") && !_playerStateManager.GetIsOnGround();
+        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && !_playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanFall()
@@ -60,16 +60,16 @@ public class WallSlideState : PlayerBaseState
         //cùng dấu với directionX
         //hoặc trượt hết tường mà vẫn ở trên không thì Fall
         return _playerStateManager.WallHit.normal.x * _playerStateManager.GetDirX() > 0
-            && !Input.GetKeyDown(KeyCode.S) && !_playerStateManager.GetIsOnGround()
+            && !Input.GetButtonDown(GameConstants.JUMP_BUTTON) && !_playerStateManager.GetIsOnGround()
             || !_playerStateManager.GetIsOnGround() && !_playerStateManager.GetIsWallTouch()
-            && _playerStateManager.GetRigidBody2D().velocity.y < -.1f;
+            && _playerStateManager.GetRigidBody2D().velocity.y < -GameConstants.NEAR_ZERO_THRESHOLD;
     }
 
     private bool CheckIfCanDash()
     {
-        return Input.GetKeyDown(KeyCode.E)
+        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
              && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-             || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
+             || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     public override void FixedUpdate()

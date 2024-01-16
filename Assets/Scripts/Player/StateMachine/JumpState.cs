@@ -17,14 +17,14 @@ public class JumpState : PlayerBaseState
         HandleJump();
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        //Debug.Log("Jump");
+        Debug.Log("Jump");
     }
 
     public override void ExitState() { _isRunStateHitWall = false; }
 
     public override void Update()
     {
-        //Đè dirX + S + S trong lúc Jump sẽ switch sang WallJump
+        //Đè dirX + jump trong lúc dính wall sẽ switch sang WallJump
         //(tương đồng với cơ chế Jump + WallJump trong Hollow Knight)
         if (CheckIfCanDbJump())
             _playerStateManager.ChangeState(_playerStateManager.doubleJumpState);
@@ -40,12 +40,12 @@ public class JumpState : PlayerBaseState
 
     private bool CheckIfCanDbJump()
     {
-        return Input.GetButtonDown("Jump") && !_playerStateManager.GetIsWallTouch();
+        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && !_playerStateManager.GetIsWallTouch();
     }
 
     private bool CheckIfCanFall()
     {
-        return _playerStateManager.GetRigidBody2D().velocity.y < -0.1f;
+        return _playerStateManager.GetRigidBody2D().velocity.y < -GameConstants.NEAR_ZERO_THRESHOLD;
     }
 
     private bool CheckIfCanWallSlide()
@@ -58,15 +58,15 @@ public class JumpState : PlayerBaseState
     private bool CheckIfCanWallJump()
     {
         //Đè dirX (run) va vào tường + nhấn S lúc đang Jump (current State) thì switch sang WallJump
-        return _playerStateManager.GetIsWallTouch() && Input.GetKeyDown(KeyCode.S) && _isRunStateHitWall;
+        return _playerStateManager.GetIsWallTouch() && Input.GetButtonDown(GameConstants.JUMP_BUTTON) && _isRunStateHitWall;
     }
 
     private bool CheckIfCanDash()
     {
         //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
-        return Input.GetKeyDown(KeyCode.E)
+        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
              && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-             || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
+             || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     private void HandleJump()
@@ -81,11 +81,14 @@ public class JumpState : PlayerBaseState
 
     public override void FixedUpdate()
     {
-        if (_playerStateManager.GetDirX() != 0)
-            if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsAllowToUpdate)
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
-            else
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed)).SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+        if (!_isRunStateHitWall)
+        {
+            if (_playerStateManager.GetDirX() != 0)
+                if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsAllowToUpdate)
+                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+                else
+                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed)).SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+        }
     }
 
 }

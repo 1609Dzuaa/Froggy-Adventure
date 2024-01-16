@@ -7,7 +7,7 @@ public class RunState : PlayerBaseState
         base.EnterState(playerStateManager);
         playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
-        //Debug.Log("Run");
+        Debug.Log("Run");
     }
 
     public override void ExitState() { }
@@ -47,27 +47,21 @@ public class RunState : PlayerBaseState
 
     private bool CheckIfCanJump()
     {
-        return Input.GetButtonDown("Jump") && _playerStateManager.GetIsOnGround();
-        //Phải OnGround thì mới cho nhảy
-        /*if (_playerStateManager.GetDirY() < 0 && _playerStateManager.GetIsOnGround())
-            return true;
-        return false;*/
+        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && _playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanFall()
     {
-        if (!_playerStateManager.GetIsOnGround())
-            return true;
-        return false;
+        return !_playerStateManager.GetIsOnGround();
         //Idle => Fall có thể là đứng yên, bị 1 vật khác
         //tác dụng lực vào đẩy rơi xuống dưới
     }
 
     private bool CheckIfCanDash()
     {
-        return Input.GetKeyDown(KeyCode.E)
+        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
             && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-            || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
+            || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     private bool CheckIfNearInteractPosition()

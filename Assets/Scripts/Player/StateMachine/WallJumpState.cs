@@ -14,7 +14,7 @@ public class WallJumpState : PlayerBaseState
         _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.wallJump);
         _playerStateManager.FlipSpriteAfterWallSlide();
         HandleWallJump();
-        //Debug.Log("WallJump");
+        Debug.Log("WallJump");
         _disableStart = Time.time;
     }
 
@@ -43,12 +43,12 @@ public class WallJumpState : PlayerBaseState
     private bool CheckIfCanDbJump()
     {
         //Press Space While WallJump => Double Jump
-        return Input.GetButtonDown("Jump");
+        return Input.GetButtonDown(GameConstants.JUMP_BUTTON);
     }
 
     private bool CheckIfCanFall()
     {
-        return _playerStateManager.GetRigidBody2D().velocity.y < -0.1f;
+        return _playerStateManager.GetRigidBody2D().velocity.y < -GameConstants.NEAR_ZERO_THRESHOLD;
     }
 
     private bool CheckIfCanWallSlide()
@@ -58,9 +58,9 @@ public class WallJumpState : PlayerBaseState
 
     private bool CheckIfCanDash()
     {
-        return Input.GetKeyDown(KeyCode.E)
+        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
             && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-            || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
+            || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     public override void FixedUpdate()

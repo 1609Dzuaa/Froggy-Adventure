@@ -20,37 +20,30 @@ public class IdleState : PlayerBaseState
         //Chỉ Update State này khi 0 tương tác với NPC, tránh bị loạn state
         if(!_playerStateManager.IsInteractingWithNPC)
         {
-            if (CheckIfRun())
+            if (CheckIfCanRun())
                 _playerStateManager.ChangeState(_playerStateManager.runState);
-            else if (CheckIfJump())
+            else if (CheckIfCanJump())
                 _playerStateManager.ChangeState(_playerStateManager.jumpState);
-            else if (CheckIfFall())
+            else if (CheckIfCanFall())
                 _playerStateManager.ChangeState(_playerStateManager.fallState);
             else if (CheckIfCanDash())
                 _playerStateManager.ChangeState(_playerStateManager.dashState);        }
     }
 
-    private bool CheckIfRun()
+    private bool CheckIfCanRun()
     {
         //Interacting NPC Prob here
-        if (_playerStateManager.GetDirX() != 0 && _playerStateManager.GetIsOnGround())
-            return true;
-        return false;
+        return _playerStateManager.GetDirX() != 0 && _playerStateManager.GetIsOnGround();
     }
 
-    private bool CheckIfJump()
+    private bool CheckIfCanJump()
     {
-        return Input.GetButtonDown("Jump") && _playerStateManager.GetIsOnGround();
-        /*if (_playerStateManager.GetDirY() < 0 && _playerStateManager.GetIsOnGround())
-            return true;
-        return false;*/
+        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && _playerStateManager.GetIsOnGround();
     }
 
-    private bool CheckIfFall()
+    private bool CheckIfCanFall()
     {
-        if (_playerStateManager.GetDirY() == 0 && !_playerStateManager.GetIsOnGround())
-            return true;
-        return false;
+        return _playerStateManager.GetDirY() == 0 && !_playerStateManager.GetIsOnGround();
         //Idle => Fall có thể là đứng yên, bị 1 vật khác
         //tác dụng lực vào đẩy rơi xuống dưới
     }
@@ -58,9 +51,9 @@ public class IdleState : PlayerBaseState
     private bool CheckIfCanDash()
     {
         //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
-        return Input.GetKeyDown(KeyCode.E)
+        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
              && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-             || Input.GetKeyDown(KeyCode.E) && _playerStateManager.dashState.IsFirstTimeDash;
+             || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     private void HandleIfInteractWithNPC()
