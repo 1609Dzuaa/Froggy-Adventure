@@ -31,7 +31,7 @@ AnimationClip:
         outWeight: 0
       - serializedVersion: 3
         time: 0.27272728
-        value: 0
+        value: 1
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -129,7 +129,7 @@ AnimationClip:
         outWeight: 0
       - serializedVersion: 3
         time: 0.27272728
-        value: 0
+        value: 1
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -148,7 +148,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.3181818
-    functionName: Reload
+    functionName: ReloadScence
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: dda099dff4ee22244a386885599aecec, type: 3}
     floatParameter: 0

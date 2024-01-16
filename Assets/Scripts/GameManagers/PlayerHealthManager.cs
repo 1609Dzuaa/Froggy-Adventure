@@ -10,7 +10,7 @@ public struct HP
     public Dictionary<int, Sprite> _dictHP; //Key là state, tương ứng là sprite của state đó
 }
 
-public class PlayerHealthController : MonoBehaviour
+public class PlayerHealthManager : MonoBehaviour
 {
     //Class này dùng Quản lý HP và phụ trách render HP lên UI
 
@@ -27,7 +27,7 @@ public class PlayerHealthController : MonoBehaviour
     //khoảng thgian để blink máu ảo khi nó trong trạng thái RunningOut
     [SerializeField] private float _timeEachBlink;
 
-    private static PlayerHealthController _Instance;
+    private static PlayerHealthManager _Instance;
     private HP[] _HPs = new HP[7];
     private int _maxHP;
     private int _currentHP;
@@ -47,14 +47,14 @@ public class PlayerHealthController : MonoBehaviour
 
     public int CurrentHP { get { return _currentHP; } }
 
-    public static PlayerHealthController Instance
+    public static PlayerHealthManager Instance
     {
         get
         {
             if (!_Instance)
             {
                 //Tìm xem có Instance có trong Scene kh ?
-                _Instance = FindObjectOfType<PlayerHealthController>();
+                _Instance = FindObjectOfType<PlayerHealthManager>();
 
                 if (!_Instance)
                     Debug.Log("No HP Controller in scene");

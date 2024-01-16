@@ -7,6 +7,7 @@
     //tránh flip loạn xạ khi dist to player quá gần
     public const float BAT_FLIPABLE_RANGE = 0.15f;
     public const float PIG_FLIPABLE_RANGE = 0.6f;
+    public const float BUNNY_KNOCK_FORCE_DECREASE = 3.0f;
 
     #endregion
 
@@ -97,6 +98,10 @@
     public const string PLAYER_JUMP_SOUND = "PlayerJumpSound";
     public const string PLAYER_DASH_SOUND = "PlayerDashSound";
     public const string PLAYER_DEAD_SOUND = "PlayerDeadSound";
+
+    public const string PLANT_SHOOT_SOUND = "PlantShootSound";
+    public const string TRUNK_SHOOT_SOUND = "TrunkShootSound";
+    public const string ENEMIES_DEAD_SOUND = "EnemiesDeadSound";
     #endregion
 
     //Dùng để phân biệt function đã đky event OnEnemiesDie => Vì cả Player lẫn Bullet đều có thể dmg enemies

@@ -468,11 +468,6 @@ public class PlayerStateManager : MonoBehaviour
         }
     }
 
-    private void Reload()
-    {
-        SceneManager.LoadScene("Level 1");
-    }
-
     private void ChangeToIdle()
     {
         ChangeState(idleState);
@@ -495,6 +490,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
+        gameObject.layer = LayerMask.NameToLayer("Enemies");
         SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_DEAD_SOUND).Play();
     }
 
@@ -502,6 +498,13 @@ public class PlayerStateManager : MonoBehaviour
     {
         isOnGround = true;
         _canDbJump = true; //Player chạm đất thì mới cho DbJump tiếp
+    }
+
+    public IEnumerator ReloadScence()
+    {
+        yield return new WaitForSeconds(1f);
+
+        GameManager.Instance.ReloadScene();
     }
 
     private void SpawnDust()

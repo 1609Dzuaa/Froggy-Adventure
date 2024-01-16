@@ -28,6 +28,8 @@ public class MEnemiesIdleState : MEnemiesBaseState
     {
         if (CheckIfCanPatrol())
         {
+            //vì có thể đã Invoke attack player nhưng player ăn buff vô hình
+            //=> cần cancel th attack
             _mEnemiesManager.CancelInvoke();
             _mEnemiesManager.ChangeState(_mEnemiesManager.MEnemiesPatrolState);
         }

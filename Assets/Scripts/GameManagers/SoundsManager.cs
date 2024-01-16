@@ -15,6 +15,11 @@ public class SoundsManager : MonoBehaviour
     [SerializeField] private AudioSource _deadSound;
     [SerializeField] private AudioSource _dashSound;
 
+    [Header("Enemies's Sound")]
+    [SerializeField] private AudioSource _plantShootSound;
+    [SerializeField] private AudioSource _trunkShootSound;
+    [SerializeField] private AudioSource _enemiesDeadSound;
+
     public static SoundsManager Instance
     {
         get
@@ -55,6 +60,10 @@ public class SoundsManager : MonoBehaviour
         _dictSounds.Add(GameConstants.PLAYER_DEAD_SOUND, _deadSound);
         _dictSounds.Add(GameConstants.PLAYER_GOT_HIT_SOUND, _gotHitSound);
         _dictSounds.Add(GameConstants.PLAYER_JUMP_SOUND, _jumpSound);
+
+        _dictSounds.Add(GameConstants.PLANT_SHOOT_SOUND, _plantShootSound);
+        _dictSounds.Add(GameConstants.TRUNK_SHOOT_SOUND, _trunkShootSound);
+        _dictSounds.Add(GameConstants.ENEMIES_DEAD_SOUND, _enemiesDeadSound);
     }
 
     public AudioSource GetTypeOfSound(string soundType)

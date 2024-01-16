@@ -32,5 +32,6 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
         _nmEnemiesManager.GetRigidbody2D().AddForce(_nmEnemiesManager.EnemiesSO.KnockForce, ForceMode2D.Impulse);
         _nmEnemiesManager.GetSpriteRenderer.sortingLayerName = GameConstants.RENDER_MAP_LAYER;
         _nmEnemiesManager.GetSpriteRenderer.sortingOrder = GameConstants.RENDER_MAP_ORDER;
+        SoundsManager.Instance.GetTypeOfSound(GameConstants.ENEMIES_DEAD_SOUND).Play();
     }
 }

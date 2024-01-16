@@ -38,6 +38,7 @@ public class PlantManager : NMEnemiesManager
 
         BulletInfor info = new BulletInfor(GameConstants.PLANT_BULLET, bulletID, _isFacingRight, _shootPosition.position);
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
+        SoundsManager.Instance.GetTypeOfSound(GameConstants.PLANT_SHOOT_SOUND).Play();
         //Debug.Log("I'm here");
     }
 

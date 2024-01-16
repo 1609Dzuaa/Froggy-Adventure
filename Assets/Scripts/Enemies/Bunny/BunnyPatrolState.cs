@@ -17,7 +17,6 @@ public class BunnyPatrolState : MEnemiesPatrolState
 
     public override void Update()
     {
-        //Th này ra đây hợp lí hơn
         if (CheckIfCanChangeDirection())
         {
             _hasChangeDirection = true;

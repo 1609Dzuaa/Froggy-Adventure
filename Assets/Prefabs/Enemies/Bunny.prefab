@@ -166,7 +166,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 4
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -255,7 +255,7 @@ MonoBehaviour:
   _mEnemiesSO: {fileID: 11400000, guid: 115d47f41ff81554fb869b615e6db30a, type: 2}
   _wallCheck: {fileID: 73101445069890591}
   _groundCheck: {fileID: 8717803915650024348}
-  _jumpHeight: 10
+  _jumpHeight: 5
 --- !u!1 &1170390684835052666
 GameObject:
   m_ObjectHideFlags: 0

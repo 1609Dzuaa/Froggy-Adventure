@@ -38,7 +38,7 @@ public class FrogHPController : ItemsController
         if(collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             SpawnEffect();
-            PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_NORMAL);
+            PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_NORMAL);
             SoundsManager.Instance.GetTypeOfSound(GameConstants.COLLECT_HP_SOUND).Play();
             Destroy(_parent);
         }

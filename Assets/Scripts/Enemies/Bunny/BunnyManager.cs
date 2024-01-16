@@ -76,7 +76,10 @@ public class BunnyManager : MEnemiesManager
     private void BackwardCheck()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        {
+            _isPlayerBackward = false;
             return;
+        }
 
         if (!_isFacingRight)
             _isPlayerBackward = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);

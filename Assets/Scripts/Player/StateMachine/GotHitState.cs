@@ -14,7 +14,7 @@ public class GotHitState : PlayerBaseState
     {
         base.EnterState(playerStateManager);
         HandleGotHit();
-        if (PlayerHealthController.Instance.CurrentHP > 0)
+        if (PlayerHealthManager.Instance.CurrentHP > 0)
             _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)EPlayerState.gotHit);
         Debug.Log("GotHit");
 
@@ -57,11 +57,11 @@ public class GotHitState : PlayerBaseState
     private void HandleGotHit()
     {     
         if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Absorb).IsAllowToUpdate)
-            PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
+            PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
         else
-            PlayerHealthController.Instance.ChangeHPState(GameConstants.HP_STATE_TEMP);
+            PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_TEMP);
         
-        if (PlayerHealthController.Instance.CurrentHP == 0)
+        if (PlayerHealthManager.Instance.CurrentHP == 0)
         {
             //Xử lý bay màu ở đây là hợp lý
             _playerStateManager.HandleDeadState();

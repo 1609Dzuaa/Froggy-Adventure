@@ -21,8 +21,7 @@ public class BunnyGotHitState : MEnemiesGotHitState
         _mEnemiesManager.GetSpriteRenderer.sortingLayerName = GameConstants.RENDER_MAP_LAYER;
         _mEnemiesManager.GetSpriteRenderer.sortingOrder = GameConstants.RENDER_MAP_ORDER;
         _mEnemiesManager.GetRigidbody2D().velocity = Vector2.zero;
-        _mEnemiesManager.GetRigidbody2D().AddForce(_mEnemiesManager.EnemiesSO.KnockForce / 3, ForceMode2D.Impulse);
-        Debug.Log("Force: " + _mEnemiesManager.EnemiesSO.KnockForce);
+        _mEnemiesManager.GetRigidbody2D().AddForce(_mEnemiesManager.EnemiesSO.KnockForce / GameConstants.BUNNY_KNOCK_FORCE_DECREASE, ForceMode2D.Impulse);
         _mEnemiesManager.GetCollider2D.enabled = false;
     }
 
