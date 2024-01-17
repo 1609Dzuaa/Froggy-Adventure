@@ -14,7 +14,7 @@ public class WallJumpState : PlayerBaseState
         _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.wallJump);
         _playerStateManager.FlipSpriteAfterWallSlide();
         HandleWallJump();
-        Debug.Log("WallJump");
+        //Debug.Log("WallJump");
         _disableStart = Time.time;
     }
 

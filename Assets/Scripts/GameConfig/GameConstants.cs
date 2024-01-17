@@ -10,6 +10,9 @@
     public const float BUNNY_KNOCK_FORCE_DECREASE = 3.0f;
     public const float NEAR_ZERO_THRESHOLD = 0.1f;
 
+    //Định nghĩa các hằng số lock cam move cũng như player dưới
+    public const float GAME_MIN_BOUNDARY = -10.0f;
+
     #endregion
 
     #region Time Constants

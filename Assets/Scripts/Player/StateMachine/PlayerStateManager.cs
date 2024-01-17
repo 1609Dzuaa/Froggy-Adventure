@@ -283,6 +283,7 @@ public class PlayerStateManager : MonoBehaviour
         }
         //=========Handle things related to NPC==========//
 
+        LockIfOutMinBound();
         UpdateLayer();
         HandleInput();
         _state.Update();
@@ -593,6 +594,12 @@ public class PlayerStateManager : MonoBehaviour
         dEff.SetActive(true);
         //Event của Dash animation
         //Dùng để ra dấu hiệu chỉ đc dash khi hết effect
+    }
+
+    private void LockIfOutMinBound()
+    {
+        if (transform.position.x < GameConstants.GAME_MIN_BOUNDARY)
+            transform.position = new Vector3(GameConstants.GAME_MIN_BOUNDARY, transform.position.y, transform.position.z);
     }
 
 

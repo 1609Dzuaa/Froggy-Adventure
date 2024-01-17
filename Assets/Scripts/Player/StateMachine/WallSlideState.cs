@@ -6,7 +6,7 @@ public class WallSlideState : PlayerBaseState
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.wallSlide);
-        Debug.Log("WS");
+        //Debug.Log("WS");
         //Flip sprite khi chuyển từ state này sang state bất kì
         //Theo đúng chiều của nhân vật khi đang slide
         //WS còn vài chỗ lăn tăn nhỏ nữa nhưng chắc thế này là đủ ^^

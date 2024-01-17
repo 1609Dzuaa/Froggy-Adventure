@@ -20,5 +20,7 @@ public class ParallaxController : MonoBehaviour
             transform.position = new Vector2(_camera.position.x * _relativeMoveRateX, transform.position.y);
         else
             transform.position = new Vector2(_camera.position.x * _relativeMoveRateX, _camera.position.y * _relativeMoveRateY);
+
+        //Debug.Log("Cam posX, player posX: " + _camera.position.x + ", " + _playerRef.transform.position.x);
     }
 }
