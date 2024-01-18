@@ -131,7 +131,7 @@ public class SnailManager : MEnemiesManager
         if (_state is SnailGotHitState)
             return;
 
-        DetectedPlayer();
+        DetectPlayer();
         DetectWall();
         DetectGround();
         Debug.Log("Dist: " + _groundHit.distance);
@@ -355,10 +355,13 @@ public class SnailManager : MEnemiesManager
         }
     }
 
-    protected override bool DetectedPlayer()
+    protected override void DetectPlayer()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
-            return _hasDetectedPlayer = false;
+        {
+            _hasDetectedPlayer = false;
+            return;
+        }
 
         if (!_isMovingVertical)
         {
@@ -375,7 +378,6 @@ public class SnailManager : MEnemiesManager
                 _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.up, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
         }
 
-        return _hasDetectedPlayer;
     }
 
     protected override void DrawRayDetectPlayer()
@@ -416,7 +418,7 @@ public class SnailManager : MEnemiesManager
         }
     }
 
-    protected override void DetectWall()
+    protected override bool DetectWall()
     {
         //Snail sẽ detect wall theo style của nó
         if (!_isMovingVertical)
@@ -433,6 +435,8 @@ public class SnailManager : MEnemiesManager
             else
                 _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.up, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
         }
+
+        return _hasCollidedWall;
     }
 
     private void DrawRayDetectWall()

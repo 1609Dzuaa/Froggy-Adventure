@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BoxController : GameObjectManager
 {
+    //Box loại 1 cho Speed, Jump Buff
+    //Loại 2 cho Invisible, Absorb, Shield Buff
+    //Loại 3 cho HP
     [Header("Type")]
     [Range(1,3)]
     [SerializeField] private int _boxType;

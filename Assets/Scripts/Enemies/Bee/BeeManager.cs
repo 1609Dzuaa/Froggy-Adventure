@@ -83,7 +83,7 @@ public class BeeManager : MEnemiesManager
     protected override void Update()
     {
         _state.Update();
-        DetectedPlayer();
+        DetectPlayer();
         //Debug.Log("IFR: " + _isFacingRight);
     }
 
@@ -92,12 +92,15 @@ public class BeeManager : MEnemiesManager
         base.FixedUpdate();
     }
 
-    protected override bool DetectedPlayer()
+    protected override void DetectPlayer()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
-            return _hasDetectedPlayer = false;
+        {
+            _hasDetectedPlayer = false;
+            return;
+        }
 
-        return _hasDetectedPlayer = Vector2.Distance(_playerCheck.position, _beeNest.position) <= _triggerAttackRange;
+        _hasDetectedPlayer = Vector2.Distance(_playerCheck.position, _beeNest.position) <= _triggerAttackRange;
     }
 
     private void OnDrawGizmos()

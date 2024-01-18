@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.TextCore.Text;
 using UnityEngine;
 
 public class PlantManager : NMEnemiesManager
@@ -18,7 +16,6 @@ public class PlantManager : NMEnemiesManager
     protected override void Start()
     {
         base.Start();
-        SetUpProperties(); //xem lại th này
     }
 
     protected override void Update()
@@ -33,7 +30,10 @@ public class PlantManager : NMEnemiesManager
         //enemy's bug khi player vô hình lúc chbi attack khiến cho
         //dù hết buff vô hình và bị detect nhưng enemy vẫn 0 attack player
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        {
+            ChangeState(_nmEnemiesIdleState);
             return;
+        }
 
         GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.PLANT_BULLET);
         bullet.SetActive(true);

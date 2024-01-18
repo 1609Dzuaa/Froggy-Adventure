@@ -30,7 +30,6 @@ public class NMEnemiesManager : EnemiesManager
     protected override void Update()
     {
         base.Update();
-        //Debug.Log("update");
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
@@ -60,7 +59,10 @@ public class NMEnemiesManager : EnemiesManager
     protected virtual void AllowAttackPlayer()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        {
+            ChangeState(_nmEnemiesIdleState);
             return;
+        }
 
         ChangeState(_nmEnemiesAttackState);
     }

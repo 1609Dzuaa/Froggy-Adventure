@@ -46,7 +46,10 @@ public class HedgehogManager : NMEnemiesManager
     private void ChangeToSpikeIdle()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        {
+            ChangeState(_nmEnemiesIdleState);
             return;
+        }
 
         _prevCollider2DSize = _boxCollider2D.size;
         ChangeState(_hedgehogSpikeIdle);
@@ -61,7 +64,7 @@ public class HedgehogManager : NMEnemiesManager
 
     private void ChangeToIdle()
     {
-        ChangeState(GetNMEnemiesIdleState);
+        ChangeState(_nmEnemiesIdleState);
         _boxCollider2D.size = _prevCollider2DSize;
     }
 

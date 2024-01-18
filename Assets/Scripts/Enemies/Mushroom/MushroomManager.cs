@@ -22,6 +22,11 @@ public class MushroomManager : MEnemiesManager
     protected override void Start()
     {
         base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
+        base.SetUpProperties();
         _mEnemiesAttackState = _mrAttackState; //Convert EnemiesAttack sang MushroomAttack
     }
 
@@ -42,7 +47,9 @@ public class MushroomManager : MEnemiesManager
     private void SafeCheck()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        {
             return;
+        }
 
         if (!_isFacingRight)
             _isDetected = Physics2D.Raycast(_safeCheck.position, Vector2.right, _safeCheckDistance, _enemiesSO.PlayerLayer);

@@ -73,12 +73,14 @@ public class MEnemiesManager : EnemiesManager
         //Debug.Log("Called");
     }
 
-    protected virtual void DetectWall()
+    protected virtual bool DetectWall()
     {
         if (!_isFacingRight)
             _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.left, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
         else
             _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.right, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
+    
+        return _hasCollidedWall;
     }
 
     protected virtual void DetectGround()
@@ -98,7 +100,10 @@ public class MEnemiesManager : EnemiesManager
     protected virtual void AllowAttackPlayer()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        {
+            ChangeState(_mEnemiesIdleState);
             return;
+        }
 
         ChangeState(_mEnemiesAttackState);
         //Debug.Log("Called");

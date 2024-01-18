@@ -56,7 +56,7 @@ public abstract class EnemiesManager : CharactersManager
     protected override void Update()
     {
         base.Update();
-        DetectedPlayer(); //Enemies nào thì cũng phải DetectPlayer, cho vào đây là hợp lý
+        DetectPlayer(); //Enemies nào thì cũng phải DetectPlayer, cho vào đây là hợp lý
         DrawRayDetectPlayer();
     }
 
@@ -66,17 +66,19 @@ public abstract class EnemiesManager : CharactersManager
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
     }
 
-    protected virtual bool DetectedPlayer()
+    protected virtual void DetectPlayer()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
-            return _hasDetectedPlayer = false;
-        
+        {
+            _hasDetectedPlayer = false;
+            return;
+        }
+
         if (!_isFacingRight)
             _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
         else
             _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
 
-        return _hasDetectedPlayer;
     }
 
     protected virtual void DrawRayDetectPlayer()

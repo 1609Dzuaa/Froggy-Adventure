@@ -66,6 +66,6 @@ public class MultipleRockManager : MEnemiesManager
                 tinyRock1.GetComponent<MultipleRockManager>().FlippingSprite();
                 break;
         }
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }

@@ -72,7 +72,7 @@ public class BatManager : MEnemiesManager
     protected override void Update()
     {
         _state.Update();
-        DetectedPlayer();
+        DetectPlayer();
         //Debug.Log("v: " + _rb.velocity);
     }
 
@@ -86,13 +86,16 @@ public class BatManager : MEnemiesManager
         base.OnTriggerEnter2D(collision);
     }
 
-    protected override bool DetectedPlayer()
+    protected override void DetectPlayer()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
-            return _hasDetectedPlayer = false;
+        {
+            _hasDetectedPlayer = false;
+            return;
+        }
 
         _distanceToPlayer = Vector2.Distance(transform.position, _playerCheck.position);
-        return _hasDetectedPlayer =  _distanceToPlayer <= _attackRange;
+        _hasDetectedPlayer =  _distanceToPlayer <= _attackRange;
     }
 
     public void FlipLeft()
