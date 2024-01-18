@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GhostManager : NPCManagers
 {
-    //Vẫn còn bug đi quá min @@?
     //Vẫn còn hiện tượng Player né mặt Ghost ? (Do vị trí Player ~ Talk Posistion)
     //Xử lý xong! Về Ghost thì tránh bố trí mấy chỗ vướng, làm kẹt Player
 
@@ -56,9 +55,13 @@ public class GhostManager : NPCManagers
     protected override void Start()
     {
         base.Start();
-        _state = _ghostAppearState;
-        _state.EnterState(this);
+    }
+
+    protected override void SetUpProperties()
+    {
+        _npcIdleState = _ghostIdleState;
         _npcTalkState = _ghostTalkState;
+        base.SetUpProperties();
     }
 
     protected override void Update()

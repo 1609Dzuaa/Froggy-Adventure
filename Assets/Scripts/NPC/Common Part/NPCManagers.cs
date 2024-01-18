@@ -6,6 +6,7 @@ public class NPCManagers : CharactersManager
 {
     //Học cách bố cục Dialog cũng như Indicator (Font, ...)
     //Có bug nhỏ khi vừa space kết thúc thoại thì player jump
+    //Vẫn còn bug chạy vô định @@
 
     [Header("Range")]
     [SerializeField] protected float _triggerConversationRange;
@@ -55,12 +56,21 @@ public class NPCManagers : CharactersManager
         base.Awake();
     }
 
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
+        _playerReference = FindObjectOfType<PlayerStateManager>();
+    }
+
     protected override void Start()
     {
         base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
         _state = _npcIdleState;
         _state.EnterState(this);
-        _playerReference = FindObjectOfType<PlayerStateManager>();
     }
 
     protected override void Update()
