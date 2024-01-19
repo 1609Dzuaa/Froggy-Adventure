@@ -4836,6 +4836,24 @@ Tilemap:
       e31: 0
       e32: 0
       e33: 1
+  - m_RefCount: 0
+    m_Data:
+      e00: 0
+      e01: 0
+      e02: -3.3750038
+      e03: -3.3750038
+      e10: 0
+      e11: 0
+      e12: 7.05e-43
+      e13: 7.05e-43
+      e20: -7.398989e+23
+      e21: 1e-45
+      e22: 6.2602016e-29
+      e23: -1.60348e+29
+      e30: 4.5905e-41
+      e31: 0
+      e32: 7.06e-43
+      e33: 7.08e-43
   m_TileColorArray:
   - m_RefCount: 0
     m_Data: {r: 3.9124e-41, g: 3.9124e-41, b: 3.9124e-41, a: 3.9124e-41}
@@ -4913,11 +4931,15 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 466238509}
     m_ColliderPaths:
-    - - X: -110625000
-        Y: -80625000
-      - X: 440624992
-        Y: -80625000
-      - X: 440624992
+    - - X: 480000000
+        Y: 20000000
+      - X: 470000000
+        Y: 20000000
+      - X: 470000000
+        Y: 10000000
+      - X: 480000000
+        Y: 10000000
+    - - X: 440624992
         Y: -20625000
       - X: 450624992
         Y: -20625000
@@ -4925,14 +4947,34 @@ CompositeCollider2D:
         Y: -9375000
       - X: -110625000
         Y: -9375000
+      - X: -110625000
+        Y: -80625000
+      - X: 440624992
+        Y: -80625000
+    - - X: 480000000
+        Y: -10000000
+      - X: 460000000
+        Y: -10000000
+      - X: 460000000
+        Y: -40000000
+      - X: 480000000
+        Y: -40000000
   m_CompositePaths:
     m_Paths:
+    - - {x: 47.999973, y: 1}
+      - {x: 47.999973, y: 2}
+      - {x: 47, y: 1.9999708}
+      - {x: 47.00003, y: 1}
     - - {x: 44.06247, y: -8.0625}
       - {x: 44.062527, y: -2.0625}
       - {x: 45.0625, y: -2.062471}
       - {x: 45.06247, y: -0.9375}
       - {x: -11.0625, y: -0.9375293}
       - {x: -11.06247, y: -8.0625}
+    - - {x: 47.999973, y: -4}
+      - {x: 47.999973, y: -1}
+      - {x: 46, y: -1.0000293}
+      - {x: 46.00003, y: -4}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &466238511
@@ -8688,6 +8730,14 @@ PrefabInstance:
     - target: {fileID: 8824840369338483472, guid: 808843004ac583d4d9cbde381e1d51d8, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8824840369338483485, guid: 808843004ac583d4d9cbde381e1d51d8, type: 3}
+      propertyPath: _jumpTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8824840369338483485, guid: 808843004ac583d4d9cbde381e1d51d8, type: 3}
+      propertyPath: _jumpConstant
+      value: 1.07
       objectReference: {fileID: 0}
     - target: {fileID: 8824840369338483486, guid: 808843004ac583d4d9cbde381e1d51d8, type: 3}
       propertyPath: m_RootOrder

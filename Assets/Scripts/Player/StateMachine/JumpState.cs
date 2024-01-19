@@ -71,6 +71,8 @@ public class JumpState : PlayerBaseState
 
     private void HandleJump()
     {
+        _playerStateManager.JumpStart = Time.time;
+
         if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Jump).IsAllowToUpdate)
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY);
         else
@@ -83,12 +85,28 @@ public class JumpState : PlayerBaseState
     {
         if (!_isRunStateHitWall)
         {
-            if (_playerStateManager.GetDirX() != 0)
-                if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsAllowToUpdate)
-                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
-                else
-                    _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed)).SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            PhysicsUpdateVertical();
+            PhysicsUpdateHorizontal();
         }
+    }
+
+    private void PhysicsUpdateVertical()
+    {
+        if (Input.GetButton(GameConstants.JUMP_BUTTON) && Time.time - _playerStateManager.JumpStart < _playerStateManager.GetPlayerStats.JumpTime)
+        {
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetRigidBody2D().velocity.y * _playerStateManager.GetPlayerStats.JumpSpeedFactor);
+            Debug.Log("hereeee");
+        }
+        //Hold càng lâu nhảy càng cao (miễn là trong thgian cho phép)
+    }
+
+    private void PhysicsUpdateHorizontal()
+    {
+        if (_playerStateManager.GetDirX() != 0)
+            if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsAllowToUpdate)
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            else
+                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed)).SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 
 }

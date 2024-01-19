@@ -21,6 +21,7 @@ public class PlayerStateManager : MonoBehaviour
     public DashState dashState = new();
 
     private float dirX, dirY;
+    private float _jumpStart;
     private Rigidbody2D rb;
     private Animator anim;
     private SpriteRenderer _spriteRenderer;
@@ -75,6 +76,8 @@ public class PlayerStateManager : MonoBehaviour
     //GET Functions
 
     public Transform DashableSignPosition { get { return _dashableSignPos; } }
+
+    public float JumpStart { get { return _jumpStart; } set { _jumpStart = value; } }
 
     public float GetDirX() { return dirX; }
 

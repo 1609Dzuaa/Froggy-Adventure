@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerStatsSO
   m_EditorClassIdentifier: 
   _speedX: 5.5
-  _speedY: 9
+  _speedY: 5.5
   _wallSlideSpeed: 2
   _wallJumpSpeed: {x: 7, y: 12}
   _knockBackForce: {x: 300, y: 0}
@@ -21,8 +21,10 @@ MonoBehaviour:
   _dashForce: {x: 17, y: 0}
   _HP: 2
   _maxHP: 3
-  _dbJumpSpeedFactor: 0.9
+  _jumpSpeedFactor: 1.07
+  _dbJumpSpeedFactor: 1.5
   _gravScale: 1.7
+  _jumpTime: 0.315
   _disableTime: 0.25
   _delayDashTime: 1
   _invulnerableTime: 2

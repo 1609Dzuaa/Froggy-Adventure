@@ -40,13 +40,15 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private int _maxHP;
 
     [Header("Factor")]
-    [SerializeField, Range(0f, 1f)] private float _dbJumpSpeedFactor; //Db jump 0 thể mạnh hơn Jump
+    [SerializeField, Range(1f, 2f)] private float _jumpSpeedFactor; 
+    [SerializeField, Range(1f, 2f)] private float _dbJumpSpeedFactor; //Db jump 0 thể mạnh hơn Jump
     [SerializeField] private float _gravScale;
 
     [Header("Time")]
     //Disable Time Là khoảng thgian mà mình disable directionX ở state WallJump
     //Mục đích cho nó nhảy hướng ra phía đối diện cái wall vừa đu
     //Mà 0 bị ảnh hưởng bởi input directionX
+    [SerializeField] private float _jumpTime;
     [SerializeField] private float _disableTime;
     [SerializeField] private float _delayDashTime;
     [SerializeField] private float _invulnerableTime;
@@ -71,9 +73,13 @@ public class PlayerStats : ScriptableObject
 
     public int MaxHP { get { return _maxHP; } }
 
+    public float JumpSpeedFactor { get { return _jumpSpeedFactor; } }
+
     public float DbJumpSpeedFactor { get { return _dbJumpSpeedFactor; } }
 
     public float GravScale { get {  return _gravScale; } }
+
+    public float JumpTime { get { return _jumpTime; } }
 
     public float DisableTime { get { return this._disableTime; } }
 
