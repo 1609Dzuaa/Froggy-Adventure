@@ -121,8 +121,8 @@ public class SnailManager : MEnemiesManager
 
     protected override void SetUpProperties()
     {
-        _state = _snailIdleState;
-        _state.EnterState(this);
+        _mEnemiesIdleState = _snailIdleState;
+        base.SetUpProperties();
     }
 
     protected override void Update()

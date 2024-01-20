@@ -30,7 +30,12 @@ public class RhinoManager : MEnemiesManager
     protected override void Start()
     {
         base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
         _mEnemiesAttackState = _rhinoAttackState;
+        base.SetUpProperties();
     }
 
     // Update is called once per frame

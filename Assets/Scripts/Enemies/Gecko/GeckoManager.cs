@@ -48,16 +48,21 @@ public class GeckoManager : MEnemiesManager
         base.Awake();
     }
 
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
+        _playerRef = FindObjectOfType<PlayerStateManager>().transform;
+    }
+
     protected override void Start()
     {
         base.Start();
-        _playerRef = FindObjectOfType<PlayerStateManager>().transform;
     }
 
     protected override void SetUpProperties()
     {
-        _state = _geckoIdleState;
-        _state.EnterState(this);
+        _mEnemiesIdleState = _geckoIdleState;
+        base.SetUpProperties();
     }
 
     protected override void Update()

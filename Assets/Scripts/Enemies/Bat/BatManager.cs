@@ -61,12 +61,22 @@ public class BatManager : MEnemiesManager
         base.Awake();
     }
 
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
+        _playerCheck = FindObjectOfType<PlayerStateManager>().transform;
+    }
+
     protected override void Start()
     {
-        _state = _batSleepState;
-        _state.EnterState(this);
+        base.Start();
+    }
+
+    protected override void SetUpProperties()
+    {
         _mEnemiesGotHitState = _batGotHitState; //convert chứ 0 nó lại xài state GotHit chung
-        _playerCheck = FindObjectOfType<PlayerStateManager>().transform;
+        base.SetUpProperties();
+        _state = _batSleepState; //Set lại state là Sleep vì base đang là Idle
     }
 
     protected override void Update()

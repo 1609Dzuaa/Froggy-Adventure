@@ -40,10 +40,15 @@ public class PigManager : MEnemiesManager
         base.Awake();
     }
 
+    protected override void GetReferenceComponents()
+    {
+        base.GetReferenceComponents();
+        _playerRef = FindObjectOfType<PlayerStateManager>().transform;
+    }
+
     protected override void Start()
     {
         base.Start();
-        _playerRef = FindObjectOfType<PlayerStateManager>().transform;
     }
 
     protected override void Update()
