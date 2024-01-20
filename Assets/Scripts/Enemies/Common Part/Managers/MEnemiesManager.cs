@@ -8,6 +8,9 @@ public class MEnemiesManager : EnemiesManager
 {
     //MEnemies <-> MoveableEnemies
     //Thêm detectGround cho MEnemies -> đỡ phải phụ thuộc bound
+    //Cho quái collide với box -> flip hướng (state is Patrol)
+    //có thể coi như quái canh box
+    //=>muốn ăn item -> phải giết quái
     protected MEnemiesIdleState _mEnemiesIdleState = new();
     protected MEnemiesPatrolState _mEnemiesPatrolState = new();
     protected MEnemiesAttackState _mEnemiesAttackState = new();
