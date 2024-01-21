@@ -42,7 +42,7 @@ public class RhinoManager : MEnemiesManager
     protected override void Update()
     {
         base.Update();
-        Debug.Log("Has dt G: " + _hasDetectedGround);
+        //Debug.Log("Has dt G: " + _hasDetectedGround);
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)

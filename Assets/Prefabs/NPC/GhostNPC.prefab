@@ -419,7 +419,7 @@ GameObject:
   - component: {fileID: 9003253105144916232}
   - component: {fileID: 9003253105144916235}
   - component: {fileID: 373456436}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Ghost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -531,7 +531,6 @@ MonoBehaviour:
   _triggerConversationRange: 6
   _adjustConversationRange: 4
   _triggerConvSize: {x: 0, y: 0}
-  _playerRef: {fileID: 0}
   _playerCheck: {fileID: 762004451}
   _playerLayer:
     serializedVersion: 2

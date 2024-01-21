@@ -29,6 +29,9 @@ public class SquareRockManager : GameObjectManager
     [Header("Constant")]
     [SerializeField] private float _scaleFactorEachDeltaTime; //Muốn tăng bao nhiêu mỗi delta time
 
+    [Header("Is Vertical")]
+    [SerializeField] private bool _isVertical;
+
     private Rigidbody2D _rb;
     private float _entryTime; //bộ đếm thgian
     private float _scaleFactor; //hệ số scale speed
@@ -56,15 +59,19 @@ public class SquareRockManager : GameObjectManager
     protected override void Start()
     {
         base.Start();
-        SetUpProperties();
     }
 
     protected override void SetUpProperties()
     {
-        _isMovingLeft = true;
+        if (!_isVertical)
+            _isMovingLeft = true;
+        else
+            _isMovingBottom = true;
+
         _entryTime = Time.time;
         _scaleFactor = 0;
         _rb.gravityScale = 0f; //Tránh nếu bị set nhầm ngoài Inspector
+        //Debug.Log("IsMLeft: " + _isMovingLeft);
     }
 
     private void Update()
@@ -78,6 +85,8 @@ public class SquareRockManager : GameObjectManager
 
     private void FixedUpdate()
     {
+        if (!_isVertical)
+        {
             if (_isMovingLeft)
                 _rb.velocity = new Vector2(-_tempSpeed, 0f);
             else if (_isMovingRight)
@@ -86,6 +95,10 @@ public class SquareRockManager : GameObjectManager
                 _rb.velocity = new Vector2(0f, _tempSpeed);
             else if (_isMovingBottom)
                 _rb.velocity = new Vector2(0f, -_tempSpeed);
+        }
+        else //Phải gán như này nó mới cho
+            _rb.velocity = (_isMovingTop) ? new Vector2(0f, _tempSpeed) : new Vector2(0f, -_tempSpeed);
+        
         //Debug.Log("velo: " + _rb.velocity);
     }
 
@@ -111,41 +124,65 @@ public class SquareRockManager : GameObjectManager
 
     private void HandleAnimationAndLogic()
     {
-        if (_isHitLeft && !_isMovingTop)
+        if(!_isVertical)
         {
-            _anim.SetTrigger("Left");
-            _isHitLeft = false;
-            _isMovingTop = true;
-            _isMovingLeft = _isMovingRight = _isMovingBottom = false;
-            _entryTime = Time.time;
-            _scaleFactor = 0;
+            if (_isHitLeft && !_isMovingTop)
+            {
+                _anim.SetTrigger("Left");
+                _isHitLeft = false;
+                _isMovingTop = true;
+                _isMovingLeft = _isMovingRight = _isMovingBottom = false;
+                _entryTime = Time.time;
+                _scaleFactor = 0;
+            }
+            else if (_isHitRight && !_isMovingBottom)
+            {
+                _anim.SetTrigger("Right");
+                _isHitRight = false;
+                _isMovingBottom = true;
+                _isMovingLeft = _isMovingRight = _isMovingTop = false;
+                _entryTime = Time.time;
+                _scaleFactor = 0;
+            }
+            else if (_isHitTop && !_isMovingRight)
+            {
+                _anim.SetTrigger("Top");
+                _isHitTop = false;
+                _isMovingRight = true;
+                _isMovingLeft = _isMovingTop = _isMovingBottom = false;
+                _entryTime = Time.time;
+                _scaleFactor = 0;
+            }
+            else if (_isHitBottom && !_isMovingLeft)
+            {
+                _anim.SetTrigger("Bot");
+                _isHitBottom = false;
+                _isMovingLeft = true;
+                _isMovingTop = _isMovingRight = _isMovingBottom = false;
+                _entryTime = Time.time;
+                _scaleFactor = 0;
+            }
         }
-        else if (_isHitRight && !_isMovingBottom)
+        else
         {
-            _anim.SetTrigger("Right");
-            _isHitRight = false;
-            _isMovingBottom = true;
-            _isMovingLeft = _isMovingRight = _isMovingTop = false;
-            _entryTime = Time.time;
-            _scaleFactor = 0;
-        }
-        else if (_isHitTop && !_isMovingRight)
-        {
-            _anim.SetTrigger("Top");
-            _isHitTop = false;
-            _isMovingRight = true;
-            _isMovingLeft = _isMovingTop = _isMovingBottom = false;
-            _entryTime = Time.time;
-            _scaleFactor = 0;
-        }
-        else if (_isHitBottom && !_isMovingLeft)
-        {
-            _anim.SetTrigger("Bot");
-            _isHitBottom = false;
-            _isMovingLeft = true;
-            _isMovingTop = _isMovingRight = _isMovingBottom = false;
-            _entryTime = Time.time;
-            _scaleFactor = 0;
+            if (_isHitBottom && !_isMovingTop)
+            {
+                _anim.SetTrigger("Bot");
+                _isHitBottom = false;
+                _isMovingTop = true;
+                _isMovingBottom = false;
+                _entryTime = Time.time;
+                _scaleFactor = 0;
+            }
+            else if (_isHitTop && !_isMovingBottom)
+            {
+                _anim.SetTrigger("Top");
+                _isHitTop = false;
+                _isMovingBottom = true;
+                _isMovingTop = false;
+                _entryTime = Time.time;
+                _scaleFactor = 0;
+            }
         }
     }
 

@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 5745193119508299259}
   - component: {fileID: 5745193119508299258}
   - component: {fileID: 8744208631982946988}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _triggerConversationRange: 6
   _adjustConversationRange: 4
-  _playerRef: {fileID: 0}
+  _triggerConvSize: {x: 0, y: 0}
   _playerCheck: {fileID: 5745193119045974538}
   _playerLayer:
     serializedVersion: 2
