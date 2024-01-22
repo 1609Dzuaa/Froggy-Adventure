@@ -92,10 +92,14 @@ public class BulletController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag(GameConstants.PLAYER_TAG) || collision.collider.CompareTag(GameConstants.GROUND_TAG))
+        if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
         {
-            if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
-                EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isDirectionRight);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isDirectionRight);
+            SpawnBulletPieces();
+            gameObject.SetActive(false);
+        }
+        else if (collision.collider.CompareTag(GameConstants.GROUND_TAG) || collision.collider.CompareTag(GameConstants.BULLET_TAG))
+        {
             SpawnBulletPieces();
             gameObject.SetActive(false);
         }

@@ -377,7 +377,6 @@ public class SnailManager : MEnemiesManager
             else
                 _hasDetectedPlayer = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.up, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
         }
-
     }
 
     protected override void DrawRayDetectPlayer()
