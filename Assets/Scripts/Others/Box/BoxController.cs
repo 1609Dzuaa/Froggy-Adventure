@@ -26,10 +26,10 @@ public class BoxController : GameObjectManager
     //Box type 1 thì có 5 loại gift, type 3 khó phá nhất thì cho HP
     [Header("Mystery Gift")] //Random 1 trong các gift sau - có thể thêm enemy nhỏ
     [SerializeField] private Transform _apple;
-    [SerializeField] private Transform _banana;
     [SerializeField] private Transform _cherry;
+    [SerializeField] private Transform _strawberry;
     [SerializeField] private Transform _orange;
-    [SerializeField] private Transform _mushroom;
+    [SerializeField] private Transform _shield;
     [SerializeField] private Transform _hp;
 
     //Có bug(?) khi nhảy lên box và bấm nhảy tiếp thì bật rất cao! @@
@@ -133,36 +133,36 @@ public class BoxController : GameObjectManager
     {
         if (type == 1)
         {
-            int randomGift = Random.Range(1, 6);
+            int randomGift = Random.Range(0, 2);
             switch (randomGift)
             {
+                case 0:
+                    Instantiate(_orange, transform.position, Quaternion.identity, null);
+                    break;
                 case 1:
                     Instantiate(_apple, transform.position, Quaternion.identity, null);
-                    //Debug.Log("A");
-                    break;
-                case 2:
-                    Instantiate(_banana, transform.position, Quaternion.identity, null);
-                    //Debug.Log("B");
-                    break;
-                case 3:
-                    Instantiate(_cherry, transform.position, Quaternion.identity, null);
-                    //Debug.Log("C");
-                    break;
-                case 4:
-                    Instantiate(_orange, transform.position, Quaternion.identity, null);
-                    //Debug.Log("O");
-                    break;
-
-                case 5:
-                    Instantiate(_mushroom, transform.position, Quaternion.identity, null);
-                    //Debug.Log("M");
                     break;
             }
         }
-        else if (type == 3)
+        else if (type == 2)
             Instantiate(_hp, transform.position, Quaternion.identity, null);
+        else
+        {
+            int randomGift = Random.Range(0, 3);
+            switch (randomGift)
+            {
+                case 0:
+                    Instantiate(_cherry, transform.position, Quaternion.identity, null);
+                    break;
+                case 1:
+                    Instantiate(_strawberry, transform.position, Quaternion.identity, null);
+                    break;
+                case 2:
+                    Instantiate(_shield, transform.position, Quaternion.identity, null);
+                    break;
+            }
+        }
     }
-
 
     private void SetBackIdle()
     {

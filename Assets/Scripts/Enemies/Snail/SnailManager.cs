@@ -134,7 +134,7 @@ public class SnailManager : MEnemiesManager
         DetectPlayer();
         DetectWall();
         DetectGround();
-        Debug.Log("Dist: " + _groundHit.distance);
+        //Debug.Log("Dist: " + _groundHit.distance);
         DrawRayDetectPlayer();
         DrawRayDetectWall();
         DrawRayDetectGround();

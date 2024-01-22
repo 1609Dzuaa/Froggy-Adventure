@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6135307548069927983}
   - component: {fileID: 6135307548069927976}
   - component: {fileID: 6135307548069927982}
-  - component: {fileID: -5684612294435116370}
   - component: {fileID: -5121167676953857305}
+  - component: {fileID: 3095479074019031735}
   m_Layer: 6
   m_Name: Piece 1
   m_TagString: Ground
@@ -108,20 +108,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-5684612294435116370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6135307548069927977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b326533c45354934094a9d37b644d066, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: {x: -70, y: 200}
-  time: 1.5
 --- !u!61 &-5121167676953857305
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -148,3 +134,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4293704, y: 0.40558946}
   m_EdgeRadius: 0
+--- !u!114 &3095479074019031735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6135307548069927977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b6aba05efbc9a4b9e24b9c02c68eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bounceForce: {x: -50, y: 200}
+  _existTime: 1.5

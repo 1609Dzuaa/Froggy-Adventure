@@ -1,9 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundsManager : MonoBehaviour
 {
+    //Vấn đề của SM hiện tại:
+    //Vật thể nào đó vẫn có thể phát sound dù cách rất xa Player 
+
     private static SoundsManager _smInstance;
     private Dictionary<string, AudioSource> _dictSounds = new();
 

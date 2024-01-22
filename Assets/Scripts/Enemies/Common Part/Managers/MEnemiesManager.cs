@@ -132,6 +132,10 @@ public class MEnemiesManager : EnemiesManager
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, bulletID);
             ChangeState(_mEnemiesGotHitState);
         }
+        else if (collision.collider.CompareTag(GameConstants.BOX_TAG) && _state is MEnemiesPatrolState)
+            FlippingSprite();
+        else if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && _state is not MEnemiesGotHitState)
+            ChangeState(_mEnemiesGotHitState);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)

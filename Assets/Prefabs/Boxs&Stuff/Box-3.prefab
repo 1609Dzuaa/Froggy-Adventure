@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 459821760846793779}
   m_Layer: 0
   m_Name: Box-3
-  m_TagString: Untagged
+  m_TagString: Box
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -189,12 +189,11 @@ MonoBehaviour:
   _pos3: {fileID: 459821762662822043}
   _pos4: {fileID: 459821762189786419}
   _apple: {fileID: 0}
-  _banana: {fileID: 0}
-  _cherry: {fileID: 0}
+  _cherry: {fileID: 1886694591926022908, guid: a9f2bcec74951c74f9d6d0e9775b281f, type: 3}
+  _strawberry: {fileID: 459109964652750509, guid: 943e9e0b35196dc4480f30f0ba6b6811, type: 3}
   _orange: {fileID: 0}
-  _mushroom: {fileID: 0}
-  _hp: {fileID: 8190635938199446926, guid: 1a5daf8b25cf7d44ba84740f10247103, type: 3}
-  _forceApply: 750
+  _shield: {fileID: 6207447451621864529, guid: 7866d4e867e9fb4478abab55707055ad, type: 3}
+  _hp: {fileID: 0}
   _brokeSound: {fileID: 459821760846793779}
   _gotHitSound: {fileID: 459821760846793778}
   _delaySpawnPiece: 0.3
