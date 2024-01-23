@@ -610,8 +610,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void PushBack(object obj)
     {
-        Vector2 force = (Vector2)obj;
-        rb.AddForce(isFacingRight ? force * new Vector2(-1f, 1f) : force);
+        PushBackInfor pInfo = (PushBackInfor)obj;
+        rb.AddForce(pInfo.IsPushFromRight ? pInfo.PushForce * new Vector2(-1f, 1f) : pInfo.PushForce);
     }
 
 }
