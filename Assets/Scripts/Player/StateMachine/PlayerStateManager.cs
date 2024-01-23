@@ -221,6 +221,8 @@ public class PlayerStateManager : MonoBehaviour
             gotHitState.IsHitByTrap = true;
             ChangeState(gotHitState);
         }
+        else if (collision.CompareTag(GameConstants.GATE_TAG))
+            GameManager.Instance.SwitchToNextScene();
     }
 
     private void OnTriggerStay2D(Collider2D collision)

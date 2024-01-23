@@ -20,7 +20,7 @@ public class SquareRockManager : GameObjectManager
     [SerializeField] private LayerMask _wallLayer;
     [SerializeField] private float _checkDistance;
 
-    [Header("Speed")]
+    [Header("Speed"), Range(0,100)]
     [SerializeField] private float _movementSpeed;
 
     [Header("Time")]
@@ -31,6 +31,9 @@ public class SquareRockManager : GameObjectManager
 
     [Header("Is Vertical")]
     [SerializeField] private bool _isVertical;
+
+    [Header("Movement Direction")]
+    [SerializeField] private GameEnums.ERockMove _moveDir;
 
     private Rigidbody2D _rb;
     private float _entryTime; //bộ đếm thgian
@@ -64,14 +67,19 @@ public class SquareRockManager : GameObjectManager
     protected override void SetUpProperties()
     {
         if (!_isVertical)
-            _isMovingLeft = true;
+        {
+            _isMovingLeft = (_movementSpeed > 0);
+            _isMovingRight = !_isMovingLeft;
+        }
         else
-            _isMovingBottom = true;
-
+        {
+            _isMovingTop = (_movementSpeed > 0);
+            _isMovingBottom = !_isMovingTop;
+        }
         _entryTime = Time.time;
         _scaleFactor = 0;
         _rb.gravityScale = 0f; //Tránh nếu bị set nhầm ngoài Inspector
-        //Debug.Log("IsMLeft: " + _isMovingLeft);
+        Debug.Log("IsMBot, Top: " + _isMovingBottom + ", " + _isMovingTop);
     }
 
     private void Update()
@@ -87,31 +95,75 @@ public class SquareRockManager : GameObjectManager
     {
         if (!_isVertical)
         {
-            if (_isMovingLeft)
+            switch (_moveDir)
+            {
+                case GameEnums.ERockMove.Left:
+                    _rb.velocity = new Vector2(-_tempSpeed, 0f);
+                    break;
+                case GameEnums.ERockMove.Right:
+                    _rb.velocity = new Vector2(_tempSpeed, 0f);
+                    break;
+                case GameEnums.ERockMove.Top:
+                    _rb.velocity = new Vector2(0f, _tempSpeed);
+                    break;
+                case GameEnums.ERockMove.Bottom:
+                    _rb.velocity = new Vector2(0f, -_tempSpeed);
+                    break;
+            }
+
+            /*if (_isMovingLeft)
                 _rb.velocity = new Vector2(-_tempSpeed, 0f);
             else if (_isMovingRight)
                 _rb.velocity = new Vector2(_tempSpeed, 0f);
             else if (_isMovingTop)
                 _rb.velocity = new Vector2(0f, _tempSpeed);
             else if (_isMovingBottom)
-                _rb.velocity = new Vector2(0f, -_tempSpeed);
+                _rb.velocity = new Vector2(0f, -_tempSpeed);*/
         }
-        else //Phải gán như này nó mới cho
-            _rb.velocity = (_isMovingTop) ? new Vector2(0f, _tempSpeed) : new Vector2(0f, -_tempSpeed);
+        else
+        {
+            switch (_moveDir)
+            {
+                case GameEnums.ERockMove.Top:
+                    _rb.velocity = new Vector2(0f, _tempSpeed);
+                    break;
+                case GameEnums.ERockMove.Bottom:
+                    _rb.velocity = new Vector2(0f, -_tempSpeed);
+                    break;
+            }
+        }
+        //else //Phải gán như này nó mới cho
+            //_rb.velocity = (_isMovingTop) ? new Vector2(0f, _tempSpeed) : new Vector2(0f, -_tempSpeed);
         
         //Debug.Log("velo: " + _rb.velocity);
     }
 
     private void WallCheck()
     {
-        if (_isMovingLeft)
+        switch (_moveDir)
+        {
+            case GameEnums.ERockMove.Left:
+                _isHitLeft = Physics2D.Raycast(_leftCheck.position, Vector2.left, _checkDistance, _wallLayer);
+                break;
+            case GameEnums.ERockMove.Right:
+                _isHitRight = Physics2D.Raycast(_rightCheck.position, Vector2.right, _checkDistance, _wallLayer);
+                break;
+            case GameEnums.ERockMove.Top:
+                _isHitTop = Physics2D.Raycast(_topCheck.position, Vector2.up, _checkDistance, _wallLayer);
+                break;
+            case GameEnums.ERockMove.Bottom:
+                _isHitBottom = Physics2D.Raycast(_bottomCheck.position, Vector2.down, _checkDistance, _wallLayer);
+                break;
+        }
+
+        /*if (_isMovingLeft)
             _isHitLeft = Physics2D.Raycast(_leftCheck.position, Vector2.left, _checkDistance, _wallLayer);
         else if (_isMovingRight)
             _isHitRight = Physics2D.Raycast(_rightCheck.position, Vector2.right, _checkDistance, _wallLayer);
         else if (_isMovingTop)
             _isHitTop = Physics2D.Raycast(_topCheck.position, Vector2.up, _checkDistance, _wallLayer);
         else if (_isMovingBottom)
-            _isHitBottom = Physics2D.Raycast(_bottomCheck.position, Vector2.down, _checkDistance, _wallLayer);
+            _isHitBottom = Physics2D.Raycast(_bottomCheck.position, Vector2.down, _checkDistance, _wallLayer);*/
     }
 
     private void DrawRay()
@@ -126,38 +178,42 @@ public class SquareRockManager : GameObjectManager
     {
         if(!_isVertical)
         {
-            if (_isHitLeft && !_isMovingTop)
+            if (_isHitLeft && _moveDir != GameEnums.ERockMove.Top)//!_isMovingTop)
             {
                 _anim.SetTrigger("Left");
                 _isHitLeft = false;
-                _isMovingTop = true;
+                _moveDir = GameEnums.ERockMove.Top;
+                //_isMovingTop = true;
                 _isMovingLeft = _isMovingRight = _isMovingBottom = false;
                 _entryTime = Time.time;
                 _scaleFactor = 0;
             }
-            else if (_isHitRight && !_isMovingBottom)
+            else if (_isHitRight && _moveDir != GameEnums.ERockMove.Bottom)//!_isMovingBottom)
             {
                 _anim.SetTrigger("Right");
                 _isHitRight = false;
-                _isMovingBottom = true;
+                _moveDir = GameEnums.ERockMove.Bottom;
+                //_isMovingBottom = true;
                 _isMovingLeft = _isMovingRight = _isMovingTop = false;
                 _entryTime = Time.time;
                 _scaleFactor = 0;
             }
-            else if (_isHitTop && !_isMovingRight)
+            else if (_isHitTop && _moveDir != GameEnums.ERockMove.Right)//!_isMovingRight)
             {
                 _anim.SetTrigger("Top");
                 _isHitTop = false;
-                _isMovingRight = true;
+                _moveDir = GameEnums.ERockMove.Right;
+                //_isMovingRight = true;
                 _isMovingLeft = _isMovingTop = _isMovingBottom = false;
                 _entryTime = Time.time;
                 _scaleFactor = 0;
             }
-            else if (_isHitBottom && !_isMovingLeft)
+            else if (_isHitBottom && _moveDir != GameEnums.ERockMove.Left)//!_isMovingLeft)
             {
                 _anim.SetTrigger("Bot");
                 _isHitBottom = false;
-                _isMovingLeft = true;
+                _moveDir = GameEnums.ERockMove.Left;
+                //_isMovingLeft = true;
                 _isMovingTop = _isMovingRight = _isMovingBottom = false;
                 _entryTime = Time.time;
                 _scaleFactor = 0;
@@ -165,20 +221,22 @@ public class SquareRockManager : GameObjectManager
         }
         else
         {
-            if (_isHitBottom && !_isMovingTop)
+            if (_isHitBottom && _moveDir != GameEnums.ERockMove.Top)//!_isMovingTop)
             {
                 _anim.SetTrigger("Bot");
                 _isHitBottom = false;
-                _isMovingTop = true;
+                _moveDir = GameEnums.ERockMove.Top;
+                //_isMovingTop = true;
                 _isMovingBottom = false;
                 _entryTime = Time.time;
                 _scaleFactor = 0;
             }
-            else if (_isHitTop && !_isMovingBottom)
+            else if (_isHitTop && _moveDir != GameEnums.ERockMove.Bottom)//!_isMovingBottom)
             {
                 _anim.SetTrigger("Top");
                 _isHitTop = false;
-                _isMovingBottom = true;
+                _moveDir = GameEnums.ERockMove.Bottom;
+                //_isMovingBottom = true;
                 _isMovingTop = false;
                 _entryTime = Time.time;
                 _scaleFactor = 0;

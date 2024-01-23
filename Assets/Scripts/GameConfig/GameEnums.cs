@@ -67,4 +67,10 @@
     }
 
     #endregion
+
+    #region EnumRock
+
+    public enum ERockMove { Left, Top, Right, Bottom }
+
+    #endregion
 }
