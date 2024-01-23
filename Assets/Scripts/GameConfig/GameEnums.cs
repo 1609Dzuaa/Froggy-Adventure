@@ -34,7 +34,7 @@
     { idle, gotHit }
 
     public enum EGhostState
-    { appear, idle, wander, disappear, gotHit }
+    { disappear, appear, idle, gotHit }
 
     public enum EPigState
     { idle, patrol, attackGreen, gotHitGreen, attackRed,  gotHitRed }

@@ -11,36 +11,30 @@ public class TriggerZone : MonoBehaviour
     [Header("Timeline Reference")]
     [SerializeField] private PlayableDirector _playableDirector;
 
-    [Header("Size Zone")]
-    [SerializeField] private Vector2 _sizeZone;
-
-    [Header("Player Layer")]
-    [SerializeField] private LayerMask _playerLayer;
-
-    private bool _hasPlayed;
-    private PlayerStateManager _playerRef;
+    PlayerStateManager _playerRef;
+    BoxCollider2D _boxCol;
 
     private void Start()
     {
-        _playerRef = GetComponent<PlayerStateManager>();
+        _playerRef = FindObjectOfType<PlayerStateManager>();
+        _boxCol = GetComponent<BoxCollider2D>();
     }
 
-    private void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (CanPlayTimeline())
+        if(collision.CompareTag(GameConstants.PLAYER_TAG) && _playerRef.GetIsOnGround())
         {
-            _hasPlayed = true;
+            _boxCol.enabled = false;
             _playableDirector.Play();
         }
     }
 
-    private bool CanPlayTimeline()
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        return Physics2D.OverlapBox(transform.position, _sizeZone, 0f, _playerLayer) && _playerRef.GetIsOnGround() && !_hasPlayed;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawCube(transform.position, _sizeZone);   
+        if (collision.CompareTag(GameConstants.PLAYER_TAG) && _playerRef.GetIsOnGround())
+        {
+            _boxCol.enabled = false;
+            _playableDirector.Play();
+        }
     }
 }

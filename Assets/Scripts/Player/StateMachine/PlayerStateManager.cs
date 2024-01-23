@@ -261,6 +261,7 @@ public class PlayerStateManager : MonoBehaviour
     private void InteractWithNPC(object obj)
     {
         _isInteractingWithNPC = true;
+        _interactPosition = (Vector2)obj;
     }
 
     private void StopInteractWithNPC(object obj)

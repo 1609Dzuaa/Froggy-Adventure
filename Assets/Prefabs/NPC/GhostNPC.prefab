@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5668574046496596361, guid: 377d4a7537419e5448b7e8c00de30870, type: 2}
+  - {fileID: -6856696785668617756, guid: 855b5ba262139894f8a7c87a43b992bc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -102,8 +102,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 377d4a7537419e5448b7e8c00de30870, type: 2}
-  m_sharedMaterial: {fileID: -5668574046496596361, guid: 377d4a7537419e5448b7e8c00de30870, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 855b5ba262139894f8a7c87a43b992bc, type: 2}
+  m_sharedMaterial: {fileID: -6856696785668617756, guid: 855b5ba262139894f8a7c87a43b992bc, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -127,12 +127,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 2.5
+  m_fontSize: 3
   m_fontSizeBase: 3
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
-  m_fontSizeMax: 2.5
+  m_fontSizeMax: 3.5
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -530,7 +530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _triggerConversationRange: 6
   _adjustConversationRange: 4
-  _triggerConvSize: {x: 0, y: 0}
+  _triggerConvSize: {x: 12, y: 0.3}
   _playerCheck: {fileID: 762004451}
   _playerLayer:
     serializedVersion: 2
@@ -540,9 +540,6 @@ MonoBehaviour:
   _gizmosRadius: 0.2
   _needTriggerIndicator: 1
   _disappearTime: 2
-  _restTime: 1
-  _wanderTime: 2
-  _wanderSpeed: {x: 2, y: 0}
   _leftBound: {fileID: 9003253104994312433}
   _rightBound: {fileID: 9003253105022309411}
 --- !u!50 &9003253105144916235
@@ -656,13 +653,29 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5974956396923830137, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 9a18e1793b7ff7a469d8f8477c73d559, type: 2}
+    - target: {fileID: 5974956396923830137, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_fontSizeMax
-      value: 3.2
+      value: 4.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5974956396923830137, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4090202173171028100, guid: 9a18e1793b7ff7a469d8f8477c73d559, type: 2}
     - target: {fileID: 5974956396923830137, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_enableAutoSizing
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5974956396923830137, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956396923830138, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 4090202173171028100, guid: 9a18e1793b7ff7a469d8f8477c73d559, type: 2}
     - target: {fileID: 5974956397247850149, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: m_Name
       value: Dialog
@@ -721,27 +734,35 @@ PrefabInstance:
       objectReference: {fileID: 576322479}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.size
-      value: 9
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: _dialog.Array.data[0]
+      value: A ... Frog ... ?!
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: _dialog.Array.data[1]
+      value: What are you doing here ... ?
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[2]
-      value: You should leave soon as this place's no longer safe.
+      value: Anyway, may I request your help ?!
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[3]
-      value: Red Skull has left this place in chaos.
+      value: This place has been corrupted by Red Skull.
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[4]
-      value: Most living creatures have been infected and become aggressive.
+      value: He has taken control of the minds of almost all living creatures...
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[5]
-      value: You wanna find him ... ?
+      value: You must come with me into his place and banish him.
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[6]
-      value: Perhaps if you free me, i'll show you the way.
+      value: Keep moving forward and I'll see you somewhere downthere!
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[7]

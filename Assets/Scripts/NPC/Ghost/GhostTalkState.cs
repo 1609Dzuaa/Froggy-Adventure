@@ -2,6 +2,7 @@
 
 public class GhostTalkState : NPCTalkState
 {
+    //còn bug vẫn hiện press T dù start conver
     private GhostManager _ghostManager;
 
     public override void EnterState(CharactersManager charactersManager)
@@ -11,7 +12,7 @@ public class GhostTalkState : NPCTalkState
         _ghostManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EGhostState.appear);
         _ghostManager.GetRigidbody2D().velocity = Vector2.zero;
         HandleInteractWithPlayer(_ghostManager, _ghostManager.GetStartIndex());
-        //Debug.Log("Talk");
+        Debug.Log("Talk");
     }
 
     public override void ExitState() { }

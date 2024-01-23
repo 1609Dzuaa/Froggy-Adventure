@@ -114,10 +114,7 @@ public class NPCManagers : CharactersManager
             _dialog.ToggleIndicator(false);
 
         if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && _state is not NPCTalkState)
-        {
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnInteractWithNPCs, null);
             ChangeState(_npcTalkState);
-        }
     }
 
     protected virtual void UpdateConversationPosition()

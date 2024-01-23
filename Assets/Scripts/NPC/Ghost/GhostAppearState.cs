@@ -9,8 +9,7 @@ public class GhostAppearState : CharacterBaseState
         base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EGhostState.appear);
-        _ghostManager.transform.position = RandomAppearPosition();
-        //Debug.Log("App");
+        Debug.Log("App");
     }
 
     public override void ExitState()
@@ -26,12 +25,5 @@ public class GhostAppearState : CharacterBaseState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-    }
-
-    private Vector2 RandomAppearPosition()
-    {
-        //Bỏ đi 1 lượng 0.5f tránh có thể random dính ngay min/max
-        //=>Khi enter state wander có thể gặp lỗi 0 như ý
-        return new Vector2(Random.Range(_ghostManager.LeftBound.position.x + 0.5f, _ghostManager.RightBound.position.x - 0.5f), _ghostManager.LeftBound.position.y);
     }
 }

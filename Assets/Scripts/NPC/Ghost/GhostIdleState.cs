@@ -3,28 +3,29 @@ using UnityEngine;
 public class GhostIdleState : NPCIdleState
 {
     private GhostManager _ghostManager;
-    private float _entryTime;
 
     public override void EnterState(CharactersManager charactersManager)
     {
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EGhostState.idle);
         _ghostManager.GetRigidbody2D().velocity = Vector2.zero;
-        _entryTime = Time.time;
-        //Debug.Log("Idle");
+        Debug.Log("G Idle");
     }
 
     public override void ExitState() { }
 
     public override void Update()
     {
-        if (CheckIfCanWander())
-            _ghostManager.ChangeState(_ghostManager.GetGhostWanderState());
+        if (!_ghostManager.GetIsPlayerNearBy())
+            _ghostManager.ChangeState(_ghostManager.GetGhostDisappearState());
+        FlipTowardPlayer();
     }
 
-    private bool CheckIfCanWander()
+    private void FlipTowardPlayer()
     {
-        return Time.time - _entryTime >= _ghostManager.RestTime;
+        if (_ghostManager.transform.position.x < _ghostManager.PlayerReference.transform.position.x && !_ghostManager.GetIsFacingRight()
+            || _ghostManager.transform.position.x > _ghostManager.PlayerReference.transform.position.x && _ghostManager.GetIsFacingRight())
+            _ghostManager.FlippingSprite();
     }
 
     public override void FixedUpdate() { }

@@ -9,11 +9,6 @@ public class GhostManager : NPCManagers
 
     [Header("Time")]
     [SerializeField] private float _disappearTime;
-    [SerializeField] private float _restTime;
-    [SerializeField] private float _wanderTime;
-
-    [Header("Speed")]
-    [SerializeField] private Vector2 _wanderSpeed;
 
     [Header("Boundaries")]
     [SerializeField] private Transform _leftBound;
@@ -21,17 +16,10 @@ public class GhostManager : NPCManagers
 
     private GhostAppearState _ghostAppearState = new();
     private GhostIdleState _ghostIdleState = new();
-    private GhostWanderState _ghostWanderState = new();
     private GhostTalkState _ghostTalkState = new();
     private GhostDisappearState _ghostDisappearState = new();
 
     public float DisappearTime { get { return _disappearTime; } }
-
-    public float RestTime { get { return _restTime; } }
-
-    public float WanderTime { get { return _wanderTime; } }
-
-    public Vector2 WanderSpeed { get { return _wanderSpeed;} }
 
     public Transform LeftBound { get { return _leftBound; } }
 
@@ -41,11 +29,9 @@ public class GhostManager : NPCManagers
 
     public GhostIdleState GetGhostIdleState() { return _ghostIdleState; }
 
-    public GhostWanderState GetGhostWanderState() { return _ghostWanderState; }
-
-    public GhostTalkState GetGhostTalkState() { return _ghostTalkState; }
-
     public GhostDisappearState GetGhostDisappearState() { return _ghostDisappearState; }
+
+    public bool GetIsPlayerNearBy() { return _isPlayerNearBy; }
 
     protected override void Awake()
     {
@@ -61,12 +47,14 @@ public class GhostManager : NPCManagers
     {
         _npcIdleState = _ghostIdleState;
         _npcTalkState = _ghostTalkState;
-        base.SetUpProperties();
+        _state = _ghostDisappearState;
+        _state.EnterState(this);
     }
 
     protected override void Update()
     {
         base.Update();
+        Debug.Log("is near: " + _isPlayerNearBy);
     }
 
     private void FixedUpdate()
@@ -83,7 +71,7 @@ public class GhostManager : NPCManagers
     protected override bool IsPlayerNearBy()
     {
         return _isPlayerNearBy = Vector2.Distance(transform.position, _playerReference.transform.position) <= _triggerConversationRange 
-            && _state is not GhostDisappearState && _playerReference.GetIsOnGround();
+             && _playerReference.GetIsOnGround();
     }
 
 }

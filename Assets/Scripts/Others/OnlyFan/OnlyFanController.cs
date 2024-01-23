@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,11 +29,11 @@ public class OnlyFanController : GameObjectManager
     protected override void SetUpProperties()
     {
         base.SetUpProperties();
-        Debug.Log("z Deg: " + transform.eulerAngles.z);
+        //Debug.Log("z Deg: " + transform.eulerAngles.z);
         _isFacingRight = (transform.eulerAngles.z) >= 90f && (transform.eulerAngles.z) < 270f;
         _state = 0;
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
-        Debug.Log("ISFR: " + _isFacingRight);
+        //Debug.Log("ISFR: " + _isFacingRight);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -56,6 +56,7 @@ public class OnlyFanController : GameObjectManager
 
     private void BeingDisabled(object obj)
     {
+        //Chú ý ở đây kh check vì muốn khi bấm SW thì vô hiệu hoá mọi Fan hiện có
         _anim.SetTrigger("Off");
         _state = 1;
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
