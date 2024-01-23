@@ -16,6 +16,9 @@ public class EventsManager : MonoBehaviour
     private Action<object> PlayerOnJumpPassive;
     private Action<object> PlayerOnInteractWithNPCs;
     private Action<object> PlayerOnStopInteractWithNPCs;
+    private Action<object> PlayerOnBeingPushedBack;
+    private Action<object> FanOnBeingDisabled;
+
 
     //Làm việc với Event thì nên phân biệt với nhau bằng key là object
     //Tránh cùng 1 lúc nó Notify tất cả Func đã đky event đó
@@ -59,7 +62,9 @@ public class EventsManager : MonoBehaviour
         _dictEvents.Add(GameEnums.EEvents.BulletOnReceiveInfo, BulletOnReceiveInfo);
         _dictEvents.Add(GameEnums.EEvents.PlayerOnJumpPassive, PlayerOnJumpPassive);
         _dictEvents.Add(GameEnums.EEvents.PlayerOnInteractWithNPCs, PlayerOnInteractWithNPCs);
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, PlayerOnStopInteractWithNPCs);
+        _dictEvents.Add(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, PlayerOnStopInteractWithNPCs); 
+        _dictEvents.Add(GameEnums.EEvents.PlayerOnBeingPushedBack, PlayerOnBeingPushedBack);
+        _dictEvents.Add(GameEnums.EEvents.FanOnBeingDisabled, FanOnBeingDisabled);
         //Val là cái event, còn thg nào quan tâm cái event đó thì gọi hàm dưới
     }
 

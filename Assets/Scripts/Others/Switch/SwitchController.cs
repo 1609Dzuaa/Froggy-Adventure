@@ -11,18 +11,13 @@ public class SwitchController : GameObjectManager
         base.Start();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasTriggered)
         {
             _anim.SetTrigger("Hit");
             _hasTriggered = true;
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.FanOnBeingDisabled, null);
         }
     }
 }

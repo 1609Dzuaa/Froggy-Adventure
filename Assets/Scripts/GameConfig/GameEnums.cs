@@ -64,6 +64,8 @@
         PlayerOnJumpPassive,
         PlayerOnInteractWithNPCs,
         PlayerOnStopInteractWithNPCs,
+        PlayerOnBeingPushedBack,
+        FanOnBeingDisabled
     }
 
     #endregion

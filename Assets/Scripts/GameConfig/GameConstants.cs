@@ -67,6 +67,7 @@
     public const string PLAYER_TAG = "Player";
     public const string BOX_TAG = "Box";
     public const string PORTAL_TAG = "Portal";
+    public const string ONLY_FAN_TAG = "OnlyFan";
     #endregion
 
     #region Axis Constants

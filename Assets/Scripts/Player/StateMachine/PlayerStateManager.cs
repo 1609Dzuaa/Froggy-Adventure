@@ -146,6 +146,7 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnBeingPushedBack, PushBack);
     }
 
     private void SetupProperties()
@@ -220,8 +221,8 @@ public class PlayerStateManager : MonoBehaviour
         {
             gotHitState.IsHitByTrap = true;
             ChangeState(gotHitState);
-        }
-        else if (collision.CompareTag(GameConstants.GATE_TAG))
+        }          
+        else if (collision.CompareTag(GameConstants.PORTAL_TAG))
             GameManager.Instance.SwitchToNextScene();
     }
 
@@ -607,5 +608,10 @@ public class PlayerStateManager : MonoBehaviour
             transform.position = new Vector3(GameConstants.GAME_MIN_BOUNDARY, transform.position.y, transform.position.z);
     }
 
+    private void PushBack(object obj)
+    {
+        Vector2 force = (Vector2)obj;
+        rb.AddForce(isFacingRight ? force * new Vector2(-1f, 1f) : force);
+    }
 
 }
