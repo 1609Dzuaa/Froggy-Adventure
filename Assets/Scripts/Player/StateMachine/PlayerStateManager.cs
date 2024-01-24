@@ -221,7 +221,9 @@ public class PlayerStateManager : MonoBehaviour
         {
             gotHitState.IsHitByTrap = true;
             ChangeState(gotHitState);
-        }          
+        }
+        else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG))
+            HandleDeadState();
         else if (collision.CompareTag(GameConstants.PORTAL_TAG))
             GameManager.Instance.SwitchToNextScene();
     }

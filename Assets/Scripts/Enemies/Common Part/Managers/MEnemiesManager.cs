@@ -63,8 +63,10 @@ public class MEnemiesManager : EnemiesManager
     // Update is called once per frame
     protected override void Update()
     {
-        base.Update(); //Đã bao gồm việc Update state và detect Player trong đây
+        //Đã bao gồm việc Update state, detect và draw Ray detect Player ở base
+        base.Update();
         DetectWall();
+        DrawRayDetectWall();
         DetectGround();
         DrawRayDetectGround();
         //Debug.Log("Hit Wall: " + _hasCollidedWall);
@@ -76,6 +78,17 @@ public class MEnemiesManager : EnemiesManager
         //Debug.Log("Called");
     }
 
+    public override void ChangeState(CharacterBaseState state)
+    {
+        //Chết là hết
+        if (_state is MEnemiesGotHitState) 
+            return;
+
+        _state.ExitState();
+        _state = state;
+        _state.EnterState(this);
+    }
+
     protected virtual bool DetectWall()
     {
         if (!_isFacingRight)
@@ -84,6 +97,24 @@ public class MEnemiesManager : EnemiesManager
             _hasCollidedWall = Physics2D.Raycast(_wallCheck.position, Vector2.right, _mEnemiesSO.WallCheckDistance, _mEnemiesSO.WallLayer);
     
         return _hasCollidedWall;
+    }
+
+    protected virtual void DrawRayDetectWall()
+    {
+        if (!_hasDetectedGround)
+        {
+            if (!_isFacingRight)
+                Debug.DrawRay(_wallCheck.position, Vector2.left * _mEnemiesSO.WallCheckDistance, Color.green);
+            else
+                Debug.DrawRay(_wallCheck.position, Vector2.right * _mEnemiesSO.WallCheckDistance, Color.green);
+        }
+        else
+        {
+            if (!_isFacingRight)
+                Debug.DrawRay(_wallCheck.position, Vector2.left * _mEnemiesSO.WallCheckDistance, Color.red);
+            else
+                Debug.DrawRay(_wallCheck.position, Vector2.right * _mEnemiesSO.WallCheckDistance, Color.red);
+        }
     }
 
     protected virtual void DetectGround()

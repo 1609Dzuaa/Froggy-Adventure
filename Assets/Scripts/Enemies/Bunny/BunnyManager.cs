@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BunnyManager : MEnemiesManager
 {
-    //Vẫn còn bug flip sprite lung tung khi attack @@ - con
     [Header("JumpHeight")]
     [SerializeField] private float _jumpHeight;
 
@@ -66,11 +65,22 @@ public class BunnyManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
-        //coi lai
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        {
+            ChangeState(_bunnyIdleState);
             return;
+        }
 
+        HandleFlipSpriteTowardPlayer();
         ChangeState(_bunnyAtkJumpState);
+    }
+
+    private void HandleFlipSpriteTowardPlayer()
+    {
+        if (transform.position.x > _playerRef.transform.position.x && _isFacingRight)
+            FlippingSprite();
+        else if (transform.position.x < _playerRef.transform.position.x && !_isFacingRight)
+            FlippingSprite();
     }
 
     private void BackwardCheck()

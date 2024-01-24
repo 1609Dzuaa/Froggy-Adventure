@@ -35,8 +35,5 @@ public class BunnyIdleState : MEnemiesIdleState
             || _bunnyManager.IsPlayerBackWard && !_hasChangedState;
     }
 
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
-    }
+    public override void FixedUpdate() { }
 }

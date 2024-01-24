@@ -106,13 +106,6 @@ public class MEnemiesPatrolState : MEnemiesBaseState
 
     private void HandleCanRandomNextPatrolState()
     {
-        //Thêm đoạn check bool _hasJustHitWall vì:
-        //Lúc hitwall thì hiển nhiên vị trí hitwall lớn hơn min/max |trừ khi bố trí ngu ;)|
-        //Dẫn đến phải flip lúc đó -> haschange = true (0 đc rd flip lần sau)
-        //TÓM LẠI mình muốn kết quả chạy debug sau khi hit wall như sau:
-        //PT1: Rd(false) - HitWall(true)
-        //PT2: Rd(true) - Hitwall(false)
-
         if (_hasChangeDirection && !_hasJustHitWall)
             _canRdDirection = false;
         else

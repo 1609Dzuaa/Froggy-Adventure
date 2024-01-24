@@ -36,7 +36,7 @@ public class CharactersManager : GameObjectManager
             _state.Update();
     }
 
-    public void ChangeState(CharacterBaseState state)
+    public virtual void ChangeState(CharacterBaseState state)
     {
         _state.ExitState();
         _state = state;

@@ -10,9 +10,7 @@ public class SnailPatrolState : MEnemiesPatrolState
         _snailManager = (SnailManager)charactersManager;
         _snailManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EMEnemiesState.patrol);
         _entryTime = Time.time;
-        //Debug.Log("Patrol, canRD, hasChangeDir, HW: " + _canRdDirection + ", " + _hasChangeDirection + ", " + _hasJustHitWall);
-        //if (_canRdDirection)
-            //HandleRandomChangeDirection();
+        Debug.Log("Pt");
     }
 
     public override void ExitState()
