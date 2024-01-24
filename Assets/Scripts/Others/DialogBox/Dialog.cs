@@ -15,7 +15,11 @@ public class Dialog : MonoBehaviour
     [SerializeField] private GameObject _indicator; //Chỉ dẫn ("Press ... to start conversation")
     [SerializeField] private TMP_Text _dialogText; //Ô Thoại
     [SerializeField] private TMP_Text _indicatorText; //Ô Chỉ Dẫn
-    [SerializeField] private List<string> _dialog; //Thoại
+
+    //Mặc định các NPC trong game sẽ chỉ có 2 cuộc hội thoại
+    [SerializeField] private List<string> _dialog; //Thoại 1
+    [SerializeField] private List<string> _dialog2; //Thoại 2
+
     [SerializeField] private List<string> _indicatorString;
     [SerializeField] private float _writingSpeed; //Tốc độ viết Thoại
     [SerializeField] private bool _dontNeedStartIndicatorTextAgain; //tick vào nếu sau khi hội thoại xong 0 muốn indicator trở về text ban đầu
@@ -64,8 +68,7 @@ public class Dialog : MonoBehaviour
         if (!_started) 
             return;
 
-        //Cố định, đéo cho quay khi parent quay :)
-        //0 có 2 dòng dưới thì khi quay phải text sẽ bị ngược
+        //0 cho Thoại quay lung tung
         _dialogText.transform.eulerAngles = Vector3.zero;
 
         //Chờ Player tương tác (Nhấn Space nếu SC chủ động hoặc T nếu SC bị động)
@@ -78,17 +81,32 @@ public class Dialog : MonoBehaviour
                 _startConversationPassive = false;
 
             _isWaiting = false; //0 phải đợi nữa
-            _rowIndex++; //Xuống hàng kế tiếp
 
-            //Check hàng hiện tại CHƯA vượt quá hàng thực tế thì
-            //bắt đầu Thoại hàng kế tiếp
-            //Còn 0 thì kết thúc Thoại
-            if (_rowIndex < _dialog.Count)
-                GetDialog(_rowIndex);
+            if(!_isFinishedFirstConversation)
+            {
+                _rowIndex++; //Xuống hàng kế tiếp
+
+                //Check hàng hiện tại CHƯA vượt quá hàng thực tế thì
+                //bắt đầu Thoại hàng kế tiếp
+                //Còn 0 thì kết thúc Thoại
+                if (_rowIndex < _dialog.Count)
+                    GetDialog(_rowIndex);
+                else
+                {
+                    UpdateIndicatorText();
+                    EndDialog();
+                }
+            }
             else
             {
-                UpdateIndicatorText();
-                EndDialog();
+                _rowIndex++; //Xuống hàng kế tiếp
+                if (_rowIndex < _dialog2.Count)
+                    GetDialog(_rowIndex);
+                else
+                {
+                    UpdateIndicatorText();
+                    EndDialog();
+                }
             }
         }
     }
@@ -142,7 +160,7 @@ public class Dialog : MonoBehaviour
         //Cho phép cuộc hội thoại thứ 2 (Nếu có)
         if (!_isFinishedFirstConversation)
             _isFinishedFirstConversation = true;
-        //Debug.Log("End");
+        Debug.Log("End: " + _isFinishedFirstConversation);
         //Kết thúc Thoại
         //Dừng mọi Coroutines và tắt Hộp
     }
@@ -170,7 +188,11 @@ public class Dialog : MonoBehaviour
         yield return new WaitForSeconds(_writingSpeed);
 
         //Gán chuỗi hộp thoại hiện tại vào biến currentDialog
-        string currentDialog = _dialog[_rowIndex];
+        string currentDialog;
+        if (!_isFinishedFirstConversation)
+            currentDialog = _dialog[_rowIndex];
+        else 
+            currentDialog = _dialog2[_rowIndex];
 
         //Render Thoại(Render từng chữ) lên màn hình
         _dialogText.text += currentDialog[_charIndex];

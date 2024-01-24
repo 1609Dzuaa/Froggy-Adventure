@@ -9,7 +9,6 @@ public class NPCTalkState : CharacterBaseState
         base.EnterState(charactersManager);
         _npcManager = (NPCManagers)charactersManager;
         _npcManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ENPCState.idle);
-        _npcManager.GetRigidbody2D().velocity = Vector2.zero;
         HandleInteractWithPlayer(_npcManager, _npcManager.GetStartIndex());
         Debug.Log("Talk");
     }
@@ -42,9 +41,13 @@ public class NPCTalkState : CharacterBaseState
 
         //Gán vị trí cần di chuyển cho Player thông qua Event
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnInteractWithNPCs, npcManagers.ConversationPos);
+        Debug.Log("Conver pos: "+ npcManagers.ConversationPos);
 
         //Lấy và bắt đầu Thoại
-        npcManagers.GetDialog().StartDialog(startIndex);
+        if (!npcManagers.GetDialog().IsFinishedFirstConversation)
+            npcManagers.GetDialog().StartDialog(startIndex);
+        else
+            npcManagers.GetDialog().StartDialog(startIndex);
     }
 
     public override void FixedUpdate() { }

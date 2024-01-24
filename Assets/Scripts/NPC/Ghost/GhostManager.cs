@@ -74,4 +74,25 @@ public class GhostManager : NPCManagers
              && _playerReference.GetIsOnGround();
     }
 
+    public IEnumerator DelayUpdateDisappearState()
+    {
+        yield return new WaitForSeconds(1f);
+
+        _ghostDisappearState.AllowToUpdate = true;
+    }
+
+    protected override void HandleDialogAndIndicator()
+    {
+        if (_needTriggerIndicator)
+            if (_state is not GhostDisappearState)
+                _dialog.ToggleIndicator(_isPlayerNearBy);
+
+        //Nếu đã bắt đầu Thoại và chưa đến đoạn chờ thì tắt Indicator
+        if (_dialog.Started && !_dialog.IsWaiting)
+            _dialog.ToggleIndicator(false);
+
+        if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && _state is not GhostTalkState)
+            ChangeState(_ghostTalkState);
+    }
+
 }

@@ -21,7 +21,6 @@ public class NPCManagers : CharactersManager
     [Header("Dialog")]
     [SerializeField] protected Dialog _dialog;
     [SerializeField] protected int _startIndex; //Chỉ số row trong hộp thoại mà mình muốn bắt đầu
-    [SerializeField] protected int _secondConverStartIndex; //(... ở trên) ở cuộc hội thoại 2
 
     [Header("Gizmos Radius")]
     [SerializeField] protected float _gizmosRadius;
@@ -135,7 +134,7 @@ public class NPCManagers : CharactersManager
     protected virtual void OnDrawGizmos()
     {
         Gizmos.DrawSphere(ConversationPos, _gizmosRadius);
-        Gizmos.DrawCube(transform.position, _triggerConvSize);
+        //Gizmos.DrawCube(transform.position, _triggerConvSize);
     }
 
     protected void AllowEndInteract()

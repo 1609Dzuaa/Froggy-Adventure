@@ -1,8 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GhostDisappearState : CharacterBaseState
 {
+    //Bug của ma là do kh có mối nối giữa animation Dis và App
+    //Nên việc nó đơ ngay frame đầu của Dis là hoàn toàn có thể
     private GhostManager _ghostManager;
+    private bool _allowToUpdate;
+
+    public bool AllowToUpdate { set => _allowToUpdate = value; }
 
     public override void EnterState(CharactersManager charactersManager)
     {
@@ -12,10 +17,7 @@ public class GhostDisappearState : CharacterBaseState
         //Debug.Log("Dis");
     }
 
-    public override void ExitState()
-    {
-        base.ExitState();
-    }
+    public override void ExitState() { _allowToUpdate = false; }
 
     public override void Update()
     {
@@ -26,7 +28,7 @@ public class GhostDisappearState : CharacterBaseState
 
     private bool CheckIfCanAppear()
     {
-        return _ghostManager.GetIsPlayerNearBy();
+        return _ghostManager.GetIsPlayerNearBy() && _allowToUpdate;
     }
 
     public override void FixedUpdate()

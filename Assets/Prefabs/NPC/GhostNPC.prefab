@@ -528,16 +528,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c236fc1f2474c4dbe332a73cc37285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _triggerConversationRange: 6
-  _adjustConversationRange: 4
-  _triggerConvSize: {x: 12, y: 0.3}
+  _triggerConversationRange: 5
+  _adjustConversationRange: 3
+  _triggerConvSize: {x: 10, y: 0.3}
   _playerCheck: {fileID: 762004451}
   _playerLayer:
     serializedVersion: 2
     m_Bits: 128
   _dialog: {fileID: 3953149492650980032}
   _startIndex: 0
-  _secondConverStartIndex: 8
   _gizmosRadius: 0.2
   _needTriggerIndicator: 1
   _delayEnablePlayer: 0.315
@@ -739,6 +738,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: _dialog2.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[0]
       value: A ... Frog ... ?!
       objectReference: {fileID: 0}
@@ -777,6 +780,14 @@ PrefabInstance:
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[9]
       value: Keep moving forward and I'll see you somewhere downthere!
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: _dialog2.Array.data[0]
+      value: So, ... what are you waiting for ... ?
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: _dialog2.Array.data[1]
+      value: Don't worry for me, i can catchup you anywhere, anytime.
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _indicatorString.Array.size

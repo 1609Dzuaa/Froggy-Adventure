@@ -89,6 +89,7 @@ public class RunState : PlayerBaseState
                 _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetPlayerStats.SpeedX, _playerStateManager.GetRigidBody2D().velocity.y);
             else
                 _playerStateManager.GetRigidBody2D().velocity = new Vector2(-_playerStateManager.GetPlayerStats.SpeedX, _playerStateManager.GetRigidBody2D().velocity.y);
+            //Debug.Log("here");
         }
     }
 }
