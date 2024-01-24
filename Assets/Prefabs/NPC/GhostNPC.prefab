@@ -537,8 +537,10 @@ MonoBehaviour:
     m_Bits: 128
   _dialog: {fileID: 3953149492650980032}
   _startIndex: 0
+  _secondConverStartIndex: 8
   _gizmosRadius: 0.2
   _needTriggerIndicator: 1
+  _delayEnablePlayer: 0.315
   _disappearTime: 2
   _leftBound: {fileID: 9003253104994312433}
   _rightBound: {fileID: 9003253105022309411}
@@ -734,7 +736,7 @@ PrefabInstance:
       objectReference: {fileID: 576322479}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[0]
@@ -754,23 +756,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[4]
-      value: He has taken control of the minds of almost all living creatures...
+      value: He has taken control of the minds of almost living creatures...
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[5]
-      value: You must come with me into his place and banish him.
+      value: Controlled creatures will attack unaffected beings.
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[6]
-      value: Keep moving forward and I'll see you somewhere downthere!
+      value: You must come with me into his place and banish him.
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[7]
-      value: But i warn you, that's a dead end !
+      value: Keep moving forward and I'll see you somewhere downthere!
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[8]
-      value: How to free me ? Find the dealer and you'll get the answer.
+      value: Keep moving forward and I'll see you somewhere downthere!
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: _dialog.Array.data[9]
+      value: Keep moving forward and I'll see you somewhere downthere!
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _indicatorString.Array.size

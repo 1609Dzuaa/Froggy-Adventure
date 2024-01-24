@@ -22,8 +22,8 @@ public class NPCTalkState : CharacterBaseState
         //Đéo tiếp chuyện nữa thì trả về Idle State
         if (!_npcManager.GetDialog().Started)
         {
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, null);
             _npcManager.ChangeState(_npcManager.GetNPCIdleState());
+            _npcManager.Invoke("AllowEndInteract", _npcManager.DelayEnablePlayer);
         }
     }
 

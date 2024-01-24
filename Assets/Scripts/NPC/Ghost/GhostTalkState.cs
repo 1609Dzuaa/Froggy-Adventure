@@ -7,7 +7,7 @@ public class GhostTalkState : NPCTalkState
 
     public override void EnterState(CharactersManager charactersManager)
     {
-        //base.EnterState(charactersManager);
+        base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EGhostState.appear);
         HandleInteractWithPlayer(_ghostManager, _ghostManager.GetStartIndex());
@@ -18,12 +18,7 @@ public class GhostTalkState : NPCTalkState
 
     public override void Update()
     {
-        //Đéo tiếp chuyện nữa thì trả về Idle State
-        if (!_ghostManager.GetDialog().Started)
-        {
-            //Prob with Jump here
-            _ghostManager.ChangeState(_ghostManager.GetGhostIdleState());
-        }
+        base.Update();
     }
 
     public override void FixedUpdate() { }

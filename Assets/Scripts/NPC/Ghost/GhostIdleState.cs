@@ -8,7 +8,6 @@ public class GhostIdleState : NPCIdleState
     {
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EGhostState.idle);
-        //Debug.Log("G Idle");
     }
 
     public override void ExitState() { }

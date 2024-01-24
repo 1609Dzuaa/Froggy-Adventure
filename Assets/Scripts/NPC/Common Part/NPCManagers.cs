@@ -21,12 +21,16 @@ public class NPCManagers : CharactersManager
     [Header("Dialog")]
     [SerializeField] protected Dialog _dialog;
     [SerializeField] protected int _startIndex; //Chỉ số row trong hộp thoại mà mình muốn bắt đầu
+    [SerializeField] protected int _secondConverStartIndex; //(... ở trên) ở cuộc hội thoại 2
 
     [Header("Gizmos Radius")]
     [SerializeField] protected float _gizmosRadius;
 
     [Header("Indicator")]
     [SerializeField] protected bool _needTriggerIndicator;
+
+    [Header("Time"), Tooltip("Thời gian mình trả lại quyền điều khiển Player sau khi tương tác xong")]
+    [SerializeField] protected float _delayEnablePlayer;
 
     protected NPCIdleState _npcIdleState = new();
     protected NPCTalkState _npcTalkState = new();
@@ -51,6 +55,8 @@ public class NPCManagers : CharactersManager
     public int GetStartIndex() { return _startIndex; }
 
     public PlayerStateManager PlayerReference { get => _playerReference; set => _playerReference = value; }
+
+    public float DelayEnablePlayer { get => _delayEnablePlayer; }
 
     protected override void Awake()
     {
@@ -130,6 +136,12 @@ public class NPCManagers : CharactersManager
     {
         Gizmos.DrawSphere(ConversationPos, _gizmosRadius);
         Gizmos.DrawCube(transform.position, _triggerConvSize);
+    }
+
+    protected void AllowEndInteract()
+    {
+        //Delay việc ngừng tương tác của Player với NPC 1 xíu
+        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, null);
     }
 
 }

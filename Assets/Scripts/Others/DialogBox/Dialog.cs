@@ -25,6 +25,7 @@ public class Dialog : MonoBehaviour
     private bool _started; //Biến đánh dấu đã bắt đầu Thoại
     private bool _isWaiting; //Biến đánh dấu chờ Player tương tác
     private bool _cantGetNextIndicatorText;
+    private bool _isFinishedFirstConversation;
 
     //Biến check nếu bắt chuyện theo cách bị động (0 nhấn T mà làm gì đó NPC trước)
     //VD: với Slime thì Player có thể chọn nhấn T hoặc Jump lên đầu nó để Start Conversation(SC)
@@ -37,6 +38,8 @@ public class Dialog : MonoBehaviour
     public bool CantGetNextIndicatorText { set { _cantGetNextIndicatorText = value; } }
 
     public bool StartConversationPassive { set { _startConversationPassive = value; } }
+
+    public bool IsFinishedFirstConversation { get => _isFinishedFirstConversation; }
 
     private void Awake()
     {
@@ -134,8 +137,12 @@ public class Dialog : MonoBehaviour
         _started = false;
         StopAllCoroutines();
         ToggleWindow(false);
-        //?EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, null);
-        Debug.Log("End");
+
+        //Kết thúc cuộc hội thoại đầu tiên
+        //Cho phép cuộc hội thoại thứ 2 (Nếu có)
+        if (!_isFinishedFirstConversation)
+            _isFinishedFirstConversation = true;
+        //Debug.Log("End");
         //Kết thúc Thoại
         //Dừng mọi Coroutines và tắt Hộp
     }
