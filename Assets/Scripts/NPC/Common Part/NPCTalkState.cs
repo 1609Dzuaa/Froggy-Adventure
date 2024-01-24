@@ -29,8 +29,6 @@ public class NPCTalkState : CharacterBaseState
 
     protected virtual void HandleInteractWithPlayer(NPCManagers npcManagers, int startIndex)
     {
-        //var playerScript = npcManagers.PlayerReference;
-
         //Tương tự bên Player, Raycast 0 phát hiện Player thì flip ngược lại
         //(Vì chỉ xét 2 hướng trái phải)
         if (!npcManagers.HasDetectedPlayer)
@@ -42,9 +40,8 @@ public class NPCTalkState : CharacterBaseState
         else
             npcManagers.ConversationPos = new Vector2(npcManagers.transform.position.x - npcManagers.AdjustConversationRange, npcManagers.transform.parent.position.y);
 
+        //Gán vị trí cần di chuyển cho Player thông qua Event
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnInteractWithNPCs, npcManagers.ConversationPos);
-        //Gán vị trí cần di chuyển cho Player
-        //playerScript.InteractPosition = npcManagers.ConversationPos;
 
         //Lấy và bắt đầu Thoại
         npcManagers.GetDialog().StartDialog(startIndex);

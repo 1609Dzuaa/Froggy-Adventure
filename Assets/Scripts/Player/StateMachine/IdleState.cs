@@ -63,7 +63,7 @@ public class IdleState : PlayerBaseState
             if (!_playerStateManager.HasDetectedNPC)
             {
                 _playerStateManager.FlippingSprite();
-                //Debug.Log("!Detected, Must Flip");
+                Debug.Log("!Detected, Must Flip");
             }
     }
 

@@ -333,6 +333,10 @@ public class PlayerStateManager : MonoBehaviour
         {
             _hasFlip = true;
 
+            //Nếu ở rất gần vị trí trò chuyện thì return 0 cần flip tránh bug
+            if (Mathf.Abs(transform.position.x - _interactPosition.x) < GameConstants.NEAR_ZERO_THRESHOLD)
+                return;
+
             if (isFacingRight && transform.position.x > InteractPosition.x + GameConstants.CAN_START_CONVERSATION_RANGE)
             {
                 FlippingSprite();
@@ -351,7 +355,11 @@ public class PlayerStateManager : MonoBehaviour
         if (!_hasChange)
         {
             _hasChange = true;
-            Invoke(nameof(ChangeToRun), GameConstants.DELAYPLAYERRUNSTATE);
+            //Nếu ở rất gần vị trí trò chuyện thì switch sang Idle luôn tránh bug chạy lung tung ở Run
+            if (Mathf.Abs(transform.position.x - _interactPosition.x) < GameConstants.NEAR_ZERO_THRESHOLD)
+                ChangeState(idleState);
+            else
+                Invoke(nameof(ChangeToRun), GameConstants.DELAYPLAYERRUNSTATE);
         }
     }
 

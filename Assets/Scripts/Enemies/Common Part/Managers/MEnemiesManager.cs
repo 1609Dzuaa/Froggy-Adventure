@@ -134,16 +134,24 @@ public class MEnemiesManager : EnemiesManager
         }
         else if (collision.collider.CompareTag(GameConstants.BOX_TAG) && _state is MEnemiesPatrolState)
             FlippingSprite();
-        else if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && _state is not MEnemiesGotHitState)
+        else if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)
+        {
+            _hasGotHit = true;
             ChangeState(_mEnemiesGotHitState);
+        }
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)
+        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)
         {
             _hasGotHit = true;
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            ChangeState(_mEnemiesGotHitState);
+        }
+        else if (collision.CompareTag(GameConstants.TRAP_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)
+        {
+            _hasGotHit = true;
             ChangeState(_mEnemiesGotHitState);
         }
     }

@@ -54,7 +54,7 @@ public class GhostManager : NPCManagers
     protected override void Update()
     {
         base.Update();
-        Debug.Log("is near: " + _isPlayerNearBy);
+        //Debug.Log("is near: " + _isPlayerNearBy);
     }
 
     private void FixedUpdate()

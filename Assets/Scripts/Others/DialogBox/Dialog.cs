@@ -134,6 +134,7 @@ public class Dialog : MonoBehaviour
         _started = false;
         StopAllCoroutines();
         ToggleWindow(false);
+        //?EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, null);
         Debug.Log("End");
         //Kết thúc Thoại
         //Dừng mọi Coroutines và tắt Hộp
@@ -180,7 +181,7 @@ public class Dialog : MonoBehaviour
         else
         {
             _indicatorText.text = string.Empty;
-            if (_rowIndex > 0 && _indicatorString.Count > 1 && !_cantGetNextIndicatorText)
+            if (_rowIndex >= 0 && _indicatorString.Count > 1 && !_cantGetNextIndicatorText)
                 _indicatorText.text = _indicatorString[1]; //Render chỉ dẫn thứ 2
             else
                 _indicatorText.text = _indicatorString[0];

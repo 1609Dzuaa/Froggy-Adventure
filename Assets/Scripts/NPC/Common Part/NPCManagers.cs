@@ -6,7 +6,8 @@ public class NPCManagers : CharactersManager
 {
     //Học cách bố cục Dialog cũng như Indicator (Font, ...)
     //Có bug nhỏ khi vừa space kết thúc thoại thì player jump
-    //Vẫn còn bug chạy vô định @@
+    //fix bug player run 1 cách vô định: thực hiện việc check vị trí trò chuyện
+    //trc khi chuyển sang run
 
     [Header("Range")]
     [SerializeField] protected float _triggerConversationRange;

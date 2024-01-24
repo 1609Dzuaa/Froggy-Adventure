@@ -9,8 +9,7 @@ public class GhostDisappearState : CharacterBaseState
         base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EGhostState.disappear);
-        _ghostManager.GetRigidbody2D().velocity = Vector2.zero;
-        Debug.Log("Dis");
+        //Debug.Log("Dis");
     }
 
     public override void ExitState()

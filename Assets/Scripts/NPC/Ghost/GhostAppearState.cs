@@ -9,7 +9,7 @@ public class GhostAppearState : CharacterBaseState
         base.EnterState(charactersManager);
         _ghostManager = (GhostManager)charactersManager;
         _ghostManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EGhostState.appear);
-        Debug.Log("App");
+        //Debug.Log("App");
     }
 
     public override void ExitState()
