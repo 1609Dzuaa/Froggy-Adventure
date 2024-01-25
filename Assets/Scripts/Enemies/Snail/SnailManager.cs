@@ -165,7 +165,7 @@ public class SnailManager : MEnemiesManager
                         _rotateByWall = false;
                         transform.position = new Vector3(transform.position.x + _groundHit.distance, transform.position.y, transform.position.z);
                         //transform.position = new Vector3(transform.position.x + _offSet, transform.position.y, transform.position.z);
-                        Debug.Log("Done RotateW3: " + _groundHit.distance);
+                        //Debug.Log("Done RotateW3: " + _groundHit.distance);
                     }
                     else if (currentZAngles <= -90f && _direction == 1)
                     {
@@ -179,7 +179,7 @@ public class SnailManager : MEnemiesManager
                         _hasRotate = false;
                         _rotateByWall = false;
                         transform.position = new Vector3(transform.position.x - _groundHit.distance, transform.position.y, transform.position.z);
-                        Debug.Log("Done RotateW1: " + _groundHit.distance);
+                        //Debug.Log("Done RotateW1: " + _groundHit.distance);
                         //transform.position = new Vector3(transform.position.x - _offSet, transform.position.y, transform.position.z);
                     }
                 }
@@ -195,7 +195,7 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = false;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        Debug.Log("Done RotateW4, deo snap Y");
+                        //Debug.Log("Done RotateW4, deo snap Y");
                         //Debug.Log("OffsetY cho 3: " + _hasDetectedGround.distance);
                     }
                     else if (currentZAngles <= 0f && _direction == 2)
@@ -209,7 +209,7 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = false;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        Debug.Log("Done RotateW2, deo can snap");
+                        //Debug.Log("Done RotateW2, deo can snap");
                     }
                 }
 

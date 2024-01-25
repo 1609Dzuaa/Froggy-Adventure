@@ -43,7 +43,7 @@ public class TutorialZoneController : MonoBehaviour
         if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             _tutorText.SetActive(true);
-            Debug.Log("Tutor !Popup");
+            //Debug.Log("Tutor !Popup");
         }
     }
 
@@ -52,7 +52,7 @@ public class TutorialZoneController : MonoBehaviour
         if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             _tutorText.SetActive(false);
-            Debug.Log("Tutor !Popup");
+            //Debug.Log("Tutor !Popup");
         }
     }
 }

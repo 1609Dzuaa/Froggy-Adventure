@@ -11,10 +11,37 @@ public class PlayerShieldBuff : PlayerBuffs
     private CircleCollider2D _circleCollider2D;
     private bool _hasTriggeredRunningOut;
     private bool _hasDisabled;
+    private PlayerShieldBuff _instance;
+
+    public PlayerShieldBuff Instance
+    { 
+        get 
+        {
+            if (!_instance)
+                _instance = FindObjectOfType<PlayerShieldBuff>();
+
+            if (!_instance)
+                Debug.Log("0 co Shield Buff trong Scene");
+
+            return _instance; 
+        } 
+    }
 
     public override void Awake()
     {
+        Init();
         GetReferenceComponentsAndSetup();
+    }
+
+    private void Init()
+    {
+        if (!_instance)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
     }
 
     private void GetReferenceComponentsAndSetup()

@@ -1,7 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+/// <summary>
+/// Cần thêm UI Manager (vì mỗi lần load lại scene thì dính bug _uiHP)
+/// Load lại Scene, Dash thử 1 lần cũng dính bug ( Xxem lại việc add các vfx)
+/// Reconstruct lại SoundManager
+/// R sau đó hẵng xử lý các vấn đề liên quan data của Player
+/// </summary>
 
 public class GameManager : MonoBehaviour
 {

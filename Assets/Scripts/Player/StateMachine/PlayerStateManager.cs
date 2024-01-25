@@ -8,7 +8,7 @@ using UnityEngine.VFX;
 
 public class PlayerStateManager : MonoBehaviour
 {
-    private PlayerStateManager _instance;
+    //private PlayerStateManager _instance;
 
     //PlayerStateManager - Context Class, Use to pass DATA to each State
     private PlayerBaseState _state;
@@ -129,11 +129,11 @@ public class PlayerStateManager : MonoBehaviour
 
     private void InitReference()
     {
-        if (!_instance)
+        /*if (!_instance)
         {
             _instance = this;
             DontDestroyOnLoad(gameObject);
-        }
+        }*/
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
@@ -232,7 +232,7 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG))
             HandleDeadState();
         else if (collision.CompareTag(GameConstants.PORTAL_TAG))
-            GameManager.Instance.SwitchToNextScene();
+            GameManager.Instance.ReloadScene();
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -529,9 +529,9 @@ public class PlayerStateManager : MonoBehaviour
         _canDbJump = true; //Player chạm đất thì mới cho DbJump tiếp
     }
 
-    public IEnumerator ReloadScence()
+    private void ReloadScence()
     {
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
 
         GameManager.Instance.ReloadScene();
     }

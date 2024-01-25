@@ -207,7 +207,6 @@ GameObject:
   - component: {fileID: 1173113265}
   - component: {fileID: 1173113284}
   - component: {fileID: 1173113285}
-  - component: {fileID: 1173113275}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -1060,31 +1059,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1173113275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8824840369338483472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2e7a6f93b8fdd648a06fe4351966dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _uiHP:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _normalHPSprite: {fileID: 21300000, guid: 29a0a94f5547ab0429563690bb5d4b87, type: 3}
-  _lostHPSprite: {fileID: 21300000, guid: 5d7b812586a056647abeaa1836eb56c8, type: 3}
-  _tempHPSprite: {fileID: 21300000, guid: c9e50d177f8cd62428ae9e3493ceae3e, type: 3}
-  _playerSO: {fileID: 11400000, guid: 6b3602e5d9a676d4eae9dd668b16f7c0, type: 2}
-  _timeEachBlink: 0.2
 --- !u!1 &8824840369502370915
 GameObject:
   m_ObjectHideFlags: 0
