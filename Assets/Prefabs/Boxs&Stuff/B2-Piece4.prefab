@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 4336702039064330573}
   - component: {fileID: 4336702039064330560}
   - component: {fileID: 4336702039064330575}
-  m_Layer: 0
+  - component: {fileID: 7002359576232705493}
+  m_Layer: 6
   m_Name: B2-Piece4
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,3 +122,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bounceForce: {x: 50, y: 100}
   _existTime: 1.5
+--- !u!61 &7002359576232705493
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4336702039064330572}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.06604174, y: 0.027807012}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.75, y: 1.5}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.477827, y: 0.4155248}
+  m_EdgeRadius: 0

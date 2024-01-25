@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6970112132108552843}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6, y: -0.5, z: 0}
+  m_LocalPosition: {x: -0.6, y: -0.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,9 +46,9 @@ GameObject:
   - component: {fileID: 6970112132145399664}
   - component: {fileID: 6970112132145399665}
   - component: {fileID: 6970112132145399630}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Snail
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,17 +233,12 @@ MonoBehaviour:
   _enemiesSO: {fileID: 11400000, guid: 46dfd30459b04774ab632670f7a2a217, type: 2}
   _mEnemiesSO: {fileID: 11400000, guid: 115d47f41ff81554fb869b615e6db30a, type: 2}
   _wallCheck: {fileID: 6970112132695700928}
-  _healthPoint: 2
   _groundCheck: {fileID: 6970112132108552840}
-  _groundCheckDistance: 3
-  _idleDelayAfterGotHit: 2
   _degreeEachRotation: 12
   _rotateTime: 0.3
   _timeEachRotation: 0.03
   _delayRotate: 0.315
-  _offSet: 0.315
-  _boxColTriggerOffset: {x: 0.15, y: 0.5091801}
-  _adjustSizeBoxCol: {x: -0.4, y: 0}
+  _offSet: 0.47
 --- !u!1 &6970112132274054536
 GameObject:
   m_ObjectHideFlags: 0

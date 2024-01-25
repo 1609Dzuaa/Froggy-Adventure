@@ -224,6 +224,7 @@ MonoBehaviour:
   _startIndex: 1
   _gizmosRadius: 0
   _needTriggerIndicator: 1
+  _delayEnablePlayer: 0
   _startIndexIfGotHit: 0
 --- !u!50 &5745193119508299258
 Rigidbody2D:
@@ -321,7 +322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4142302258639593046, guid: 83c8287ec65473440ad17eb31dbee730, type: 3}
       propertyPath: _dialog.Array.size
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4142302258639593046, guid: 83c8287ec65473440ad17eb31dbee730, type: 3}
       propertyPath: _dialog.Array.data[0]
@@ -333,19 +334,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4142302258639593046, guid: 83c8287ec65473440ad17eb31dbee730, type: 3}
       propertyPath: _dialog.Array.data[2]
-      value: And I've heard those Ghost said that...
-      objectReference: {fileID: 0}
-    - target: {fileID: 4142302258639593046, guid: 83c8287ec65473440ad17eb31dbee730, type: 3}
-      propertyPath: _dialog.Array.data[3]
-      value: You've trade something with The Dealer recently
-      objectReference: {fileID: 0}
-    - target: {fileID: 4142302258639593046, guid: 83c8287ec65473440ad17eb31dbee730, type: 3}
-      propertyPath: _dialog.Array.data[4]
       value: Lucky for you, I... we can help you get through the road ahead...
       objectReference: {fileID: 0}
     - target: {fileID: 4142302258639593046, guid: 83c8287ec65473440ad17eb31dbee730, type: 3}
+      propertyPath: _dialog.Array.data[3]
+      value: 'Do we have a deal ? '
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142302258639593046, guid: 83c8287ec65473440ad17eb31dbee730, type: 3}
+      propertyPath: _dialog.Array.data[4]
+      value: 'Do we have a deal ? '
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142302258639593046, guid: 83c8287ec65473440ad17eb31dbee730, type: 3}
       propertyPath: _dialog.Array.data[5]
-      value: Only if you can get the Slime Soul from that guy to me.
+      value: 'Do we have a deal ? '
       objectReference: {fileID: 0}
     - target: {fileID: 4142302258639593046, guid: 83c8287ec65473440ad17eb31dbee730, type: 3}
       propertyPath: _dialog.Array.data[6]

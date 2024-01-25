@@ -10,7 +10,7 @@ public class SnailPatrolState : MEnemiesPatrolState
         _snailManager = (SnailManager)charactersManager;
         _snailManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EMEnemiesState.patrol);
         _entryTime = Time.time;
-        Debug.Log("Pt");
+        //Debug.Log("Pt");
     }
 
     public override void ExitState()

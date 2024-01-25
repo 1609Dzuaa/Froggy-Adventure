@@ -27,6 +27,7 @@ public class SnailManager : MEnemiesManager
     private int _direction = 1;
     private bool _hasStart;
     private bool _rotateByWall;
+    private BoxCollider2D _boxCol;
     //Solution cho việc nếu hit snail khi nó đang/chbi rotate => bug
     //Chỉ cho dmg nó nếu direction của nó là 1 (move ngang) - hạn chế bug
     private RaycastHit2D _groundHit;
@@ -162,8 +163,9 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = true;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        transform.position = new Vector3(transform.position.x + _offSet, transform.position.y, transform.position.z);
-                        //Debug.Log("Done RotateW3");
+                        transform.position = new Vector3(transform.position.x + _groundHit.distance, transform.position.y, transform.position.z);
+                        //transform.position = new Vector3(transform.position.x + _offSet, transform.position.y, transform.position.z);
+                        Debug.Log("Done RotateW3: " + _groundHit.distance);
                     }
                     else if (currentZAngles <= -90f && _direction == 1)
                     {
@@ -176,8 +178,9 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = true;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        //Debug.Log("Done RotateW1");
-                        transform.position = new Vector3(transform.position.x - _offSet, transform.position.y, transform.position.z);
+                        transform.position = new Vector3(transform.position.x - _groundHit.distance, transform.position.y, transform.position.z);
+                        Debug.Log("Done RotateW1: " + _groundHit.distance);
+                        //transform.position = new Vector3(transform.position.x - _offSet, transform.position.y, transform.position.z);
                     }
                 }
                 else
@@ -192,8 +195,7 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = false;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        //Debug.Log("Done RotateW4, deo snap Y");
-                        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+                        Debug.Log("Done RotateW4, deo snap Y");
                         //Debug.Log("OffsetY cho 3: " + _hasDetectedGround.distance);
                     }
                     else if (currentZAngles <= 0f && _direction == 2)
@@ -207,8 +209,7 @@ public class SnailManager : MEnemiesManager
                         _isMovingVertical = false;
                         _hasRotate = false;
                         _rotateByWall = false;
-                        //transform.position = new Vector3(transform.position.x, transform.position.y - _offSet, transform.position.z);
-                        //Debug.Log("Done RotateW2, deo can snap");
+                        Debug.Log("Done RotateW2, deo can snap");
                     }
                 }
 
@@ -250,7 +251,7 @@ public class SnailManager : MEnemiesManager
                     _doneRotate = true;
                     _isMovingVertical = true;
                     _hasRotate = false;
-                    //Debug.Log("Done Rotate4, currAZ: " + _direction);
+                    //Debug.Log("Done RotateG4, deo snap");
                 }
                 else if (currentZAngles >= 90f && _direction == 1)
                 {
@@ -261,7 +262,8 @@ public class SnailManager : MEnemiesManager
                     _doneRotate = true;
                     _isMovingVertical = true;
                     _hasRotate = false;
-                } 
+                    //Debug.Log("Done RotateG2, deo snap");
+                }
             }
             else
             {
@@ -273,7 +275,9 @@ public class SnailManager : MEnemiesManager
                     _hasStart = false;
                     _doneRotate = true;
                     _isMovingVertical = false;
-                    _hasRotate = false;                    
+                    _hasRotate = false;
+                    //transform.position = new Vector3(transform.position.x, transform.position.y + _groundHit.distance, transform.position.z);
+                    //Debug.Log("Done RotateG3: " + _groundHit.point);
                     transform.position = new Vector3(transform.position.x, transform.position.y + _offSet, transform.position.z);
                     //Debug.Log("OffsetY cho 3: " + _hasDetectedGround.distance);
                 }
@@ -286,6 +290,8 @@ public class SnailManager : MEnemiesManager
                     _doneRotate = true;
                     _isMovingVertical = false;
                     _hasRotate = false;
+                    //transform.position = new Vector3(transform.position.x, transform.position.y - _groundHit.distance, transform.position.z);
+                    //Debug.Log("Done RotateG1: " + _groundHit.point);
                     transform.position = new Vector3(transform.position.x, transform.position.y - _offSet, transform.position.z);
                     //Debug.Log("OffsetY cho 1: " + _hasDetectedGround.distance);
                 }
@@ -364,11 +370,13 @@ public class SnailManager : MEnemiesManager
         {
             if (_direction == 1)
             {
+                _groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.down, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
                 _groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.down, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
             }
             else
             {
+                _groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.up, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.up, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
                 _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.up, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
             }
@@ -377,11 +385,13 @@ public class SnailManager : MEnemiesManager
         {
             if (_direction == 2)
             {
+                _groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.right, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.right, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
                 _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.right, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
             }
             else
             {
+                _groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.left, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
                 _hasDetectedGround = Physics2D.Raycast(_groundCheck.position, Vector2.left, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
                 _groundHit= Physics2D.Raycast(_groundCheck.position, Vector2.left, _mEnemiesSO.GroundCheckDistance, _mEnemiesSO.WallLayer);
             }
@@ -406,4 +416,10 @@ public class SnailManager : MEnemiesManager
         }
     }
 
+    /*protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        base.OnCollisionEnter2D(collision);
+        if (collision.collider.CompareTag(GameConstants.GROUND_TAG))
+            Debug.Log("dist: " + collision.collider.Distance(_collider2D).pointA);
+    }*/
 }
