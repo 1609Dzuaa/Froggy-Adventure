@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6829212850775568883}
   - component: {fileID: 6829212850775568882}
+  - component: {fileID: 521305655110201750}
   m_Layer: 0
   m_Name: TargetCam
   m_TagString: Untagged
@@ -115,3 +116,15 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 6829212850370868684}
+--- !u!114 &521305655110201750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6829212850775568893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f6ef5c464b058f4f9928cee21f410a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

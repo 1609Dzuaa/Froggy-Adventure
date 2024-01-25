@@ -8,6 +8,8 @@ using UnityEngine.VFX;
 
 public class PlayerStateManager : MonoBehaviour
 {
+    private PlayerStateManager _instance;
+
     //PlayerStateManager - Context Class, Use to pass DATA to each State
     private PlayerBaseState _state;
     public IdleState idleState = new();
@@ -127,6 +129,11 @@ public class PlayerStateManager : MonoBehaviour
 
     private void InitReference()
     {
+        if (!_instance)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
