@@ -47,7 +47,7 @@ public class MultipleRockManager : MEnemiesManager
     {
         if (_type != 2)
         {
-            GameObject brownEff = EffectPool.Instance.GetObjectInPool(GameConstants.BROWN_EXPLOSION);
+            GameObject brownEff = EffectPool.Instance.GetObjectInPool(GameEnums.EEfects.BrownExplosion);
             brownEff.SetActive(true);
             brownEff.GetComponent<EffectController>().SetPosition(transform.position);
         }
@@ -58,7 +58,6 @@ public class MultipleRockManager : MEnemiesManager
                 GameObject medRock1 = Instantiate(_rockClone, _spawnPos1.transform.position, Quaternion.identity, null);
                 Instantiate(_rockClone, _spawnPos2.transform.position, Quaternion.identity, null);
                 medRock1.GetComponent<MultipleRockManager>().FlippingSprite();
-               // medRock2.GetComponent<BigRockManager>().SetIsFacingRight(false);*/
                 break;
             case 1:
                 GameObject tinyRock1 = Instantiate(_rockClone, _spawnPos1.transform.position, Quaternion.identity, null);

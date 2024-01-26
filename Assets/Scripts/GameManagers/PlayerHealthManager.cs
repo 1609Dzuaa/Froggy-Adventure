@@ -10,6 +10,8 @@ public struct HP
     public Dictionary<int, Sprite> _dictHP; //Key là state, tương ứng là sprite của state đó
 }
 
+//Có vấn đề với class này khi Switch Scene, => Tạo thêm class UIManager
+
 public class PlayerHealthManager : MonoBehaviour
 {
     //Class này dùng Quản lý HP và phụ trách render HP lên UI

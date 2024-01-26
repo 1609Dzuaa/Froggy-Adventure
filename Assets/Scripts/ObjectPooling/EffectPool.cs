@@ -4,29 +4,12 @@ using UnityEngine;
 
 public class EffectPool : MonoBehaviour
 {
+    //Có vấn đề với bể Effect
+    //Khi Load lại scene thì các Effect biến mất
+    //Done, áp dụng tương tự cho các bể khác (Bullet, Pieces,...)
+
     private static EffectPool _EffectPoolInstance;
-    private Dictionary<string, List<GameObject>> _dictEffectPool = new Dictionary<string, List<GameObject>>();
-
-    [Header("Dashable")]
-    [SerializeField] private GameObject _dashableEffect;
-
-    [Header("Gecko")]
-    [SerializeField] private GameObject _geckoAppearEffect;
-    [SerializeField] private GameObject _geckoDisappearEffect;
-
-    [Header("Hit Shield")]
-    [SerializeField] private int _hitShieldEffectCount; //nhiều HitShieldEff tí vì có thể bị bắn nhiều hướng
-    [SerializeField] private GameObject _hitShieldEffect;
-
-    [Header("Collect")]
-    [SerializeField] private int _collectEffectCount;
-    [SerializeField] private GameObject _collectFruitsEffect;
-    [SerializeField] private GameObject _collectDiamondEffect;
-    [SerializeField] private GameObject _collectHPEffect;
-
-    [Header("Brown Explosion")]
-    [SerializeField] private int _brownExplosionEffectCount;
-    [SerializeField] private GameObject _brownExplosionEffect;
+    private Dictionary<GameEnums.EEfects, List<GameObject>> _dictEffectPool = new();
 
     public static EffectPool Instance
     {
@@ -46,19 +29,6 @@ public class EffectPool : MonoBehaviour
     private void Awake()
     {
         CreateInstance();
-        InitDictionary();
-    }
-
-    private void InitDictionary()
-    {
-        _dictEffectPool.Add(GameConstants.DASHABLE_EFFECT, new List<GameObject>());
-        _dictEffectPool.Add(GameConstants.GECKO_APPEAR_EFFECT, new List<GameObject>());
-        _dictEffectPool.Add(GameConstants.GECKO_DISAPPEAR_EFFECT, new List<GameObject>());
-        _dictEffectPool.Add(GameConstants.HIT_SHIELD_EFFECT, new List<GameObject>());
-        _dictEffectPool.Add(GameConstants.COLLECT_FRUITS_EFFECT, new List<GameObject>());
-        _dictEffectPool.Add(GameConstants.COLLECT_DIAMOND_EFFECT, new List<GameObject>());
-        _dictEffectPool.Add(GameConstants.COLLECT_HP_EFFECT, new List<GameObject>());
-        _dictEffectPool.Add(GameConstants.BROWN_EXPLOSION, new List<GameObject>());
     }
 
     private void CreateInstance()
@@ -73,33 +43,14 @@ public class EffectPool : MonoBehaviour
             Destroy(gameObject);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        AddEffectToPool();
-    }
-
-    private void AddEffectToPool()
-    {
-        //Add Effect vào pool và đánh dấu chưa active nó
-        InstantiateEffect(_dashableEffect, GameConstants.DASHABLE_EFFECT);
-        InstantiateEffect(_geckoAppearEffect, GameConstants.GECKO_APPEAR_EFFECT);
-        InstantiateEffect(_geckoDisappearEffect, GameConstants.GECKO_DISAPPEAR_EFFECT);
-        InstantiateManyEffect(_hitShieldEffect, GameConstants.HIT_SHIELD_EFFECT, _hitShieldEffectCount);
-        InstantiateManyEffect(_collectFruitsEffect, GameConstants.COLLECT_FRUITS_EFFECT, _collectEffectCount);
-        InstantiateEffect(_collectDiamondEffect, GameConstants.COLLECT_DIAMOND_EFFECT);
-        InstantiateEffect(_collectHPEffect, GameConstants.COLLECT_HP_EFFECT);
-        InstantiateManyEffect(_brownExplosionEffect, GameConstants.BROWN_EXPLOSION, _brownExplosionEffectCount);
-    }
-
-    private void InstantiateEffect(GameObject gameObject, string effectType)
+    private void InstantiateEffect(GameObject gameObject, GameEnums.EEfects effectType)
     {
         GameObject gObj = Instantiate(gameObject);
         gObj.SetActive(false);
         _dictEffectPool[effectType].Add(gObj);
     }
 
-    private void InstantiateManyEffect(GameObject gameObject, string effectType, int effCount)
+    private void InstantiateManyEffect(GameObject gameObject, GameEnums.EEfects effectType, int effCount)
     {
         for (int i = 0; i < effCount; i++)
         {
@@ -109,19 +60,41 @@ public class EffectPool : MonoBehaviour
         }
     }
 
-    public GameObject GetObjectInPool(string EffectType)
+    public GameObject GetObjectInPool(GameEnums.EEfects EffectType)
     {
         for (int i = 0; i < _dictEffectPool[EffectType].Count; i++)
         {
-            //Tìm xem trong cái pool có thằng nào 0 kích hoạt kh thì lôi nó ra
-            if (!_dictEffectPool[EffectType][i].activeInHierarchy)
+            Debug.Log("Eff hien tai: " + _dictEffectPool[EffectType]);
+            //Thực hiện việc check null trước khi lôi nó ra
+            //Vì lúc Reload Scene có thể GameObject đó bị null
+            if (_dictEffectPool[EffectType][i])
             {
-                //Debug.Log("Effect: " + _dictEffectPool[EffectType][i].name + " " + i);
-                return _dictEffectPool[EffectType][i];
+                //Tìm xem trong cái pool có thằng nào 0 kích hoạt kh thì lôi nó ra
+                if (!_dictEffectPool[EffectType][i].activeInHierarchy)
+                {
+                    //Debug.Log("Effect: " + _dictEffectPool[EffectType][i].name + " " + i);
+                    return _dictEffectPool[EffectType][i];
+                }
             }
         }
 
         Debug.Log("out of effect");
         return null;
+    }
+
+    private void AddVFXToDictionary(GameEnums.EEfects vfxName) 
+    {
+        if (!_dictEffectPool.ContainsKey(vfxName))
+            _dictEffectPool.Add(vfxName, new List<GameObject>());
+    }
+
+    public void AddVFXToPool(GameObject vfx, GameEnums.EEfects vfxName, int ammount)
+    {
+        AddVFXToDictionary(vfxName);
+
+        if (ammount == 1)
+            InstantiateEffect(vfx, vfxName);
+        else
+            InstantiateManyEffect(vfx, vfxName, ammount);
     }
 }

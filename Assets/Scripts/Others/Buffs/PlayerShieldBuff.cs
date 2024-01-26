@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Bug shield khi reload scene, => tạo 1 class mới cho shield, class này chỉ là BUFF
+
 public class PlayerShieldBuff : PlayerBuffs
 {
     [SerializeField] private Transform _shieldPos;

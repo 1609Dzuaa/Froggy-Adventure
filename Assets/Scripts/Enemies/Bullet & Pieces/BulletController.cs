@@ -131,7 +131,7 @@ public class BulletController : MonoBehaviour
 
     private void SpawnHitShieldEffect()
     {
-        GameObject hitShieldEff = EffectPool.Instance.GetObjectInPool(GameConstants.HIT_SHIELD_EFFECT);
+        GameObject hitShieldEff = EffectPool.Instance.GetObjectInPool(GameEnums.EEfects.HitShield);
         hitShieldEff.SetActive(true);
         hitShieldEff.GetComponent<EffectController>().SetPosition(transform.position);
     }

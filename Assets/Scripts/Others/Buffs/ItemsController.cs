@@ -22,7 +22,7 @@ public class ItemsController : MonoBehaviour
 
     protected virtual void SpawnEffect()
     {
-        GameObject collectEff = EffectPool.Instance.GetObjectInPool(GameConstants.COLLECT_FRUITS_EFFECT);
+        GameObject collectEff = EffectPool.Instance.GetObjectInPool(GameEnums.EEfects.CollectFruits);
         collectEff.SetActive(true);
         collectEff.GetComponent<EffectController>().SetPosition(transform.position);
     }

@@ -14,7 +14,7 @@
     public const float NEAR_ZERO_THRESHOLD = 0.1f;
 
     //Định nghĩa các hằng số lock cam move cũng như player dưới
-    public const float GAME_MIN_BOUNDARY = 15.5f;
+    public const float GAME_MIN_BOUNDARY = 10.0f;
 
     #endregion
 

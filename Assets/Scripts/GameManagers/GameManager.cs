@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
+/// Có vấn đề chung với các Pool khi reload Scene, xem lại cách add
 /// Cần thêm UI Manager (vì mỗi lần load lại scene thì dính bug _uiHP)
 /// Load lại Scene, Dash thử 1 lần cũng dính bug ( Xxem lại việc add các vfx)
 /// Reconstruct lại SoundManager

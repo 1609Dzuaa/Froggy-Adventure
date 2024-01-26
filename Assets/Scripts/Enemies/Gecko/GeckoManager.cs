@@ -201,14 +201,14 @@ public class GeckoManager : MEnemiesManager
 
     private void SpawnDisappearEffect()
     {
-        GameObject disEff = EffectPool.Instance.GetObjectInPool(GameConstants.GECKO_DISAPPEAR_EFFECT);
+        GameObject disEff = EffectPool.Instance.GetObjectInPool(GameEnums.EEfects.GeckoDisappear);
         disEff.SetActive(true);
         disEff.GetComponent<EffectController>().SetPosition(transform.position);
     }
 
     private void SpawnAppearEffect()
     {
-        GameObject disEff = EffectPool.Instance.GetObjectInPool(GameConstants.GECKO_APPEAR_EFFECT);
+        GameObject disEff = EffectPool.Instance.GetObjectInPool(GameEnums.EEfects.GeckoAppear);
         disEff.SetActive(true);
         disEff.GetComponent<EffectController>().SetPosition(transform.position);
     }

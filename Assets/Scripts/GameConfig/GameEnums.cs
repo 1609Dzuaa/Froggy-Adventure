@@ -3,6 +3,7 @@
     //Tạo các enum của State để gán giá trị tương ứng cho Animations
     #region EnumStates
     // ======================================================================== //
+    
     public enum EPlayerState
     { idle, run, jump, fall, wallSlide, doubleJump, gotHit, wallJump, dash }
 
@@ -44,6 +45,9 @@
 
     public enum ETrunkState
     { idle, patrol, withdrawn, attack, gotHit }
+
+    public enum ERockMove { Left, Top, Right, Bottom }
+
     // ======================================================================== //
     #endregion
 
@@ -70,9 +74,19 @@
 
     #endregion
 
-    #region EnumRock
+    #region EnumEffects
 
-    public enum ERockMove { Left, Top, Right, Bottom }
+    public enum EEfects
+    {
+        Dashable,
+        HitShield,
+        GeckoAppear,
+        GeckoDisappear,
+        CollectFruits,
+        CollectDiamond,
+        CollectHP,
+        BrownExplosion
+    }
 
     #endregion
 }
