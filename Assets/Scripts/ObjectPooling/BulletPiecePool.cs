@@ -55,14 +55,6 @@ public class BulletPiecePool : MonoBehaviour
     private void Awake()
     {
         CreateInstance();
-        InitDictionary();
-    }
-
-    private void InitDictionary()
-    {
-        _dictBulletPiecePiecePool.Add(GameConstants.PLANT_BULLET, new List<BulletPiecePair>());
-        _dictBulletPiecePiecePool.Add(GameConstants.BEE_BULLET, new List<BulletPiecePair>());
-        _dictBulletPiecePiecePool.Add(GameConstants.TRUNK_BULLET, new List<BulletPiecePair>());
     }
 
     private void CreateInstance()
@@ -74,18 +66,6 @@ public class BulletPiecePool : MonoBehaviour
         }
         else
             Destroy(gameObject);
-    }
-
-    void Start()
-    {
-        for (int i = 0; i < _poolPlantBulletPieceCount; i++)
-            InstantiateBulletPiece(new BulletPiecePair(_plantBulletPiecePrefabs1, _plantBulletPiecePrefabs2), GameConstants.PLANT_BULLET);
-
-        for (int i = 0; i < _poolBeeBulletPieceCount; i++)
-            InstantiateBulletPiece(new BulletPiecePair(_beeBulletPiecePrefabs1, _beeBulletPiecePrefabs2), GameConstants.BEE_BULLET);
-
-        for (int i = 0; i < _poolTrunkBulletPieceCount; i++)
-            InstantiateBulletPiece(new BulletPiecePair(_trunkBulletPiecePrefabs1, _trunkBulletPiecePrefabs2), GameConstants.TRUNK_BULLET);
     }
 
     private void InstantiateBulletPiece(BulletPiecePair gameObjectPair, string BulletPieceType)

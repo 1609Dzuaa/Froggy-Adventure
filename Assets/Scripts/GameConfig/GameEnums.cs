@@ -89,4 +89,10 @@
     }
 
     #endregion
+
+    #region EnumEnemiesBullet
+    
+    public enum EEnemiesBullet { Plant, Bee, Trunk }
+
+    #endregion
 }

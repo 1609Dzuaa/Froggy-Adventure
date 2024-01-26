@@ -82,12 +82,12 @@ public class TrunkManager : MEnemiesManager
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
             return;
 
-        GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.TRUNK_BULLET);
+        GameObject bullet = BulletPool.Instance.GetObjectInPool(GameEnums.EEnemiesBullet.Trunk);
         bullet.SetActive(true);
         string bulletID = bullet.GetComponent<BulletController>().BulletID;
 
         //Prob here
-        BulletInfor info = new(GameConstants.TRUNK_BULLET, bulletID, _isFacingRight, _shootPosition.position);
+        BulletInfor info = new(GameEnums.EEnemiesBullet.Trunk, bulletID, _isFacingRight, _shootPosition.position);
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
         SoundsManager.Instance.GetTypeOfSound(GameConstants.TRUNK_SHOOT_SOUND).Play();
         //Event của animation Attack

@@ -85,23 +85,6 @@
     public const int HP_STATE_TEMP = 2;
     #endregion
 
-    #region Enemies Bullets Constants
-    public const string PLANT_BULLET = "PlantBullet";
-    public const string BEE_BULLET = "BeeBullet";
-    public const string TRUNK_BULLET = "TrunkBullet";
-    #endregion
-
-    #region Effect
-    public const string DASHABLE_EFFECT = "DashableEffect";
-    public const string GECKO_APPEAR_EFFECT = "GeckoAppearEffect";
-    public const string GECKO_DISAPPEAR_EFFECT = "GeckoDisappearEffect";
-    public const string HIT_SHIELD_EFFECT = "HitShieldEffect";
-    public const string COLLECT_FRUITS_EFFECT = "CollectFruitsEffect";
-    public const string COLLECT_DIAMOND_EFFECT = "CollectDiamondEffect";
-    public const string COLLECT_HP_EFFECT = "CollectHPEffect";
-    public const string BROWN_EXPLOSION = "BrownExplosionEffect";
-    #endregion
-
     #region Sound
     public const string COLLECT_FRUITS_SOUND = "CollectFruitsSound";
     public const string COLLECT_HP_SOUND = "CollectHPSound";

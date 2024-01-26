@@ -10,6 +10,9 @@ public class BulletPieceController : MonoBehaviour
     [Header("Exist Time")]
     [SerializeField] private float _existTime;
 
+    [Header("Type & Ammount")]
+    [SerializeField] private GameEnums.EEnemiesBullet _pieceType;
+
     private Rigidbody2D _rb;
     private float _entryTime;
     private bool _isShotFromRight = false; //Bắn từ bên nào để áp dụng vector lực hướng ngược lại

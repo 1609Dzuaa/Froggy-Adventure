@@ -9,19 +9,10 @@ public class BulletPool : MonoBehaviour
     //Ref: https://gameprogrammingpatterns.com/object-pool.html
 
     private static BulletPool _bulletPoolInstance;
-    private Dictionary<string, List<GameObject>> _dictBulletPool = new Dictionary<string, List<GameObject>>();
+    private Dictionary<GameEnums.EEnemiesBullet, List<GameObject>> _dictBulletPool = new();
 
-    [Header("Plant")]
-    [SerializeField] private int _poolPlantBulletCount;
-    [SerializeField] private GameObject _plantBulletPrefabs;
-
-    [Header("Bee")]
-    [SerializeField] private int _poolBeeBulletCount;
-    [SerializeField] private GameObject _beeBulletPrefabs;
-
-    [Header("Trunk")]
-    [SerializeField] private int _poolTrunkBulletCount;
-    [SerializeField] private GameObject _trunkBulletPrefabs;
+    [Header("Ammount")]
+    [SerializeField] private int _bulletAmmount;
 
     public static BulletPool Instance 
     {
@@ -41,14 +32,6 @@ public class BulletPool : MonoBehaviour
     private void Awake()
     {
         CreateInstance();
-        InitDictionary();
-    }
-
-    private void InitDictionary()
-    {
-        _dictBulletPool.Add(GameConstants.PLANT_BULLET, new List<GameObject>());
-        _dictBulletPool.Add(GameConstants.BEE_BULLET, new List<GameObject>());
-        _dictBulletPool.Add(GameConstants.TRUNK_BULLET, new List<GameObject>());
     }
 
     private void CreateInstance()
@@ -62,43 +45,17 @@ public class BulletPool : MonoBehaviour
             Destroy(gameObject);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void InstantiateBullet(GameObject gameObject, GameEnums.EEnemiesBullet bulletType, string bulletID)
     {
-        AddBulletsToPool();
-    }
-
-    private void AddBulletsToPool()
-    {
-        //Add bullet vào pool và đánh dấu chưa active nó
-        for (int i = 0; i < _poolPlantBulletCount; i++)
+        for (int i = 0; i < _bulletAmmount; i++)
         {
-            string bulletID = GameConstants.PLANT_BULLET + i.ToString();
-            InstantiateBullet(_plantBulletPrefabs, GameConstants.PLANT_BULLET, bulletID);
-        }
-
-        for (int i = 0; i < _poolBeeBulletCount; i++)
-        {
-            string bulletID = GameConstants.BEE_BULLET + i.ToString();
-            InstantiateBullet(_beeBulletPrefabs, GameConstants.BEE_BULLET, bulletID);
-        }
-
-        for (int i = 0; i < _poolTrunkBulletCount; i++)
-        {
-            string bulletID = GameConstants.TRUNK_BULLET + i.ToString();
-            InstantiateBullet(_trunkBulletPrefabs, GameConstants.TRUNK_BULLET, bulletID);
+            GameObject gObj = Instantiate(gameObject);
+            gObj.SetActive(false);
+            _dictBulletPool[bulletType].Add(gObj);
         }
     }
 
-    private void InstantiateBullet(GameObject gameObject, string bulletType, string bulletID)
-    {
-        GameObject gObj = Instantiate(gameObject);
-        gObj.SetActive(false);
-        _dictBulletPool[bulletType].Add(gObj);
-        gObj.GetComponent<BulletController>().BulletID = bulletID;
-    }
-
-    public GameObject GetObjectInPool(string bulletType)
+    public GameObject GetObjectInPool(GameEnums.EEnemiesBullet bulletType)
     {
         for (int i = 0; i < _dictBulletPool[bulletType].Count; i++)
         {
@@ -113,4 +70,16 @@ public class BulletPool : MonoBehaviour
         Debug.Log("out of ammo");
         return null;
     }
+
+    private void AddBulletToDictionary(GameEnums.EEnemiesBullet bulletType)
+    {
+        if (!_dictBulletPool.ContainsKey(bulletType))
+            _dictBulletPool.Add(bulletType, new List<GameObject>());
+    }
+
+    public void AddBulletToPool(GameEnums.EEnemiesBullet bulletType, GameObject bullet, string bulletID)
+    {
+        AddBulletToDictionary(bulletType);
+    }
+
 }

@@ -64,7 +64,7 @@ public class EffectPool : MonoBehaviour
     {
         for (int i = 0; i < _dictEffectPool[EffectType].Count; i++)
         {
-            Debug.Log("Eff hien tai: " + _dictEffectPool[EffectType]);
+            //Debug.Log("Eff hien tai: " + _dictEffectPool[EffectType]);
             //Thực hiện việc check null trước khi lôi nó ra
             //Vì lúc Reload Scene có thể GameObject đó bị null
             if (_dictEffectPool[EffectType][i])

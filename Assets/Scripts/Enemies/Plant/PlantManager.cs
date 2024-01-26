@@ -35,11 +35,11 @@ public class PlantManager : NMEnemiesManager
             return;
         }
 
-        GameObject bullet = BulletPool.Instance.GetObjectInPool(GameConstants.PLANT_BULLET);
+        GameObject bullet = BulletPool.Instance.GetObjectInPool(GameEnums.EEnemiesBullet.Plant);
         bullet.SetActive(true);
         string bulletID = bullet.GetComponent<BulletController>().BulletID;
 
-        BulletInfor info = new BulletInfor(GameConstants.PLANT_BULLET, bulletID, _isFacingRight, _shootPosition.position);
+        BulletInfor info = new BulletInfor(GameEnums.EEnemiesBullet.Plant, bulletID, _isFacingRight, _shootPosition.position);
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
         SoundsManager.Instance.GetTypeOfSound(GameConstants.PLANT_SHOOT_SOUND).Play();
         //Debug.Log("I'm here");

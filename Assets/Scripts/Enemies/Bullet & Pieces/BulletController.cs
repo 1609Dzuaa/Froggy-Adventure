@@ -5,12 +5,12 @@ using UnityEngine;
 
 public struct BulletInfor
 {
-    string _type;
+    GameEnums.EEnemiesBullet _type;
     string _id;
     bool _isDirectionRight;
     Vector3 _shootPosition;
 
-    public BulletInfor(string type, string id, bool isDirectionRight, Vector3 shootPosition)
+    public BulletInfor(GameEnums.EEnemiesBullet type, string id, bool isDirectionRight, Vector3 shootPosition)
     {
         _type = type;
         _id = id;
@@ -18,7 +18,7 @@ public struct BulletInfor
         _shootPosition = shootPosition;
     }
 
-    public string Type { get { return _type; } }
+    public GameEnums.EEnemiesBullet Type { get { return _type; } }
 
     public string ID { get { return _id; } }
 
@@ -41,6 +41,9 @@ public class BulletController : MonoBehaviour
     [Header("Horizontal Or Vertical")]
     [SerializeField] private bool _isHorizontal;
 
+    [Header("Type")]
+    [SerializeField] private GameEnums.EEnemiesBullet _bulletType;
+
     private Rigidbody2D _rb;
     private float _entryTime;
     private bool _isDirectionRight = false;
@@ -53,7 +56,10 @@ public class BulletController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        //Debug.Log("Id cua tao la: " + _bulletID);
+        _bulletID = Guid.NewGuid().ToString(); //Đảm bảo mỗi bullet sẽ có ID riêng
+        Debug.Log("Id cua tao la1: " + _bulletID);
+        BulletPool.Instance.AddBulletToPool(_bulletType, gameObject, _bulletID);
+        BulletPool.Instance.InstantiateBullet(gameObject, _bulletType, _bulletID);
     }
 
     private void OnEnable()
@@ -152,10 +158,10 @@ public class BulletController : MonoBehaviour
         if (_bulletID != bulletInfo.ID) 
             return;
 
-        if (_isDirectionRight != bulletInfo.IsDirectionRight && bulletInfo.Type != GameConstants.BEE_BULLET)
+        if (_isDirectionRight != bulletInfo.IsDirectionRight && bulletInfo.Type != GameEnums.EEnemiesBullet.Bee)
             transform.Rotate(0, 180, 0);
         _isDirectionRight = bulletInfo.IsDirectionRight;
-        _type = bulletInfo.Type;
+        //_type = bulletInfo.Type;
         transform.position = bulletInfo.ShootPosition;
     }
 }
