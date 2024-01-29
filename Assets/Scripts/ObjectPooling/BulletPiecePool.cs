@@ -23,20 +23,8 @@ public class BulletPiecePool : MonoBehaviour
     private static BulletPiecePool _BulletPiecePiecePoolInstance;
     private Dictionary<string, List<BulletPiecePair>> _dictBulletPiecePiecePool = new Dictionary<string, List<BulletPiecePair>>();
 
-    [Header("Plant")]
-    [SerializeField] private int _poolPlantBulletPieceCount;
-    [SerializeField] private GameObject _plantBulletPiecePrefabs1;
-    [SerializeField] private GameObject _plantBulletPiecePrefabs2;
-
-    [Header("Bee")]
-    [SerializeField] private int _poolBeeBulletPieceCount;
-    [SerializeField] private GameObject _beeBulletPiecePrefabs1;
-    [SerializeField] private GameObject _beeBulletPiecePrefabs2;
-
-    [Header("Trunk")]
-    [SerializeField] private int _poolTrunkBulletPieceCount;
-    [SerializeField] private GameObject _trunkBulletPiecePrefabs1;
-    [SerializeField] private GameObject _trunkBulletPiecePrefabs2;
+    [Header("Ammount")]
+    [SerializeField] int _piecesAmmount;
 
     public static BulletPiecePool Instance
     {
