@@ -40,6 +40,6 @@ public class MEnemiesGotHitState : MEnemiesBaseState
         _mEnemiesManager.GetRigidbody2D().AddForce(_mEnemiesManager.EnemiesSO.KnockForce, ForceMode2D.Impulse);
         //Debug.Log("Force: " + _mEnemiesManager.EnemiesSO.KnockForce);
         _mEnemiesManager.GetCollider2D.enabled = false;
-        //SoundsManager.Instance.GetTypeOfSound(GameConstants.ENEMIES_DEAD_SOUND).Play();
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.EnemiesDeadSfx, 1.0f);
     }
 }

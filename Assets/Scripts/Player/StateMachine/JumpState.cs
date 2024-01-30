@@ -78,7 +78,7 @@ public class JumpState : PlayerBaseState
         else
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY * ((PlayerJumpBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Jump)).JumpMutiplier);
 
-        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerJumpSfx);
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerJumpSfx, 1.0f);
     }
 
     public override void FixedUpdate()

@@ -24,7 +24,7 @@ public class SoundsManager : BaseSingleton<SoundsManager>
 
     private void Start()
     {
-        StartCoroutine(PlayBackGroundMusic());
+        //StartCoroutine(PlayBackGroundMusic());
     }
 
     private IEnumerator PlayBackGroundMusic()
@@ -34,7 +34,7 @@ public class SoundsManager : BaseSingleton<SoundsManager>
         PlayMusic(ESoundName.Theme);
     }
 
-    public void PlaySfx(ESoundName sfxName)
+    public void PlaySfx(ESoundName sfxName, float volumeScale)
     {
         //Tìm hiểu về Lambda expression
         Sounds s = Array.Find(sfxSounds, x => x.SoundName == sfxName);
@@ -43,7 +43,8 @@ public class SoundsManager : BaseSingleton<SoundsManager>
         else
         {
             _sfxSource.clip = s.SoundAudioClip;
-            _sfxSource.PlayOneShot(_sfxSource.clip);
+            if (volumeScale >= 1.0f) _sfxSource.PlayOneShot(_sfxSource.clip);
+            else _sfxSource.PlayOneShot(_sfxSource.clip, volumeScale);
         }
     }
 

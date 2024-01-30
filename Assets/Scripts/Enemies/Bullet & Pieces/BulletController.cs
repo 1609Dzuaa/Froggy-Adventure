@@ -60,7 +60,6 @@ public class BulletController : MonoBehaviour
         //Debug.Log("Id cua tao la1: " + _bulletID);
         BulletPool.Instance.AddBulletToPool(_bulletType, gameObject, _bulletID);
         BulletPool.Instance.InstantiateBullet(gameObject, _bulletType, _bulletID);
-        //Debug.Log("SM: " + //SoundsManager.Instance);
     }
 
     private void OnEnable()
@@ -162,7 +161,6 @@ public class BulletController : MonoBehaviour
         if (_isDirectionRight != bulletInfo.IsDirectionRight && bulletInfo.Type != GameEnums.EEnemiesBullet.Bee)
             transform.Rotate(0, 180, 0);
         _isDirectionRight = bulletInfo.IsDirectionRight;
-        //_type = bulletInfo.Type;
         transform.position = bulletInfo.ShootPosition;
     }
 }

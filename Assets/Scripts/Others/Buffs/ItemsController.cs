@@ -13,7 +13,7 @@ public class ItemsController : MonoBehaviour
     {
         if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
-            //SoundsManager.Instance.GetTypeOfSound(GameConstants.COLLECT_FRUITS_SOUND).Play();
+            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.CollectFruitSfx, 1.0f);
             BuffsManager.Instance.GetTypeOfBuff(_buff).ApplyBuff();
             SpawnEffect();
             Destroy(gameObject);

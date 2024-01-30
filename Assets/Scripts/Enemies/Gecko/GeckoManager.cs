@@ -23,8 +23,7 @@ public class GeckoManager : MEnemiesManager
     private GeckoAttackState _geckoAttackState = new();
     private bool _canTeleport2Sides;
 
-    //mò mãi đéo xác định đc collision side khi dùng overlapbox với playerRef
-    //nên chia nó thành 2 phần: TRÁI/PHẢI
+    //Chia nó thành 2 phần: TRÁI/PHẢI
     //dời thằng center từ playerRef sang 2 pos mới là playerRefPos +- teleAbleRange / 2
     //TeleportableRange như mô tả ở dưới:
     //    |===_playerRefPos===|
@@ -151,7 +150,7 @@ public class GeckoManager : MEnemiesManager
             //nhưng vẫn dính đòn
             if (_hasDetectedPlayer)
             {
-                //SoundsManager.Instance.GetTypeOfSound(GameConstants.GECKO_ATTACK_SOUND).Play();
+                SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.GeckoAttackSfx, 1.0f);
                 EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
             }
         }

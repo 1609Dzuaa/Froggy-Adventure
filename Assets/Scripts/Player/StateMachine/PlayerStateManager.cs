@@ -512,6 +512,7 @@ public class PlayerStateManager : MonoBehaviour
     private void AllowUpdateDash()
     {
         dashState.AllowUpdate = true;
+        //bug here, do dính gothit ngoài manager
         //Vứt trong Dash Animation để Delay việc Update của Dash 
     }
 
@@ -520,7 +521,7 @@ public class PlayerStateManager : MonoBehaviour
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
         gameObject.layer = LayerMask.NameToLayer("Enemies");
-        //SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_DEAD_SOUND).Play();
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerDeadSfx, 1.0f);
     }
 
     private void HandleCollideGround()
