@@ -95,4 +95,24 @@
     public enum EEnemiesBullet { Plant, Bee, Trunk }
 
     #endregion
+
+    #region Sound
+
+    public enum ESoundName
+    {
+        Theme,
+        CollectFruitSfx,
+        CollectHPSfx,
+        PlayerGotHitSfx,
+        PlayerJumpSfx,
+        PlayerDashSfx,
+        PlayerDeadSfx,
+        PlayerLandSfx,
+        PlantShootSfx,
+        TrunkShootSfx,
+        EnemiesDeadSfx,
+        GeckoAttackSfx
+    }
+
+    #endregion
 }

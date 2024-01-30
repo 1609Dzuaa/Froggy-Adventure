@@ -520,7 +520,7 @@ public class PlayerStateManager : MonoBehaviour
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
         gameObject.layer = LayerMask.NameToLayer("Enemies");
-        SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_DEAD_SOUND).Play();
+        //SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_DEAD_SOUND).Play();
     }
 
     private void HandleCollideGround()

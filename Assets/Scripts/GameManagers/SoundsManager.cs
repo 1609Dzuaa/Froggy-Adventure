@@ -1,83 +1,61 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using static GameEnums;
 
-public class SoundsManager : MonoBehaviour
+public class SoundsManager : BaseSingleton<SoundsManager>
 {
-    //Vấn đề của SM hiện tại:
-    //Vật thể nào đó vẫn có thể phát sound dù cách rất xa Player 
+    //Clip - tệp âm thanh
+    //Source - cái để phát tệp đó cũng như điều chỉnh linh tinh
 
-    private static SoundsManager _smInstance;
-    private Dictionary<string, AudioSource> _dictSounds = new();
+    [SerializeField]
+    Sounds[] sfxSounds, musicSounds;
 
-    [Header("Player's Sound")]
-    [SerializeField] private AudioSource _collectSound;
-    [SerializeField] private AudioSource _jumpSound;
-    [SerializeField] private AudioSource _collectHPSound;
-    [SerializeField] private AudioSource _gotHitSound;
-    [SerializeField] private AudioSource _deadSound;
-    [SerializeField] private AudioSource _dashSound;
-    [SerializeField] private AudioSource _landSound;
+    [SerializeField] AudioSource _sfxSource, _musicSource;
+    [SerializeField] float _bgmusicDelay;
 
-    [Header("Enemies's Sound")]
-    [SerializeField] private AudioSource _plantShootSound;
-    [SerializeField] private AudioSource _trunkShootSound;
-    [SerializeField] private AudioSource _enemiesDeadSound;
-
-    [Header("Gecko's Sound")]
-    [SerializeField] private AudioSource _geckoAttackSound;
-
-    public static SoundsManager Instance
+    protected override void Awake()
     {
-        get
-        {
-            if (!_smInstance)
-            {
-                _smInstance = FindObjectOfType<SoundsManager>();
-                if (!_smInstance)
-                    Debug.Log("0 co SoundsManager trong Scene");
-            }
-
-            return _smInstance;
-        }
+        base.Awake();
     }
 
-    private void Awake()
+    private void Start()
     {
-        CreateInstance();
-        InitSoundDictionary();
+        StartCoroutine(PlayBackGroundMusic());
     }
 
-    private void CreateInstance()
+    private IEnumerator PlayBackGroundMusic()
     {
-        if (!_smInstance)
-        {
-            _smInstance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        yield return new WaitForSeconds(_bgmusicDelay);
+
+        PlayMusic(ESoundName.Theme);
+    }
+
+    public void PlaySfx(ESoundName sfxName)
+    {
+        //Tìm hiểu về Lambda expression
+        Sounds s = Array.Find(sfxSounds, x => x.SoundName == sfxName);
+        if (s == null)
+            Debug.Log(sfxName + " Not Found");
         else
-            Destroy(gameObject);
+        {
+            _sfxSource.clip = s.SoundAudioClip;
+            _sfxSource.PlayOneShot(_sfxSource.clip);
+        }
     }
 
-    private void InitSoundDictionary()
+    public void PlayMusic(ESoundName musicName)
     {
-        _dictSounds.Add(GameConstants.COLLECT_FRUITS_SOUND, _collectSound);
-        _dictSounds.Add(GameConstants.COLLECT_HP_SOUND, _collectHPSound);
-        _dictSounds.Add(GameConstants.PLAYER_DASH_SOUND, _dashSound);
-        _dictSounds.Add(GameConstants.PLAYER_DEAD_SOUND, _deadSound);
-        _dictSounds.Add(GameConstants.PLAYER_GOT_HIT_SOUND, _gotHitSound);
-        _dictSounds.Add(GameConstants.PLAYER_JUMP_SOUND, _jumpSound);
-        _dictSounds.Add(GameConstants.PLAYER_LAND_SOUND, _landSound);
-
-        _dictSounds.Add(GameConstants.PLANT_SHOOT_SOUND, _plantShootSound);
-        _dictSounds.Add(GameConstants.TRUNK_SHOOT_SOUND, _trunkShootSound);
-        _dictSounds.Add(GameConstants.ENEMIES_DEAD_SOUND, _enemiesDeadSound);
-
-        _dictSounds.Add(GameConstants.GECKO_ATTACK_SOUND, _geckoAttackSound);
-    }
-
-    public AudioSource GetTypeOfSound(string soundType)
-    {
-        return _dictSounds[soundType];
+        Sounds s = Array.Find(musicSounds, x => x.SoundName == musicName);
+        if (s == null)
+            Debug.Log(musicName + " Not Found");
+        else
+        {
+            _musicSource.clip = s.SoundAudioClip;
+            _musicSource.Play();
+        }
     }
 }

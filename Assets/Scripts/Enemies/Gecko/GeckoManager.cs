@@ -151,7 +151,7 @@ public class GeckoManager : MEnemiesManager
             //nhưng vẫn dính đòn
             if (_hasDetectedPlayer)
             {
-                SoundsManager.Instance.GetTypeOfSound(GameConstants.GECKO_ATTACK_SOUND).Play();
+                //SoundsManager.Instance.GetTypeOfSound(GameConstants.GECKO_ATTACK_SOUND).Play();
                 EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
             }
         }

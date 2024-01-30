@@ -85,6 +85,6 @@ public class WallJumpState : PlayerBaseState
         else if (_playerStateManager.WallHit.normal.x <= -1f)
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(-_playerStateManager.GetPlayerStats.WallJumpSpeed.x, _playerStateManager.GetPlayerStats.WallJumpSpeed.y);
 
-        SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_JUMP_SOUND).Play();
+        //SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_JUMP_SOUND).Play();
     }
 }

@@ -85,22 +85,6 @@
     public const int HP_STATE_TEMP = 2;
     #endregion
 
-    #region Sound
-    public const string COLLECT_FRUITS_SOUND = "CollectFruitsSound";
-    public const string COLLECT_HP_SOUND = "CollectHPSound";
-    public const string PLAYER_GOT_HIT_SOUND = "PlayerGHSound";
-    public const string PLAYER_JUMP_SOUND = "PlayerJumpSound";
-    public const string PLAYER_DASH_SOUND = "PlayerDashSound";
-    public const string PLAYER_DEAD_SOUND = "PlayerDeadSound";
-    public const string PLAYER_LAND_SOUND = "PlayerLandSound";
-
-    public const string PLANT_SHOOT_SOUND = "PlantShootSound";
-    public const string TRUNK_SHOOT_SOUND = "TrunkShootSound";
-    public const string ENEMIES_DEAD_SOUND = "EnemiesDeadSound";
-
-    public const string GECKO_ATTACK_SOUND = "GeckoAttackSound";
-    #endregion
-
     #region Button Constants
 
     public const string JUMP_BUTTON = "Jump";

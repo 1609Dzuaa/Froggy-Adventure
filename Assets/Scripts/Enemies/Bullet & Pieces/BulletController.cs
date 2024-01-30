@@ -57,9 +57,10 @@ public class BulletController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _bulletID = Guid.NewGuid().ToString(); //Đảm bảo mỗi bullet sẽ có ID riêng
-        Debug.Log("Id cua tao la1: " + _bulletID);
+        //Debug.Log("Id cua tao la1: " + _bulletID);
         BulletPool.Instance.AddBulletToPool(_bulletType, gameObject, _bulletID);
         BulletPool.Instance.InstantiateBullet(gameObject, _bulletType, _bulletID);
+        //Debug.Log("SM: " + //SoundsManager.Instance);
     }
 
     private void OnEnable()

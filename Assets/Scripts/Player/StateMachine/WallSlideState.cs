@@ -30,7 +30,7 @@ public class WallSlideState : PlayerBaseState
 
         if (CheckIfCanIdle())
         {
-            SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_LAND_SOUND).Play();
+            //SoundsManager.Instance.GetTypeOfSound(GameConstants.PLAYER_LAND_SOUND).Play();
             _playerStateManager.ChangeState(_playerStateManager.idleState);
         }
         else if (CheckIfCanWallJump())

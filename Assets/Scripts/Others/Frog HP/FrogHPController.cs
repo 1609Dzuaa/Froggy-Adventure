@@ -39,7 +39,7 @@ public class FrogHPController : ItemsController
         {
             SpawnEffect();
             PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_NORMAL);
-            SoundsManager.Instance.GetTypeOfSound(GameConstants.COLLECT_HP_SOUND).Play();
+            //SoundsManager.Instance.GetTypeOfSound(GameConstants.COLLECT_HP_SOUND).Play();
             Destroy(_parent);
         }
     }
