@@ -13,37 +13,15 @@ public class PlayerShieldBuff : PlayerBuffs
     private CircleCollider2D _circleCollider2D;
     private bool _hasTriggeredRunningOut;
     private bool _hasDisabled;
-    private PlayerShieldBuff _instance;
-
-    public PlayerShieldBuff Instance
-    { 
-        get 
-        {
-            if (!_instance)
-                _instance = FindObjectOfType<PlayerShieldBuff>();
-
-            if (!_instance)
-                Debug.Log("0 co Shield Buff trong Scene");
-
-            return _instance; 
-        } 
-    }
 
     public override void Awake()
     {
-        Init();
         GetReferenceComponentsAndSetup();
     }
 
-    private void Init()
+    private void OnEnable()
     {
-        if (!_instance)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
+        _shieldPos = GameObject.Find("ShieldPosition").transform;
     }
 
     private void GetReferenceComponentsAndSetup()
@@ -58,6 +36,7 @@ public class PlayerShieldBuff : PlayerBuffs
         if (_isAllowToUpdate)
         {
             transform.position = _shieldPos.position;
+
             if (CheckIfRunningOut())
                 HandleRunningOutState();
             else if (CheckIfCanDisable())
@@ -68,7 +47,8 @@ public class PlayerShieldBuff : PlayerBuffs
     public override void ApplyBuff()
     {
         //Reset lại data khi apply buff
-        transform.position = _shieldPos.position;
+        if (_shieldPos)
+            transform.position = _shieldPos.position;
         _entryTime = Time.time;
         _isAllowToUpdate = true;
         _anim.SetTrigger("Idle");

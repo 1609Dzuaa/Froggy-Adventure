@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class ItemsController : MonoBehaviour
 {
-    //Cho custom loại buff, đéo phải hard-code như trước
     [SerializeField] protected GameEnums.EBuffs _buff;
 
-    private void Start() {  }
+    private void Start() { }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {

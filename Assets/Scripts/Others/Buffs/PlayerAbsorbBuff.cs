@@ -10,8 +10,6 @@ public class PlayerAbsorbBuff : PlayerBuffs
     [SerializeField] private Transform _tempShieldIcon; //sign báo hiệu vẫn còn thgian buff
     [SerializeField] private Transform _tempShieldIconPos;
 
-    private static PlayerAbsorbBuff _absurbBuffInstance;
-
     //Thêm hiệu ứng để biết hết Buff tương tự như Shield ?
 
     public float TempHPDuration { get { return _tempHPDuration; } }

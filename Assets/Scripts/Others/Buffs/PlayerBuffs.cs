@@ -10,15 +10,9 @@ public abstract class PlayerBuffs : MonoBehaviour
 
     public bool IsAllowToUpdate { get => _isAllowToUpdate; set => _isAllowToUpdate = value; }
 
-    public virtual void Awake()
-    { 
-    }
+    public virtual void Awake() { }
 
-    public virtual void Start()
-    {
-        //Xử lý các ref của buff đó (nếu có) trong đây
-        //vd: disable th ref nào đó
-    }
+    public virtual void Start() { }
 
     public virtual void Update() { }
 

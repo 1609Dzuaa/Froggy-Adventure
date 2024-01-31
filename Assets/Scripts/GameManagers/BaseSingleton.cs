@@ -24,7 +24,7 @@ public abstract class BaseSingleton<T> : MonoBehaviour where T : MonoBehaviour
                     GameObject gObj = new GameObject();
                     gObj.AddComponent<T>();
                     gObj.name = "Singleton_" + typeof(T).ToString();
-                    Debug.Log("Singleton created by getter: " + gObj.name);
+                    //Debug.Log("Singleton created by getter: " + gObj.name);
                 }
             }
 
@@ -41,12 +41,12 @@ public abstract class BaseSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         if (!_instance)
         {
-            Debug.Log("Singleton: " + this);
+            //Debug.Log("Singleton: " + this);
             _instance = this as T;
         }
         else if (_instance != this)
         {
-            Debug.Log("Destroy: " + this);
+            //Debug.Log("Destroy: " + this);
             Destroy(gameObject);
         }
     }

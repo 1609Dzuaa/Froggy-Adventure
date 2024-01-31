@@ -1,21 +1,26 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BuffsManager : BaseSingleton<BuffsManager>
 {
+    [SerializeField] PlayerSpeedBuff _speedBuff;
+    [SerializeField] PlayerJumpBuff _jumpBuff;
+    [SerializeField] PlayerInvisibleBuff _invisibleBuff;
+    [SerializeField] PlayerShieldBuff _shieldBuff;
+    [SerializeField] PlayerAbsorbBuff _absorbBuff;
+
     private Dictionary<GameEnums.EBuffs, PlayerBuffs> _dictBuffs = new();
 
     protected override void Awake()
     {
         base.Awake();
-        InitBuffDictionary();
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
+        InitBuffDictionary();
         foreach (var buff in _dictBuffs.Values)
             buff.Start();
     }
@@ -28,11 +33,12 @@ public class BuffsManager : BaseSingleton<BuffsManager>
 
     private void InitBuffDictionary()
     {
-        _dictBuffs.Add(GameEnums.EBuffs.Speed, FindObjectOfType<PlayerSpeedBuff>());
-        _dictBuffs.Add(GameEnums.EBuffs.Jump, FindObjectOfType<PlayerJumpBuff>());
-        _dictBuffs.Add(GameEnums.EBuffs.Invisible, FindObjectOfType<PlayerInvisibleBuff>());
+        _dictBuffs.Add(GameEnums.EBuffs.Speed, _speedBuff);
+        _dictBuffs.Add(GameEnums.EBuffs.Jump, _jumpBuff);
+        _dictBuffs.Add(GameEnums.EBuffs.Invisible, _invisibleBuff);
+        //Xem lại tại sao dùng _shieldBuff kh đc 
         _dictBuffs.Add(GameEnums.EBuffs.Shield, FindObjectOfType<PlayerShieldBuff>());
-        _dictBuffs.Add(GameEnums.EBuffs.Absorb, FindObjectOfType<PlayerAbsorbBuff>());
+        _dictBuffs.Add(GameEnums.EBuffs.Absorb, _absorbBuff);
     }
 
     public PlayerBuffs GetTypeOfBuff(GameEnums.EBuffs buffType)
