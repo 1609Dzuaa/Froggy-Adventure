@@ -6,7 +6,7 @@ public class DiamondController : ItemsController
 {
     protected override void SpawnEffect()
     {
-        GameObject collectEff = EffectPool.Instance.GetObjectInPool(GameEnums.EEfects.CollectDiamond);
+        GameObject collectEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.CollectDiamond);
         collectEff.SetActive(true);
         collectEff.GetComponent<EffectController>().SetPosition(transform.position);
     }

@@ -74,9 +74,9 @@
 
     #endregion
 
-    #region EnumEffects
+    #region EnumVfxs&Bullets
 
-    public enum EEfects
+    public enum EPoolable
     {
         Dashable,
         HitShield,
@@ -85,14 +85,11 @@
         CollectFruits,
         CollectDiamond,
         CollectHP,
-        BrownExplosion
+        BrownExplosion,
+        PlantBullet,
+        BeeBullet,
+        TrunkBullet
     }
-
-    #endregion
-
-    #region EnumEnemiesBullet
-    
-    public enum EEnemiesBullet { Plant, Bee, Trunk }
 
     #endregion
 

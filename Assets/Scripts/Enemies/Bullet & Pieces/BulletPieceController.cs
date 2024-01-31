@@ -27,10 +27,7 @@ public class BulletPieceController : MonoBehaviour
     [SerializeField] private float _existTime;
 
     [Header("Type & Ammount")]
-    [SerializeField] private GameEnums.EEnemiesBullet _pieceType;
-
-    [Header("OtherPiece")]
-    [SerializeField] BulletPieceController _pieceRef;
+    [SerializeField] private GameEnums.EPoolable _pieceType;
 
     private Rigidbody2D _rb;
     private float _entryTime;
@@ -45,20 +42,10 @@ public class BulletPieceController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
-    {
-        BulletPiecePool.Instance.AddBulletToPoolDictionary(_pieceType);
-        BulletPiecePair bPPair = new BulletPiecePair(gameObject, _pieceRef.gameObject);
-        BulletPiecePool.Instance.InstantiateBulletPiece(bPPair, _pieceType);
-    }
-
     private void OnEnable()
     {
-        if (_isShotFromRight)
-            _rb.AddForce(_bouncingForce * new Vector2(-1f, 1f));
-        else
-            _rb.AddForce(_bouncingForce);
         _entryTime = Time.time;
+        _rb.AddForce((_isShotFromRight) ? _bouncingForce : _bouncingForce * new Vector2(-1f, 1f));
     }
 
     // Update is called once per frame

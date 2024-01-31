@@ -47,7 +47,7 @@ public class MultipleRockManager : MEnemiesManager
     {
         if (_type != 2)
         {
-            GameObject brownEff = EffectPool.Instance.GetObjectInPool(GameEnums.EEfects.BrownExplosion);
+            GameObject brownEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.BrownExplosion);
             brownEff.SetActive(true);
             brownEff.GetComponent<EffectController>().SetPosition(transform.position);
         }

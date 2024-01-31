@@ -5,12 +5,12 @@ using UnityEngine;
 
 public struct BulletInfor
 {
-    GameEnums.EEnemiesBullet _type;
+    GameEnums.EPoolable _type;
     string _id;
     bool _isDirectionRight;
     Vector3 _shootPosition;
 
-    public BulletInfor(GameEnums.EEnemiesBullet type, string id, bool isDirectionRight, Vector3 shootPosition)
+    public BulletInfor(GameEnums.EPoolable type, string id, bool isDirectionRight, Vector3 shootPosition)
     {
         _type = type;
         _id = id;
@@ -18,7 +18,7 @@ public struct BulletInfor
         _shootPosition = shootPosition;
     }
 
-    public GameEnums.EEnemiesBullet Type { get { return _type; } }
+    public GameEnums.EPoolable Type { get { return _type; } }
 
     public string ID { get { return _id; } }
 
@@ -42,10 +42,7 @@ public class BulletController : MonoBehaviour
     [SerializeField] private bool _isHorizontal;
 
     [Header("Type")]
-    [SerializeField] private GameEnums.EEnemiesBullet _bulletType;
-
-    [Header("Ammount")]
-    [SerializeField] int _ammount;
+    [SerializeField] private GameEnums.EPoolable _bulletType;
 
     private Rigidbody2D _rb;
     private float _entryTime;
@@ -120,8 +117,8 @@ public class BulletController : MonoBehaviour
     public void SpawnBulletPieces()
     {
         GameObject[] pieces = new GameObject[2];
-        pieces[0] = BulletPiecePool.Instance.GetObjectInPool(_bulletType).Pair1;
-        pieces[1] = BulletPiecePool.Instance.GetObjectInPool(_bulletType).Pair2;
+        pieces[0] = Pool.Instance.GetPiecePairInPool(_bulletType).Pair1;
+        pieces[1] = Pool.Instance.GetPiecePairInPool(_bulletType).Pair2;
 
         for (int i = 0; i < pieces.Length; i++)
         {
@@ -136,7 +133,7 @@ public class BulletController : MonoBehaviour
 
     private void SpawnHitShieldEffect()
     {
-        GameObject hitShieldEff = EffectPool.Instance.GetObjectInPool(GameEnums.EEfects.HitShield);
+        GameObject hitShieldEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.HitShield);
         hitShieldEff.SetActive(true);
         hitShieldEff.GetComponent<EffectController>().SetPosition(transform.position);
     }
@@ -157,7 +154,7 @@ public class BulletController : MonoBehaviour
         if (_bulletID != bulletInfo.ID) 
             return;
 
-        if (_isDirectionRight != bulletInfo.IsDirectionRight && bulletInfo.Type != GameEnums.EEnemiesBullet.Bee)
+        if (_isDirectionRight != bulletInfo.IsDirectionRight && bulletInfo.Type != GameEnums.EPoolable.BeeBullet)
             transform.Rotate(0, 180, 0);
         _isDirectionRight = bulletInfo.IsDirectionRight;
         transform.position = bulletInfo.ShootPosition;

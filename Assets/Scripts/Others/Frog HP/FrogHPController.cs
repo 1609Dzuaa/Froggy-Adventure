@@ -46,7 +46,7 @@ public class FrogHPController : ItemsController
 
     protected override void SpawnEffect()
     {
-        GameObject collectEff = EffectPool.Instance.GetObjectInPool(GameEnums.EEfects.CollectHP);
+        GameObject collectEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.CollectHP);
         collectEff.SetActive(true);
         collectEff.GetComponent<EffectController>().SetPosition(transform.position);
     }

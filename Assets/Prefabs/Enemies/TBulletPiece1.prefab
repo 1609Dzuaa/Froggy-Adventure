@@ -101,6 +101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bouncingForce: {x: -50, y: 150}
   _existTime: 1.5
+  _pieceType: 10
+  _pieceRef: {fileID: 0}
 --- !u!50 &4580263676457862960
 Rigidbody2D:
   serializedVersion: 4
