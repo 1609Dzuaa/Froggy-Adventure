@@ -187,9 +187,4 @@ public class MEnemiesManager : EnemiesManager
         }
     }
 
-    protected virtual void OnDestroy()
-    {
-
-    }
-
 }

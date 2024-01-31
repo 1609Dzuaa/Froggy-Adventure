@@ -3,40 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : BaseSingleton<CameraController>
 {
-    private static CameraController _instance;
     private List<CinemachineVirtualCamera> _listCamera = new();
-    private CinemachineVirtualCamera _activeCamera = null;
+    //private CinemachineVirtualCamera _activeCamera = null;
 
-    public static CameraController Instance 
-    {  
-        get 
-        {
-            if (!_instance)
-                FindObjectOfType<CameraController>();
-
-            if (!_instance)
-                Debug.Log("0 co Cam Controller trong Scene");
-
-            return _instance; 
-        } 
-    }
-
-    private void Awake()
+    protected override void Awake()
     {
-        Init();
-    }
-
-    private void Init()
-    {
-        if (!_instance)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
     }
 
     public void AddCameraToList(CinemachineVirtualCamera camPara)
@@ -51,7 +26,7 @@ public class CameraController : MonoBehaviour
 
     public void SwitchingCamera(CinemachineVirtualCamera camPara)
     {
-        _activeCamera = camPara;
+        //_activeCamera = camPara;
         foreach (var cam in _listCamera)
             cam.Priority = (cam != camPara) ? 0 : 11;
         //Việc switch cam đơn giản là dựa trên Priority trong Cinamachine

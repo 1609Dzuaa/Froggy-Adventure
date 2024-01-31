@@ -3,56 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventsManager : MonoBehaviour 
+public class EventsManager : BaseSingleton<EventsManager>
 {
-    private static EventsManager _instance;
     //You can assign values of any type to variables of type object
     //https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/reference-types
     private Dictionary<GameEnums.EEvents, Action<object>> _dictEvents = new();
     //Thêm sẵn các Action tương ứng với Event trong EnumEvents tại đây
-    private Action<object> PlayerOnTakeDamage;
-    private Action<object> BulletOnHit;
-    private Action<object> BulletOnReceiveInfo;
-    private Action<object> PlayerOnJumpPassive;
-    private Action<object> PlayerOnInteractWithNPCs;
-    private Action<object> PlayerOnStopInteractWithNPCs;
-    private Action<object> PlayerOnBeingPushedBack;
-    private Action<object> FanOnBeingDisabled;
+    private readonly Action<object> PlayerOnTakeDamage;
+    private readonly Action<object> BulletOnHit;
+    private readonly Action<object> BulletOnReceiveInfo;
+    private readonly Action<object> PlayerOnJumpPassive;
+    private readonly Action<object> PlayerOnInteractWithNPCs;
+    private readonly Action<object> PlayerOnStopInteractWithNPCs;
+    private readonly Action<object> PlayerOnBeingPushedBack;
+    private readonly Action<object> FanOnBeingDisabled;
 
 
     //Làm việc với Event thì nên phân biệt với nhau bằng key là object
     //Tránh cùng 1 lúc nó Notify tất cả Func đã đky event đó
     //thay vì chỉ Notify những Func cần
 
-    public static EventsManager Instance
+    protected override void Awake()
     {
-        get 
-        {
-            if (!_instance)
-                _instance = FindObjectOfType<EventsManager>();
-
-            if (!_instance)
-                Debug.Log("0 co EventsManager trong Scene");
-
-            return _instance; 
-        }
-    }
-
-    private void Awake()
-    {
-        CreateInstance();
+        base.Awake();
         AddEventsToDictionary();
-    }
-
-    private void CreateInstance()
-    {
-        if (!_instance)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     public void AddEventsToDictionary()

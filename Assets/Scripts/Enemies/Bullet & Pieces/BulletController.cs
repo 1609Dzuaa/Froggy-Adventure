@@ -44,10 +44,12 @@ public class BulletController : MonoBehaviour
     [Header("Type")]
     [SerializeField] private GameEnums.EEnemiesBullet _bulletType;
 
+    [Header("Ammount")]
+    [SerializeField] int _ammount;
+
     private Rigidbody2D _rb;
     private float _entryTime;
     private bool _isDirectionRight = false;
-    private string _type;
     private string _bulletID;
 
     public string BulletID { get { return _bulletID; } set { _bulletID = value; } }
@@ -58,8 +60,6 @@ public class BulletController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _bulletID = Guid.NewGuid().ToString(); //Đảm bảo mỗi bullet sẽ có ID riêng
         //Debug.Log("Id cua tao la1: " + _bulletID);
-        BulletPool.Instance.AddBulletToPool(_bulletType, gameObject, _bulletID);
-        BulletPool.Instance.InstantiateBullet(gameObject, _bulletType, _bulletID);
     }
 
     private void OnEnable()
@@ -120,9 +120,8 @@ public class BulletController : MonoBehaviour
     public void SpawnBulletPieces()
     {
         GameObject[] pieces = new GameObject[2];
-        pieces[0] = BulletPiecePool.Instance.GetObjectInPool(_type).Pair1;
-        pieces[1] = BulletPiecePool.Instance.GetObjectInPool(_type).Pair2;
-        //Debug.Log("Type: " + _type);
+        pieces[0] = BulletPiecePool.Instance.GetObjectInPool(_bulletType).Pair1;
+        pieces[1] = BulletPiecePool.Instance.GetObjectInPool(_bulletType).Pair2;
 
         for (int i = 0; i < pieces.Length; i++)
         {
@@ -151,7 +150,7 @@ public class BulletController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void ReceiveInfo(object  obj)
+    private void ReceiveInfo(object obj)
     {
         //prob here
         BulletInfor bulletInfo = (BulletInfor)obj;

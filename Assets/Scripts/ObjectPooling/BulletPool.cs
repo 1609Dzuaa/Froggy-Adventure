@@ -1,85 +1,74 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static GameEnums;
 
-public class BulletPool : MonoBehaviour
+public class BulletPool : BaseSingleton<BulletPool>
 {
     //Define a pool class that maintains a collection of reusable objects
     //Pools are useful to avoid the cost of allocation and deallocation
     //Ref: https://gameprogrammingpatterns.com/object-pool.html
 
-    private static BulletPool _bulletPoolInstance;
-    private Dictionary<GameEnums.EEnemiesBullet, List<GameObject>> _dictBulletPool = new();
+    private Dictionary<EEnemiesBullet, List<GameObject>> _dictBulletPool = new();
 
     [Header("Ammount")]
     [SerializeField] private int _bulletAmmount;
 
-    public static BulletPool Instance 
-    {
-        get
-        {
-            if (!_bulletPoolInstance)
-            {
-                _bulletPoolInstance = FindObjectOfType<BulletPool>();
+    [SerializeField] GameObject _plant;
 
-                if (!_bulletPoolInstance)
-                    Debug.Log("No BulletPool in scene");
-            }
-            return _bulletPoolInstance;
-        }
+    public Dictionary<EEnemiesBullet, List<GameObject>> GetDictBulletPool() { return _dictBulletPool; }
+
+    protected override void Awake()
+    {
+        base.Awake();
     }
 
-    private void Awake()
+    private void Start()
     {
-        CreateInstance();
+        AddBulletToDictionary(EEnemiesBullet.Plant);
+        InstantiateBullets(_plant, EEnemiesBullet.Plant, _bulletAmmount);
     }
 
-    private void CreateInstance()
+    private void AddBulletToDictionary(EEnemiesBullet bulletName)
     {
-        if (!_bulletPoolInstance)
-        {
-            _bulletPoolInstance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
+        if (!_dictBulletPool.ContainsKey(bulletName))
+            _dictBulletPool.Add(bulletName, new List<GameObject>());
     }
 
-    public void InstantiateBullet(GameObject gameObject, GameEnums.EEnemiesBullet bulletType, string bulletID)
+    /*public void AddBulletToPool(GameObject bullet, EEnemiesBullet bulletName, int ammount)
     {
-        for (int i = 0; i < _bulletAmmount; i++)
+        AddBulletToDictionary(bulletName);
+        InstantiateBullets(bullet, bulletName, ammount);
+    }*/
+
+    private void InstantiateBullets(GameObject gameObject, EEnemiesBullet bulletName, int bulletCount)
+    {
+        for (int i = 0; i < bulletCount; i++)
         {
             GameObject gObj = Instantiate(gameObject);
             gObj.SetActive(false);
-            _dictBulletPool[bulletType].Add(gObj);
+            _dictBulletPool[bulletName].Add(gObj);
         }
     }
 
-    public GameObject GetObjectInPool(GameEnums.EEnemiesBullet bulletType)
+    public GameObject GetObjectInPool(EEnemiesBullet bulletType)
     {
         for (int i = 0; i < _dictBulletPool[bulletType].Count; i++)
         {
-            //Tìm xem trong cái pool có thằng nào 0 kích hoạt kh thì lôi nó ra
-            if (!_dictBulletPool[bulletType][i].activeInHierarchy)
+            if (_dictBulletPool[bulletType][i])
             {
-                //Debug.Log("Bullet: " + _dictBulletPool[bulletType][i].name + " " + i);
-                return _dictBulletPool[bulletType][i];
+                //Tìm xem trong cái pool có thằng nào 0 kích hoạt kh thì lôi nó ra
+                if (!_dictBulletPool[EEnemiesBullet.Plant][i].activeInHierarchy)
+                {
+                    //Debug.Log("Bullet: " + _dictBulletPool[bulletType][i].name + " " + i);
+                    return _dictBulletPool[EEnemiesBullet.Plant][i];
+                }
             }
         }
 
         Debug.Log("out of ammo");
         return null;
-    }
-
-    private void AddBulletToDictionary(GameEnums.EEnemiesBullet bulletType)
-    {
-        if (!_dictBulletPool.ContainsKey(bulletType))
-            _dictBulletPool.Add(bulletType, new List<GameObject>());
-    }
-
-    public void AddBulletToPool(GameEnums.EEnemiesBullet bulletType, GameObject bullet, string bulletID)
-    {
-        AddBulletToDictionary(bulletType);
     }
 
 }

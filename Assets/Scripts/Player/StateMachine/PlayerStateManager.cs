@@ -163,7 +163,7 @@ public class PlayerStateManager : MonoBehaviour
         rb.gravityScale = _playerStats.GravScale;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnTakeDamage, BeingDamaged);
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);

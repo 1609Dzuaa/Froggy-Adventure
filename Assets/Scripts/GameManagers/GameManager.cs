@@ -11,38 +11,17 @@ using UnityEngine.SceneManagement;
 /// R sau đó hẵng xử lý các vấn đề liên quan data của Player
 /// </summary>
 
-public class GameManager : MonoBehaviour
+public class GameManager : BaseSingleton<GameManager>
 {
-    private static GameManager _instance;
-
-    public static GameManager Instance
+    protected override void Awake()
     {
-        get
-        {
-            if (!_instance)
-                _instance = FindObjectOfType<GameManager>();
-
-            if (!_instance)
-                Debug.Log("0 co Game Manager trong Scene");
-
-            return _instance;
-        }
-    }
-
-    private void Awake()
-    {
-        if (!_instance)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
     }
 
     public void ReloadScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void SwitchToNextScene()

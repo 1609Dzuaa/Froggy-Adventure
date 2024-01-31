@@ -2,6 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct BulletPiecePair
+{
+    private GameObject _pair1;
+    private GameObject _pair2;
+
+    public BulletPiecePair(GameObject pair1, GameObject pair2)
+    {
+        _pair1 = pair1;
+        _pair2 = pair2;
+    }
+
+    public GameObject Pair1 { get { return _pair1; } }
+
+    public GameObject Pair2 { get { return _pair2; } }
+}
+
 public class BulletPieceController : MonoBehaviour
 {
     [Header("Bouncing Force")]
@@ -12,6 +28,9 @@ public class BulletPieceController : MonoBehaviour
 
     [Header("Type & Ammount")]
     [SerializeField] private GameEnums.EEnemiesBullet _pieceType;
+
+    [Header("OtherPiece")]
+    [SerializeField] BulletPieceController _pieceRef;
 
     private Rigidbody2D _rb;
     private float _entryTime;
@@ -24,6 +43,13 @@ public class BulletPieceController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        BulletPiecePool.Instance.AddBulletToPoolDictionary(_pieceType);
+        BulletPiecePair bPPair = new BulletPiecePair(gameObject, _pieceRef.gameObject);
+        BulletPiecePool.Instance.InstantiateBulletPiece(bPPair, _pieceType);
     }
 
     private void OnEnable()

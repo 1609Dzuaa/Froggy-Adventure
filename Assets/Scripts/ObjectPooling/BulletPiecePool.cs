@@ -1,81 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameEnums;
 
-public struct BulletPiecePair
+public class BulletPiecePool : BaseSingleton<BulletPiecePool>
 {
-    private GameObject _pair1; 
-    private GameObject _pair2;
-
-    public BulletPiecePair(GameObject pair1, GameObject pair2)
-    {
-        _pair1 = pair1;
-        _pair2 = pair2;
-    }
-
-    public GameObject Pair1 { get { return _pair1; } }
-
-    public GameObject Pair2 { get { return _pair2; } }
-}
-
-public class BulletPiecePool : MonoBehaviour
-{
-    private static BulletPiecePool _BulletPiecePiecePoolInstance;
-    private Dictionary<string, List<BulletPiecePair>> _dictBulletPiecePiecePool = new Dictionary<string, List<BulletPiecePair>>();
+    private Dictionary<EEnemiesBullet, List<BulletPiecePair>> _dictBulletPiecePiecePool = new();
 
     [Header("Ammount")]
     [SerializeField] int _piecesAmmount;
 
-    public static BulletPiecePool Instance
+    protected override void Awake()
     {
-        get
-        {
-            if (!_BulletPiecePiecePoolInstance)
-            {
-                _BulletPiecePiecePoolInstance = FindObjectOfType<BulletPiecePool>();
-
-                if (!_BulletPiecePiecePoolInstance)
-                    Debug.Log("No BulletPiecePool in scene");
-            }
-            return _BulletPiecePiecePoolInstance;
-        }
-    }
-    private void Awake()
-    {
-        CreateInstance();
+        base.Awake();
     }
 
-    private void CreateInstance()
+    public void AddBulletToPoolDictionary(EEnemiesBullet bulletType)
     {
-        if (!_BulletPiecePiecePoolInstance)
-        {
-            _BulletPiecePiecePoolInstance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
+        if (!_dictBulletPiecePiecePool.ContainsKey(bulletType))
+            _dictBulletPiecePiecePool.Add(bulletType, new List<BulletPiecePair>());
     }
 
-    private void InstantiateBulletPiece(BulletPiecePair gameObjectPair, string BulletPieceType)
+    public void InstantiateBulletPiece(BulletPiecePair gameObjectPair, EEnemiesBullet BulletPieceType)
     {
         GameObject gObj1 = Instantiate(gameObjectPair.Pair1);
         gObj1.SetActive(false);
         GameObject gObj2 = Instantiate(gameObjectPair.Pair2);
         gObj2.SetActive(false);
-        BulletPiecePair piecePair = new BulletPiecePair(gObj1, gObj2);
+        BulletPiecePair piecePair = new(gObj1, gObj2);
         _dictBulletPiecePiecePool[BulletPieceType].Add(piecePair);
     }
 
-    public BulletPiecePair GetObjectInPool(string BulletPieceType)
+    private void AddPiecesPairToList(EEnemiesBullet BulletPieceType, BulletPiecePair piecePair )
     {
-        BulletPiecePair bulletPiecePair = new BulletPiecePair();
+        _dictBulletPiecePiecePool[BulletPieceType].Add(piecePair);
+    }
 
-        for (int i = 0; i < _dictBulletPiecePiecePool[BulletPieceType].Count; i++)
+    public BulletPiecePair GetObjectInPool(EEnemiesBullet bulletType)
+    {
+        BulletPiecePair bulletPiecePair = new();
+
+        for (int i = 0; i < _dictBulletPiecePiecePool[bulletType].Count; i++)
         {
-            if (!_dictBulletPiecePiecePool[BulletPieceType][i].Pair1.activeInHierarchy && !_dictBulletPiecePiecePool[BulletPieceType][i].Pair2.activeInHierarchy)
+            if(_dictBulletPiecePiecePool[bulletType][i].Pair1 && _dictBulletPiecePiecePool[bulletType][i].Pair2)
             {
-                //Debug.Log("BulletPiece: " + _dictBulletPiecePiecePool[BulletPieceType][i].Pair1.name + " " + i);
-                return _dictBulletPiecePiecePool[BulletPieceType][i];
+                if (!_dictBulletPiecePiecePool[bulletType][i].Pair1.activeInHierarchy && !_dictBulletPiecePiecePool[bulletType][i].Pair2.activeInHierarchy)
+                {
+                    //Debug.Log("BulletPiece: " + _dictBulletPiecePiecePool[BulletPieceType][i].Pair1.name + " " + i);
+                    return _dictBulletPiecePiecePool[bulletType][i];
+                }
             }
         }
 

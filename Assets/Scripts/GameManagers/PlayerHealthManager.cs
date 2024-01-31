@@ -12,7 +12,7 @@ public struct HP
 
 //Có vấn đề với class này khi Switch Scene, => Tạo thêm class UIManager
 
-public class PlayerHealthManager : MonoBehaviour
+public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 {
     //Class này dùng Quản lý HP và phụ trách render HP lên UI
 
@@ -49,25 +49,10 @@ public class PlayerHealthManager : MonoBehaviour
 
     public int CurrentHP { get { return _currentHP; } }
 
-    public static PlayerHealthManager Instance
+    protected override void Awake()
     {
-        get
-        {
-            if (!_Instance)
-            {
-                //Tìm xem có Instance có trong Scene kh ?
-                _Instance = FindObjectOfType<PlayerHealthManager>();
-
-                if (!_Instance)
-                    Debug.Log("No HP Controller in scene");
-            }
-            return _Instance;
-        }
-    }
-
-    private void Awake()
-    {
-        CreateInstance();
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -76,21 +61,6 @@ public class PlayerHealthManager : MonoBehaviour
         InitHPArray();
         InitHPDictionary();
         InitUIHP();
-    }
-
-    private void CreateInstance()
-    {
-        if (!_Instance)
-        {
-            _Instance = this;
-            DontDestroyOnLoad(gameObject); //Đảm bảo thằng này 0 bị huỷ khi chuyển Scene
-            //Docs: Don't destroy the target Object when loading a new Scene.
-        }
-        else
-        {
-            //Nếu đã tồn tại thằng Instance != ở trong game thì destroy thằng này
-            Destroy(gameObject);
-        }
     }
 
     private void InitHP()

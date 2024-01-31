@@ -36,8 +36,12 @@ public class PlantManager : NMEnemiesManager
         }
 
         GameObject bullet = BulletPool.Instance.GetObjectInPool(GameEnums.EEnemiesBullet.Plant);
-        bullet.SetActive(true);
-        string bulletID = bullet.GetComponent<BulletController>().BulletID;
+        string bulletID = "";
+        if (bullet)
+        {
+            bullet.SetActive(true);
+            bulletID = bullet.GetComponent<BulletController>().BulletID;
+        }
 
         BulletInfor info = new BulletInfor(GameEnums.EEnemiesBullet.Plant, bulletID, _isFacingRight, _shootPosition.position);
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);

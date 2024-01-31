@@ -3,29 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffsManager : MonoBehaviour
+public class BuffsManager : BaseSingleton<BuffsManager>
 {
-    private static BuffsManager _buffsManagerInstance;
     private Dictionary<GameEnums.EBuffs, PlayerBuffs> _dictBuffs = new();
 
-    public static BuffsManager Instance
+    protected override void Awake()
     {
-        get
-        {
-            if (!_buffsManagerInstance)
-                FindObjectOfType<BuffsManager>();
-
-            if (!_buffsManagerInstance)
-                Debug.Log("0 co BuffsManager trong Scene");
-
-            return _buffsManagerInstance;
-        }
-    }
-
-    private void Awake()
-    {
-        CreateInstance();
+        base.Awake();
         InitBuffDictionary();
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -38,17 +24,6 @@ public class BuffsManager : MonoBehaviour
     {
         foreach(var buff  in _dictBuffs.Values)
             buff.Update();
-    }
-
-    private void CreateInstance()
-    {
-        if (!_buffsManagerInstance)
-        {
-            _buffsManagerInstance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
     }
 
     private void InitBuffDictionary()

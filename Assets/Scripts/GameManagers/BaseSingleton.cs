@@ -6,6 +6,9 @@ public abstract class BaseSingleton<T> : MonoBehaviour where T : MonoBehaviour
     //is a PLACEHOLDER for a specific type that a client specifies
     //when they create an instance of the generic type.
 
+    //Note: Singleton kh nhất thiết phải DontDestroyOnLoad gameobject đó
+    //=> Chỉ cần đảm bảo nó là Unique và Global Access
+
     protected static T _instance = null;
 
     public static T Instance
@@ -38,9 +41,8 @@ public abstract class BaseSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         if (!_instance)
         {
+            Debug.Log("Singleton: " + this);
             _instance = this as T;
-            Debug.Log("DontDestroy: " + this);
-            DontDestroyOnLoad(gameObject);
         }
         else if (_instance != this)
         {

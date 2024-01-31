@@ -1,56 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameEnums;
 
-public class EffectPool : MonoBehaviour
+public class EffectPool : BaseSingleton<EffectPool>
 {
-    //Có vấn đề với bể Effect
-    //Khi Load lại scene thì các Effect biến mất
-    //Done, áp dụng tương tự cho các bể khác (Bullet, Pieces,...)
+    private Dictionary<EEfects, List<GameObject>> _dictEffectPool = new();
 
-    private static EffectPool _EffectPoolInstance;
-    private Dictionary<GameEnums.EEfects, List<GameObject>> _dictEffectPool = new();
-
-    public static EffectPool Instance
+    protected override void Awake()
     {
-        get
-        {
-            if (!_EffectPoolInstance)
-            {
-                _EffectPoolInstance = FindObjectOfType<EffectPool>();
-
-                if (!_EffectPoolInstance)
-                    Debug.Log("No EffectPool in scene");
-            }
-            return _EffectPoolInstance;
-        }
+        base.Awake();
     }
 
-    private void Awake()
+    private void AddVFXToDictionary(EEfects vfxName)
     {
-        CreateInstance();
+        if (!_dictEffectPool.ContainsKey(vfxName))
+            _dictEffectPool.Add(vfxName, new List<GameObject>());
     }
 
-    private void CreateInstance()
+    public void AddVFXToPool(GameObject vfx, EEfects vfxName, int ammount)
     {
-        if (!_EffectPoolInstance)
-        {
-            _EffectPoolInstance = this;
-            DontDestroyOnLoad(gameObject);
-            //Debug.Log("Khoi tao 1st");
-        }
-        else
-            Destroy(gameObject);
+        AddVFXToDictionary(vfxName);
+        InstantiateManyEffect(vfx, vfxName, ammount);
     }
 
-    private void InstantiateEffect(GameObject gameObject, GameEnums.EEfects effectType)
-    {
-        GameObject gObj = Instantiate(gameObject);
-        gObj.SetActive(false);
-        _dictEffectPool[effectType].Add(gObj);
-    }
-
-    private void InstantiateManyEffect(GameObject gameObject, GameEnums.EEfects effectType, int effCount)
+    private void InstantiateManyEffect(GameObject gameObject, EEfects effectType, int effCount)
     {
         for (int i = 0; i < effCount; i++)
         {
@@ -60,7 +34,7 @@ public class EffectPool : MonoBehaviour
         }
     }
 
-    public GameObject GetObjectInPool(GameEnums.EEfects EffectType)
+    public GameObject GetObjectInPool(EEfects EffectType)
     {
         for (int i = 0; i < _dictEffectPool[EffectType].Count; i++)
         {
@@ -80,21 +54,5 @@ public class EffectPool : MonoBehaviour
 
         Debug.Log("out of effect");
         return null;
-    }
-
-    private void AddVFXToDictionary(GameEnums.EEfects vfxName) 
-    {
-        if (!_dictEffectPool.ContainsKey(vfxName))
-            _dictEffectPool.Add(vfxName, new List<GameObject>());
-    }
-
-    public void AddVFXToPool(GameObject vfx, GameEnums.EEfects vfxName, int ammount)
-    {
-        AddVFXToDictionary(vfxName);
-
-        if (ammount == 1)
-            InstantiateEffect(vfx, vfxName);
-        else
-            InstantiateManyEffect(vfx, vfxName, ammount);
     }
 }

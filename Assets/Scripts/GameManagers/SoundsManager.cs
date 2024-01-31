@@ -20,6 +20,7 @@ public class SoundsManager : BaseSingleton<SoundsManager>
     protected override void Awake()
     {
         base.Awake();
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()

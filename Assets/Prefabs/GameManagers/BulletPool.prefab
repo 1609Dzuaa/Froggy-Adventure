@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 949696479440235390}
-  - component: {fileID: 949696479440235391}
+  - component: {fileID: 3947487852951774695}
   m_Layer: 0
   m_Name: BulletPool
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &949696479440235391
+--- !u!114 &3947487852951774695
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,9 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ceb3e4e35a78042bd69dfa7fd54b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _poolPlantBulletCount: 7
-  _plantBulletPrefabs: {fileID: 3972120368183892188, guid: d5bd51591c44bd945bfdec6b3d539063, type: 3}
-  _poolBeeBulletCount: 7
-  _beeBulletPrefabs: {fileID: 7117984088079876882, guid: 2d91bcca6fb161446aeee430a8efcba9, type: 3}
-  _poolTrunkBulletCount: 7
-  _trunkBulletPrefabs: {fileID: 2051569452801589770, guid: 562293350eb8cc343a18c82e707cfcfe, type: 3}
+  _bulletAmmount: 7
+  _plant: {fileID: 3972120368183892188, guid: d5bd51591c44bd945bfdec6b3d539063, type: 3}
