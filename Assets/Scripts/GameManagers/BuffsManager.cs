@@ -37,7 +37,8 @@ public class BuffsManager : BaseSingleton<BuffsManager>
         _dictBuffs.Add(GameEnums.EBuffs.Jump, _jumpBuff);
         _dictBuffs.Add(GameEnums.EBuffs.Invisible, _invisibleBuff);
         //Xem lại tại sao dùng _shieldBuff kh đc 
-        _dictBuffs.Add(GameEnums.EBuffs.Shield, FindObjectOfType<PlayerShieldBuff>());
+        //Do kéo từ trong prefab ra nên nó ref cái thằng shield trong prefab :v
+        _dictBuffs.Add(GameEnums.EBuffs.Shield, _shieldBuff);
         _dictBuffs.Add(GameEnums.EBuffs.Absorb, _absorbBuff);
     }
 

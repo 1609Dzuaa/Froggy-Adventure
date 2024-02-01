@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Bug shield khi reload scene, => tạo 1 class mới cho shield, class này chỉ là BUFF
-
 public class PlayerShieldBuff : PlayerBuffs
 {
     [SerializeField] private Transform _shieldPos;
@@ -27,6 +25,7 @@ public class PlayerShieldBuff : PlayerBuffs
     private void GetReferenceComponentsAndSetup()
     {
         _anim = GetComponent<Animator>();
+        Debug.Log("Anim != null");
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _circleCollider2D.enabled = false;
     }
@@ -51,7 +50,10 @@ public class PlayerShieldBuff : PlayerBuffs
             transform.position = _shieldPos.position;
         _entryTime = Time.time;
         _isAllowToUpdate = true;
-        _anim.SetTrigger("Idle");
+        if (_anim)
+            _anim.SetTrigger("Idle");
+        else
+            Debug.Log("Anim null");
         _hasTriggeredRunningOut = false;
         _hasDisabled = false;
         _circleCollider2D.enabled = true;
