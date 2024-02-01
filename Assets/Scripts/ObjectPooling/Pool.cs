@@ -4,32 +4,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GameEnums;
 
+[System.Serializable]
+public struct PoolableObject
+{
+    public EPoolable _ePoolable;
+    public GameObject _GObjPoolable;
+    public int _ammount;
+}
+
 public class Pool : BaseSingleton<Pool>
 {
     //Define a pool class that maintains a collection of reusable objects
     //Pools are useful to avoid the cost of allocation and deallocation
     //Ref: https://gameprogrammingpatterns.com/object-pool.html
 
+    [SerializeField] List<PoolableObject> _list = new();
     private Dictionary<EPoolable, List<GameObject>> _dictPool = new();
     private Dictionary<EPoolable, List<BulletPiecePair>> _dictBPPPool = new();
-
-    #region Vfxs
-    [SerializeField] GameObject _dashableVfx;
-    [SerializeField] GameObject _hitShieldVfx;
-    [SerializeField] GameObject _geckoAppearVfx;
-    [SerializeField] GameObject _geckoDisappearVfx;
-    [SerializeField] GameObject _collectFruitsVfx;
-    [SerializeField] GameObject _collectHPVfx;
-    [SerializeField] GameObject _brownExplosionVfx;
-    [SerializeField] int _vfxAmmount;
-    #endregion
-
-    #region Bullets
-    [SerializeField] GameObject _plantBullet;
-    [SerializeField] GameObject _beeBullet;
-    [SerializeField] GameObject _trunkBullet;
-    [SerializeField] int _bulletAmmount;
-    #endregion
 
     #region BulletPieces
     [SerializeField] GameObject _plantBulletPiece1;
@@ -51,17 +42,7 @@ public class Pool : BaseSingleton<Pool>
         FillInFirstDictionary();
         FillInSecondDictionary();
 
-        InstantiateGameObjects(_dashableVfx, EPoolable.Dashable, _vfxAmmount);
-        InstantiateGameObjects(_hitShieldVfx, EPoolable.HitShield, _vfxAmmount);
-        InstantiateGameObjects(_geckoAppearVfx, EPoolable.GeckoAppear, _vfxAmmount);
-        InstantiateGameObjects(_geckoDisappearVfx, EPoolable.GeckoDisappear, _vfxAmmount);
-        InstantiateGameObjects(_collectFruitsVfx, EPoolable.CollectFruits, _vfxAmmount);
-        InstantiateGameObjects(_collectHPVfx, EPoolable.CollectHP, _vfxAmmount);
-        InstantiateGameObjects(_brownExplosionVfx, EPoolable.BrownExplosion, _vfxAmmount);
-
-        InstantiateGameObjects(_plantBullet, EPoolable.PlantBullet, _bulletAmmount);
-        InstantiateGameObjects(_beeBullet, EPoolable.BeeBullet, _bulletAmmount);
-        InstantiateGameObjects(_trunkBullet, EPoolable.TrunkBullet, _bulletAmmount);
+        InstantiateGameObjects();
 
         InstantiateBulletPiece(_plantBulletPiece1, _plantBulletPiece2, EPoolable.PlantBullet, _piecePairAmmount);
         InstantiateBulletPiece(_beeBulletPiece1, _beeBulletPiece2, EPoolable.BeeBullet, _piecePairAmmount);
@@ -70,9 +51,9 @@ public class Pool : BaseSingleton<Pool>
 
     private void FillInFirstDictionary()
     {
-        foreach(EPoolable e in Enum.GetValues(typeof(EPoolable)))
-            if (!_dictPool.ContainsKey(e))
-                _dictPool.Add(e, new List<GameObject>());
+        for (int i = 0; i < _list.Count; i++)
+            if (!_dictPool.ContainsKey(_list[i]._ePoolable))
+                _dictPool.Add(_list[i]._ePoolable, new());
     }
 
     private void FillInSecondDictionary()
@@ -82,14 +63,20 @@ public class Pool : BaseSingleton<Pool>
         _dictBPPPool.Add(EPoolable.TrunkBullet, new());
     }
 
-    private void InstantiateGameObjects(GameObject gameObject, EPoolable bulletName, int ammount)
+    private void InstantiateGameObjects()
     {
-        for (int i = 0; i < ammount; i++)
+        //Duyệt này hơi chuối nhưng ch tìm đc cách khác
+        for (int i = 0; i < _list.Count; i++)
         {
-            GameObject gObj = Instantiate(gameObject);
-            gObj.SetActive(false);
-            _dictPool[bulletName].Add(gObj);
+            for(int j = 0; j < _list[i]._ammount; j++)
+            {
+                GameObject gObj = Instantiate(_list[i]._GObjPoolable);
+                gObj.SetActive(false);
+                _dictPool[_list[i]._ePoolable].Add(gObj);
+            }
         }
+        //Duyệt từng object kiểu PoolableObjects trong cái list
+        //Add GameObject của object đó dựa trên lượng của object đó
     }
 
     private void InstantiateBulletPiece(GameObject piecepair1, GameObject piecepair2, EPoolable BulletPieceType, int ammount)
@@ -105,15 +92,15 @@ public class Pool : BaseSingleton<Pool>
         }
     }
 
-    public GameObject GetObjectInPool(EPoolable bulletType)
+    public GameObject GetObjectInPool(EPoolable objType)
     {
-        for (int i = 0; i < _dictPool[bulletType].Count; i++)
+        for (int i = 0; i < _dictPool[objType].Count; i++)
         {
             //Tìm xem trong cái pool có thằng nào 0 kích hoạt kh thì lôi nó ra
-            if (!_dictPool[bulletType][i].activeInHierarchy)
+            if (!_dictPool[objType][i].activeInHierarchy)
             {
                 //Debug.Log("Bullet: " + _dictPool[bulletType][i].name + " " + i);
-                return _dictPool[bulletType][i];
+                return _dictPool[objType][i];
             }
         }
 

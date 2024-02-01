@@ -52,7 +52,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     protected override void Awake()
     {
         base.Awake();
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     private void Start()

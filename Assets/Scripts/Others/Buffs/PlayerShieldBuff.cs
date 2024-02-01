@@ -4,29 +4,24 @@ using UnityEngine;
 
 public class PlayerShieldBuff : PlayerBuffs
 {
-    [SerializeField] private Transform _shieldPos;
     [SerializeField] private float _runningOutDuration;
 
     private Animator _anim;
     private CircleCollider2D _circleCollider2D;
     private bool _hasTriggeredRunningOut;
     private bool _hasDisabled;
+    Transform _shieldPos;
 
     public override void Awake()
     {
         GetReferenceComponentsAndSetup();
     }
 
-    private void OnEnable()
-    {
-        _shieldPos = GameObject.Find("ShieldPosition").transform;
-    }
-
     private void GetReferenceComponentsAndSetup()
     {
         _anim = GetComponent<Animator>();
-        Debug.Log("Anim != null");
         _circleCollider2D = GetComponent<CircleCollider2D>();
+        _shieldPos = GameObject.Find("ShieldPosition").transform;
         _circleCollider2D.enabled = false;
     }
 
@@ -50,10 +45,7 @@ public class PlayerShieldBuff : PlayerBuffs
             transform.position = _shieldPos.position;
         _entryTime = Time.time;
         _isAllowToUpdate = true;
-        if (_anim)
-            _anim.SetTrigger("Idle");
-        else
-            Debug.Log("Anim null");
+        _anim.SetTrigger("Idle");
         _hasTriggeredRunningOut = false;
         _hasDisabled = false;
         _circleCollider2D.enabled = true;

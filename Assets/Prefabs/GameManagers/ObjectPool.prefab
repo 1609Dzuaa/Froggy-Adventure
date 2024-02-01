@@ -44,18 +44,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ceb3e4e35a78042bd69dfa7fd54b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dashableVfx: {fileID: 1998660734388516865, guid: a564dd734ada47f4bae6f465a485afb2, type: 3}
-  _hitShieldVfx: {fileID: 9098549349965404685, guid: 574193a7d551f8b41a146c3e0c76ea83, type: 3}
-  _geckoAppearVfx: {fileID: 7628199232668580781, guid: d96dbfb5f41369a47b4a466afef923d2, type: 3}
-  _geckoDisappearVfx: {fileID: 1788658637889452120, guid: 888ce5db7a33a1344925738a880413af, type: 3}
-  _collectFruitsVfx: {fileID: 7284400035579609474, guid: 7c5a9912aa7f8114fbe024ed93a127f7, type: 3}
-  _collectHPVfx: {fileID: 8826919538775784978, guid: e15d38cc441ccef49b0b89594cf3c154, type: 3}
-  _brownExplosionVfx: {fileID: 2734915209682569357, guid: a08f4f01407b578438bed11dc83f17da, type: 3}
-  _vfxAmmount: 5
-  _plantBullet: {fileID: 3972120368183892188, guid: d5bd51591c44bd945bfdec6b3d539063, type: 3}
-  _beeBullet: {fileID: 7117984088079876882, guid: 2d91bcca6fb161446aeee430a8efcba9, type: 3}
-  _trunkBullet: {fileID: 2051569452801589770, guid: 562293350eb8cc343a18c82e707cfcfe, type: 3}
-  _bulletAmmount: 7
+  _list:
+  - _ePoolable: 0
+    _GObjPoolable: {fileID: 1998660734388516865, guid: a564dd734ada47f4bae6f465a485afb2, type: 3}
+    _ammount: 1
+  - _ePoolable: 1
+    _GObjPoolable: {fileID: 9098549349965404685, guid: 574193a7d551f8b41a146c3e0c76ea83, type: 3}
+    _ammount: 7
+  - _ePoolable: 2
+    _GObjPoolable: {fileID: 7628199232668580781, guid: d96dbfb5f41369a47b4a466afef923d2, type: 3}
+    _ammount: 2
+  - _ePoolable: 3
+    _GObjPoolable: {fileID: 1788658637889452120, guid: 888ce5db7a33a1344925738a880413af, type: 3}
+    _ammount: 2
+  - _ePoolable: 4
+    _GObjPoolable: {fileID: 7284400035579609474, guid: 7c5a9912aa7f8114fbe024ed93a127f7, type: 3}
+    _ammount: 3
+  - _ePoolable: 5
+    _GObjPoolable: {fileID: 7966323600143816874, guid: 72563b4f5b69419408221d60ac3d90fa, type: 3}
+    _ammount: 1
+  - _ePoolable: 6
+    _GObjPoolable: {fileID: 8826919538775784978, guid: e15d38cc441ccef49b0b89594cf3c154, type: 3}
+    _ammount: 2
+  - _ePoolable: 7
+    _GObjPoolable: {fileID: 2734915209682569357, guid: a08f4f01407b578438bed11dc83f17da, type: 3}
+    _ammount: 5
+  - _ePoolable: 8
+    _GObjPoolable: {fileID: 3972120368183892188, guid: d5bd51591c44bd945bfdec6b3d539063, type: 3}
+    _ammount: 7
+  - _ePoolable: 9
+    _GObjPoolable: {fileID: 7117984088079876882, guid: 2d91bcca6fb161446aeee430a8efcba9, type: 3}
+    _ammount: 7
+  - _ePoolable: 10
+    _GObjPoolable: {fileID: 2051569452801589770, guid: 562293350eb8cc343a18c82e707cfcfe, type: 3}
+    _ammount: 7
   _plantBulletPiece1: {fileID: 4947116023734144812, guid: 8d1a916095ed2aa469e589971232746f, type: 3}
   _plantBulletPiece2: {fileID: 3204134005195933035, guid: 7999f829e4b964c409d79cda253f13ab, type: 3}
   _beeBulletPiece1: {fileID: 501127545072022260, guid: fdc4038c396294a4fba87f7ea1551093, type: 3}
