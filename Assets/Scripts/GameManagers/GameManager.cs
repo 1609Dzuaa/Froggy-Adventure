@@ -21,6 +21,8 @@ public class GameManager : BaseSingleton<GameManager>
 
     public void ReloadScene()
     {
+        //Popdown các panel
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

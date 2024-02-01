@@ -25,7 +25,7 @@ public class SoundsManager : BaseSingleton<SoundsManager>
 
     private void Start()
     {
-        StartCoroutine(PlayBackGroundMusic());
+        //StartCoroutine(PlayBackGroundMusic());
     }
 
     private IEnumerator PlayBackGroundMusic()
