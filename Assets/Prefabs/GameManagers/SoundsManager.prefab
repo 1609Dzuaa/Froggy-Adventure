@@ -48,15 +48,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sfxSounds:
   - _soundName: 4
-    _soundAudioClip: {fileID: 8300000, guid: b99da9a57308d4ba1bee1cf1d9038376, type: 3}
+    _soundAudioClip: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
+  - _soundName: 5
+    _soundAudioClip: {fileID: 8300000, guid: 79180f511d89441b9aa23ccae1992fe0, type: 3}
+  - _soundName: 6
+    _soundAudioClip: {fileID: 8300000, guid: 7e9ee6dc04a5d40d1a5dfc4beb9865e7, type: 3}
   - _soundName: 7
-    _soundAudioClip: {fileID: 8300000, guid: eaae8fe8d600e1f459f34aa5757fa3b8, type: 3}
+    _soundAudioClip: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+  - _soundName: 8
+    _soundAudioClip: {fileID: 8300000, guid: e5d21f5c1c4f2c548b5585f0e365f6bc, type: 3}
+  - _soundName: 9
+    _soundAudioClip: {fileID: 8300000, guid: 130a177e727814a2ea78a886ab72213d, type: 3}
+  - _soundName: 10
+    _soundAudioClip: {fileID: 8300000, guid: 882c18e12d78c2f4bbb5a90f9f2c9b7c, type: 3}
+  - _soundName: 11
+    _soundAudioClip: {fileID: 8300000, guid: 747ba53d9fcb54b4bb2bdd8ea8c7cc85, type: 3}
+  - _soundName: 12
+    _soundAudioClip: {fileID: 8300000, guid: d9419ba0bfac1e84a95418ac5851caf6, type: 3}
+  - _soundName: 13
+    _soundAudioClip: {fileID: 8300000, guid: 37352df82d984c04badfc21627561a26, type: 3}
+  - _soundName: 14
+    _soundAudioClip: {fileID: 8300000, guid: 8d745b333dbb6440e9da37b96b264e3a, type: 3}
   musicSounds:
   - _soundName: 0
+    _soundAudioClip: {fileID: 8300000, guid: 09156757046c0b546b473b6a87ab274d, type: 3}
+  - _soundName: 1
+    _soundAudioClip: {fileID: 8300000, guid: 72c4dcf3dadf7004888c660b0d93fd9c, type: 3}
+  - _soundName: 2
+    _soundAudioClip: {fileID: 8300000, guid: 72c4dcf3dadf7004888c660b0d93fd9c, type: 3}
+  - _soundName: 3
     _soundAudioClip: {fileID: 8300000, guid: 72c4dcf3dadf7004888c660b0d93fd9c, type: 3}
   _sfxSource: {fileID: 4049612880808611050}
   _musicSource: {fileID: 1862278579615023080}
-  _bgmusicDelay: 1
+  _bgmusicDelay: 0.15
 --- !u!82 &4049612880808611050
 AudioSource:
   m_ObjectHideFlags: 0
@@ -165,7 +189,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.7
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0

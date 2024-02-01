@@ -97,7 +97,10 @@
 
     public enum ESoundName
     {
-        Theme,
+        StartMenuTheme,
+        Level1Theme,
+        Level2Theme,
+        BossTheme,
         CollectFruitSfx,
         CollectHPSfx,
         PlayerGotHitSfx,
@@ -110,6 +113,12 @@
         EnemiesDeadSfx,
         GeckoAttackSfx
     }
+
+    #endregion
+
+    #region UI
+
+    public enum EUI { }
 
     #endregion
 }

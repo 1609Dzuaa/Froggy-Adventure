@@ -25,14 +25,14 @@ public class SoundsManager : BaseSingleton<SoundsManager>
 
     private void Start()
     {
-        //StartCoroutine(PlayBackGroundMusic());
+        StartCoroutine(PlayBackGroundMusic());
     }
 
     private IEnumerator PlayBackGroundMusic()
     {
         yield return new WaitForSeconds(_bgmusicDelay);
 
-        PlayMusic(ESoundName.Theme);
+        PlayMusic(ESoundName.StartMenuTheme);
     }
 
     public void PlaySfx(ESoundName sfxName, float volumeScale)
