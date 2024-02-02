@@ -14,7 +14,6 @@ public class PigManager : MEnemiesManager
     [Header("Chase Speed Red Form")]
     [SerializeField] private float _chaseSpeedRed;
 
-    //private PigAttackGreenState _pigAtkGreenState = new();
     private Transform _playerRef;
 
     private PigAttackRedState _pigAtkRedState = new();

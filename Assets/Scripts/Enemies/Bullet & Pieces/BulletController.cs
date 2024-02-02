@@ -51,12 +51,11 @@ public class BulletController : MonoBehaviour
 
     public string BulletID { get { return _bulletID; } set { _bulletID = value; } }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _bulletID = Guid.NewGuid().ToString(); //Đảm bảo mỗi bullet sẽ có ID riêng
-        //Debug.Log("Id cua tao la1: " + _bulletID);
+        Debug.Log("Id cua tao la: " + _bulletID);
     }
 
     private void OnEnable()
@@ -64,6 +63,7 @@ public class BulletController : MonoBehaviour
         _entryTime = Time.time;
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BulletOnReceiveInfo, ReceiveInfo);
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
+        //Debug.Log("OnEnable sub event");
     }
 
     // Update is called once per frame
@@ -149,7 +149,6 @@ public class BulletController : MonoBehaviour
 
     private void ReceiveInfo(object obj)
     {
-        //prob here
         BulletInfor bulletInfo = (BulletInfor)obj;
         if (_bulletID != bulletInfo.ID) 
             return;

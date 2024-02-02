@@ -70,6 +70,7 @@ public class Pool : BaseSingleton<Pool>
         {
             for(int j = 0; j < _list[i]._ammount; j++)
             {
+                //Awake & OnEnable của gObj vẫn đc gọi dù SetActive(false)
                 GameObject gObj = Instantiate(_list[i]._GObjPoolable);
                 gObj.SetActive(false);
                 _dictPool[_list[i]._ePoolable].Add(gObj);

@@ -48,6 +48,7 @@ public class MushroomManager : MEnemiesManager
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
         {
+            ChangeState(_mEnemiesIdleState);
             return;
         }
 

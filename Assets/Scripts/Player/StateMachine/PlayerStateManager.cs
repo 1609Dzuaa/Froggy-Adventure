@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 
+//bug Player từ GH -> Dead (Dính Trap r văng xuống DeadZone)
 public class PlayerStateManager : MonoBehaviour
 {
     //private PlayerStateManager _instance;
