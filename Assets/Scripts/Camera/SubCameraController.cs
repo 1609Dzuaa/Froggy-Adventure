@@ -12,6 +12,11 @@ public class SubCameraController : MonoBehaviour
         CameraController.Instance.AddCameraToList(GetComponent<CinemachineVirtualCamera>());
     }
 
+    private void OnEnable()
+    {
+        CameraController.Instance.AddCameraToList(GetComponent<CinemachineVirtualCamera>());
+    }
+
     private void OnDisable()
     {
         CameraController.Instance.RemoveCameraFromList(GetComponent<CinemachineVirtualCamera>());

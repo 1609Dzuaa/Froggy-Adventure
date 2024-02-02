@@ -57,6 +57,8 @@ public class OnlyFanController : GameObjectManager
     private void BeingDisabled(object obj)
     {
         //Chú ý ở đây kh check vì muốn khi bấm SW thì vô hiệu hoá mọi Fan hiện có
+
+        //Có bug bị null ở đây
         _anim.SetTrigger("Off");
         _state = 1;
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
