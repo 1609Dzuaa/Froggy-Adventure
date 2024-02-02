@@ -28,6 +28,8 @@ public class GameManager : BaseSingleton<GameManager>
 
     public void SwitchToNextScene()
     {
+        UIManager.Instance.PopDownCreditsPanel();
+        UIManager.Instance.PopDownSettingsPanel();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
