@@ -25,7 +25,7 @@ public class SoundsManager : BaseSingleton<SoundsManager>
 
     private void Start()
     {
-        //StartCoroutine(PlayBackGroundMusic());
+        StartCoroutine(PlayBackGroundMusic());
     }
 
     private IEnumerator PlayBackGroundMusic()
@@ -59,5 +59,15 @@ public class SoundsManager : BaseSingleton<SoundsManager>
             _musicSource.clip = s.SoundAudioClip;
             _musicSource.Play();
         }
+    }
+
+    public void ChangeMusicVolume(float para)
+    {
+        _musicSource.volume = para;
+    }
+
+    public void ChangeSfxVolume(float para)
+    {
+        _sfxSource.volume = para;
     }
 }
