@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Có vấn đề chung với các Pool khi reload Scene, xem lại cách add
-/// Cần thêm UI Manager (vì mỗi lần load lại scene thì dính bug _uiHP)
-/// Load lại Scene, Dash thử 1 lần cũng dính bug ( Xxem lại việc add các vfx)
-/// Reconstruct lại SoundManager
-/// R sau đó hẵng xử lý các vấn đề liên quan data của Player
+/// Xử lý UI khi loose, win game
+/// Xử lý UI nâng cấp skill
+/// Xử lý Data Player khi chết
+/// Build Level 2 và Boss ở cuối Level
+/// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
 /// </summary>
 
 public class GameManager : BaseSingleton<GameManager>

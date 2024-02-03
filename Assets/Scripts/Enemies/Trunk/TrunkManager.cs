@@ -80,7 +80,10 @@ public class TrunkManager : MEnemiesManager
     private void SpawnBullet()
     {
         if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        {
+            ChangeState(_trunkIdleState);
             return;
+        }
 
         GameObject bullet = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.TrunkBullet);
         bullet.SetActive(true);
