@@ -13,6 +13,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : BaseSingleton<GameManager>
 {
+    [SerializeField] float _delayTrans;
+
     protected override void Awake()
     {
         base.Awake();
@@ -26,10 +28,20 @@ public class GameManager : BaseSingleton<GameManager>
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void SwitchToNextScene()
+    public void SwitchNextScene()
+    {
+        UIManager.Instance.ChangeTransitionCanvasOrder();
+        StartCoroutine(SwitchToNextScene());
+    }
+
+    public IEnumerator SwitchToNextScene()
     {
         UIManager.Instance.PopDownCreditsPanel();
         UIManager.Instance.PopDownSettingsPanel();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        UIManager.Instance.TriggerAnimation(GameConstants.SCENE_TRANS_END);
+
+        yield return new WaitForSeconds(_delayTrans);
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        UIManager.Instance.TriggerAnimation(GameConstants.SCENE_TRANS_START);
     }
 }

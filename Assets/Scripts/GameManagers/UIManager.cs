@@ -8,6 +8,9 @@ public class UIManager : BaseSingleton<UIManager>
     //Cần căn chỉnh pivot, anchors
     //Còn panel Level 1 - 2, loose Panel, win Panel
 
+    [SerializeField] Animator _anim;
+    [SerializeField] Canvas _sceneTransCanvas;
+
     GameObject _creditsPanel;
     GameObject _settingsPanel;
 
@@ -23,8 +26,6 @@ public class UIManager : BaseSingleton<UIManager>
         _settingsPanel = GameObject.FindWithTag(GameConstants.SETTINGS_TAG);
         _creditsPanel.SetActive(false);
         _settingsPanel.SetActive(false);
-        //DontDestroyOnLoad(_settingsPanel);
-        //DontDestroyOnLoad(_creditsPanel);
     }
 
     private void Update()
@@ -60,4 +61,23 @@ public class UIManager : BaseSingleton<UIManager>
     {
         _creditsPanel.SetActive(false);
     }
+
+    public void ChangeTransitionCanvasOrder()
+    {
+        _sceneTransCanvas.sortingOrder = 3;
+    }
+
+    public void TriggerAnimation(string para)
+    {
+        switch(para)
+        {
+            case GameConstants.SCENE_TRANS_END:
+                _anim.SetTrigger(GameConstants.SCENE_TRANS_END);
+                break;
+            case GameConstants.SCENE_TRANS_START:
+                _anim.SetTrigger(GameConstants.SCENE_TRANS_START);
+                break;
+        }
+    }
+
 }

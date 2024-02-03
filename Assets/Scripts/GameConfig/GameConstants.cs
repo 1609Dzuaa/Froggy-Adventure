@@ -44,6 +44,11 @@
     public const string FIRE_TRAP_ANIM_ON = "On";
     #endregion
 
+    #region SceneTrans Fade IN - OUT
+    public const string SCENE_TRANS_START = "Start";
+    public const string SCENE_TRANS_END = "End";
+    #endregion
+
     //-----------------------------//
     #endregion
 
