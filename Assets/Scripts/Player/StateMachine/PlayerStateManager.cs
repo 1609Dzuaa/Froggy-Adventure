@@ -233,7 +233,7 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG))
             HandleDeadState();
         else if (collision.CompareTag(GameConstants.PORTAL_TAG))
-            GameManager.Instance.ReloadScene();
+            GameManager.Instance.SwitchToScene(1);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -523,6 +523,7 @@ public class PlayerStateManager : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Static;
         gameObject.layer = LayerMask.NameToLayer("Enemies");
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerDeadSfx, 1.0f);
+        GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void HandleCollideGround()
@@ -535,7 +536,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         //yield return new WaitForSeconds(1f);
 
-        GameManager.Instance.ReloadScene();
+        //GameManager.Instance.ReloadScene();
     }
 
     private void SpawnDust()
@@ -634,6 +635,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void PushBack(object obj)
     {
+        //Vẫn còn bug animation của fan và rb null khi reload scene ?
         PushBackInfor pInfo = (PushBackInfor)obj;
         rb.AddForce(pInfo.IsPushFromRight ? pInfo.PushForce * new Vector2(-1f, 1f) : pInfo.PushForce);
     }

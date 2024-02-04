@@ -55,7 +55,7 @@ public class BulletController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _bulletID = Guid.NewGuid().ToString(); //Đảm bảo mỗi bullet sẽ có ID riêng
-        Debug.Log("Id cua tao la: " + _bulletID);
+        //Debug.Log("Id cua tao la: " + _bulletID);
     }
 
     private void OnEnable()

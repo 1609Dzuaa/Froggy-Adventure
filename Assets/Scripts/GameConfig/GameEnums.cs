@@ -111,7 +111,11 @@
         PlantShootSfx,
         TrunkShootSfx,
         EnemiesDeadSfx,
-        GeckoAttackSfx
+        GeckoAttackSfx,
+        SceneEntrySfx,
+        ButtonSelectedSfx,
+        CloseButtonSfx,
+
     }
 
     #endregion

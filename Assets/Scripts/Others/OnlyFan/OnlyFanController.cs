@@ -34,11 +34,9 @@ public class OnlyFanController : GameObjectManager
     protected override void SetUpProperties()
     {
         base.SetUpProperties();
-        //Debug.Log("z Deg: " + transform.eulerAngles.z);
         _isFacingRight = (transform.eulerAngles.z) >= 90f && (transform.eulerAngles.z) < 270f;
         _state = 0;
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
-        //Debug.Log("ISFR: " + _isFacingRight);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -64,8 +62,11 @@ public class OnlyFanController : GameObjectManager
         //Chú ý ở đây kh check vì muốn khi bấm SW thì vô hiệu hoá mọi Fan hiện có
 
         //Có bug bị null ở đây
-        _anim.SetTrigger("Off");
+        if (!_anim)
+            Debug.Log("Fan's anim NULL");
+        else
+            _anim.SetTrigger("Off");
         _state = 1;
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
+        //EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
     }
 }

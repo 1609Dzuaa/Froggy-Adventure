@@ -334,6 +334,38 @@ PrefabInstance:
       propertyPath: _bgmusicDelay
       value: 0.15
       objectReference: {fileID: 0}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[11]._soundName
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[12]._soundName
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[13]._soundName
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[4]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: bdb2271187074944daab1e8de178d2a4, type: 3}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[11]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 440f2ea1e0fb4fb49902770a78fd8489, type: 3}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[12]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b4917387e3b823644a106299799d9a36, type: 3}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[13]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d787573be2d8f334c9138c3f5964d459, type: 3}
     - target: {fileID: 1862278579615023080, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: Loop
       value: 1
