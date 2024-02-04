@@ -2,7 +2,7 @@
 
 public class DealerTalkState : NPCTalkState
 {
-    private DealerManager _dealerManager;
+    /*private DealerManager _dealerManager;
 
     public override void EnterState(CharactersManager charactersManager)
     {
@@ -38,5 +38,5 @@ public class DealerTalkState : NPCTalkState
 
         //Lấy và bắt đầu Thoại
         npcManagers.GetDialog().StartDialog(startIndex);
-    }
+    }*/
 }
