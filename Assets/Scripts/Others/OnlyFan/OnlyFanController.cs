@@ -20,6 +20,11 @@ public class OnlyFanController : GameObjectManager
     int _state;
     bool _isFacingRight;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {

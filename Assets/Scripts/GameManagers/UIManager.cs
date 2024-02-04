@@ -13,6 +13,7 @@ public class UIManager : BaseSingleton<UIManager>
 
     GameObject _creditsPanel;
     GameObject _settingsPanel;
+    bool _canPopUpPanel = true;
 
     protected override void Awake()
     {
@@ -31,13 +32,13 @@ public class UIManager : BaseSingleton<UIManager>
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
             PopUpSettingsPanel();
-        }
     }
 
     public void PopUpSettingsPanel()
     {
+        if (!_canPopUpPanel) return;
+
         _settingsPanel.SetActive(true);
         _creditsPanel.SetActive(false);
         if (SceneManager.GetActiveScene().buildIndex != 0)
@@ -53,7 +54,9 @@ public class UIManager : BaseSingleton<UIManager>
 
     public void PopUpCreditsPanel()
     {
-       _creditsPanel.SetActive(true);
+        if (!_canPopUpPanel) return;
+
+        _creditsPanel.SetActive(true);
        _settingsPanel.SetActive(false);
     }
 
@@ -62,9 +65,16 @@ public class UIManager : BaseSingleton<UIManager>
         _creditsPanel.SetActive(false);
     }
 
-    public void ChangeTransitionCanvasOrder()
+    public void IncreaseTransitionCanvasOrder()
     {
+        _canPopUpPanel = false;
         _sceneTransCanvas.sortingOrder = 3;
+    }
+
+    public void DecreaseTransitionCanvasOrder()
+    {
+        _sceneTransCanvas.sortingOrder = -1;
+        _canPopUpPanel = true;
     }
 
     public void TriggerAnimation(string para)

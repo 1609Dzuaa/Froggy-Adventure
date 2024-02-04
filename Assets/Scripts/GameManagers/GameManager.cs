@@ -30,7 +30,7 @@ public class GameManager : BaseSingleton<GameManager>
 
     public void SwitchNextScene()
     {
-        UIManager.Instance.ChangeTransitionCanvasOrder();
+        UIManager.Instance.IncreaseTransitionCanvasOrder();
         StartCoroutine(SwitchToNextScene());
     }
 

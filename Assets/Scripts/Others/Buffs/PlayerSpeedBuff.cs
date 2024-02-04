@@ -24,7 +24,7 @@ public class PlayerSpeedBuff : PlayerBuffs
             {
                 _isAllowToUpdate = false;
                 _speedBuffIcon.gameObject.SetActive(false);
-                Debug.Log("Timeout!");
+                //Debug.Log("Timeout!");
             }
             /*else
                 Debug.Log("dang buff Speed");*/
