@@ -164,12 +164,14 @@ public class PlayerStateManager : MonoBehaviour
         rb.gravityScale = _playerStats.GravScale;
     }
 
-    private void OnDisable()
+    private void UnsubcribeAllEvents()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnTakeDamage, BeingDamaged);
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnBeingPushedBack, PushBack);
+        //Unsub mọi Events khi load lại scene tránh bị null ref từ event cũ
     }
 
     public void ChangeState(PlayerBaseState state)
@@ -523,6 +525,7 @@ public class PlayerStateManager : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Static;
         gameObject.layer = LayerMask.NameToLayer("Enemies");
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerDeadSfx, 1.0f);
+        UnsubcribeAllEvents();
         GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -530,13 +533,6 @@ public class PlayerStateManager : MonoBehaviour
     {
         isOnGround = true;
         _canDbJump = true; //Player chạm đất thì mới cho DbJump tiếp
-    }
-
-    private void ReloadScence()
-    {
-        //yield return new WaitForSeconds(1f);
-
-        //GameManager.Instance.ReloadScene();
     }
 
     private void SpawnDust()
@@ -635,9 +631,11 @@ public class PlayerStateManager : MonoBehaviour
 
     private void PushBack(object obj)
     {
-        //Vẫn còn bug animation của fan và rb null khi reload scene ?
         PushBackInfor pInfo = (PushBackInfor)obj;
-        rb.AddForce(pInfo.IsPushFromRight ? pInfo.PushForce * new Vector2(-1f, 1f) : pInfo.PushForce);
+        if (rb)
+            rb.AddForce(pInfo.IsPushFromRight ? pInfo.PushForce * new Vector2(-1f, 1f) : pInfo.PushForce);
+        else
+            Debug.Log("RB Player nULL");
     }
 
 }

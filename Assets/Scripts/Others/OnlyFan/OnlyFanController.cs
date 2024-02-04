@@ -67,6 +67,6 @@ public class OnlyFanController : GameObjectManager
         else
             _anim.SetTrigger("Off");
         _state = 1;
-        //EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
     }
 }

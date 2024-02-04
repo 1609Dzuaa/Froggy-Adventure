@@ -23,6 +23,7 @@ public class BunnyGotHitState : MEnemiesGotHitState
         _mEnemiesManager.GetRigidbody2D().velocity = Vector2.zero;
         _mEnemiesManager.GetRigidbody2D().AddForce(_mEnemiesManager.EnemiesSO.KnockForce / GameConstants.BUNNY_KNOCK_FORCE_DECREASE, ForceMode2D.Impulse);
         _mEnemiesManager.GetCollider2D.enabled = false;
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.EnemiesDeadSfx, 1.0f);
     }
 
     public override void FixedUpdate() { }

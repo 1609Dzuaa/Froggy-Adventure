@@ -11,7 +11,7 @@ public class SnailGotHitState : MEnemiesGotHitState
         _snailManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ESnailState.gotHit);
         _snailManager = (SnailManager)charactersManager;
         HandleBeforeDestroy();
-        Debug.Log("GH");
+        //Debug.Log("GH");
     }
 
     public override void ExitState() { }
@@ -27,12 +27,7 @@ public class SnailGotHitState : MEnemiesGotHitState
         _snailManager.GetRigidbody2D().velocity = Vector2.zero; //Cố định vị trí
         _snailManager.GetRigidbody2D().AddForce(_snailManager.EnemiesSO.KnockForce, ForceMode2D.Impulse);
         _snailManager.GetCollider2D.enabled = false;
-        //SoundsManager.Instance.GetTypeOfSound(GameConstants.ENEMIES_DEAD_SOUND).Play();
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.EnemiesDeadSfx, 1.0f);
         _snailManager.GetRigidbody2D().gravityScale = 1f;
-
-        /*_snailManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ESnailState.gotHit);
-        _snailManager.GetRigidbody2D().velocity = Vector2.zero; //Cố định vị trí
-        _snailManager.GetCollider2D.enabled = false;
-        _snailManager.GetRigidbody2D().gravityScale = 1f;*/
     }
 }
