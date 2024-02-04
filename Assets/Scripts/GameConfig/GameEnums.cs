@@ -115,7 +115,10 @@
         SceneEntrySfx,
         ButtonSelectedSfx,
         CloseButtonSfx,
-
+        BeeShootSfx,
+        ShieldBuffSfx,
+        AbsorbBuffSfx,
+        InvisibleBuffSfx,
     }
 
     #endregion

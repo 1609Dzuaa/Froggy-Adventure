@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 /// Xử lý Data Player khi chết
 /// Build Level 2 và Boss ở cuối Level
 /// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
+/// Xem lại vẫn bug cutscene đoạn Key ?
 /// </summary>
 
 public class GameManager : BaseSingleton<GameManager>

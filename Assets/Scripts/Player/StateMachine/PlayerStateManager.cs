@@ -45,6 +45,7 @@ public class PlayerStateManager : MonoBehaviour
     private Vector2 _interactPosition;
     private bool _isVunerable;
     private bool _isHitFromRightSide;
+    private bool _isOnPlatform;
 
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
@@ -226,7 +227,10 @@ public class PlayerStateManager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(GameConstants.PLATFORM_TAG))
+        {
             transform.SetParent(collision.gameObject.transform);
+            _isOnPlatform = true;
+        }
         else if (collision.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
         {
             gotHitState.IsHitByTrap = true;
@@ -251,7 +255,10 @@ public class PlayerStateManager : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag(GameConstants.PLATFORM_TAG))
+        {
             transform.SetParent(null);
+            _isOnPlatform = false;
+        }
     }
 
     private void BeingDamaged(object obj)
@@ -461,7 +468,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void GroundAndWallCheck()
     {
-        isOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
+        if (!_isOnPlatform)
+            isOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
         if (isFacingRight)
         {
             IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);

@@ -45,5 +45,6 @@ public class PlayerAbsorbBuff : PlayerBuffs
     {
         base.ApplyBuff();
         _tempShieldIcon.gameObject.SetActive(true);
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.AbsorbBuffSfx, 1.0f);
     }
 }

@@ -49,6 +49,7 @@ public class PlayerShieldBuff : PlayerBuffs
         _hasTriggeredRunningOut = false;
         _hasDisabled = false;
         _circleCollider2D.enabled = true;
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.ShieldBuffSfx, 1.0f);
     }
 
     private bool CheckIfRunningOut()
