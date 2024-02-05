@@ -32,6 +32,8 @@ public class UIManager : BaseSingleton<UIManager>
         _creditsPanel.SetActive(false);
         _settingsPanel.SetActive(false);
         _hpsPanel.SetActive(false);
+        _loosePanel.SetActive(false);
+        _winPanel.SetActive(false);
     }
 
     private void Update()
