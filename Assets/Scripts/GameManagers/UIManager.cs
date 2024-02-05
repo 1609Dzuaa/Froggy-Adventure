@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static GameEnums;
 
 public class UIManager : BaseSingleton<UIManager>
 {
@@ -11,8 +12,12 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] Animator _anim;
     [SerializeField] Canvas _sceneTransCanvas;
 
-    GameObject _creditsPanel;
-    GameObject _settingsPanel;
+    [SerializeField] GameObject _creditsPanel;
+    [SerializeField] GameObject _settingsPanel;
+    [SerializeField] GameObject _winPanel;
+    [SerializeField] GameObject _loosePanel;
+    [SerializeField] GameObject _hpsPanel;
+
     bool _canPopUpPanel = true;
     bool _canPlayCloseSfx = true;
 
@@ -24,10 +29,9 @@ public class UIManager : BaseSingleton<UIManager>
 
     private void Start()
     {
-        _creditsPanel = GameObject.FindWithTag(GameConstants.CREDITS_TAG);
-        _settingsPanel = GameObject.FindWithTag(GameConstants.SETTINGS_TAG);
         _creditsPanel.SetActive(false);
         _settingsPanel.SetActive(false);
+        _hpsPanel.SetActive(false);
     }
 
     private void Update()
@@ -42,7 +46,7 @@ public class UIManager : BaseSingleton<UIManager>
 
         _settingsPanel.SetActive(true);
         _creditsPanel.SetActive(false);
-        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.ButtonSelectedSfx, 1.0f);
+        SoundsManager.Instance.PlaySfx(ESoundName.ButtonSelectedSfx, 1.0f);
         if (SceneManager.GetActiveScene().buildIndex != 0)
             Time.timeScale = 0f;
     }
@@ -51,7 +55,7 @@ public class UIManager : BaseSingleton<UIManager>
     {
         _settingsPanel.SetActive(false);
         if (_canPlayCloseSfx)
-            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.CloseButtonSfx, 1.0f);
+            SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
         if (SceneManager.GetActiveScene().buildIndex != 0)
             Time.timeScale = 1f;
     }
@@ -62,13 +66,13 @@ public class UIManager : BaseSingleton<UIManager>
 
         _creditsPanel.SetActive(true);
         _settingsPanel.SetActive(false);
-        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.ButtonSelectedSfx, 1.0f);
+        SoundsManager.Instance.PlaySfx(ESoundName.ButtonSelectedSfx, 1.0f);
     }
 
     public void PopDownCreditsPanel()
     {
         if (_canPlayCloseSfx)
-            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.CloseButtonSfx, 1.0f);
+            SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
         _creditsPanel.SetActive(false);
     }
 
@@ -98,6 +102,12 @@ public class UIManager : BaseSingleton<UIManager>
                 _anim.SetTrigger(GameConstants.SCENE_TRANS_START);
                 break;
         }
+    }
+
+    public void PopUpHPCanvas()
+    {
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+            _hpsPanel.SetActive(true);
     }
 
 }

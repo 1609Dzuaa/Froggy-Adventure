@@ -125,7 +125,13 @@
 
     #region UI
 
-    public enum EUI { }
+    public enum EUIPanel 
+    {
+        SettingsPanel,
+        CreditsPanel,
+        WinPanel,
+        LoosePanel,
+    }
 
     #endregion
 }

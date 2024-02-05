@@ -529,6 +529,15 @@ public class PlayerStateManager : MonoBehaviour
 
     public void HandleDeadState()
     {
+        if (PlayerHealthManager.Instance.CurrentHP > 0)
+        {
+            PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
+            if (PlayerHealthManager.Instance.CurrentHP == 0)
+                GameManager.Instance.SwitchScene(SceneManager.GetActiveScene().buildIndex - 1);
+        }
+        else
+            GameManager.Instance.SwitchScene(0);
+
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
         gameObject.layer = LayerMask.NameToLayer("Enemies");

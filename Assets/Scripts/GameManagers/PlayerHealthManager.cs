@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public struct HP
@@ -9,8 +10,6 @@ public struct HP
     public Sprite _HPSprite;
     public Dictionary<int, Sprite> _dictHP; //Key là state, tương ứng là sprite của state đó
 }
-
-//Có vấn đề với class này khi Switch Scene, => Tạo thêm class UIManager
 
 public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 {
@@ -108,8 +107,11 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void Update()
     {
-        HandleIterateTempHP();
-        UpdateHPToUI();
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            HandleIterateTempHP();
+            UpdateHPToUI();
+        }
         //Debug.Log("temp: " + _tempHP);
         //Debug.Log("Curr, TempHP , state: " + _currentHP + ", " + _tempHP + "," + _HPs[_tempHP]._state);
     }

@@ -26,7 +26,7 @@ public class TriggerZone : MonoBehaviour
         {
             _boxCol.enabled = false;
             _playableDirector.Play();
-            Debug.Log("PlayEnter");
+            //Debug.Log("PlayEnter");
         }
     }
 
@@ -36,7 +36,7 @@ public class TriggerZone : MonoBehaviour
         {
             _boxCol.enabled = false;
             _playableDirector.Play();
-            Debug.Log("PlayStay");
+            //Debug.Log("PlayStay");
         }
     }
 }
