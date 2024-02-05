@@ -1,35 +1,30 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class CheckPointController : MonoBehaviour
+public class CheckPointController : GameObjectManager
 {
-    [SerializeField] private AudioSource checkpoint_Sound;
-    private bool checkActivated = false;
-    void Start()
-    {
-        
-    }
+    private bool _checkActivated = false;
 
-    // Update is called once per frame
-    void Update()
+    protected override void Awake()
     {
-        
+        base.Awake();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player" && !checkActivated)
+        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_checkActivated)
         {
-            checkActivated = true; //Make sure only activate once
-            checkpoint_Sound.Play();
-            Invoke("LoadScene", 2f); //Call "function" after 2sec
+            _checkActivated = true;
+            _anim.SetTrigger(GameConstants.CHECKPOINT_ANIM_FLAG_OUT);
+            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.CheckpointSfx, 1.0f);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnUpdateRespawnPosition, null);
         }
     }
 
-    private void LoadScene()
+    private void SetIdleAnimation()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Switch next scene 0->1
+        _anim.SetTrigger(GameConstants.CHECKPOINT_ANIM_FLAG_IDLE);
+        //Event của animation flag out
     }
 }

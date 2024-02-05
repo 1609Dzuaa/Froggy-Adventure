@@ -180,7 +180,8 @@ public class MEnemiesManager : EnemiesManager
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             ChangeState(_mEnemiesGotHitState);
         }
-        else if (collision.CompareTag(GameConstants.TRAP_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)
+        else if (collision.CompareTag(GameConstants.TRAP_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState
+            || collision.CompareTag(GameConstants.DEAD_ZONE_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)
         {
             _hasGotHit = true;
             ChangeState(_mEnemiesGotHitState);

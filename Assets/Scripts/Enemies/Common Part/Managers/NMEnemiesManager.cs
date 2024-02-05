@@ -54,6 +54,11 @@ public class NMEnemiesManager : EnemiesManager
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             ChangeState(_nmEnemiesGotHitState);
         }
+        else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState)
+        {
+            _hasGotHit = true;
+            ChangeState(_nmEnemiesGotHitState);
+        }
     }
 
     protected virtual void AllowAttackPlayer()

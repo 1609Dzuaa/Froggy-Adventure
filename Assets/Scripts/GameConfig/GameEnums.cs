@@ -69,6 +69,7 @@
         PlayerOnInteractWithNPCs,
         PlayerOnStopInteractWithNPCs,
         PlayerOnBeingPushedBack,
+        PlayerOnUpdateRespawnPosition,
         FanOnBeingDisabled
     }
 
@@ -119,6 +120,7 @@
         ShieldBuffSfx,
         AbsorbBuffSfx,
         InvisibleBuffSfx,
+        CheckpointSfx,
     }
 
     #endregion

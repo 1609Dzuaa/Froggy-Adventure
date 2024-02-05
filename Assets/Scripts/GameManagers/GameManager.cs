@@ -41,8 +41,7 @@ public class GameManager : BaseSingleton<GameManager>
     public IEnumerator SwitchScene(int sceneIndex)
     {
         UIManager.Instance.IncreaseTransitionCanvasOrder();
-        UIManager.Instance.PopDownCreditsPanel();
-        UIManager.Instance.PopDownSettingsPanel();
+        UIManager.Instance.PopDownAllPanels();
         UIManager.Instance.TriggerAnimation(GameConstants.SCENE_TRANS_END);
 
         yield return new WaitForSeconds(_delayTrans);
@@ -61,12 +60,14 @@ public class GameManager : BaseSingleton<GameManager>
 
     public void BackHome()
     {
-        SceneManager.LoadScene(0);
+        UIManager.Instance.PopDownAllPanels();
+        SceneManager.LoadSceneAsync(0);
         //OnClick của button "Home"
     }
 
     public void Restart()
     {
+        UIManager.Instance.PopDownAllPanels();
         SwitchToScene(1);
         //OnClick của button "Restart"
         //Chơi lại từ đầu

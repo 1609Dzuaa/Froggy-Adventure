@@ -16,6 +16,7 @@ public class EventsManager : BaseSingleton<EventsManager>
     private readonly Action<object> PlayerOnInteractWithNPCs;
     private readonly Action<object> PlayerOnStopInteractWithNPCs;
     private readonly Action<object> PlayerOnBeingPushedBack;
+    private readonly Action<object> PlayerOnUpdateRespawnPosition;
     private readonly Action<object> FanOnBeingDisabled;
 
 
@@ -39,6 +40,7 @@ public class EventsManager : BaseSingleton<EventsManager>
         _dictEvents.Add(GameEnums.EEvents.PlayerOnInteractWithNPCs, PlayerOnInteractWithNPCs);
         _dictEvents.Add(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, PlayerOnStopInteractWithNPCs); 
         _dictEvents.Add(GameEnums.EEvents.PlayerOnBeingPushedBack, PlayerOnBeingPushedBack);
+        _dictEvents.Add(GameEnums.EEvents.PlayerOnUpdateRespawnPosition, PlayerOnUpdateRespawnPosition);
         _dictEvents.Add(GameEnums.EEvents.FanOnBeingDisabled, FanOnBeingDisabled);
         //Val là cái event, còn thg nào quan tâm cái event đó thì gọi hàm dưới
     }

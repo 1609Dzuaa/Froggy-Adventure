@@ -19,7 +19,7 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] GameObject _hpsPanel;
 
     bool _canPopUpPanel = true;
-    bool _canPlayCloseSfx = true;
+    bool _canPlayCloseSfx = true; //Chỉ có thể play close sfx khi chủ động bấm X
 
     protected override void Awake()
     {
@@ -32,8 +32,8 @@ public class UIManager : BaseSingleton<UIManager>
         _creditsPanel.SetActive(false);
         _settingsPanel.SetActive(false);
         _hpsPanel.SetActive(false);
-        _loosePanel.SetActive(false);
-        _winPanel.SetActive(false);
+        //_loosePanel.SetActive(false);
+        //_winPanel.SetActive(false);
     }
 
     private void Update()
@@ -53,7 +53,7 @@ public class UIManager : BaseSingleton<UIManager>
             Time.timeScale = 0f;
     }
 
-    public void PopDownSettingsPanel()
+    private void PopDownSettingsPanel()
     {
         _settingsPanel.SetActive(false);
         if (_canPlayCloseSfx)
@@ -71,11 +71,21 @@ public class UIManager : BaseSingleton<UIManager>
         SoundsManager.Instance.PlaySfx(ESoundName.ButtonSelectedSfx, 1.0f);
     }
 
-    public void PopDownCreditsPanel()
+    private void PopDownCreditsPanel()
     {
         if (_canPlayCloseSfx)
             SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
         _creditsPanel.SetActive(false);
+    }
+
+    private void PopDownWinPanel()
+    {
+        _winPanel.SetActive(false);
+    }
+
+    private void PopDownLoosePanel()
+    {
+        _loosePanel.SetActive(false);
     }
 
     public void IncreaseTransitionCanvasOrder()
@@ -110,6 +120,15 @@ public class UIManager : BaseSingleton<UIManager>
     {
         if (SceneManager.GetActiveScene().buildIndex != 0)
             _hpsPanel.SetActive(true);
+        //Thanh máu chỉ hiện ở các scene kh phải là Start Scene
+    }
+
+    public void PopDownAllPanels()
+    {
+        PopDownCreditsPanel();
+        PopDownSettingsPanel();
+        PopDownWinPanel();
+        PopDownLoosePanel();
     }
 
 }

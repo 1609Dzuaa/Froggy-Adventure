@@ -49,6 +49,11 @@
     public const string SCENE_TRANS_END = "End";
     #endregion
 
+    #region Checkpoint
+    public const string CHECKPOINT_ANIM_FLAG_OUT = "FlagOut";
+    public const string CHECKPOINT_ANIM_FLAG_IDLE = "FlagIdle";
+    #endregion
+
     //-----------------------------//
     #endregion
 
