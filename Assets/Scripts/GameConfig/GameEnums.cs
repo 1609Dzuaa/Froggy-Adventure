@@ -125,4 +125,15 @@
     }
 
     #endregion
+
+    #region SPECIAL STATES
+
+    public enum ESpecialStates
+    {
+        Deleted,
+        Disabled,
+        Actived,
+    }
+
+    #endregion
 }

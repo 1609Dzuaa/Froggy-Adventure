@@ -11,6 +11,23 @@ public class CheckPointController : GameObjectManager
         base.Awake();
     }
 
+    protected override void HandleObjectState()
+    {
+        _ID = gameObject.name;
+
+        if (!PlayerPrefs.HasKey(_ID))
+        {
+            PlayerPrefs.SetString(_ID, _ID);
+            PlayerPrefs.Save();
+        }
+
+        if (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Actived + _ID))
+        {
+            _anim.SetTrigger(GameConstants.CHECKPOINT_ANIM_FLAG_IDLE);
+            _checkActivated = true;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_checkActivated)
@@ -19,6 +36,7 @@ public class CheckPointController : GameObjectManager
             _anim.SetTrigger(GameConstants.CHECKPOINT_ANIM_FLAG_OUT);
             SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.CheckpointSfx, 1.0f);
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnUpdateRespawnPosition, null);
+            PlayerPrefs.SetString(GameEnums.ESpecialStates.Actived + _ID, "Activated");
         }
     }
 

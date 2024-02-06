@@ -15,7 +15,7 @@ public class GameObjectManager : MonoBehaviour
     protected virtual void Awake()
     {
         GetReferenceComponents();
-        HandleObjectID();
+        HandleObjectState();
     }
 
     // Start is called before the first frame update
@@ -35,7 +35,7 @@ public class GameObjectManager : MonoBehaviour
     /// Để việc chơi lại (Load lại scene) sẽ giữ nguyên hiện trạng chứ 0 reload lại toàn bộ
     /// </summary>
 
-    protected virtual void HandleObjectID()
+    protected virtual void HandleObjectState()
     {
         _ID = gameObject.name;
 
@@ -45,7 +45,7 @@ public class GameObjectManager : MonoBehaviour
             PlayerPrefs.Save();
         }
 
-        if (PlayerPrefs.HasKey("Deleted" + _ID))
+        if (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Deleted + _ID))
             Destroy(gameObject);
         //Debug.Log("ID: " + _ID);
     }

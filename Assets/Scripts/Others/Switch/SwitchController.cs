@@ -1,14 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SwitchController : GameObjectManager
 {
     bool _hasTriggered;
     // Start is called before the first frame update
-    protected override void Start()
+    protected override void HandleObjectState()
     {
-        base.Start();
+        _ID = gameObject.name;
+
+        if (!PlayerPrefs.HasKey(_ID))
+        {
+            PlayerPrefs.SetString(_ID, _ID);
+            PlayerPrefs.Save();
+        }
+
+        if (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Disabled + _ID))
+        {
+            _anim.SetTrigger("Hit");
+            _hasTriggered = true;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -18,6 +28,7 @@ public class SwitchController : GameObjectManager
             _anim.SetTrigger("Hit");
             _hasTriggered = true;
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.FanOnBeingDisabled, null);
+            PlayerPrefs.SetString(GameEnums.ESpecialStates.Disabled + _ID, "Disabled");
         }
     }
 }

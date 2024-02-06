@@ -154,6 +154,7 @@ public class UIManager : BaseSingleton<UIManager>
         PopDownSettingsPanel();
         PopDownWinPanel();
         PopDownLoosePanel();
+        _hpsPanel.SetActive(false);
     }
 
 }

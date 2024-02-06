@@ -25,7 +25,7 @@ public class OnlyFanController : GameObjectManager
         base.Awake();
     }
 
-    protected override void HandleObjectID()
+    protected override void HandleObjectState()
     {
         _ID = gameObject.name;
 
@@ -35,7 +35,7 @@ public class OnlyFanController : GameObjectManager
             PlayerPrefs.Save();
         }
 
-        if (PlayerPrefs.HasKey("Disabled" + _ID))
+        if (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Disabled + _ID))
             _anim.SetTrigger("Off");
     }
 
@@ -80,7 +80,7 @@ public class OnlyFanController : GameObjectManager
         else
         {
             _anim.SetTrigger("Off");
-            PlayerPrefs.SetString("Disabled" + _ID, "Off");
+            PlayerPrefs.SetString(GameEnums.ESpecialStates.Disabled + _ID, "Off");
         }
         _state = 1;
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
