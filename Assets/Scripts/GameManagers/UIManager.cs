@@ -37,8 +37,8 @@ public class UIManager : BaseSingleton<UIManager>
         _creditsPanel.SetActive(false);
         _settingsPanel.SetActive(false);
         _hpsPanel.SetActive(false);
-        //_loosePanel.SetActive(false);
-        //_winPanel.SetActive(false);
+        _loosePanel.SetActive(false);
+        _winPanel.SetActive(false);
     }
 
     private void Update()
@@ -87,6 +87,7 @@ public class UIManager : BaseSingleton<UIManager>
 
     public IEnumerator PopUpLoosePanel()
     {
+        _canPlayCloseSfx = false;
         PopDownAllPanels();
 
         yield return new WaitForSeconds(_delayPopUpLoosePanel);
@@ -107,10 +108,10 @@ public class UIManager : BaseSingleton<UIManager>
 
     public void IncreaseTransitionCanvasOrder()
     {
-        //Lúc này là đang chuyển Scene
         _canPopUpPanel = false;
         _sceneTransCanvas.sortingOrder = 3;
         _canPlayCloseSfx = false;
+        //Lúc này là đang chuyển Scene
     }
 
     public void DecreaseTransitionCanvasOrder()
@@ -118,6 +119,7 @@ public class UIManager : BaseSingleton<UIManager>
         _sceneTransCanvas.sortingOrder = -1;
         _canPopUpPanel = true;
         _canPlayCloseSfx = true;
+        //Lúc này là đã chuyển xong Scene
     }
 
     public void TriggerAnimation(string para)

@@ -70,7 +70,8 @@
         PlayerOnStopInteractWithNPCs,
         PlayerOnBeingPushedBack,
         PlayerOnUpdateRespawnPosition,
-        FanOnBeingDisabled
+        FanOnBeingDisabled,
+        ObjectOnRestart
     }
 
     #endregion
@@ -121,18 +122,6 @@
         AbsorbBuffSfx,
         InvisibleBuffSfx,
         CheckpointSfx,
-    }
-
-    #endregion
-
-    #region UI
-
-    public enum EUIPanel 
-    {
-        SettingsPanel,
-        CreditsPanel,
-        WinPanel,
-        LoosePanel,
     }
 
     #endregion

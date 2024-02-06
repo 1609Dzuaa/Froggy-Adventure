@@ -566,34 +566,26 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 156480704}
-    - target: {fileID: 1669191860, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
-      propertyPath: m_Name
-      value: StartMenuCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 2139160541, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
-      propertyPath: m_SortingOrder
-      value: 4
-      objectReference: {fileID: 0}
+    - target: {fileID: 1742502986, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 156480704}
+    - target: {fileID: 1746452857, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 156480704}
     - target: {fileID: 99858881901258566, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 156480704}
-    - target: {fileID: 2934682163052988347, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 156480704}
+    - target: {fileID: 99858881901258566, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReloadScene
+      objectReference: {fileID: 0}
     - target: {fileID: 5271508870609757929, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 156480704}
-    - target: {fileID: 7064359781054810420, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 156480704}
-    - target: {fileID: 9070924721466395991, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
-      propertyPath: _delayPopUpLoosePanel
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 9070924721466395992, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
       propertyPath: m_RootOrder
       value: 1

@@ -18,7 +18,7 @@ public class EventsManager : BaseSingleton<EventsManager>
     private readonly Action<object> PlayerOnBeingPushedBack;
     private readonly Action<object> PlayerOnUpdateRespawnPosition;
     private readonly Action<object> FanOnBeingDisabled;
-
+    private readonly Action<object> ObjectOnRestart;
 
     //Làm việc với Event thì nên phân biệt với nhau bằng key là object
     //Tránh cùng 1 lúc nó Notify tất cả Func đã đky event đó
@@ -42,12 +42,15 @@ public class EventsManager : BaseSingleton<EventsManager>
         _dictEvents.Add(GameEnums.EEvents.PlayerOnBeingPushedBack, PlayerOnBeingPushedBack);
         _dictEvents.Add(GameEnums.EEvents.PlayerOnUpdateRespawnPosition, PlayerOnUpdateRespawnPosition);
         _dictEvents.Add(GameEnums.EEvents.FanOnBeingDisabled, FanOnBeingDisabled);
+        _dictEvents.Add(GameEnums.EEvents.ObjectOnRestart, ObjectOnRestart);
         //Val là cái event, còn thg nào quan tâm cái event đó thì gọi hàm dưới
     }
 
     public void SubcribeToAnEvent(GameEnums.EEvents eventType, Action<object> function)
     {
         _dictEvents[eventType] += function;
+        if (eventType == GameEnums.EEvents.ObjectOnRestart)
+            Debug.Log("1");
     }
 
     public void UnSubcribeToAnEvent(GameEnums.EEvents eventType, Action<object> function)

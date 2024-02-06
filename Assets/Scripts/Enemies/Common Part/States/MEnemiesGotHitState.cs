@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
 
 public class MEnemiesGotHitState : MEnemiesBaseState
 {
@@ -41,5 +42,6 @@ public class MEnemiesGotHitState : MEnemiesBaseState
         //Debug.Log("Force: " + _mEnemiesManager.EnemiesSO.KnockForce);
         _mEnemiesManager.GetCollider2D.enabled = false;
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.EnemiesDeadSfx, 1.0f);
+        PlayerPrefs.SetString("Deleted" + _mEnemiesManager.ID, "deleted");
     }
 }

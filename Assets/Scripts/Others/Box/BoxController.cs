@@ -80,6 +80,7 @@ public class BoxController : GameObjectManager
             {
                 Invoke(nameof(AllowSpawnPiece), _delaySpawnPiece);
                 _brokeSound.Play();
+                PlayerPrefs.SetString("Deleted" + _ID, "deleted");
             }
             else
                 _gotHitSound.Play();

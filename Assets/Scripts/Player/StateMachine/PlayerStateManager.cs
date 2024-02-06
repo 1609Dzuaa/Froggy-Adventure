@@ -543,7 +543,6 @@ public class PlayerStateManager : MonoBehaviour
         else
         {
             UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
-            //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
 
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);

@@ -72,6 +72,9 @@ public class GameManager : BaseSingleton<GameManager>
     public void Restart()
     {
         UIManager.Instance.PopDownAllPanels();
+        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.ObjectOnRestart, null);
+        PlayerHealthManager.Instance.RestartHP();
+        PlayerPrefs.DeleteAll();
         SwitchToScene(1);
         //OnClick của button "Restart"
         //Chơi lại từ đầu

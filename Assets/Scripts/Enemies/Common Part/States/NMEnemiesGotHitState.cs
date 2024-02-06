@@ -33,5 +33,6 @@ public class NMEnemiesGotHitState : NMEnemiesBaseState
         _nmEnemiesManager.GetSpriteRenderer.sortingLayerName = GameConstants.RENDER_MAP_LAYER;
         _nmEnemiesManager.GetSpriteRenderer.sortingOrder = GameConstants.RENDER_MAP_ORDER;
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.EnemiesDeadSfx, 1.0f);
+        PlayerPrefs.SetString("Deleted" + _nmEnemiesManager.ID, "deleted");
     }
 }

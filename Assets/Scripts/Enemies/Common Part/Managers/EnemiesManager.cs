@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EnemiesManager : CharactersManager
+public class EnemiesManager : CharactersManager
 {
     [Header("Player Check")]
     [SerializeField] protected Transform _playerCheck;
@@ -38,6 +38,11 @@ public abstract class EnemiesManager : CharactersManager
         base.GetReferenceComponents();
         _collider2D = GetComponent<Collider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    protected void OnEnable()
+    {
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
     }
 
     // Start is called before the first frame update
@@ -102,6 +107,11 @@ public abstract class EnemiesManager : CharactersManager
     protected virtual void SelfDestroy()
     {
         Destroy(gameObject);
+    }
+
+    protected void OnRestartID(object obj)
+    {
+        _ID = null;
     }
 
 }

@@ -25,6 +25,20 @@ public class OnlyFanController : GameObjectManager
         base.Awake();
     }
 
+    protected override void HandleObjectID()
+    {
+        _ID = gameObject.name;
+
+        if (!PlayerPrefs.HasKey(_ID))
+        {
+            PlayerPrefs.SetString(_ID, _ID);
+            PlayerPrefs.Save();
+        }
+
+        if (PlayerPrefs.HasKey("Disabled" + _ID))
+            _anim.SetTrigger("Off");
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -35,7 +49,7 @@ public class OnlyFanController : GameObjectManager
     {
         base.SetUpProperties();
         _isFacingRight = (transform.eulerAngles.z) >= 90f && (transform.eulerAngles.z) < 270f;
-        _state = 0;
+        _state = (PlayerPrefs.HasKey("Disabled" + _ID)) ? 1 : 0;
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
     }
 
@@ -61,11 +75,13 @@ public class OnlyFanController : GameObjectManager
     {
         //Chú ý ở đây kh check vì muốn khi bấm SW thì vô hiệu hoá mọi Fan hiện có
 
-        //Có bug bị null ở đây
         if (!_anim)
             Debug.Log("Fan's anim NULL");
         else
+        {
             _anim.SetTrigger("Off");
+            PlayerPrefs.SetString("Disabled" + _ID, "Off");
+        }
         _state = 1;
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
     }

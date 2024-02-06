@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemsController : MonoBehaviour
+public class ItemsController : GameObjectManager
 {
     [SerializeField] protected GameEnums.EBuffs _buff;
-
-    private void Start() { }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
