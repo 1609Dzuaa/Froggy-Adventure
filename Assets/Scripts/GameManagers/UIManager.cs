@@ -22,7 +22,7 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] float _delayPopUpLoosePanel;
 
     bool _canPopUpPanel = true;
-    bool _canPlayCloseSfx = true; //Chỉ có thể play close sfx khi chủ động bấm X
+    bool _canPlayCloseSfx; //Chỉ có thể play close sfx khi chủ động bấm X
 
     public GameObject StartMenuCanvas { get => _startMenuCanvas; set => _startMenuCanvas = value; }
 
@@ -34,18 +34,13 @@ public class UIManager : BaseSingleton<UIManager>
 
     private void Start()
     {
-        _creditsPanel.SetActive(false);
-        _settingsPanel.SetActive(false);
-        _hpsPanel.SetActive(false);
-        _loosePanel.SetActive(false);
-        _winPanel.SetActive(false);
+        PopDownAllPanels();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             PopUpSettingsPanel();
-        //Debug.Log("CanPopUp: " + _canPopUpPanel);
     }
 
     public void PopUpSettingsPanel()
@@ -62,7 +57,6 @@ public class UIManager : BaseSingleton<UIManager>
     private void PopDownSettingsPanel()
     {
         _settingsPanel.SetActive(false);
-        //bug here
         if (_canPlayCloseSfx)
             SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
         if (SceneManager.GetActiveScene().buildIndex != 0)
@@ -144,17 +138,19 @@ public class UIManager : BaseSingleton<UIManager>
 
     public void PopDownHPCanvas()
     {
-        if (SceneManager.GetActiveScene().buildIndex != 0)
-            _hpsPanel.SetActive(false);
+        _hpsPanel.SetActive(false);
     }
 
     public void PopDownAllPanels()
     {
+        if (_canPlayCloseSfx)
+            _canPlayCloseSfx = false;
         PopDownCreditsPanel();
         PopDownSettingsPanel();
         PopDownWinPanel();
         PopDownLoosePanel();
-        _hpsPanel.SetActive(false);
+        PopDownHPCanvas();
+        _canPlayCloseSfx = true;
     }
 
 }

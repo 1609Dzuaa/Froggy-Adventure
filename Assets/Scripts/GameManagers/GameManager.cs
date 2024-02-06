@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 /// Xem lại vài đoạn setactive cũng như UI HP
 /// Thêm thông tin các button ở phần infor (?)
 /// Bug từ GH => Dead 
+/// Tìm cách play theme xuyên suốt lv (chỉ khi về menu thì khác)
 /// </summary>
 
 public class GameManager : BaseSingleton<GameManager>
