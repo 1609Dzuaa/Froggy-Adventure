@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class HedgehogManager : NMEnemiesManager
     private HedgehogSpikeIdleState _hedgehogSpikeIdle = new();
     private BoxCollider2D _boxCollider2D;
     private Vector2 _prevCollider2DSize;
+    static string _ID;
 
     public float SpikeInDelay { get { return _spikeInDelay; } }
 
@@ -24,6 +26,11 @@ public class HedgehogManager : NMEnemiesManager
     protected override void Awake()
     {
         base.Awake();
+        if (_ID == null)
+            _ID = Guid.NewGuid().ToString(); //Đảm bảo mỗi bullet sẽ có ID riêng
+        if (PlayerPrefs.HasKey("Deleted" + _ID))
+            gameObject.SetActive(false);
+        Debug.Log("ID: " + _ID);
     }
 
     protected override void GetReferenceComponents()
@@ -72,6 +79,23 @@ public class HedgehogManager : NMEnemiesManager
     {
         //Chỉ giết đc <=> 0 mọc gai
         if (_state is NMEnemiesIdleState)
-            base.OnTriggerEnter2D(collision);
+        {
+            if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState)
+            {
+                //Thêm ĐK: _state is not NMEnemiesGotHitState vì:
+                //có thể enemy này dính đòn từ bullet => rotate z khi GotHit
+                //và Trigger collider của Player dẫn đến JumpPassive
+                _hasGotHit = true;
+                EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
+                ChangeState(_nmEnemiesGotHitState);
+                PlayerPrefs.SetString("Deleted" + _ID, "deleted");
+            }
+            else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState)
+            {
+                _hasGotHit = true;
+                ChangeState(_nmEnemiesGotHitState);
+            }
+            //base.OnTriggerEnter2D(collision);
+        }
     }
 }

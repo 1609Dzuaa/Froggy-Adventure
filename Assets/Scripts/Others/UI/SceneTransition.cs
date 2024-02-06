@@ -16,4 +16,10 @@ public class SceneTransition : MonoBehaviour
         UIManager.Instance.PopUpHPCanvas();
         //Của animation Fade Out đoạn giữa - popup HP lên khi load PlayScene
     }
+
+    private void DisableMaincanvas()
+    {
+        UIManager.Instance.StartMenuCanvas.SetActive(false);
+        //Của animation Fade In - khi alpha đã đạt tới 1.0f thì disable StartMenu
+    }
 }

@@ -529,21 +529,28 @@ public class PlayerStateManager : MonoBehaviour
 
     public void HandleDeadState()
     {
+        //Check vì có thể dính DeadZone nên 0 vào state GotHit
         if (PlayerHealthManager.Instance.CurrentHP > 0)
         {
             PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
             if (PlayerHealthManager.Instance.CurrentHP == 0)
-                GameManager.Instance.SwitchScene(SceneManager.GetActiveScene().buildIndex - 1);
+            {
+                UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
+            }
+            else
+                GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
         }
         else
-            GameManager.Instance.SwitchScene(0);
+        {
+            UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
+            //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex - 1);
+        }
 
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
-        gameObject.layer = LayerMask.NameToLayer("Enemies");
+        gameObject.layer = LayerMask.NameToLayer("Ground");
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerDeadSfx, 1.0f);
         UnsubcribeAllEvents();
-        GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void HandleCollideGround()

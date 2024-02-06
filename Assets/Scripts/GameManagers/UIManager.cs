@@ -12,14 +12,19 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] Animator _anim;
     [SerializeField] Canvas _sceneTransCanvas;
 
+    [SerializeField] GameObject _startMenuCanvas;
     [SerializeField] GameObject _creditsPanel;
     [SerializeField] GameObject _settingsPanel;
     [SerializeField] GameObject _winPanel;
     [SerializeField] GameObject _loosePanel;
     [SerializeField] GameObject _hpsPanel;
 
+    [SerializeField] float _delayPopUpLoosePanel;
+
     bool _canPopUpPanel = true;
     bool _canPlayCloseSfx = true; //Chỉ có thể play close sfx khi chủ động bấm X
+
+    public GameObject StartMenuCanvas { get => _startMenuCanvas; set => _startMenuCanvas = value; }
 
     protected override void Awake()
     {
@@ -40,6 +45,7 @@ public class UIManager : BaseSingleton<UIManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             PopUpSettingsPanel();
+        //Debug.Log("CanPopUp: " + _canPopUpPanel);
     }
 
     public void PopUpSettingsPanel()
@@ -56,6 +62,7 @@ public class UIManager : BaseSingleton<UIManager>
     private void PopDownSettingsPanel()
     {
         _settingsPanel.SetActive(false);
+        //bug here
         if (_canPlayCloseSfx)
             SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
         if (SceneManager.GetActiveScene().buildIndex != 0)
@@ -76,6 +83,16 @@ public class UIManager : BaseSingleton<UIManager>
         if (_canPlayCloseSfx)
             SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
         _creditsPanel.SetActive(false);
+    }
+
+    public IEnumerator PopUpLoosePanel()
+    {
+        PopDownAllPanels();
+
+        yield return new WaitForSeconds(_delayPopUpLoosePanel);
+
+        _loosePanel.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     private void PopDownWinPanel()
@@ -121,6 +138,12 @@ public class UIManager : BaseSingleton<UIManager>
         if (SceneManager.GetActiveScene().buildIndex != 0)
             _hpsPanel.SetActive(true);
         //Thanh máu chỉ hiện ở các scene kh phải là Start Scene
+    }
+
+    public void PopDownHPCanvas()
+    {
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+            _hpsPanel.SetActive(false);
     }
 
     public void PopDownAllPanels()

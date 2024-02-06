@@ -51,7 +51,6 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     protected override void Awake()
     {
         base.Awake();
-        //DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -310,5 +309,10 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         _tempHP = 0;
         _hasGotTempHP = false;
         _hasTickRunOut = false;
+    }
+
+    public void RestartHP()
+    {
+        Start();
     }
 }

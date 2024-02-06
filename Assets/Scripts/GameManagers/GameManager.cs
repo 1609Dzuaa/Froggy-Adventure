@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 /// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
 /// Cân nhắc các checkpoint cùng PlayerPrefs để xử lý data của player
 /// Thêm thông tin các button ở phần infor (?)
-/// Xem lại sao ch load đc cái start scene (0) @@?
+/// Bug từ GH => Dead 
 /// </summary>
 
 public class GameManager : BaseSingleton<GameManager>
@@ -35,6 +35,7 @@ public class GameManager : BaseSingleton<GameManager>
     public void SwitchToScene(int sceneIndex)
     {
         UIManager.Instance.IncreaseTransitionCanvasOrder();
+        UIManager.Instance.PopDownHPCanvas();
         StartCoroutine(SwitchScene(sceneIndex));
     }
 
@@ -53,6 +54,9 @@ public class GameManager : BaseSingleton<GameManager>
 
     public void ReloadScene()
     {
+        Time.timeScale = 1.0f;
+        UIManager.Instance.PopDownAllPanels();
+        PlayerHealthManager.Instance.RestartHP();
         SwitchToScene(SceneManager.GetActiveScene().buildIndex);
         //OnClick của button "Replay"
         //Chơi lại scene này (start tại vị trí flag gần nhất ?)

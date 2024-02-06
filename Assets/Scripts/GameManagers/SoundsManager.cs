@@ -43,6 +43,7 @@ public class SoundsManager : BaseSingleton<SoundsManager>
             _sfxSource.clip = s.SoundAudioClip;
             if (volumeScale >= 1.0f) _sfxSource.PlayOneShot(_sfxSource.clip);
             else _sfxSource.PlayOneShot(_sfxSource.clip, volumeScale);
+            Debug.Log("Sfx Played: " + sfxName);
         }
     }
 
