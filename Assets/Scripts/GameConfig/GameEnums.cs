@@ -122,6 +122,17 @@
         AbsorbBuffSfx,
         InvisibleBuffSfx,
         CheckpointSfx,
+        NormalBuffUpSfx,
+        NormalBuffDownSfx,
+        TrampolineSfx,
+        RhinoWallHitSfx,
+        MushroomScreamSfx,
+        GreenPortalSfx,
+        SpecialBuffDebuffSfx,
+        RhinoAttackSfx,
+        HitShieldSfx,
+        BeeAngrySfx,
+
     }
 
     #endregion

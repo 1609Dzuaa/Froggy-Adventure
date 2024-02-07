@@ -9,6 +9,7 @@ public class RhinoAttackState : MEnemiesAttackState
     {
         base.EnterState(charactersManager);
         _rhinoManager = (RhinoManager)charactersManager;
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.RhinoAttackSfx, 1.0f);
     }
 
     public override void ExitState()

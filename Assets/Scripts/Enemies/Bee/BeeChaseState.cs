@@ -17,7 +17,8 @@ public class BeeChaseState : MEnemiesAttackState
         //Hoặc khi 0 detect ra player nữa (Player tàng hình)
         _beeManager.MustAttack = true;
         _beeManager.GetRigidbody2D().velocity = Vector2.zero;
-        Debug.Log("Bee Chase");
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BeeAngrySfx, 1.0f);
+        //Debug.Log("Bee Chase");
     }
 
     public override void ExitState()

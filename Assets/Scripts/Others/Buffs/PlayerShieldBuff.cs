@@ -75,6 +75,7 @@ public class PlayerShieldBuff : PlayerBuffs
         _isAllowToUpdate = false;
         _anim.SetTrigger("Disable");
         _circleCollider2D.enabled = false;
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.SpecialBuffDebuffSfx, 1.0f);
     }
 
 }

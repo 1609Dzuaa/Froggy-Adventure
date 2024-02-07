@@ -32,10 +32,13 @@ public class PlayerInvisibleBuff : PlayerBuffs
             {
                 StartTickRunOut();
 
-                if(Time.time - _entryRunOutTime < _runOutDuration)
+                if (Time.time - _entryRunOutTime < _runOutDuration)
                     HandleIncreaseDecreaseAlpha();
                 else
+                {
                     ResetBuffData();
+                    SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.SpecialBuffDebuffSfx, 1.0f);
+                }
             }
             /*else
                 Debug.Log("PlayerColor: " + _playerSpriteRenderer.color.a);*/

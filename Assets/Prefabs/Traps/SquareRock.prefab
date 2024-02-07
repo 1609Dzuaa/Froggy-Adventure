@@ -275,7 +275,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 60
+  m_Mass: 200
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -303,8 +303,8 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 64
-  _checkDistance: 0.315
-  _movementSpeed: 45
+  _checkDistance: 0.15
+  _movementSpeed: 50
   _timeEachScale: 0.15
   _scaleFactorEachDeltaTime: 0.1
   _isVertical: 0

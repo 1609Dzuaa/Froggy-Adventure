@@ -35,6 +35,7 @@ public class PlayerAbsorbBuff : PlayerBuffs
             {
                 _isAllowToUpdate = false;
                 _tempShieldIcon.gameObject.SetActive(false);
+                SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.SpecialBuffDebuffSfx, 1.0f);
             }
             else
                 _tempShieldIcon.transform.position = _tempShieldIconPos.position;

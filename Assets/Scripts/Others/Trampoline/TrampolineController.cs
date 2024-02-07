@@ -9,9 +9,6 @@ public class TrampolineController : GameObjectManager
     [Header("Force Apply")]
     [SerializeField] private float _forceApply;
 
-    [Header("Player Reference")]
-    [SerializeField] private Transform _playerRef;
-
     [Header("Time")]
     [SerializeField] private float _restartTime;
 
@@ -29,15 +26,11 @@ public class TrampolineController : GameObjectManager
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "Player" && !_hasAddForce)
+        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasAddForce)
         {
             _hasAddForce = true;
-            var playerScript = collision.GetComponent<PlayerStateManager>();
-            playerScript.GetRigidBody2D().velocity = Vector2.up * _forceApply;
-            //gặp chút vấn đề nếu AddForce thì 0 duy trì đc lực nhảy mạnh như
-            //lúc ban đầu sau các lần nhảy kế tiếp
-
-            //playerScript.GetRigidBody2D().AddForce(Vector2.up * _forceApply, ForceMode2D.Impulse);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.TrampolineSfx, 1.0f);
             _anim.SetTrigger("Jump");
             StartCoroutine(RestartAddForceVar());
         }
@@ -54,12 +47,6 @@ public class TrampolineController : GameObjectManager
     {
         _anim.SetTrigger("Idle");
         //Event của Jump animation
-    }
-
-    private void ApplyForce()
-    {
-        var playerScript = _playerRef.GetComponent<PlayerStateManager>();
-        playerScript.GetRigidBody2D().AddForce(new Vector2(0f, _forceApply), ForceMode2D.Impulse);
     }
 
 }

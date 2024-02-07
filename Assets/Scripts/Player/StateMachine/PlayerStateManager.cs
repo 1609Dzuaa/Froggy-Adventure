@@ -239,7 +239,11 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG))
             HandleDeadState();
         else if (collision.CompareTag(GameConstants.PORTAL_TAG))
+        {
+            UnsubcribeAllEvents();
+            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.GreenPortalSfx, 1.0f);
             GameManager.Instance.SwitchToScene(1, true);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)

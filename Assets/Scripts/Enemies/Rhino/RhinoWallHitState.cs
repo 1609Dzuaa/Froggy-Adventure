@@ -12,10 +12,10 @@ public class RhinoWallHitState : MEnemiesBaseState
         base.EnterState(charactersManager);
         _rhinoManager = (RhinoManager)charactersManager;
         _rhinoManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.ERhinoState.wallHit);
-        
         _rhinoManager.MEnemiesPatrolState.CanRdDirection = false;
         _rhinoManager.MEnemiesPatrolState.SetHasJustHitWall(true);
-        Debug.Log("WH");
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.RhinoWallHitSfx, 1.0f);
+        //Debug.Log("WH");
     }
 
     public override void ExitState()

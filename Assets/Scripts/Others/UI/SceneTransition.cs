@@ -20,7 +20,7 @@ public class SceneTransition : MonoBehaviour
     private void DisableMaincanvas()
     {
         UIManager.Instance.StartMenuCanvas.SetActive(false);
-        StartCoroutine(DelayPlayLevelTheme());
+        //StartCoroutine(DelayPlayLevelTheme());
         //Của animation Fade In - khi alpha đã đạt tới 1.0f thì disable StartMenu
     }
 

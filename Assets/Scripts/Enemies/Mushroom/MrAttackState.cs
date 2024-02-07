@@ -14,7 +14,8 @@ public class MrAttackState : MEnemiesAttackState
         //Nếu 0 có delay thì dẫn đến việc ĐK * thoả mãn ngay lập tức
         //=> chuyển mr về idle dù vẫn detected ra player đằng sau 
         _mushroomManager.FlippingSprite();
-        Debug.Log("Attack");
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.MushroomScreamSfx, 1.0f);
+        //Debug.Log("Attack");
     }
 
     public override void ExitState()

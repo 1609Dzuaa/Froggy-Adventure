@@ -24,6 +24,7 @@ public class PlayerSpeedBuff : PlayerBuffs
             {
                 _isAllowToUpdate = false;
                 _speedBuffIcon.gameObject.SetActive(false);
+                SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.NormalBuffDownSfx, 1.0f);
                 //Debug.Log("Timeout!");
             }
             /*else
@@ -37,6 +38,7 @@ public class PlayerSpeedBuff : PlayerBuffs
         base.ApplyBuff();
         _speedBuffIcon.gameObject.SetActive(true);
         _speedBuffIcon.transform.position = _speedBuffIconPos.position;
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.NormalBuffUpSfx, 1.0f);
     }
 
 }

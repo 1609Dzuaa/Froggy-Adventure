@@ -110,6 +110,7 @@ public class BulletController : MonoBehaviour
         {
             SpawnHitShieldEffect();
             SpawnBulletPieces();
+            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.HitShieldSfx, 1.0f);
             gameObject.SetActive(false);
         }
     }

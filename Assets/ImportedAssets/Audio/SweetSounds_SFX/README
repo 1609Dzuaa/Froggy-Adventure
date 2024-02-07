@@ -1,0 +1,18 @@
+Thanks for getting my SFX pack!
+
+A few explanations about it's contents:
+
+- How do I add these to my GB Studio game?
+	Simple! Just drop the files in your project's "sounds" folder in the assets folder, from there you should be able to select the file using the "Play Sound Effect" event. In case you're wondering, putting all SFX files in the folder doesn't mean they will all get included in the ROM, as GB Studio only compiles what you use in-game.
+
+- Some Sound Effects sound different in-game compared to the .WAV files, what's wrong?
+	From my testing, most .VGM players (Including what I had to use for recording, VGMPlayer) have some not-so accurate noise channel emulation, with some 15-bit noise values being straight up wrong, so bare that in mind, what you hear in-game is the intended way it should sound.
+
+- What's "Naked" VGM?
+	Naked VGM is the name I give to .VGM files that only include the audio register writes needed for the SFX. Normally, .VGM files include some "Cleanup" register writes at the beginning, these are pointless for SFX's made for GB Studio and it can confuse the importer into muting your whole song, the naked files make it so the data writes stay in channel 2 and 4.
+
+- Why are there two Naked VGM folders?
+	My SFX tools only work with channel 2 (Duty 2) and Channel 4 (Noise) as, from my own work, those are the least used and the most suitable for SFX without interrupting the music too much. If your game music uses channel 1 more than channel 2, then use the normal folder, if it's the other way around, there's ALT available, which just uses Channel 1 instead of 2 for SFX. If your music doesn't exactly use one channel more than the other, try rearranging some patterns around to make sure one channel is the least used (Once again, I encourage using channel 2 for SFX).
+
+- I'm using your SFX in my game, is there any credits I should add to it?
+	Yes please! Just a simple "Sound Effects by Coffee 'Valen' Bat" should do the job. If you intent to sell your game using my SFX, I don't mind, although think about donating to the pack on itch.io if you do <3
