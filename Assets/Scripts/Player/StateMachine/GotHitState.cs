@@ -16,7 +16,7 @@ public class GotHitState : PlayerBaseState
         HandleGotHit();
         if (PlayerHealthManager.Instance.CurrentHP > 0)
             _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)EPlayerState.gotHit);
-        Debug.Log("GotHit");
+        //Debug.Log("GotHit");
 
         //Chú ý khi làm việc với Any State
         //Tắt Transition To Self ở đoạn nối Transition từ Any State tới State cụ thể

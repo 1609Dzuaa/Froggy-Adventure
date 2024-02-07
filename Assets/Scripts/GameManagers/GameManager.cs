@@ -8,8 +8,7 @@ using UnityEngine.SceneManagement;
 /// Build Level 2 và Boss ở cuối Level
 /// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
 /// Thêm thông tin các button ở phần infor (?)
-/// Bug từ GH => Dead 
-/// Tìm cách play theme xuyên suốt lv (chỉ khi về menu thì khác)
+/// Đổi Layer cho player khi dead
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
 /// </summary>
 

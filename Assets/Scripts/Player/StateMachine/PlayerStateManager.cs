@@ -553,7 +553,7 @@ public class PlayerStateManager : MonoBehaviour
 
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
-        gameObject.layer = LayerMask.NameToLayer("Ground");
+        gameObject.layer = LayerMask.NameToLayer("Enemies");
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerDeadSfx, 1.0f);
         UnsubcribeAllEvents();
     }
