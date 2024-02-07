@@ -22,13 +22,11 @@ public class SoundsManager : BaseSingleton<SoundsManager>
 
     private void Start()
     {
-        StartCoroutine(PlayBackGroundMusic());
+        PlayBackGroundMusic();
     }
 
-    private IEnumerator PlayBackGroundMusic()
+    private void PlayBackGroundMusic()
     {
-        yield return new WaitForSeconds(_bgmusicDelay);
-
         PlayMusic(ESoundName.StartMenuTheme);
     }
 
@@ -55,7 +53,7 @@ public class SoundsManager : BaseSingleton<SoundsManager>
         else
         {
             _musicSource.clip = s.SoundAudioClip;
-            _musicSource.Play();
+            _musicSource.PlayDelayed(_bgmusicDelay);
         }
     }
 

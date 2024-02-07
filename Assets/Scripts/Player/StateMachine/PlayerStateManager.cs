@@ -242,7 +242,9 @@ public class PlayerStateManager : MonoBehaviour
         {
             UnsubcribeAllEvents();
             SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.GreenPortalSfx, 1.0f);
-            GameManager.Instance.SwitchToScene(1, true);
+            anim.SetTrigger(GameConstants.DEAD_ANIMATION);
+            rb.bodyType = RigidbodyType2D.Static;
+            GameManager.Instance.SwitchToScene(1);
         }
     }
 
@@ -542,7 +544,7 @@ public class PlayerStateManager : MonoBehaviour
                 UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
             }
             else
-                GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex, false);
+                GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
         }
         else
         {

@@ -23,21 +23,14 @@ public class BoxController : GameObjectManager
     [SerializeField] private Transform _pos3;
     [SerializeField] private Transform _pos4;
 
-    //Box type 1 thì có 5 loại gift, type 3 khó phá nhất thì cho HP
-    [Header("Mystery Gift")] //Random 1 trong các gift sau - có thể thêm enemy nhỏ
+    //Box type 1 thì có 5 loại gift, type 3 khó phá nhất thì cho special Buff
+    [Header("Mystery Gift")] //Random 1 trong các gift sau
     [SerializeField] private Transform _apple;
     [SerializeField] private Transform _cherry;
     [SerializeField] private Transform _strawberry;
     [SerializeField] private Transform _orange;
     [SerializeField] private Transform _shield;
     [SerializeField] private Transform _hp;
-
-    //Có bug(?) khi nhảy lên box và bấm nhảy tiếp thì bật rất cao! @@
-    //Chỉnh lại sound
-
-    [Header("Sound")]
-    [SerializeField] private AudioSource _brokeSound;
-    [SerializeField] private AudioSource _gotHitSound;
 
     [Header("Time")]
     [SerializeField] private float _delaySpawnPiece;
@@ -79,11 +72,11 @@ public class BoxController : GameObjectManager
             if (_healthPoint == 0)
             {
                 Invoke(nameof(AllowSpawnPiece), _delaySpawnPiece);
-                _brokeSound.Play();
+                SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BoxBrokeSfx, 1.0f);
                 PlayerPrefs.SetString(GameEnums.ESpecialStates.Deleted + _ID, "deleted");
             }
             else
-                _gotHitSound.Play();
+                SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BoxGotHitSfx, 1.0f);
         }
     }
 

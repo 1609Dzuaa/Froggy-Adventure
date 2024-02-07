@@ -49,8 +49,6 @@ public class EventsManager : BaseSingleton<EventsManager>
     public void SubcribeToAnEvent(GameEnums.EEvents eventType, Action<object> function)
     {
         _dictEvents[eventType] += function;
-        if (eventType == GameEnums.EEvents.ObjectOnRestart)
-            Debug.Log("1");
     }
 
     public void UnSubcribeToAnEvent(GameEnums.EEvents eventType, Action<object> function)

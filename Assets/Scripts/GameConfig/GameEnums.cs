@@ -132,7 +132,8 @@
         RhinoAttackSfx,
         HitShieldSfx,
         BeeAngrySfx,
-
+        BoxGotHitSfx,
+        BoxBrokeSfx,
     }
 
     #endregion

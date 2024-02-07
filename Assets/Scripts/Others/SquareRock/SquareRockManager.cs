@@ -148,6 +148,7 @@ public class SquareRockManager : GameObjectManager
                 _moveDir = GameEnums.ERockMove.Top;
                 _entryTime = Time.time;
                 _scaleFactor = 0;
+                
             }
             else if (_isHitRight && _moveDir != GameEnums.ERockMove.Bottom)
             {
@@ -155,7 +156,7 @@ public class SquareRockManager : GameObjectManager
                 _isHitRight = false;
                 _moveDir = GameEnums.ERockMove.Bottom;
                 _entryTime = Time.time;
-                _scaleFactor = 0;
+                _scaleFactor = 0;   
             }
             else if (_isHitTop && _moveDir != GameEnums.ERockMove.Right)
             {
@@ -163,7 +164,7 @@ public class SquareRockManager : GameObjectManager
                 _isHitTop = false;
                 _moveDir = GameEnums.ERockMove.Right;
                 _entryTime = Time.time;
-                _scaleFactor = 0;
+                _scaleFactor = 0;                
             }
             else if (_isHitBottom && _moveDir != GameEnums.ERockMove.Left)
             {
@@ -171,7 +172,7 @@ public class SquareRockManager : GameObjectManager
                 _isHitBottom = false;
                 _moveDir = GameEnums.ERockMove.Left;
                 _entryTime = Time.time;
-                _scaleFactor = 0;
+                _scaleFactor = 0;              
             }
         }
         else
@@ -182,7 +183,7 @@ public class SquareRockManager : GameObjectManager
                 _isHitBottom = false;
                 _moveDir = GameEnums.ERockMove.Top;
                 _entryTime = Time.time;
-                _scaleFactor = 0;
+                _scaleFactor = 0;               
             }
             else if (_isHitTop && _moveDir != GameEnums.ERockMove.Bottom)
             {
@@ -190,7 +191,7 @@ public class SquareRockManager : GameObjectManager
                 _isHitTop = false;
                 _moveDir = GameEnums.ERockMove.Bottom;
                 _entryTime = Time.time;
-                _scaleFactor = 0;
+                _scaleFactor = 0;               
             }
         }
     }
