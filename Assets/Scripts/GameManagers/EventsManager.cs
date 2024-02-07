@@ -19,6 +19,7 @@ public class EventsManager : BaseSingleton<EventsManager>
     private readonly Action<object> PlayerOnUpdateRespawnPosition;
     private readonly Action<object> FanOnBeingDisabled;
     private readonly Action<object> ObjectOnRestart;
+    private readonly Action<object> TutorOnDestroy;
 
     //Làm việc với Event thì nên phân biệt với nhau bằng key là object
     //Tránh cùng 1 lúc nó Notify tất cả Func đã đky event đó
@@ -43,6 +44,7 @@ public class EventsManager : BaseSingleton<EventsManager>
         _dictEvents.Add(GameEnums.EEvents.PlayerOnUpdateRespawnPosition, PlayerOnUpdateRespawnPosition);
         _dictEvents.Add(GameEnums.EEvents.FanOnBeingDisabled, FanOnBeingDisabled);
         _dictEvents.Add(GameEnums.EEvents.ObjectOnRestart, ObjectOnRestart);
+        _dictEvents.Add(GameEnums.EEvents.TutorOnDestroy, TutorOnDestroy);
         //Val là cái event, còn thg nào quan tâm cái event đó thì gọi hàm dưới
     }
 

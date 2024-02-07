@@ -53,7 +53,7 @@ public class NMEnemiesManager : EnemiesManager
             _hasGotHit = true;
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             ChangeState(_nmEnemiesGotHitState);
-            PlayerPrefs.SetString("Deleted" + _ID, "deleted");
+            PlayerPrefs.SetString(GameEnums.ESpecialStates.Deleted + _ID, "deleted");
         }
         else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState)
         {

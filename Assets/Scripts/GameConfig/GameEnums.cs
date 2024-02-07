@@ -71,7 +71,8 @@
         PlayerOnBeingPushedBack,
         PlayerOnUpdateRespawnPosition,
         FanOnBeingDisabled,
-        ObjectOnRestart
+        ObjectOnRestart,
+        TutorOnDestroy
     }
 
     #endregion
@@ -134,6 +135,8 @@
         BeeAngrySfx,
         BoxGotHitSfx,
         BoxBrokeSfx,
+        SwitchActivatedSfx,
+
     }
 
     #endregion
