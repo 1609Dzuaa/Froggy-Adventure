@@ -1,8 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static GameEnums;
+
+[Serializable]
+public struct UISkillUnlocked
+{
+    public EPlayerState _skillName;
+    public Sprite _skillImage;
+}
 
 public class UIManager : BaseSingleton<UIManager>
 {
@@ -18,6 +28,10 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] GameObject _winPanel;
     [SerializeField] GameObject _loosePanel;
     [SerializeField] GameObject _hpsPanel;
+    [SerializeField] GameObject _skillsAchievedPanel;
+    [SerializeField] Image _skillsImage;
+    [SerializeField] GameObject _txtSkillName;
+    [SerializeField] List<UISkillUnlocked> _listSkill;
 
     [SerializeField] float _delayPopUpLoosePanel;
 
@@ -30,6 +44,11 @@ public class UIManager : BaseSingleton<UIManager>
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, PopUpSkillAchievedPanel);
     }
 
     private void Start()
@@ -151,7 +170,29 @@ public class UIManager : BaseSingleton<UIManager>
         PopDownWinPanel();
         PopDownLoosePanel();
         PopDownHPCanvas();
+        PopDownSkillAchievedPanel();
         _canPlayCloseSfx = true;
+    }
+
+    private void PopUpSkillAchievedPanel(object obj)
+    {
+        foreach (var item in _listSkill)
+            if ((EPlayerState)obj == item._skillName)
+            {
+                _skillsImage.sprite = item._skillImage;
+                _txtSkillName.GetComponent<TextMeshProUGUI>().text = item._skillName.ToString();
+            }
+        Time.timeScale = 0f;
+        _skillsAchievedPanel.SetActive(true);
+        SoundsManager.Instance.PlaySfx(ESoundName.SkillsAchivedSfx, 1.0f);
+    }
+
+    public void PopDownSkillAchievedPanel()
+    {
+        Time.timeScale = 1.0f;
+        if (_canPlayCloseSfx)
+            SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
+        _skillsAchievedPanel.SetActive(false);
     }
 
 }

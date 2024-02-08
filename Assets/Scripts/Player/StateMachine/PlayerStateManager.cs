@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static GameEnums;
 
 public class PlayerStateManager : MonoBehaviour
 {
@@ -127,6 +128,7 @@ public class PlayerStateManager : MonoBehaviour
     private void Awake()
     {
         GetReferenceComponents();
+        UpdatePosition();
     }
 
     private void GetReferenceComponents()
@@ -135,6 +137,22 @@ public class PlayerStateManager : MonoBehaviour
         anim = GetComponent<Animator>();
         dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
         _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void UpdatePosition()
+    {
+        if (PlayerPrefs.HasKey(ESpecialStates.PlayerPositionUpdatedX.ToString()))
+            transform.position = new Vector3(PlayerPrefs.GetFloat(ESpecialStates.PlayerPositionUpdatedX.ToString()), PlayerPrefs.GetFloat(ESpecialStates.PlayerPositionUpdatedY.ToString()), PlayerPrefs.GetFloat(ESpecialStates.PlayerPositionUpdatedZ.ToString()));
+    }
+
+    private void OnEnable()
+    {
+        if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.doubleJump.ToString()))
+            _unlockedDbJump = true;
+        if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.wallSlide.ToString()))
+            _unlockedWallSlide = true;
+        if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.dash.ToString()))
+            _unlockedDash = true;
     }
 
     // Start is called before the first frame update
@@ -146,11 +164,13 @@ public class PlayerStateManager : MonoBehaviour
 
     private void RegisterFunction()
     {
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnTakeDamage, BeingDamaged);
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnBeingPushedBack, PushBack);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnTakeDamage, BeingDamaged);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnJumpPassive, JumpPassive);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, UnlockSkill);
     }
 
     private void SetupProperties()
@@ -167,11 +187,13 @@ public class PlayerStateManager : MonoBehaviour
 
     private void UnsubcribeAllEvents()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnTakeDamage, BeingDamaged);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnJumpPassive, JumpPassive);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnBeingPushedBack, PushBack);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnTakeDamage, BeingDamaged);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnJumpPassive, JumpPassive);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, UnlockSkill);
         //Unsub mọi Events khi load lại scene tránh bị null ref từ event cũ
     }
 
@@ -189,11 +211,18 @@ public class PlayerStateManager : MonoBehaviour
         //và đang có khiên thì 0 cho change vì có thể có TH
         //chọc xuyên qua collider của shield
 
-        if (state is GotHitState && BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).IsAllowToUpdate)
+        if (state is GotHitState && BuffsManager.Instance.GetTypeOfBuff(EBuffs.Shield).IsAllowToUpdate)
         {
             //Debug.Log("Tao co khien");
             return;
         }
+
+        if (state is DoubleJumpState && !_unlockedDbJump)
+            return;
+        else if (state is WallSlideState && !_unlockedWallSlide)
+            return;
+        else if (state is DashState && !_unlockedDash)
+            return;
 
         _state.ExitState();
         _state = state;
@@ -240,7 +269,7 @@ public class PlayerStateManager : MonoBehaviour
             HandleDeadState();
         else if (collision.CompareTag(GameConstants.PORTAL_TAG))
         {
-            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.GreenPortalSfx, 1.0f);
+            SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
             anim.SetTrigger(GameConstants.DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
             GameManager.Instance.SwitchToScene(1);
@@ -333,14 +362,16 @@ public class PlayerStateManager : MonoBehaviour
         SpawnDust();
     }
 
+    /// <summary>
+    ///Hàm dưới để thực hiện cơ chế Invunerable của HK:
+    ///Switch layer cho player trong khoảng thgian miễn dmg
+    ///Cho phép enemies đâm xuyên qua player và ngược lại
+    ///Đỡ việc 2 box va nhau, có thể gây khó chịu cho Player.
+    ///Phải có 1 biến bool để chặn cửa cùng Time, 0 thì đầu game ĐK thoả mãn luôn ^.^
+    /// </summary>
+
     private void UpdateLayer()
     {
-        //Cơ chế Invunerable của HK:
-        //Switch layer cho player trong khoảng thgian miễn dmg
-        //Cho phép enemies đâm xuyên qua player và ngược lại
-        //Đỡ việc 2 box va nhau, có thể gây khó chịu cho Player.
-        //Phải có 1 biến bool để chặn cửa cùng Time, 0 thì đầu game ĐK thoả mãn luôn ^.^
-
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && _isVunerable)
             gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
         else if (_state is not DashState)
@@ -563,7 +594,7 @@ public class PlayerStateManager : MonoBehaviour
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
         gameObject.layer = LayerMask.NameToLayer("Enemies"); //Đổi layer tránh bị quái Detect dù đã chết
-        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerDeadSfx, 1.0f);
+        SoundsManager.Instance.PlaySfx(ESoundName.PlayerDeadSfx, 1.0f);
     }
 
     private void HandleCollideGround()
@@ -606,6 +637,10 @@ public class PlayerStateManager : MonoBehaviour
         Debug.Log("Enable");
     }
 
+    /// <summary>
+    ///2 hàm dưới để xử lý màu alpha khi player dính đòn  
+    /// </summary>
+
     private IEnumerator Twinkling()
     {
         //Lock - Đảm bảo chỉ gọi coroutine sau khi đi đc 1 vòng Alpha Value:
@@ -617,7 +652,7 @@ public class PlayerStateManager : MonoBehaviour
         yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
 
         //Thêm check đây nữa 
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsAllowToUpdate)
         {
             _hasStartCoroutine = false;
             yield return null;
@@ -632,7 +667,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleAlphaValueGotHit()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsAllowToUpdate)
             return;
 
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && !_hasStartCoroutine && _isApplyGotHitEffect)
@@ -641,7 +676,7 @@ public class PlayerStateManager : MonoBehaviour
         {
             //Hết thgian miễn dmg r thì trả màu về như cũ cho nó
             //NẾU trên ng 0 có buff vô hình, còn có thì return và set lại bool
-            if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+            if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsAllowToUpdate)
             {
                 _isApplyGotHitEffect = false;
                 return;
@@ -654,7 +689,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void SpawnDashableEffect()
     {
-        GameObject dEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.Dashable);
+        GameObject dEff = Pool.Instance.GetObjectInPool(EPoolable.Dashable);
         dEff.SetActive(true);
         //Event của Dash animation
         //Dùng để ra dấu hiệu chỉ đc dash khi hết effect
@@ -673,6 +708,31 @@ public class PlayerStateManager : MonoBehaviour
             rb.AddForce(pInfo.IsPushFromRight ? pInfo.PushForce * new Vector2(-1f, 1f) : pInfo.PushForce);
         else
             Debug.Log("RB Player nULL");
+    }
+
+    private void UnlockSkill(object obj)
+    {
+        switch ((EPlayerState)obj)
+        {
+            case EPlayerState.doubleJump:
+                _unlockedDbJump = true; 
+                break;
+            case EPlayerState.wallSlide:
+                _unlockedWallSlide = true;
+                break;
+            case EPlayerState.dash:
+                _unlockedDash = true;
+                break;
+        }
+    }
+
+    private void UpdateRespawnPosition(object obj)
+    {
+        Vector3 checkPointPos = (Vector3)obj;
+        PlayerPrefs.SetFloat(ESpecialStates.PlayerPositionUpdatedX.ToString(), checkPointPos.x);
+        PlayerPrefs.SetFloat(ESpecialStates.PlayerPositionUpdatedY.ToString(), checkPointPos.y);
+        PlayerPrefs.SetFloat(ESpecialStates.PlayerPositionUpdatedZ.ToString(), checkPointPos.z);
+        PlayerPrefs.Save();
     }
 
 }

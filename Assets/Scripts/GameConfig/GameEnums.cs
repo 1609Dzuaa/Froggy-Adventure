@@ -70,9 +70,10 @@
         PlayerOnStopInteractWithNPCs,
         PlayerOnBeingPushedBack,
         PlayerOnUpdateRespawnPosition,
+        PlayerOnUnlockSkills,
         FanOnBeingDisabled,
         ObjectOnRestart,
-        TutorOnDestroy
+        TutorOnDestroy,
     }
 
     #endregion
@@ -149,7 +150,10 @@
         Deleted,
         Disabled,
         Actived,
-        SkillsAchieved
+        SkillUnlocked,
+        PlayerPositionUpdatedX,
+        PlayerPositionUpdatedY,
+        PlayerPositionUpdatedZ
     }
 
     #endregion

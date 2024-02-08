@@ -4,11 +4,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Xử lý UI nâng cấp skill (?)
+/// Xử lý UI nâng cấp skill: Mỗi khi unlock đc skills thì Popup UI skills achieved lên
+/// Thông qua notify kèm theo tham số là tên skill, sau đó bên UI sẽ nhận và hiển thị UI
+/// skill dựa trên tham số đó
+/// UIManager sẽ chứa 1 ref gameobject là SkillAchievedPanel, 1 text tên skill, 1 Img ảnh skill 
+/// Kèm thêm các dòng Text:
+/// Skill Unlocked:
+/// Tên Skill và ảnh skill ở phía dưới
+/// 
 /// Build Level 2 và Boss ở cuối Level
 /// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
-/// Thêm thông tin các button ở phần infor (?)
-/// Đổi Layer cho player khi dead
+/// Xử lý bị đá đè
+/// Bunny đôi lúc khoảng cách xa Player thì nó nhảy xa rất xa @@
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
 /// </summary>
 
@@ -113,6 +120,12 @@ public class GameManager : BaseSingleton<GameManager>
         SwitchToScene(1);
         //OnClick của button "Restart"
         //Chơi lại từ đầu
+    }
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteAll();
+        Debug.Log("Quit");
     }
 
 }

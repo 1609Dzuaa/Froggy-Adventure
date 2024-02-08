@@ -27,7 +27,6 @@ public class SnailManager : MEnemiesManager
     private int _direction = 1;
     private bool _hasStart;
     private bool _rotateByWall;
-    private BoxCollider2D _boxCol;
     //Solution cho việc nếu hit snail khi nó đang/chbi rotate => bug
     //Chỉ cho dmg nó nếu direction của nó là 1 (move ngang) - hạn chế bug
     private RaycastHit2D _groundHit;

@@ -11,6 +11,13 @@ public class EnemiesManager : CharactersManager
     [Header("SO")]
     [SerializeField] protected EnemiesStats _enemiesSO;
 
+    [Header("Special Enemy"), Tooltip("Tick vào và chọn skill nếu đây là quái đặc biệt, " +
+        "cung cấp skill cho Player")]
+    [SerializeField] protected bool _isApplySkillToPlayer;
+    [SerializeField] protected GameEnums.EPlayerState _skillUnlocked;
+    [SerializeField] protected float _skillUnlockDelay;
+    //Nếu là quái đặc biệt sẽ Notify events unlock skill cho Player
+
     protected bool _hasDetectedPlayer;
     protected bool _hasGotHit; //Đánh dấu bị Hit, tránh Trigger nhiều lần
     protected Collider2D _collider2D;
@@ -64,7 +71,7 @@ public class EnemiesManager : CharactersManager
         base.Update();
         DetectPlayer(); //Enemies nào thì cũng phải DetectPlayer, cho vào đây là hợp lý
         DrawRayDetectPlayer();
-        HandleIfHaveTutorText();
+        HandleIfIsSpecialEnemy();
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
@@ -117,18 +124,29 @@ public class EnemiesManager : CharactersManager
     }
 
     /// <summary>
-    /// Hàm dưới chỉ dùng cho các Enemy đc đánh dấu cần Tutor
-    /// Mục đích để tắt Tutor sau khi Player tìm cách hạ đc nó
+    /// Hàm dưới chỉ dùng cho các Enemy đặc biệt:
+    /// Mục đích để tắt Tutor || unlock skill sau khi Player tìm cách hạ đc nó
     /// Còn Enemy bthg thì 0 cần quan tâm hàm này
     /// </summary>
 
-    protected void HandleIfHaveTutorText()
+    protected void HandleIfIsSpecialEnemy()
     {
         if (_hasGotHit && !_hasNotified && _needTutor)
         {
             _hasNotified = true;
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.TutorOnDestroy, _tutorRef);
+
+            if (_isApplySkillToPlayer)
+                StartCoroutine(NotifyUnlockSkill());
         }
+    }
+
+    protected IEnumerator NotifyUnlockSkill()
+    {
+        yield return new WaitForSeconds(_skillUnlockDelay);
+
+        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnUnlockSkills, _skillUnlocked);
+        PlayerPrefs.SetString(GameEnums.ESpecialStates.SkillUnlocked + _skillUnlocked.ToString(), "Unlocked");
     }
 
 }

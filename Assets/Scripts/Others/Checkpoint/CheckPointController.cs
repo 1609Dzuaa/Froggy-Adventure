@@ -35,7 +35,7 @@ public class CheckPointController : GameObjectManager
             _checkActivated = true;
             _anim.SetTrigger(GameConstants.CHECKPOINT_ANIM_FLAG_OUT);
             SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.CheckpointSfx, 1.0f);
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnUpdateRespawnPosition, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnUpdateRespawnPosition, transform.position);
             PlayerPrefs.SetString(GameEnums.ESpecialStates.Actived + _ID, "Activated");
         }
     }
