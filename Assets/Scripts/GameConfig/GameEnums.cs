@@ -46,6 +46,9 @@
     public enum ETrunkState
     { idle, patrol, withdrawn, attack, gotHit }
 
+    public enum EBossState
+    { idleShield, shieldRunOut, idleNoShield, hitShieldOn, hitShieldOff }
+
     public enum ERockMove { Left, Top, Right, Bottom }
 
     // ======================================================================== //

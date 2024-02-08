@@ -368,7 +368,7 @@ public class PlayerStateManager : MonoBehaviour
         HandleAlphaValueGotHit();
         HandleDustVelocity();
         SpawnDust();
-        Debug.Log("OG, CanJ: " + isOnGround + ", " + _canJump);
+        //Debug.Log("OG, CanJ: " + isOnGround + ", " + _canJump);
     }
 
     /// <summary>
