@@ -16,6 +16,7 @@ public class GameManager : BaseSingleton<GameManager>
 {
     [SerializeField] float _delayTrans;
     [SerializeField] float _delayPlayThemeMusic;
+    bool _isReplay; //Nếu replay thì chờ loadscene r hẵng restart HP
 
     protected override void Awake()
     {
@@ -78,13 +79,18 @@ public class GameManager : BaseSingleton<GameManager>
         SceneManager.LoadSceneAsync(sceneIndex);
         UIManager.Instance.TriggerAnimation(GameConstants.SCENE_TRANS_START);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.SceneEntrySfx, 1.0f);
+        if (_isReplay)
+        {
+            _isReplay = false;
+            PlayerHealthManager.Instance.RestartHP();
+        }
     }
 
     public void ReloadScene()
     {
         Time.timeScale = 1.0f;
         UIManager.Instance.PopDownAllPanels();
-        PlayerHealthManager.Instance.RestartHP();
+        _isReplay = true;
         SwitchToScene(SceneManager.GetActiveScene().buildIndex);
         //OnClick của button "Replay"
         //Chơi lại scene này (start tại vị trí flag gần nhất ?)

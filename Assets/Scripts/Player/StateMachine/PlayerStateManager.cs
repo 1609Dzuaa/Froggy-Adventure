@@ -41,6 +41,11 @@ public class PlayerStateManager : MonoBehaviour
     private bool _isVunerable;
     private bool _isHitFromRightSide;
     private bool _isOnPlatform;
+    bool _hasDead; //Tránh HandleDeadState bị gọi nhiều lần
+
+    private bool _unlockedDbJump;
+    private bool _unlockedWallSlide;
+    private bool _unlockedDash;
 
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
@@ -294,6 +299,13 @@ public class PlayerStateManager : MonoBehaviour
         if (_hasBeenDisabled)
             return;
 
+        //Chết là hết
+        if (PlayerHealthManager.Instance.CurrentHP == 0)
+        {
+            HandleDeadState();
+            return;
+        }
+
         //=========Handle things related to NPC==========//
         NPCCheck();
         DrawRayDetectNPC();
@@ -319,7 +331,6 @@ public class PlayerStateManager : MonoBehaviour
         HandleAlphaValueGotHit();
         HandleDustVelocity();
         SpawnDust();
-        //Debug.Log("v: " + rb.velocity);
     }
 
     private void UpdateLayer()
@@ -329,6 +340,7 @@ public class PlayerStateManager : MonoBehaviour
         //Cho phép enemies đâm xuyên qua player và ngược lại
         //Đỡ việc 2 box va nhau, có thể gây khó chịu cho Player.
         //Phải có 1 biến bool để chặn cửa cùng Time, 0 thì đầu game ĐK thoả mãn luôn ^.^
+
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && _isVunerable)
             gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
         else if (_state is not DashState)
@@ -529,25 +541,28 @@ public class PlayerStateManager : MonoBehaviour
 
     public void HandleDeadState()
     {
+        //Tránh func này bị gọi nhiều lần dù đã chết
+        //VD: Dính dmg từ quái khi bay màu dẫn đến loadscene loạn xạ
+        if (!_hasDead)
+            _hasDead = true;
+        else
+            return;
+
         //Check vì có thể dính DeadZone nên 0 vào state GotHit
         if (PlayerHealthManager.Instance.CurrentHP > 0)
         {
             PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
             if (PlayerHealthManager.Instance.CurrentHP == 0)
-            {
                 UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
-            }
             else
                 GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
         }
         else
-        {
             UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
-        }
 
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
-        gameObject.layer = LayerMask.NameToLayer("Enemies");
+        gameObject.layer = LayerMask.NameToLayer("Enemies"); //Đổi layer tránh bị quái Detect dù đã chết
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerDeadSfx, 1.0f);
     }
 

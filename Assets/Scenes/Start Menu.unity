@@ -324,7 +324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: sfxSounds.Array.size
-      value: 33
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: sfxSounds.Array.data[11]._soundName
@@ -413,6 +413,10 @@ PrefabInstance:
     - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: sfxSounds.Array.data[32]._soundName
       value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[33]._soundName
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: sfxSounds.Array.data[2]._soundAudioClip
@@ -522,6 +526,10 @@ PrefabInstance:
       propertyPath: sfxSounds.Array.data[32]._soundAudioClip
       value: 
       objectReference: {fileID: 8300000, guid: 73920496e5fd063478adfe8f8d75d1c6, type: 3}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[33]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 198e8593d0e6f994693f3858fd89a40e, type: 3}
     - target: {fileID: 1862278579615023080, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: Loop
       value: 1
@@ -710,6 +718,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 156480704}
+    - target: {fileID: 1920853693, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139160537, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2139160541, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
       propertyPath: m_SortingOrder
       value: 3
@@ -722,6 +738,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 156480704}
+    - target: {fileID: 6326930026444315427, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9070924721466395992, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
       propertyPath: m_RootOrder
       value: 1

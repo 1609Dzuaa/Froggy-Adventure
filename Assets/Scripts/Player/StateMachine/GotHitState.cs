@@ -60,13 +60,6 @@ public class GotHitState : PlayerBaseState
             PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
         else
             PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_TEMP);
-        
-        if (PlayerHealthManager.Instance.CurrentHP == 0)
-        {
-            //Xử lý bay màu ở đây là hợp lý
-            _playerStateManager.HandleDeadState();
-            return;
-        }
 
         _playerStateManager.IsVunerable = true;
         _entryTime = Time.time;

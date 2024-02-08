@@ -137,6 +137,7 @@
         BoxBrokeSfx,
         SwitchActivatedSfx,
         DoubleJumpSfx,
+        SkillsAchivedSfx
     }
 
     #endregion
@@ -148,6 +149,7 @@
         Deleted,
         Disabled,
         Actived,
+        SkillsAchieved
     }
 
     #endregion
