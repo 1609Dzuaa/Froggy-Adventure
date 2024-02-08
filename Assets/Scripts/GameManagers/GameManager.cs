@@ -14,8 +14,7 @@ using UnityEngine.SceneManagement;
 /// 
 /// Build Level 2 và Boss ở cuối Level
 /// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
-/// Xử lý bị đá đè
-/// Bunny đôi lúc khoảng cách xa Player thì nó nhảy xa rất xa @@
+/// Coyote time
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
 /// </summary>
 

@@ -21,9 +21,11 @@ public class PlayerStateManager : MonoBehaviour
 
     private float dirX, dirY;
     private float _jumpStart;
+    private float _startCoyote;
     private Rigidbody2D rb;
     private Animator anim;
     private SpriteRenderer _spriteRenderer;
+    private CapsuleCollider2D _capCollider2D;
     private RaycastHit2D wallHit;
     private bool isOnGround = false;
     private bool _canDbJump = false; //Cho phép DbJump 1 lần
@@ -42,7 +44,9 @@ public class PlayerStateManager : MonoBehaviour
     private bool _isVunerable;
     private bool _isHitFromRightSide;
     private bool _isOnPlatform;
-    bool _hasDead; //Tránh HandleDeadState bị gọi nhiều lần
+    private bool _hasDead; //Tránh HandleDeadState bị gọi nhiều lần
+    private bool _hasStart;
+    private bool _canJump;
 
     private bool _unlockedDbJump;
     private bool _unlockedWallSlide;
@@ -116,8 +120,10 @@ public class PlayerStateManager : MonoBehaviour
 
     public bool IsVunerable { set => _isVunerable = value; }
 
+    public bool CanJump { get => _canJump; }
+
     //SET Functions
-    public void SetCanDbJump(bool para) { this._canDbJump = para; }
+    public void SetCanDbJump(bool para) { _canDbJump = para; }
 
     public Vector2 InteractPosition { get { return _interactPosition; } set { _interactPosition = value; } }
 
@@ -137,6 +143,7 @@ public class PlayerStateManager : MonoBehaviour
         anim = GetComponent<Animator>();
         dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _capCollider2D = GetComponent<CapsuleCollider2D>();
     }
 
     private void UpdatePosition()
@@ -354,12 +361,14 @@ public class PlayerStateManager : MonoBehaviour
         LockIfOutMinBound();
         UpdateLayer();
         HandleInput();
-        _state.Update();
         GroundAndWallCheck();
+        HandleCoyoteTime();
+        _state.Update();
         HandleFlipSprite();
         HandleAlphaValueGotHit();
         HandleDustVelocity();
         SpawnDust();
+        Debug.Log("OG, CanJ: " + isOnGround + ", " + _canJump);
     }
 
     /// <summary>
@@ -511,8 +520,9 @@ public class PlayerStateManager : MonoBehaviour
 
     private void GroundAndWallCheck()
     {
+        //Ở trên Platform thì 0 cần GCheck tránh bug
         if (!_isOnPlatform)
-            isOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
+            _canJump = isOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
         if (isFacingRight)
         {
             IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
@@ -593,8 +603,27 @@ public class PlayerStateManager : MonoBehaviour
 
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
+        _capCollider2D.enabled = false;
         gameObject.layer = LayerMask.NameToLayer("Enemies"); //Đổi layer tránh bị quái Detect dù đã chết
         SoundsManager.Instance.PlaySfx(ESoundName.PlayerDeadSfx, 1.0f);
+    }
+
+    private void HandleCoyoteTime()
+    {
+        if (!isOnGround && !_hasStart)
+        {
+            _hasStart = true;
+            _startCoyote = Time.time;
+            //Bấm giờ khi 0 thấy Ground nữa
+        }
+        else if (isOnGround)
+            _hasStart = false; //Thấy Ground lại r thì reset
+
+        //Đã bấm giờ và đang trong coyoteTime thì vẫn đc Jump
+        if (Time.time - _startCoyote <= _playerStats.CoyoteTime && _hasStart)
+            _canJump = true;
+        else if (Time.time - _startCoyote > _playerStats.CoyoteTime && _hasStart)
+            _canJump = false;
     }
 
     private void HandleCollideGround()

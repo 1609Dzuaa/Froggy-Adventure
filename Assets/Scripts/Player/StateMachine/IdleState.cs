@@ -38,12 +38,12 @@ public class IdleState : PlayerBaseState
 
     private bool CheckIfCanJump()
     {
-        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && _playerStateManager.GetIsOnGround();
+        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && _playerStateManager.CanJump;
     }
 
     private bool CheckIfCanFall()
     {
-        return _playerStateManager.GetDirY() == 0 && !_playerStateManager.GetIsOnGround();
+        return _playerStateManager.GetDirY() == 0 && !_playerStateManager.GetIsOnGround() && !_playerStateManager.CanJump;
         //Idle => Fall có thể là đứng yên, bị 1 vật khác
         //tác dụng lực vào đẩy rơi xuống dưới
     }

@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//Dùng SO để hạn chế việc Tight Coupling (Phụ thuộc chặt chẽ lẫn nhau giữa các class)
-//và Generally speaking, the main purpose of SO is to store instances of data outside of a scene
+//Generally speaking, the main purpose of SO is to store instances of data outside of a scene
 //NOTE: "since all each script does is read from the player data asset."
 //Docs:
 //"Every time you instantiate that Prefab, it will get its own copy of that data.
@@ -31,7 +30,6 @@ public class PlayerStats : ScriptableObject
 
     [Header("Force")]
     [SerializeField] private Vector2 _knockBackForce;
-    [SerializeField] private Vector2 _jumpOnEnemiesForce;
     [SerializeField] private Vector2 _dashForce;
 
     //Đạt được nhiều thành tựu thì mới tăng thêm maxHP
@@ -53,6 +51,7 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float _delayDashTime;
     [SerializeField] private float _invulnerableTime;
     [SerializeField] private float _timeEachApplyAlpha;
+    [SerializeField] private float _coyoteTime;
 
     [Header("Alpha Value")]
     [SerializeField] private float _alphaValueGotHit;
@@ -66,8 +65,6 @@ public class PlayerStats : ScriptableObject
     public Vector2 WallJumpSpeed { get { return _wallJumpSpeed; } }
 
     public Vector2 KnockBackForce { get { return _knockBackForce; } }
-
-    public Vector2 JumpOnEnemiesForce { get { return _jumpOnEnemiesForce; } }
 
     public Vector2 DashForce { get { return _dashForce; } }
 
@@ -88,6 +85,8 @@ public class PlayerStats : ScriptableObject
     public float InvulnerableTime { get { return _invulnerableTime; } }
 
     public float TimeEachApplyAlpha { get { return _timeEachApplyAlpha; } }
+
+    public float CoyoteTime { get { return _coyoteTime; } }
 
     public float AlphaValueGotHit { get { return _alphaValueGotHit; } }
 
