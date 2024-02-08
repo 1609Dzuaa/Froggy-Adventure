@@ -6,7 +6,6 @@ using UnityEngine;
 public class CameraController : BaseSingleton<CameraController>
 {
     private List<CinemachineVirtualCamera> _listCamera = new();
-    //private CinemachineVirtualCamera _activeCamera = null;
 
     protected override void Awake()
     {
@@ -26,7 +25,6 @@ public class CameraController : BaseSingleton<CameraController>
 
     public void SwitchingCamera(CinemachineVirtualCamera camPara)
     {
-        //_activeCamera = camPara;
         foreach (var cam in _listCamera)
             cam.Priority = (cam != camPara) ? 0 : 11;
         //Việc switch cam đơn giản là dựa trên Priority trong Cinamachine

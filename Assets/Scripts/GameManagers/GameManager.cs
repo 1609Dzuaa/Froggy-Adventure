@@ -14,7 +14,6 @@ using UnityEngine.SceneManagement;
 /// 
 /// Build Level 2 và Boss ở cuối Level
 /// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
-/// Coyote time
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
 /// </summary>
 

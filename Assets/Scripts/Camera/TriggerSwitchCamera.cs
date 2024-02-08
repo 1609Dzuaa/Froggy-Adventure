@@ -13,14 +13,14 @@ public class TriggerSwitchCamera : MonoBehaviour
         if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             CameraController.Instance.SwitchingCamera(_camNeedToSwitch);
-            Debug.Log("Switched new cam");
+            //Debug.Log("Switched new cam");
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         CameraController.Instance.SwitchingCamera(_prevCamera);
-        Debug.Log("Switch to prev cam");
+        //Debug.Log("Switch to prev cam");
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -28,7 +28,7 @@ public class TriggerSwitchCamera : MonoBehaviour
         if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             CameraController.Instance.SwitchingCamera(_camNeedToSwitch);
-            Debug.Log("Switched new cam");
+            //Debug.Log("Switched new cam");
         }
     }
 }

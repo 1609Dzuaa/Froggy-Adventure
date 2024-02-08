@@ -74,6 +74,7 @@
         FanOnBeingDisabled,
         ObjectOnRestart,
         TutorOnDestroy,
+        CameraOnShake
     }
 
     #endregion
