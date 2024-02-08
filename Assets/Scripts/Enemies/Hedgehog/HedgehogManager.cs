@@ -15,7 +15,6 @@ public class HedgehogManager : NMEnemiesManager
     private HedgehogSpikeIdleState _hedgehogSpikeIdle = new();
     private BoxCollider2D _boxCollider2D;
     private Vector2 _prevCollider2DSize;
-    bool _hasNotified;
 
     public float SpikeInDelay { get { return _spikeInDelay; } }
 
@@ -43,16 +42,6 @@ public class HedgehogManager : NMEnemiesManager
     protected override void Update()
     {
         base.Update();
-        HandleIfHaveTutorText();
-    }
-
-    private void HandleIfHaveTutorText()
-    {
-        if (_hasGotHit && !_hasNotified && _needTutor)
-        {
-            _hasNotified = true;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.TutorOnDestroy, _tutorRef);
-        }
     }
 
     private void ChangeToSpikeIdle()

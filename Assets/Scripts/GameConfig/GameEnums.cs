@@ -136,7 +136,7 @@
         BoxGotHitSfx,
         BoxBrokeSfx,
         SwitchActivatedSfx,
-
+        DoubleJumpSfx,
     }
 
     #endregion

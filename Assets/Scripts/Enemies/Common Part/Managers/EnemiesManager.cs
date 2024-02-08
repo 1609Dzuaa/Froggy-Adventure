@@ -15,6 +15,7 @@ public class EnemiesManager : CharactersManager
     protected bool _hasGotHit; //Đánh dấu bị Hit, tránh Trigger nhiều lần
     protected Collider2D _collider2D;
     protected SpriteRenderer _spriteRenderer;
+    protected bool _hasNotified; //Chỉ dành cho các Enemy cần Tutor
 
     #region GETTER
 
@@ -63,6 +64,7 @@ public class EnemiesManager : CharactersManager
         base.Update();
         DetectPlayer(); //Enemies nào thì cũng phải DetectPlayer, cho vào đây là hợp lý
         DrawRayDetectPlayer();
+        HandleIfHaveTutorText();
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
@@ -112,6 +114,21 @@ public class EnemiesManager : CharactersManager
     protected void OnRestartID(object obj)
     {
         _ID = null;
+    }
+
+    /// <summary>
+    /// Hàm dưới chỉ dùng cho các Enemy đc đánh dấu cần Tutor
+    /// Mục đích để tắt Tutor sau khi Player tìm cách hạ đc nó
+    /// Còn Enemy bthg thì 0 cần quan tâm hàm này
+    /// </summary>
+
+    protected void HandleIfHaveTutorText()
+    {
+        if (_hasGotHit && !_hasNotified && _needTutor)
+        {
+            _hasNotified = true;
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.TutorOnDestroy, _tutorRef);
+        }
     }
 
 }

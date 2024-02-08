@@ -39,7 +39,8 @@ public class UIManager : BaseSingleton<UIManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        //Chỉ cho bật Esc khi scene != start scene
+        if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex != 0)
             PopUpSettingsPanel();
     }
 

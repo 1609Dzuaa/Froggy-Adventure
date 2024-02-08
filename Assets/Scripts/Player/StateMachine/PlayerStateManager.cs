@@ -3,14 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.VFX;
 
-//bug Player từ GH -> Dead (Dính Trap r văng xuống DeadZone)
 public class PlayerStateManager : MonoBehaviour
 {
-    //private PlayerStateManager _instance;
-
     //PlayerStateManager - Context Class, Use to pass DATA to each State
     private PlayerBaseState _state;
     public IdleState idleState = new();
@@ -126,16 +121,11 @@ public class PlayerStateManager : MonoBehaviour
     
     private void Awake()
     {
-        InitReference();
+        GetReferenceComponents();
     }
 
-    private void InitReference()
+    private void GetReferenceComponents()
     {
-        /*if (!_instance)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }*/
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
@@ -163,6 +153,11 @@ public class PlayerStateManager : MonoBehaviour
         _state = idleState;
         _state.EnterState(this);
         rb.gravityScale = _playerStats.GravScale;
+    }
+
+    private void OnDestroy()
+    {
+        UnsubcribeAllEvents();
     }
 
     private void UnsubcribeAllEvents()
@@ -240,7 +235,6 @@ public class PlayerStateManager : MonoBehaviour
             HandleDeadState();
         else if (collision.CompareTag(GameConstants.PORTAL_TAG))
         {
-            UnsubcribeAllEvents();
             SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.GreenPortalSfx, 1.0f);
             anim.SetTrigger(GameConstants.DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
@@ -555,7 +549,6 @@ public class PlayerStateManager : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Static;
         gameObject.layer = LayerMask.NameToLayer("Enemies");
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerDeadSfx, 1.0f);
-        UnsubcribeAllEvents();
     }
 
     private void HandleCollideGround()
