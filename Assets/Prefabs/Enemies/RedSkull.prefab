@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8702964420832343579}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SpawnPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3484232063895467979}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,6 +251,8 @@ MonoBehaviour:
   _slamForceDown: {x: 0, y: 750}
   _eachSlamTime: 0.05
   _shield: {fileID: 5554631258288307665}
+  _retreatSpeed: 2
+  _chargeSpeed: 7
   _listMinions:
   - _minionName: 0
     _minion: {fileID: 1006303768328941998, guid: 7def39a49798ee64983e5252cd58c626, type: 3}
@@ -299,9 +301,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.029997349, y: -0.08998966}
+  m_Offset: {x: -0.029997349, y: -0.12466335}
   serializedVersion: 2
-  m_Radius: 1.0170417
+  m_Radius: 0.982368
 --- !u!61 &5554631259197099214
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -315,7 +317,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.03733635, y: 0.8892612}
+  m_Offset: {x: -0.02433014, y: 0.87625855}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -326,5 +328,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1566124, y: 0.3094269}
+  m_Size: {x: 1.4773407, y: 0.28342164}
   m_EdgeRadius: 0

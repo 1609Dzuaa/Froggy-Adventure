@@ -3,28 +3,32 @@ using UnityEngine;
 public class BossWeakState : MEnemiesIdleState
 {
     BossStateManager _bossManager;
+    bool _isFirstEnterState = true;
+
+    public bool IsFirstEnterState { get => _isFirstEnterState; set => _isFirstEnterState = value; }
 
     public override void EnterState(CharactersManager charactersManager)
     {
         _bossManager = (BossStateManager)charactersManager;
         _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBossState.idleNoShield);
         _bossManager.GetRigidbody2D().velocity = Vector2.zero;
-        _entryTime = Time.time;
-        //Debug.Log("WeakState");
+        if(_isFirstEnterState)
+        {
+            _isFirstEnterState = false;
+            _bossManager.StartCoroutine(_bossManager.TurnOnShield());
+            Debug.Log("WeakState");
+        }
     }
 
     public override void ExitState() { }
 
-    public override void Update()
-    {
-        if (CheckIfCanBackToNormal())
-            _bossManager.ChangeState(_bossManager.ShieldOnState);
-    }
+    public override void Update() { }
 
-    private bool CheckIfCanBackToNormal()
+    public override void FixedUpdate() 
     {
-        return Time.time - _entryTime >= _bossManager.WeakStateTime;
+        if (_bossManager.GetIsFacingRight())
+            _bossManager.GetRigidbody2D().velocity = new Vector2(_bossManager.RetreatSpeed, 0f);
+        else
+            _bossManager.GetRigidbody2D().velocity = new Vector2(-_bossManager.RetreatSpeed, 0f);
     }
-
-    public override void FixedUpdate() { }
 }

@@ -28,6 +28,10 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] float _eachSlamTime;
     [SerializeField] GameObject _shield;
 
+    [Header("Speed")]
+    [SerializeField] float _retreatSpeed;
+    [SerializeField] float _chargeSpeed;
+
     [Header("Minions")]
     [SerializeField] List<BossMinions> _listMinions = new();
 
@@ -42,10 +46,12 @@ public class BossStateManager : MEnemiesManager
     BossChargeState _chargeState = new();
     BossWallHitState _wallHitState = new();
     BossWeakState _weakState = new();
-    BossShieldOnState _shieldOn = new();
+    BossShieldOnState _shieldOnState = new();
     BossSummonState _summonState = new();
+    BossGotHitState _gotHitState = new();
 
     bool _enterBattle;
+    bool _isVunerable;
 
     public BossNormalState NormalState { get => _normalState; set => _normalState = value; }
 
@@ -55,15 +61,23 @@ public class BossStateManager : MEnemiesManager
 
     public BossWeakState WeakState { get => _weakState; set => _weakState = value; }
 
-    public BossShieldOnState ShieldOnState { get => _shieldOn; set => _shieldOn = value; }
+    public BossShieldOnState ShieldOnState { get => _shieldOnState; set => _shieldOnState = value; }
 
     public BossSummonState SummonState { get => _summonState; set => _summonState = value; }
+
+    public BossGotHitState GotHitState { get => _gotHitState; set => _gotHitState = value; }
 
     public Transform PlayerRef { get => _playerCheck; }
 
     public float WeakStateTime { get => _weakStateTime; }
 
     public bool EnterBattle { get => _enterBattle; set => _enterBattle = value; }
+
+    public bool HasGotHit { get => _hasGotHit; set => _hasGotHit = value; }
+
+    public float RetreatSpeed { get => _retreatSpeed; }
+
+    public float ChargeSpeed { get => _chargeSpeed; }
 
     protected override void Awake()
     {
@@ -108,13 +122,36 @@ public class BossStateManager : MEnemiesManager
 
     protected override void AllowAttackPlayer() { }
 
-    protected override void OnCollisionEnter2D(Collision2D collision) { }
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
+            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnTakeDamage, _isFacingRight);
+    }
 
-    protected override void OnTriggerEnter2D(Collider2D collision) { } 
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!_isVunerable) return;
+
+        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
+        {
+            _hasGotHit = true;
+            ChangeState(_gotHitState);
+            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnJumpPassive, null);
+        }
+    }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+    }
+
+    public IEnumerator TurnOnShield()
+    {
+        Debug.Log("Called");
+        yield return new WaitForSeconds(_weakStateTime);
+
+        Debug.Log("Done Crt");
+        ChangeState(_shieldOnState);
     }
 
     public IEnumerator Slam()
@@ -205,5 +242,15 @@ public class BossStateManager : MEnemiesManager
     private void BackToWeakState()
     {
         ChangeState(_weakState);
+    }
+
+    private void CanBeVunerable()
+    {
+        _isVunerable = true;
+    }
+
+    private void CanNotBeVunerable()
+    {
+        _isVunerable = false;
     }
 }

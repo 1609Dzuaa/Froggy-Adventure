@@ -11,7 +11,10 @@ public class BossWallHitState : CharacterBaseState
         _bossManager.GetRigidbody2D().velocity = Vector2.zero;
     }
 
-    public override void ExitState() { }
+    public override void ExitState()
+    {
+        _bossManager.FlippingSprite();
+    }
 
     public override void Update() { }
 
