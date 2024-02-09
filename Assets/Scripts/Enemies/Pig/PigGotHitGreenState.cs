@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PigGotHitGreenState : MEnemiesGotHitState
@@ -14,7 +12,7 @@ public class PigGotHitGreenState : MEnemiesGotHitState
         _pigManager = (PigManager)charactersManager;
         _pigManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPigState.gotHitGreen);
         _pigManager.GetRigidbody2D().velocity = Vector2.zero;
-        Debug.Log("GH Green");
+        //Debug.Log("GH Green");
     }
 
     public override void ExitState()

@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 /// Tên Skill và ảnh skill ở phía dưới
 /// 
 /// Build Level 2 và Boss ở cuối Level
+/// Gecko có bung ?
 /// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
 /// </summary>

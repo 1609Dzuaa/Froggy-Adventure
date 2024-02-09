@@ -60,6 +60,13 @@ public class PigManager : MEnemiesManager
         base.FixedUpdate();
     }
 
+    public override void ChangeState(CharacterBaseState state)
+    {
+        _state.ExitState();
+        _state = state;
+        _state.EnterState(this);
+    }
+
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.name == GameConstants.PLAYER_TAG && !_hasGotHit)

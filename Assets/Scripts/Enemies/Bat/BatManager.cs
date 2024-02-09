@@ -77,6 +77,7 @@ public class BatManager : MEnemiesManager
         _mEnemiesGotHitState = _batGotHitState; //convert chứ 0 nó lại xài state GotHit chung
         base.SetUpProperties();
         _state = _batSleepState; //Set lại state là Sleep vì base đang là Idle
+        _state.EnterState(this);
     }
 
     protected override void Update()

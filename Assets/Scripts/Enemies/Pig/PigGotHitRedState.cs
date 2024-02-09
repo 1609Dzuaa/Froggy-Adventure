@@ -20,7 +20,7 @@ public class PigGotHitRedState : MEnemiesGotHitState
             HandleBeforeDestroy();
             _pigManager.Invoke("SelfDestroy", _pigManager.DestroyDelay);
         }
-        Debug.Log("GH Red");
+        //Debug.Log("GH Red");
     }
 
     public override void ExitState()

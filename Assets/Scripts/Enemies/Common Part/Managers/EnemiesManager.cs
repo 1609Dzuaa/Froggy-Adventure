@@ -18,6 +18,9 @@ public class EnemiesManager : CharactersManager
     [SerializeField] protected float _skillUnlockDelay;
     //Nếu là quái đặc biệt sẽ Notify events unlock skill cho Player
 
+    [Header("Boss's Minion ?"), Tooltip("Nếu là quái để Boss summon thì tick vào để nhận Event")]
+    [SerializeField] protected bool _isBossMinion;
+
     protected bool _hasDetectedPlayer;
     protected bool _hasGotHit; //Đánh dấu bị Hit, tránh Trigger nhiều lần
     protected Collider2D _collider2D;
@@ -51,6 +54,13 @@ public class EnemiesManager : CharactersManager
     protected void OnEnable()
     {
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);
+    }
+
+    protected void OnDestroy()
+    {
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);
     }
 
     // Start is called before the first frame update
@@ -123,8 +133,16 @@ public class EnemiesManager : CharactersManager
         _ID = null;
     }
 
+    protected void ReceiveBossCommand(object obj)
+    {
+        if ((bool)obj != _isFacingRight)
+            FlippingSprite();
+        _isFacingRight = (bool)obj;
+        Debug.Log("Received: " + _isFacingRight);
+    }
+
     /// <summary>
-    /// Hàm dưới chỉ dùng cho các Enemy đặc biệt:
+    /// Các hàm dưới chỉ dùng cho các Enemy đặc biệt:
     /// Mục đích để tắt Tutor || unlock skill sau khi Player tìm cách hạ đc nó
     /// Còn Enemy bthg thì 0 cần quan tâm hàm này
     /// </summary>

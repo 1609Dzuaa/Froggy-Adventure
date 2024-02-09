@@ -77,7 +77,8 @@
         FanOnBeingDisabled,
         ObjectOnRestart,
         TutorOnDestroy,
-        CameraOnShake
+        CameraOnShake,
+        BossOnSummonMinion
     }
 
     #endregion
@@ -159,6 +160,13 @@
         PlayerPositionUpdatedY,
         PlayerPositionUpdatedZ
     }
+
+    #endregion
+
+    #region Boss Minions
+
+    public enum EBossMinions
+    { Plant, Trunk, BigRock, Chicken, Pig }
 
     #endregion
 }

@@ -82,8 +82,8 @@
     public const string PORTAL_TAG = "Portal";
     public const string ONLY_FAN_TAG = "OnlyFan";
     public const string DEAD_ZONE_TAG = "DeadZone";
-    public const string SETTINGS_TAG = "Settings";
-    public const string CREDITS_TAG = "Credits";
+    public const string BOSS_SHIELD_TAG = "BossShield";
+    public const string CLONE = "Clone";
     #endregion
 
     #region Axis Constants

@@ -10,7 +10,7 @@ public class PigAttackRedState : MEnemiesAttackState
         _pigManager = (PigManager)charactersManager;
         _pigManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPigState.attackRed);
         _pigManager.HasGotHit = false;
-        Debug.Log("Atk Red");
+        //Debug.Log("Atk Red");
     }
 
     public override void ExitState()

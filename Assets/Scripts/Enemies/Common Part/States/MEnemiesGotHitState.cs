@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
 
 public class MEnemiesGotHitState : MEnemiesBaseState
 {
@@ -40,6 +41,7 @@ public class MEnemiesGotHitState : MEnemiesBaseState
         _mEnemiesManager.GetRigidbody2D().AddForce(_mEnemiesManager.EnemiesSO.KnockForce, ForceMode2D.Impulse);
         _mEnemiesManager.GetCollider2D.enabled = false;
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.EnemiesDeadSfx, 1.0f);
-        PlayerPrefs.SetString(GameEnums.ESpecialStates.Deleted + _mEnemiesManager.ID, "deleted");
+        if (!_mEnemiesManager.ID.Contains(GameConstants.CLONE))
+            PlayerPrefs.SetString(GameEnums.ESpecialStates.Deleted + _mEnemiesManager.ID, "deleted");
     }
 }

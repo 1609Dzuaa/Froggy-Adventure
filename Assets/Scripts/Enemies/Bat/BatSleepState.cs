@@ -24,9 +24,7 @@ public class BatSleepState : MEnemiesBaseState
 
     private bool CheckIfOverSleepTime()
     {
-        if (Time.time - _entryTime >= _batManager.SleepTime)
-            return true;
-        return false;
+        return Time.time - _entryTime >= _batManager.SleepTime;
     }
 
     public override void FixedUpdate() { }

@@ -168,8 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708a0bb61786b4f42836a217de152725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _needTutor: 0
+  _tutorRef: {fileID: 0}
   _playerCheck: {fileID: 61836168184465416}
   _enemiesSO: {fileID: 11400000, guid: 46dfd30459b04774ab632670f7a2a217, type: 2}
+  _isApplySkillToPlayer: 0
+  _skillUnlocked: 0
+  _skillUnlockDelay: 0
+  _isBossMinion: 0
   _mEnemiesSO: {fileID: 11400000, guid: 115d47f41ff81554fb869b615e6db30a, type: 2}
   _wallCheck: {fileID: 61836167962103718}
   _groundCheck: {fileID: 8435826026534492231}
@@ -234,7 +240,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000011920929, y: -0.14385605}
+  m_Offset: {x: 0.011491567, y: -0.147686}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -245,7 +251,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.9536912, y: 1.7586555}
+  m_Size: {x: 1.8694189, y: 1.7050285}
   m_EdgeRadius: 0
 --- !u!61 &61836167497641848
 BoxCollider2D:
@@ -260,7 +266,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.020968914, y: 0.7725973}
+  m_Offset: {x: -0.009477317, y: 0.7725973}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -271,7 +277,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2906024, y: 0.20052147}
+  m_Size: {x: 1.3595527, y: 0.20052147}
   m_EdgeRadius: 0
 --- !u!1 &61836167962103717
 GameObject:
