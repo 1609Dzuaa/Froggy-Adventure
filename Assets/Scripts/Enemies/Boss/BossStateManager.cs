@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using static GameEnums;
-using UnityEditor;
 
 [System.Serializable]
 public struct BossMinions
@@ -13,11 +12,14 @@ public struct BossMinions
 }
 
 /// <summary>
-/// Boss sẽ có các skill:
-/// Bật khiên lao về 1 phía, đụng tường thì tắt khiên vào state yếu
-/// Bỏ chạy khỏi Player (state yếu)
-/// Đứng yên, Dậm xuống triệu hồi quái sau đó đứng yên 1 chỗ trong vài giây
-/// Đứng yên, Dậm xuống tạo Particle sau đó đứng yên 1 chỗ trong vài giây
+/// Boss sẽ HĐ như sau:
+/// Player Enter Room thì bật state Charge lao thẳng vào Player
+/// Nếu đâm tường thì về state weak, cho phép Player dmg nó
+/// Ở state weak sẽ move chậm, chờ thgian từ coroutine để về state thường (Shield ON)
+/// Ở state thường sẽ random 3 skills Charge, Summon Minions, Summon Particle, Summon Saws
+/// Bố trí 2 Saws sao cho Saw phía trên dù Player có nhảy max vẫn sẽ dính để
+/// Player phải học cách lui về 1 góc r đứng, nhảy xen kẽ
+/// Muốn nó lực hơn nữa thì notify shake cam khi hành động (đâm tg, summon quái)
 /// </summary>
 
 public class BossStateManager : MEnemiesManager
@@ -26,20 +28,30 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] Vector2 _slamForceUp;
     [SerializeField] Vector2 _slamForceDown;
     [SerializeField] float _eachSlamTime;
+
+    [Header("Weapon")]
     [SerializeField] GameObject _shield;
+    [SerializeField] GameObject _particles;
+    [SerializeField] GameObject _trap;
 
     [Header("Speed")]
     [SerializeField] float _retreatSpeed;
     [SerializeField] float _chargeSpeed;
+    [SerializeField] float _particleOnSpeed;
+    [SerializeField] float _trapSpeed;
 
     [Header("Minions")]
     [SerializeField] List<BossMinions> _listMinions = new();
 
     [Header("Spawn Position")]
     [SerializeField] Transform _spawnPos;
+    [SerializeField] Transform _spawnTrapPos1; //2 Th này phải ref ở ngoài
+    [SerializeField] Transform _spawnTrapPos2;
 
     [Header("Time")]
     [SerializeField] float _weakStateTime;
+    [SerializeField] float _particleStateTime;
+    [SerializeField] float _delayBackToNormal;
     [SerializeField] float _spawnDelay;
 
     BossNormalState _normalState = new();
@@ -49,6 +61,7 @@ public class BossStateManager : MEnemiesManager
     BossShieldOnState _shieldOnState = new();
     BossSummonState _summonState = new();
     BossGotHitState _gotHitState = new();
+    BossParticleState _particleState = new();
 
     bool _enterBattle;
     bool _isVunerable;
@@ -67,6 +80,8 @@ public class BossStateManager : MEnemiesManager
 
     public BossGotHitState GotHitState { get => _gotHitState; set => _gotHitState = value; }
 
+    public BossParticleState ParticleState { get=>_particleState; set => _particleState = value; }  
+
     public Transform PlayerRef { get => _playerCheck; }
 
     public float WeakStateTime { get => _weakStateTime; }
@@ -78,6 +93,8 @@ public class BossStateManager : MEnemiesManager
     public float RetreatSpeed { get => _retreatSpeed; }
 
     public float ChargeSpeed { get => _chargeSpeed; }
+
+    public float ParticleOnSpeed { get => _particleOnSpeed; }
 
     protected override void Awake()
     {
@@ -145,16 +162,33 @@ public class BossStateManager : MEnemiesManager
         base.FixedUpdate();
     }
 
-    public IEnumerator TurnOnShield()
+    public IEnumerator BackToNormal()
     {
-        Debug.Log("Called");
-        yield return new WaitForSeconds(_weakStateTime);
+        yield return new WaitForSeconds(_delayBackToNormal);
 
-        Debug.Log("Done Crt");
-        ChangeState(_shieldOnState);
+        ChangeState(_normalState);
+        //Back về Normal State từ Summon || Particle State sau _delayBackToNormal (s)
     }
 
-    public IEnumerator Slam()
+    public IEnumerator TurnOnShield()
+    {
+        yield return new WaitForSeconds(_weakStateTime);
+
+        ChangeState(_shieldOnState);
+        //Hết thgian ở weak state thì bật shield lên
+    }
+
+    public IEnumerator TurnOffParticle()
+    {
+        yield return new WaitForSeconds(_particleStateTime);
+
+        _particles.SetActive(false);
+        ChangeState(_normalState);
+        _particleState.IsFirstEnterState = true;
+        //Tắt particle khi hết thgian
+    }
+
+    public IEnumerator Slam(int state)
     {
         _rb.AddForce(Vector2.one * _slamForceUp);
         //_rb.AddForce(_isFacingRight ? Vector2.one * _slamForceUp : new Vector2(-1f, 1f) * _slamForceUp);
@@ -162,14 +196,22 @@ public class BossStateManager : MEnemiesManager
         yield return new WaitForSeconds(_eachSlamTime);
 
         _rb.AddForce(new Vector2(0f, -1f) * _slamForceDown);
-        StartCoroutine(SpawnMinion());
+
+        if (state == 0)
+        {
+            int minionOrTrap = UnityEngine.Random.Range(0, 2);
+
+            StartCoroutine((minionOrTrap == 0 ? SpawnMinion() : SpawnTrap()));
+        }
+        else
+            StartCoroutine(SpawnParticle());
     }
 
-    public IEnumerator SpawnMinion()
+    private IEnumerator SpawnMinion()
     {
         int random = UnityEngine.Random.Range(0, Enum.GetValues(typeof(EBossMinions)).Length);
         //Debug.Log("Rd: " + random);
-        SpawnSummonEffect();
+        SpawnSummonEffect(_spawnPos.position);
 
         yield return new WaitForSeconds(_spawnDelay);
 
@@ -177,30 +219,42 @@ public class BossStateManager : MEnemiesManager
         {
             case (int)EBossMinions.Plant:
                 Instantiate(GetMinion(EBossMinions.Plant), _spawnPos.position, Quaternion.identity, null);
-                Debug.Log("P");
                 break;
 
             case (int)EBossMinions.Trunk:
                 Instantiate(GetMinion(EBossMinions.Trunk), _spawnPos.position, Quaternion.identity, null);
-                Debug.Log("T");
                 break;
 
-            case (int)EBossMinions.BigRock:
-                Instantiate(GetMinion(EBossMinions.BigRock), _spawnPos.position, Quaternion.identity, null);
-                Debug.Log("Br");
+            case (int)EBossMinions.Rhino:
+                Instantiate(GetMinion(EBossMinions.Rhino), _spawnPos.position, Quaternion.identity, null);
                 break;
 
             case (int)EBossMinions.Chicken:
                 Instantiate(GetMinion(EBossMinions.Chicken), _spawnPos.position, Quaternion.identity, null);
-                Debug.Log("C");
                 break;
 
-            case (int)EBossMinions.Pig:
-                Instantiate(GetMinion(EBossMinions.Pig), _spawnPos.position, Quaternion.identity, null);
-                Debug.Log("PI");
+            case (int)EBossMinions.Bunny:
+                Instantiate(GetMinion(EBossMinions.Bunny), _spawnPos.position, Quaternion.identity, null);
                 break;
         }
         EventsManager.Instance.NotifyObservers(EEvents.BossOnSummonMinion, _isFacingRight);
+    }
+
+    private IEnumerator SpawnTrap()
+    {
+        SpawnSummonEffect(_spawnTrapPos1.position);
+        SpawnSummonEffect(_spawnTrapPos2.position);
+
+        yield return new WaitForSeconds(_spawnDelay);
+
+        GameObject trap1 = Instantiate(_trap, _spawnTrapPos1.position, Quaternion.identity, null);
+        trap1.GetComponentInChildren<SawController>().NeedMinMax = false;
+        trap1.GetComponentInChildren<SawController>().Speed = _trapSpeed;
+
+        GameObject trap2 = Instantiate(_trap, _spawnTrapPos2.position, Quaternion.identity, null);
+        trap2.GetComponentInChildren<SawController>().NeedMinMax = false;
+        trap2.GetComponentInChildren<SawController>().Speed = -_trapSpeed;
+        //Spawn Trap move ngc hướng nhau từ 2 vị trí trong Room
     }
 
     private GameObject GetMinion(EBossMinions minionName)
@@ -213,11 +267,30 @@ public class BossStateManager : MEnemiesManager
         return null;
     }
 
-    private void SpawnSummonEffect()
+    private void SpawnSummonEffect(Vector3 pos)
     {
         GameObject gObj = Pool.Instance.GetObjectInPool(EPoolable.BrownExplosion);
         gObj.SetActive(true);
-        gObj.GetComponent<EffectController>().SetPosition(_spawnPos.position);
+        gObj.GetComponent<EffectController>().SetPosition(pos);
+    }
+
+    private IEnumerator SpawnParticle()
+    {
+        yield return new WaitForSeconds(_spawnDelay);
+
+        _particles.SetActive(true);
+    }
+
+    public void FlipLeft()
+    {
+        _isFacingRight = false;
+        transform.Rotate(0, 180, 0);
+    }
+
+    public void FlipRight()
+    {
+        _isFacingRight = true;
+        transform.Rotate(0, 180, 0);
     }
 
     /// <summary>

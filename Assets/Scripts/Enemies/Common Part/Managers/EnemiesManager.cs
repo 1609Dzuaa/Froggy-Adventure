@@ -138,7 +138,7 @@ public class EnemiesManager : CharactersManager
         if ((bool)obj != _isFacingRight)
             FlippingSprite();
         _isFacingRight = (bool)obj;
-        Debug.Log("Received: " + _isFacingRight);
+        //Debug.Log("Received: " + _isFacingRight);
     }
 
     /// <summary>

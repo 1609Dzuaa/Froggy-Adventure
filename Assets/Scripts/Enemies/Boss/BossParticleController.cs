@@ -24,4 +24,13 @@ public class BossParticleController : MonoBehaviour
         float yOffset = Mathf.Sin(_angleIndex) * _radius;
         transform.position = new Vector3(_bossRef.position.x + xOffset, _bossRef.position.y + yOffset, 0f);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag(GameConstants.PLAYER_TAG))
+        {
+            //Debug.Log("Particle DMG");
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _bossRef.GetComponent<BossStateManager>().GetIsFacingRight());
+        }
+    }
 }

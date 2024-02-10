@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8832163414209981729}
   - component: {fileID: 8832163414209981735}
   - component: {fileID: 8832163414209981732}
-  m_Layer: 0
+  - component: {fileID: 574326056412010350}
+  m_Layer: 8
   m_Name: Boss Particle
   m_TagString: BossParticle
   m_Icon: {fileID: 0}
@@ -98,9 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7249b66a0acd07429d9397ab4934899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boss: {fileID: 0}
+  _bossRef: {fileID: 0}
   _rotateSpeed: 5
   _radius: 3
+  _angleIndex: 0
 --- !u!58 &8832163414209981732
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -117,3 +119,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.00031036139}
   serializedVersion: 2
   m_Radius: 0.25054592
+--- !u!95 &574326056412010350
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8832163414209981728}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2555f440fef9a4b4498adf48c22f4abf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

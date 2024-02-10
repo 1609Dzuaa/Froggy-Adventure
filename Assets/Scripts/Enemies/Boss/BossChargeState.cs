@@ -11,7 +11,7 @@ public class BossChargeState : MEnemiesAttackState
         _bossManager = (BossStateManager)charactersManager;
         _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBossState.idleShield);
         _bossManager.EnterBattle = true;
-        //Debug.Log("ChargeState");
+        Debug.Log("Charge");
     }
 
     public override void ExitState() { }

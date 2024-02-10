@@ -166,7 +166,7 @@
     #region Boss Minions
 
     public enum EBossMinions
-    { Plant, Trunk, BigRock, Chicken, Pig }
+    { Plant, Trunk, Rhino, Chicken, Bunny }
 
     #endregion
 }

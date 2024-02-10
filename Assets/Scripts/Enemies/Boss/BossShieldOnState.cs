@@ -8,7 +8,7 @@ public class BossShieldOnState : CharacterBaseState
     {
         _bossManager = (BossStateManager)charactersManager;
         _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBossState.hitShieldOn);
-        Debug.Log("Shield On");
+        //Debug.Log("Shield On");
     }
 
     public override void ExitState() { }

@@ -9,6 +9,7 @@ public class BossWallHitState : CharacterBaseState
         _bossManager = (BossStateManager)charactersManager;
         _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBossState.shieldRunOut);
         _bossManager.GetRigidbody2D().velocity = Vector2.zero;
+        Debug.Log("WH");
     }
 
     public override void ExitState()

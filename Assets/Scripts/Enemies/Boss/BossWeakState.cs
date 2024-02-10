@@ -1,9 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BossWeakState : MEnemiesIdleState
 {
     BossStateManager _bossManager;
-    bool _isFirstEnterState = true;
+    bool _isFirstEnterState = true; //Để start coroutine về Normal State duy nhất 1 lần
 
     public bool IsFirstEnterState { get => _isFirstEnterState; set => _isFirstEnterState = value; }
 
@@ -16,7 +16,7 @@ public class BossWeakState : MEnemiesIdleState
         {
             _isFirstEnterState = false;
             _bossManager.StartCoroutine(_bossManager.TurnOnShield());
-            Debug.Log("WeakState");
+            Debug.Log("Weak");
         }
     }
 

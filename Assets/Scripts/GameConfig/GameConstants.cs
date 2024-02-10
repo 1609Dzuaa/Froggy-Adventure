@@ -10,6 +10,7 @@
     //tránh flip loạn xạ khi dist to player quá gần
     public const float BAT_FLIPABLE_RANGE = 0.15f;
     public const float PIG_FLIPABLE_RANGE = 0.6f;
+    public const float BOSS_FLIPABLE_RANGE = 0.75f;
     public const float BUNNY_KNOCK_FORCE_DECREASE = 3.0f;
     public const float NEAR_ZERO_THRESHOLD = 0.1f;
 
