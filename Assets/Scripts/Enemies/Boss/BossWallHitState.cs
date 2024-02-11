@@ -1,4 +1,5 @@
 using UnityEngine;
+using static GameEnums;
 
 public class BossWallHitState : CharacterBaseState
 {
@@ -7,8 +8,10 @@ public class BossWallHitState : CharacterBaseState
     public override void EnterState(CharactersManager charactersManager)
     {
         _bossManager = (BossStateManager)charactersManager;
-        _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBossState.shieldRunOut);
+        _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)EBossState.shieldRunOut);
         _bossManager.GetRigidbody2D().velocity = Vector2.zero;
+        EventsManager.Instance.NotifyObservers(EEvents.CameraOnShake, null);
+        SoundsManager.Instance.PlaySfx(ESoundName.BossWallHitSfx, 1.0f);
         Debug.Log("WH");
     }
 

@@ -8,7 +8,9 @@ public class MovingObjectController : GameObjectManager
     [SerializeField] protected bool _isVertical;
     [SerializeField] protected Transform _maxPoint1;
     [SerializeField] protected Transform _maxPoint2;
+    [SerializeField, Tooltip("Nếu cần active false sau ... (s)")] protected float _existTime;
     protected bool _needMinMax = true;
+    protected float _entryTime;
     //1 = Left || Top
     //2 = Right || Bot
     //Muốn biến th này thành Horizontal/Vertical thì chỉnh ngoài Inspector
@@ -16,6 +18,11 @@ public class MovingObjectController : GameObjectManager
     public float Speed { get => _speed; set => _speed = value; }
 
     public bool NeedMinMax { get => _needMinMax; set => _needMinMax = value; }
+
+    private void OnEnable()
+    {
+        _entryTime = Time.time;
+    }
 
     protected virtual void Update()
     {
@@ -27,7 +34,7 @@ public class MovingObjectController : GameObjectManager
 
     private void HorizontalMove()
     {
-        if(_needMinMax)
+        if (_needMinMax)
         {
             if (transform.position.x <= _maxPoint1.position.x)
             {
@@ -40,6 +47,8 @@ public class MovingObjectController : GameObjectManager
                 _speed = -_speed;
             }
         }
+        else if (Time.time - _entryTime >= _existTime)
+            gameObject.SetActive(false);
 
         transform.position += new Vector3(_speed, 0, 0) * Time.deltaTime;
     }
@@ -59,6 +68,8 @@ public class MovingObjectController : GameObjectManager
                 _speed = -_speed;
             }
         }
+        else if (Time.time - _entryTime >= _existTime)
+            gameObject.SetActive(false);
 
         transform.position += new Vector3(0, _speed, 0) * Time.deltaTime;
     }

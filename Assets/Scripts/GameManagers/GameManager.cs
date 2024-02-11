@@ -15,6 +15,7 @@ using UnityEngine.SceneManagement;
 /// Build Level 2 và Boss ở cuối Level
 /// Build nốt state spawn Particle cho Boss, xử lý việc chuyển state của boss và random skill (?)
 /// Gecko có bung ?
+/// Xong boss, còn build map lv2 và bố trí Room Boss là end game
 /// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
 /// </summary>

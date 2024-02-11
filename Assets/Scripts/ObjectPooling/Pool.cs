@@ -105,7 +105,7 @@ public class Pool : BaseSingleton<Pool>
             }
         }
 
-        Debug.Log("out of ammo");
+        Debug.Log("out of " + objType);
         return null;
     }
 

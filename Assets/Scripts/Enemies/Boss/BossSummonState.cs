@@ -1,4 +1,5 @@
 using UnityEngine;
+using static GameEnums;
 
 public class BossSummonState : CharacterBaseState
 {
@@ -11,6 +12,8 @@ public class BossSummonState : CharacterBaseState
         _bossManager.GetRigidbody2D().velocity = Vector2.zero;
         _bossManager.StartCoroutine(_bossManager.Slam(0));
         _bossManager.StartCoroutine(_bossManager.BackToNormal());
+        EventsManager.Instance.NotifyObservers(EEvents.CameraOnShake, null);
+        SoundsManager.Instance.PlaySfx(ESoundName.BossSummonSfx, 1.0f);
         Debug.Log("Summon");
     }
 

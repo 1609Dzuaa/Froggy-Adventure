@@ -97,7 +97,8 @@
         BrownExplosion,
         PlantBullet,
         BeeBullet,
-        TrunkBullet
+        TrunkBullet,
+        Saw
     }
 
     #endregion
@@ -143,7 +144,12 @@
         BoxBrokeSfx,
         SwitchActivatedSfx,
         DoubleJumpSfx,
-        SkillsAchivedSfx
+        SkillsAchivedSfx,
+        BossWallHitSfx,
+        BossSummonSfx,
+        BossShieldOnSfx,
+        BossChargeSfx,
+        BossParticleSfx
     }
 
     #endregion

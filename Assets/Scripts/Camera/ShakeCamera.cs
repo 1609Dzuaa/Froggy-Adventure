@@ -14,7 +14,8 @@ public class ShakeCamera : MonoBehaviour
     
     private void Awake()
     {
-        _cam = GetComponent<CinemachineVirtualCamera>();    
+        _cam = GetComponent<CinemachineVirtualCamera>();
+        _cbmp = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     private void OnEnable()
@@ -34,14 +35,12 @@ public class ShakeCamera : MonoBehaviour
 
     public void ShakeCameraa(object obj)
     {
-        _cbmp = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _cbmp.m_AmplitudeGain = _shakeIntensity;
         _timer = _shakeTime;
     }
 
     void StopShake()
     {
-        _cbmp = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _cbmp.m_AmplitudeGain = 0;
         _timer = 0;
     }

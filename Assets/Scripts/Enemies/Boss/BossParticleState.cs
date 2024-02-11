@@ -22,6 +22,7 @@ public class BossParticleState : MEnemiesAttackState
             _bossManager.StartCoroutine(_bossManager.TurnOffParticle());
         }
         _bossManager.StartCoroutine(_bossManager.BackToNormal());
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BossParticleSfx, 1.0f);
         Debug.Log("Particle");
     }
 

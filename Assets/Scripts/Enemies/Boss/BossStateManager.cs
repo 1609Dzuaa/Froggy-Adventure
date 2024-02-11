@@ -43,10 +43,13 @@ public class BossStateManager : MEnemiesManager
     [Header("Minions")]
     [SerializeField] List<BossMinions> _listMinions = new();
 
-    [Header("Spawn Position")]
+    [Header("Position")]
     [SerializeField] Transform _spawnPos;
     [SerializeField] Transform _spawnTrapPos1; //2 Th này phải ref ở ngoài
     [SerializeField] Transform _spawnTrapPos2;
+    [SerializeField] Transform _spawnTrapPos3;
+    [SerializeField] Transform _spawnTrapPos4;
+    [SerializeField] Transform _middleRoom;
 
     [Header("Time")]
     [SerializeField] float _weakStateTime;
@@ -247,14 +250,31 @@ public class BossStateManager : MEnemiesManager
 
         yield return new WaitForSeconds(_spawnDelay);
 
-        GameObject trap1 = Instantiate(_trap, _spawnTrapPos1.position, Quaternion.identity, null);
+        GameObject trap1 = Pool.Instance.GetObjectInPool(EPoolable.Saw);
+        trap1.SetActive(true);
         trap1.GetComponentInChildren<SawController>().NeedMinMax = false;
-        trap1.GetComponentInChildren<SawController>().Speed = _trapSpeed;
-
-        GameObject trap2 = Instantiate(_trap, _spawnTrapPos2.position, Quaternion.identity, null);
+        GameObject trap2 = Pool.Instance.GetObjectInPool(EPoolable.Saw);
+        trap2.SetActive(true);
         trap2.GetComponentInChildren<SawController>().NeedMinMax = false;
-        trap2.GetComponentInChildren<SawController>().Speed = -_trapSpeed;
-        //Spawn Trap move ngc hướng nhau từ 2 vị trí trong Room
+
+        if (_playerCheck.position.x > _middleRoom.position.x)
+        {
+            trap1.GetComponentInChildren<SawController>().Speed = _trapSpeed;
+            trap1.transform.position = _spawnTrapPos1.position;
+
+            trap2.GetComponentInChildren<SawController>().Speed = -_trapSpeed;
+            trap2.transform.position = _spawnTrapPos2.position;
+        }
+        else
+        {
+            trap1.GetComponentInChildren<SawController>().Speed = -_trapSpeed;
+            trap1.transform.position = _spawnTrapPos4.position;
+
+            trap2.GetComponentInChildren<SawController>().Speed = _trapSpeed;
+            trap2.transform.position = _spawnTrapPos3.position;
+        }
+        
+        //Dựa vào vị trí Player mà spawn Trap move ngc hướng nhau từ 2 vị trí trong Room
     }
 
     private GameObject GetMinion(EBossMinions minionName)
