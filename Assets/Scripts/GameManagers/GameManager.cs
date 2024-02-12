@@ -16,6 +16,7 @@ using UnityEngine.SceneManagement;
 /// Build nốt state spawn Particle cho Boss, xử lý việc chuyển state của boss và random skill (?)
 /// Gecko có bung ?
 /// Xong boss, còn build map lv2 và bố trí Room Boss là end game
+/// Qua lv2 thì xoá hết data lv1 (quái, checkpoint) giữ skill player
 /// Build Boss cơ bản = state pattern, bỏ qua Behavior Tree vì 0 còn thgian
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
 /// </summary>
@@ -65,6 +66,7 @@ public class GameManager : BaseSingleton<GameManager>
 
     private void ResetGameData()
     {
+        PlayerHealthManager.Instance.DecreaseHP();
         PlayerHealthManager.Instance.RestartHP();
         PlayerPrefs.DeleteAll();
     }
@@ -92,6 +94,14 @@ public class GameManager : BaseSingleton<GameManager>
             _isReplay = false;
             PlayerHealthManager.Instance.RestartHP();
         }
+        else if (sceneIndex == GameConstants.GAME_LEVEL_2)
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.SetString(GameEnums.ESpecialStates.PlayerSkillUnlockedLV1.ToString(), "Unlocked");
+            PlayerHealthManager.Instance.IncreaseHP();
+        }
+        //Nếu là Replay thì restart HP, nếu là chuyển scene 2
+        //thì xoá mọi data trừ Player's skills, tăng HP lên 
     }
 
     public void ReloadScene()
@@ -101,15 +111,15 @@ public class GameManager : BaseSingleton<GameManager>
         _isReplay = true;
         SwitchToScene(SceneManager.GetActiveScene().buildIndex);
         //OnClick của button "Replay"
-        //Chơi lại scene này (start tại vị trí flag gần nhất ?)
+        //Chơi lại scene này (start tại vị trí flag gần nhất)
     }
 
     public void BackHome()
     {
         UIManager.Instance.PopDownAllPanels();
         UIManager.Instance.StartMenuCanvas.SetActive(true);
-        SceneManager.LoadSceneAsync(0);
-        StartCoroutine(PlayNextSceneSong(0, false));
+        SceneManager.LoadSceneAsync(GameConstants.GAME_MENU);
+        StartCoroutine(PlayNextSceneSong(GameConstants.GAME_MENU, false));
         //OnClick của button "Home"
     }
 
@@ -118,7 +128,7 @@ public class GameManager : BaseSingleton<GameManager>
         UIManager.Instance.PopDownAllPanels();
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.ObjectOnRestart, null);
         ResetGameData();
-        SwitchToScene(1);
+        SwitchToScene(GameConstants.GAME_LEVEL_1);
         //OnClick của button "Restart"
         //Chơi lại từ đầu
     }
@@ -126,6 +136,7 @@ public class GameManager : BaseSingleton<GameManager>
     private void OnApplicationQuit()
     {
         PlayerPrefs.DeleteAll();
+        PlayerHealthManager.Instance.DecreaseHP();
         Debug.Log("Quit");
     }
 

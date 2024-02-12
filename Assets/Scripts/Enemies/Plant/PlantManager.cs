@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlantManager : NMEnemiesManager
 {
     [Header("Bullet & Shoot Pos")]
-    [SerializeField] private GameObject _bullet;
     [SerializeField] private Transform _shootPosition;
 
     protected override void Awake()

@@ -102,6 +102,22 @@
 
     public const string JUMP_BUTTON = "Jump";
     public const string DASH_BUTTON = "Dash";
-        
+
+    #endregion
+
+    #region GAME LEVEL
+
+    public const int GAME_MENU = 0;
+    public const int GAME_LEVEL_1 = 1;
+    public const int GAME_LEVEL_2 = 2;
+
+    #endregion
+
+    #region PLAYER HP
+
+    public const int PLAYER_MAX_HP_LEVEL_1 = 3;
+    public const int PLAYER_MAX_HP_LEVEL_2 = 5;
+    public const int PLAYER_MAX_HP = 8; //Lượng HP có thể đạt đc khi cộng dồn từ tempHP
+
     #endregion
 }

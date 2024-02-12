@@ -2,10 +2,7 @@
 
 public class RhinoWallHitState : MEnemiesBaseState
 {
-    private bool _allowUpdate;
     private RhinoManager _rhinoManager;
-
-    public void AllowUpdate() { _allowUpdate = true; }
 
     public override void EnterState(CharactersManager charactersManager)
     {
@@ -20,23 +17,10 @@ public class RhinoWallHitState : MEnemiesBaseState
 
     public override void ExitState()
     {
-        _allowUpdate = false;
         _rhinoManager.IsHitShield = false;
     }
 
-    public override void Update()
-    {
-        //Delay nhằm mục đích chạy hết animation WallHit
-        if(_allowUpdate)
-            HandleAfterHitWall();
-    }
+    public override void Update() { }
 
     public override void FixedUpdate() { }
-
-    private void HandleAfterHitWall()
-    {
-        if (!_rhinoManager.IsHitShield)
-            _rhinoManager.FlippingSprite();
-        _rhinoManager.ChangeState(_rhinoManager.MEnemiesIdleState);
-    }
 }

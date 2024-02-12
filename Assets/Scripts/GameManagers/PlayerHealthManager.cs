@@ -16,7 +16,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     //Class này dùng Quản lý HP và phụ trách render HP lên UI
 
     [Header("HP Icon")]
-    [SerializeField] private Image[] _uiHP = new Image[10];
+    [SerializeField] private Image[] _uiHP = new Image[GameConstants.PLAYER_MAX_HP];
     [SerializeField] private Sprite _normalHPSprite;
     [SerializeField] private Sprite _lostHPSprite;
     [SerializeField] private Sprite _tempHPSprite;
@@ -28,8 +28,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     //khoảng thgian để blink máu ảo khi nó trong trạng thái RunningOut
     [SerializeField] private float _timeEachBlink;
 
-    private static PlayerHealthManager _Instance;
-    private HP[] _HPs = new HP[7];
+    private HP[] _HPs = new HP[GameConstants.PLAYER_MAX_HP];
     private int _maxHP;
     private int _currentHP;
     private int _tempHP;
@@ -84,7 +83,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void InitUIHP()
     {
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < GameConstants.PLAYER_MAX_HP; i++)
         {
             if (i < _maxHP)
                 _uiHP[i].enabled = true;
@@ -314,5 +313,16 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     public void RestartHP()
     {
         Start();
+    }
+
+    public void IncreaseHP()
+    {
+        _playerSO.MaxHP = GameConstants.PLAYER_MAX_HP_LEVEL_2;
+        Start();
+    }
+
+    public void DecreaseHP()
+    {
+        _playerSO.MaxHP = GameConstants.PLAYER_MAX_HP_LEVEL_1;
     }
 }

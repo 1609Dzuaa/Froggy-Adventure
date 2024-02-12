@@ -135,6 +135,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         GetReferenceComponents();
         UpdatePosition();
+        HandlePlayerSkills();
     }
 
     private void GetReferenceComponents()
@@ -149,17 +150,28 @@ public class PlayerStateManager : MonoBehaviour
     private void UpdatePosition()
     {
         if (PlayerPrefs.HasKey(ESpecialStates.PlayerPositionUpdatedX.ToString()))
-            transform.position = new Vector3(PlayerPrefs.GetFloat(ESpecialStates.PlayerPositionUpdatedX.ToString()), PlayerPrefs.GetFloat(ESpecialStates.PlayerPositionUpdatedY.ToString()), PlayerPrefs.GetFloat(ESpecialStates.PlayerPositionUpdatedZ.ToString()));
+        {
+            float x = PlayerPrefs.GetFloat(ESpecialStates.PlayerPositionUpdatedX.ToString());
+            float y = PlayerPrefs.GetFloat(ESpecialStates.PlayerPositionUpdatedY.ToString());
+            float z = PlayerPrefs.GetFloat(ESpecialStates.PlayerPositionUpdatedZ.ToString());
+            transform.position = new Vector3(x, y, z);
+        }
+        //Cập nhật vị trí Player dựa trên Checkpoint
     }
 
-    private void OnEnable()
+    private void HandlePlayerSkills()
     {
-        if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.doubleJump.ToString()))
-            _unlockedDbJump = true;
-        if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.wallSlide.ToString()))
-            _unlockedWallSlide = true;
-        if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.dash.ToString()))
-            _unlockedDash = true;
+        if (PlayerPrefs.HasKey(ESpecialStates.PlayerSkillUnlockedLV1.ToString()))
+            _unlockedDbJump = _unlockedWallSlide = true;
+        else
+        {
+            if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.doubleJump.ToString()))
+                _unlockedDbJump = true;
+            if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.wallSlide.ToString()))
+                _unlockedWallSlide = true;
+            if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.dash.ToString()))
+                _unlockedDash = true;
+        }
     }
 
     // Start is called before the first frame update
@@ -224,12 +236,12 @@ public class PlayerStateManager : MonoBehaviour
             return;
         }
 
-        /*if (state is DoubleJumpState && !_unlockedDbJump)
+        if (state is DoubleJumpState && !_unlockedDbJump)
             return;
         else if (state is WallSlideState && !_unlockedWallSlide)
             return;
         else if (state is DashState && !_unlockedDash)
-            return;*/
+            return;
 
         _state.ExitState();
         _state = state;
@@ -279,7 +291,7 @@ public class PlayerStateManager : MonoBehaviour
             SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
             anim.SetTrigger(GameConstants.DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
-            GameManager.Instance.SwitchToScene(1);
+            GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 

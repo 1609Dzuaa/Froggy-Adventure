@@ -69,15 +69,7 @@ public class RhinoManager : MEnemiesManager
 
     private void KnockBack()
     {
-        if (_isFacingRight)
-            _rb.AddForce(_knockBackForce * new Vector2(-1f, 1f), ForceMode2D.Impulse);
-        else
-            _rb.AddForce(_knockBackForce, ForceMode2D.Impulse);
+        _rb.AddForce( (_isFacingRight) ? _knockBackForce * new Vector2(-1f, 1f) : _knockBackForce, ForceMode2D.Impulse);
     }
 
-    //Event của Wall Hit animation
-    private void AllowUpdateWallHit()
-    {
-        _rhinoWallHitState.AllowUpdate();
-    }
 }
