@@ -99,10 +99,25 @@ public class EnemiesManager : CharactersManager
         }
 
         if (!_isFacingRight)
-            _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
-        else
-            _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
+        {
+            /*RaycastHit2D hit = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
 
+            if (hit && hit.collider.CompareTag(GameConstants.PLAYER_TAG))
+                _hasDetectedPlayer = true;
+            else
+                _hasDetectedPlayer = false;*/ 
+            _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
+        }
+        else
+        {
+            /*RaycastHit2D hit = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
+            if (hit && hit.collider.CompareTag(GameConstants.PLAYER_TAG))
+                _hasDetectedPlayer = true;
+            else
+                _hasDetectedPlayer = false;*/
+
+            _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
+        }
     }
 
     protected virtual void DrawRayDetectPlayer()
