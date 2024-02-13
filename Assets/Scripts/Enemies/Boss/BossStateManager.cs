@@ -291,7 +291,7 @@ public class BossStateManager : MEnemiesManager
     {
         GameObject gObj = Pool.Instance.GetObjectInPool(EPoolable.BrownExplosion);
         gObj.SetActive(true);
-        gObj.GetComponent<EffectController>().SetPosition(pos);
+        gObj.transform.position = pos;
     }
 
     private IEnumerator SpawnParticle()

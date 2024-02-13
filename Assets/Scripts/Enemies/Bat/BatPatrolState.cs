@@ -17,7 +17,7 @@ public class BatPatrolState : MEnemiesPatrolState
         _batManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBatState.patrol);
         _randomDirection = Random.Range(0, 4); //random bay 4 hướng ?, dùng switch case
         //Bỏ random kiểu Int switch sang random float đc 1 lượng offset đem * với velo.y
-        Debug.Log("Pt");
+        //Debug.Log("Pt");
     }
 
     public override void ExitState()
@@ -40,7 +40,7 @@ public class BatPatrolState : MEnemiesPatrolState
         else if (!_hasChangedState)
             HandleFlyPatrol();
 
-        Debug.Log("Bat PT Call");
+        //Debug.Log("Bat PT Call");
         //Debug.Log("Allow back, hasPT: " + _allowBackToSleepPos + _batManager.BatIdleState.HasPatrol);
     }
 

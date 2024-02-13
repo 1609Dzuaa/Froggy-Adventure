@@ -9,10 +9,4 @@ public class EffectController : MonoBehaviour
         gameObject.SetActive(false);
         //Event của animation effect
     }
-
-    //Vị trí mà mình muốn effect xuất hiện
-    public void SetPosition(Vector3 position)
-    {
-        transform.position = position;
-    }
 }

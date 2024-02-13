@@ -48,6 +48,6 @@ public class FrogHPController : ItemsController
     {
         GameObject collectEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.CollectHP);
         collectEff.SetActive(true);
-        collectEff.GetComponent<EffectController>().SetPosition(transform.position);
+        collectEff.transform.position = transform.position;
     }
 }

@@ -48,7 +48,10 @@ public class MovingObjectController : GameObjectManager
             }
         }
         else if (Time.time - _entryTime >= _existTime)
+        {
             gameObject.SetActive(false);
+            Debug.Log("false");
+        }
 
         transform.position += new Vector3(_speed, 0, 0) * Time.deltaTime;
     }
@@ -69,7 +72,10 @@ public class MovingObjectController : GameObjectManager
             }
         }
         else if (Time.time - _entryTime >= _existTime)
+        {
             gameObject.SetActive(false);
+            Debug.Log("false");
+        }
 
         transform.position += new Vector3(0, _speed, 0) * Time.deltaTime;
     }

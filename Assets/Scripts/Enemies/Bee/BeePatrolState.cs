@@ -13,7 +13,7 @@ public class BeePatrolState : MEnemiesPatrolState
         _beeManager = (BeeManager)charactersManager;
         _beeManager.MustAttack = false; //Về state này r thì tha cho Player
         _yOffset = Random.Range(-_beeManager.YOffSet, _beeManager.YOffSet);
-        Debug.Log("Bee PT");
+        //Debug.Log("Bee PT");
     }
 
     public override void ExitState()

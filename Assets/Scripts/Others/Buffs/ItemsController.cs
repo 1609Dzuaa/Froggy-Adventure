@@ -21,6 +21,6 @@ public class ItemsController : GameObjectManager
     {
         GameObject collectEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.CollectFruits);
         collectEff.SetActive(true);
-        collectEff.GetComponent<EffectController>().SetPosition(transform.position);
+        collectEff.transform.position = transform.position;
     }
 }

@@ -136,7 +136,7 @@ public class BulletController : MonoBehaviour
     {
         GameObject hitShieldEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.HitShield);
         hitShieldEff.SetActive(true);
-        hitShieldEff.GetComponent<EffectController>().SetPosition(transform.position);
+        hitShieldEff.transform.position = transform.position;
     }
 
     private void DamageTarget(object obj)

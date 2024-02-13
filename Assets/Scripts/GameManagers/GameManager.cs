@@ -20,6 +20,7 @@ using UnityEngine.SceneManagement;
 /// Vẫn còn bug quái có thể detect ra Player dù ở bên kia wall nhưng
 /// chấp nhận 0 sửa (0 còn time)
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
+/// Sửa lại state cho Boss chờ Player và Timeline, chỉnh lại camera 1 số chỗ đặc biệt và build game
 /// </summary>
 
 public class GameManager : BaseSingleton<GameManager>
