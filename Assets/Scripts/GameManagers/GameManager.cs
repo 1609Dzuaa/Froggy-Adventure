@@ -17,8 +17,7 @@ using UnityEngine.SceneManagement;
 /// Gecko có bung ?
 /// Xong boss, còn build map lv2 và bố trí Room Boss là end game
 /// Qua lv2 thì xoá hết data lv1 (quái, checkpoint) giữ skill player
-/// Vẫn còn bug quái có thể detect ra Player dù ở bên kia wall nhưng
-/// chấp nhận 0 sửa (0 còn time)
+/// Vẫn còn bug quái có thể detect ra Player dù ở bên kia wall
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
 /// Sửa lại state cho Boss chờ Player và Timeline, chỉnh lại camera 1 số chỗ đặc biệt và build game
 /// </summary>

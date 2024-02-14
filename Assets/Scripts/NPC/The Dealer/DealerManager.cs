@@ -21,7 +21,7 @@ public class DealerManager : NPCManagers
     //Create Signal Emitter that will take Signal Assets
     //Receiver will listen for signal from Emitter and execute signal orders
 
-    /*[Header("Text Related")]
+    [Header("Text Related")]
     [SerializeField] private Text _txtOverHead;
     [SerializeField] private Transform _txtPosition;
     [SerializeField] private float _delayTxtEnable;
@@ -162,6 +162,6 @@ public class DealerManager : NPCManagers
             _conversationPos = new Vector2(transform.position.x - _adjustConversationRange, transform.position.y);
 
         _playerReference.InteractPosition = _conversationPos;
-    }*/
+    }
 
 }

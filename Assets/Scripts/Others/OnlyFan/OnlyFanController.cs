@@ -49,7 +49,7 @@ public class OnlyFanController : GameObjectManager
     {
         base.SetUpProperties();
         _isFacingRight = (transform.eulerAngles.z) >= 90f && (transform.eulerAngles.z) < 270f;
-        _state = (PlayerPrefs.HasKey("Disabled" + _ID)) ? 1 : 0;
+        _state = (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Disabled + _ID)) ? 1 : 0;
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
     }
 

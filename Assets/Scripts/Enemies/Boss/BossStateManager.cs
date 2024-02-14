@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using static GameEnums;
+using UnityEngine.UI;
 
 [System.Serializable]
 public struct BossMinions
@@ -28,6 +29,15 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] Vector2 _slamForceUp;
     [SerializeField] Vector2 _slamForceDown;
     [SerializeField] float _eachSlamTime;
+
+    [Header("Text Related")]
+    [SerializeField] private Text _txtOverHead;
+    [SerializeField] private Transform _txtPosition;
+    [SerializeField] private float _delayTxtEnable;
+    [SerializeField] private float _timeEnableTxt;
+    [SerializeField] private float _timeEachIncrease;
+    [SerializeField] private float _alphaEachIncrease;
+    [SerializeField] private float _decreaseDelay;
 
     [Header("Weapon")]
     [SerializeField] GameObject _shield;
@@ -68,6 +78,12 @@ public class BossStateManager : MEnemiesManager
 
     bool _enterBattle;
     bool _isVunerable;
+
+    #region Text Overhead Related
+    bool _mustDecrease;
+    float _entryTime;
+    float _alpha;
+    #endregion
 
     public BossNormalState NormalState { get => _normalState; set => _normalState = value; }
 
@@ -113,10 +129,24 @@ public class BossStateManager : MEnemiesManager
     {
         _state = _normalState;
         _state.EnterState(this);
+        _txtOverHead.enabled = false;
+        Color textColor = _txtOverHead.color;
+        textColor.a = 0f; // Thiết lập alpha (độ trong suốt) về 0
+        _txtOverHead.color = textColor;
+        _txtOverHead.transform.position = _txtPosition.position;
+        _alpha = 0;
     }
 
     protected override void Update()
     {
+        if (_txtOverHead.enabled && !_mustDecrease)
+            IncreaseTextAlpha();
+
+        if (_mustDecrease)
+            DecreaseTextAlpha();
+
+        //Debug.Log("Color: " + _txtOverHead.color.a);
+
         base.Update();
     }
 
@@ -345,5 +375,60 @@ public class BossStateManager : MEnemiesManager
     private void CanNotBeVunerable()
     {
         _isVunerable = false;
+    }
+
+    public void StartIntroduceText()
+    {
+        StartCoroutine(Enable());
+    }
+
+    private IEnumerator Enable()
+    {
+        yield return new WaitForSeconds(_delayTxtEnable);
+
+        _txtOverHead.enabled = true;
+        _entryTime = Time.time; //Bấm giờ để tăng độ Alpha theo thgian cho Text
+
+        StartCoroutine(DisableText());
+    }
+
+    private IEnumerator DisableText()
+    {
+        yield return new WaitForSeconds(_timeEnableTxt);
+
+        _mustDecrease = true;
+        //StartCoroutine(MustDecrease());
+    }
+
+    private void IncreaseTextAlpha()
+    {
+        if (_alpha >= 1) 
+            return;
+        if (Time.time - _entryTime >= _timeEachIncrease)
+        {
+            _alpha += _alphaEachIncrease;
+            Color textColor = _txtOverHead.color;
+            textColor.a = _alpha;
+            _txtOverHead.color = textColor;
+            //Debug.Log("Color: " + _txtOverHead.color.a);
+            _entryTime = Time.time;
+        }
+    }
+
+    private void DecreaseTextAlpha()
+    {
+        if (_alpha <= 0)
+            return;
+        if (Time.time - _entryTime >= _timeEachIncrease)
+        {
+            _alpha -= _alphaEachIncrease;
+            Color textColor = _txtOverHead.color;
+            textColor.a = _alpha;
+            _txtOverHead.color = textColor;
+            //if (_alpha <= 0f)
+                //attackChangeState(_dealerTalkState);
+            //Debug.Log("Color: " + _txtOverHead.color.a);
+            _entryTime = Time.time;
+        }
     }
 }
