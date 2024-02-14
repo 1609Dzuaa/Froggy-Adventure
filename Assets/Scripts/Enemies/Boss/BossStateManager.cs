@@ -21,6 +21,7 @@ public struct BossMinions
 /// Bố trí 2 Saws sao cho Saw phía trên dù Player có nhảy max vẫn sẽ dính để
 /// Player phải học cách lui về 1 góc r đứng, nhảy xen kẽ
 /// Muốn nó lực hơn nữa thì notify shake cam khi hành động (đâm tg, summon quái)
+/// Cho boss lúc summon ra quái/particle thì cũng summon ra box support player (?)
 /// </summary>
 
 public class BossStateManager : MEnemiesManager
