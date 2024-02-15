@@ -12,6 +12,13 @@ public class GameObjectManager : MonoBehaviour
     [SerializeField] protected bool _needTutor;
     [SerializeField] protected GameObject _tutorRef;
 
+    [Header("Special Obj?"), Tooltip("Tick vào và chọn skill nếu đây là obj đặc biệt, " +
+    "cung cấp skill cho Player")]
+    [SerializeField] protected bool _isApplySkillToPlayer;
+    [SerializeField] protected GameEnums.EPlayerState _skillUnlocked;
+    [SerializeField] protected float _skillUnlockDelay;
+    //Nếu là obj đặc biệt sẽ Notify events unlock skill cho Player
+
     public Animator Animator { get { return _anim; } }
 
     public string ID { get { return _ID; } }
@@ -56,5 +63,13 @@ public class GameObjectManager : MonoBehaviour
     }
 
     protected virtual void SetUpProperties() { }
+
+    protected IEnumerator NotifyUnlockSkill()
+    {
+        yield return new WaitForSeconds(_skillUnlockDelay);
+
+        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnUnlockSkills, _skillUnlocked);
+        PlayerPrefs.SetString(GameEnums.ESpecialStates.SkillUnlocked + _skillUnlocked.ToString(), "Unlocked");
+    }
 
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using static GameEnums;
 
-public class BossSummonState : CharacterBaseState
+public class BossSummonState : MEnemiesBaseState
 {
     BossStateManager _bossManager;
 

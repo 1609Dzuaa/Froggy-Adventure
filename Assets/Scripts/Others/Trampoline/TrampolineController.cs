@@ -29,7 +29,7 @@ public class TrampolineController : GameObjectManager
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasAddForce)
         {
             _hasAddForce = true;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, _forceApply);
             SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.TrampolineSfx, 1.0f);
             _anim.SetTrigger("Jump");
             StartCoroutine(RestartAddForceVar());

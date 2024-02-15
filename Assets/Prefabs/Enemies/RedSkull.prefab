@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 896869183649746109}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.3, z: 0}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -513,9 +513,9 @@ MonoBehaviour:
   _particles: {fileID: 4328974786854949924}
   _trap: {fileID: 981856468975619701, guid: c8d1e31029568ea4c8a1cd5420efafec, type: 3}
   _retreatSpeed: 2
-  _chargeSpeed: 9
-  _particleOnSpeed: 5
-  _trapSpeed: 8
+  _chargeSpeed: 12
+  _particleOnSpeed: 7
+  _trapSpeed: 10
   _listMinions:
   - _minionName: 0
     _minion: {fileID: 1006303768328941998, guid: 7def39a49798ee64983e5252cd58c626, type: 3}

@@ -47,6 +47,7 @@ public class PlayerStateManager : MonoBehaviour
     private bool _hasDead; //Tránh HandleDeadState bị gọi nhiều lần
     private bool _hasStart;
     private bool _canJump;
+    private bool _forceApply;
 
     private bool _unlockedDbJump;
     private bool _unlockedWallSlide;
@@ -121,6 +122,8 @@ public class PlayerStateManager : MonoBehaviour
     public bool IsVunerable { set => _isVunerable = value; }
 
     public bool CanJump { get => _canJump; }
+
+    public bool ForceApply { get => _forceApply; }
 
     //SET Functions
     public void SetCanDbJump(bool para) { _canDbJump = para; }
@@ -327,6 +330,8 @@ public class PlayerStateManager : MonoBehaviour
     private void JumpPassive(object obj)
     {
         _canDbJump = true;
+        if (obj != null)
+            jumpState.JumpForceApplied = (float)obj;
         ChangeState(jumpState);
     }
 

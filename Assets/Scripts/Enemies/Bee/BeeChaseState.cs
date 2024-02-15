@@ -15,9 +15,12 @@ public class BeeChaseState : MEnemiesAttackState
         HandleLeftRightLogic();
         //1 khi vào chase r thì phải chase & shoot đến khi nào vượt min/max Nest thì tha
         //Hoặc khi 0 detect ra player nữa (Player tàng hình)
-        _beeManager.MustAttack = true;
+        if (!_beeManager.MustAttack)
+        {
+            _beeManager.MustAttack = true;
+            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BeeAngrySfx, 1.0f);
+        }
         _beeManager.GetRigidbody2D().velocity = Vector2.zero;
-        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BeeAngrySfx, 1.0f);
         //Debug.Log("Bee Chase");
     }
 

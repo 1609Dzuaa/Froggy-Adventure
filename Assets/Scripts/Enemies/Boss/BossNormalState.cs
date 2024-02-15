@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BossNormalState : CharacterBaseState
+public class BossNormalState : MEnemiesBaseState
 {
     BossStateManager _bossManager;
     float _xAxisDistance;
@@ -24,28 +24,23 @@ public class BossNormalState : CharacterBaseState
     {
         FlipTowardsPlayer();
 
-        if (!_bossManager.EnterBattle)
-            _bossManager.ChangeState(_bossManager.ChargeState);
-        else
+        if (_bossManager.HasDetectedPlayer)
         {
-            if (_bossManager.HasDetectedPlayer)
+            //Random 1 trong 3 skill sau khi ở state Normal
+            _randomState = Random.Range(0, 3);
+            switch (_randomState)
             {
-                //Random 1 trong 3 skill sau khi ở state Normal
-                _randomState = Random.Range(0, 3);
-                switch(_randomState)
-                {
-                    case 0:
-                        _bossManager.ChangeState(_bossManager.ChargeState);
-                        break;
+                case 0:
+                    _bossManager.ChangeState(_bossManager.ChargeState);
+                    break;
 
-                    case 1:
-                        _bossManager.ChangeState(_bossManager.SummonState);
-                        break;
+                case 1:
+                    _bossManager.ChangeState(_bossManager.SummonState);
+                    break;
 
-                    case 2:
-                        _bossManager.ChangeState(_bossManager.ParticleState);
-                        break;
-                }
+                case 2:
+                    _bossManager.ChangeState(_bossManager.ParticleState);
+                    break;
             }
         }
     }
@@ -57,21 +52,6 @@ public class BossNormalState : CharacterBaseState
             _bossManager.FlipRight();
         else if (_xAxisDistance > 0 && _bossManager.GetIsFacingRight() && Mathf.Abs(_xAxisDistance) >= GameConstants.BOSS_FLIPABLE_RANGE)
             _bossManager.FlipLeft();
-    }
-
-    private bool CheckIfCanChase()
-    {
-        return _bossManager.HasDetectedPlayer && !_bossManager.EnterBattle;
-    }
-
-    private bool CheckIfCanSummon()
-    {
-        return _bossManager.HasDetectedPlayer;
-    }
-
-    private bool CheckIfCanSpawnParticle()
-    {
-        return _bossManager.HasDetectedPlayer;
     }
 
     public override void FixedUpdate() { }

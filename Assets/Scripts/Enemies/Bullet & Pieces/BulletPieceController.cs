@@ -2,22 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct BulletPiecePair
-{
-    private GameObject _pair1;
-    private GameObject _pair2;
-
-    public BulletPiecePair(GameObject pair1, GameObject pair2)
-    {
-        _pair1 = pair1;
-        _pair2 = pair2;
-    }
-
-    public GameObject Pair1 { get { return _pair1; } }
-
-    public GameObject Pair2 { get { return _pair2; } }
-}
-
 public class BulletPieceController : MonoBehaviour
 {
     [Header("Bouncing Force")]

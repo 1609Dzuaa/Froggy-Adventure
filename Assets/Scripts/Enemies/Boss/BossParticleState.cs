@@ -14,7 +14,6 @@ public class BossParticleState : MEnemiesAttackState
         base.EnterState(charactersManager);
         _bossManager = (BossStateManager)charactersManager;
         _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBossState.idleShield);
-        _bossManager.EnterBattle = true;
         _bossManager.StartCoroutine(_bossManager.Slam(1));
         if(_isFirstEnterState)
         {

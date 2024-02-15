@@ -6,6 +6,7 @@ public class TutorialZoneController : GameObjectManager
 {
     [SerializeField] GameObject _tutorText;
     [SerializeField] bool _canDestroy;
+    bool _allowPopUp;
 
     protected override void Awake()
     {
@@ -16,25 +17,39 @@ public class TutorialZoneController : GameObjectManager
     {
         if (_canDestroy)
             EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.TutorOnDestroy, SelfDestroy);
+        if (_isApplySkillToPlayer)
+            EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnUnlockSkills, AllowPopUpTutor);
     }
 
     // Start is called before the first frame update
     protected override void Start()
     {
         _tutorText.SetActive(false);
+        if (_isApplySkillToPlayer)
+            if (PlayerPrefs.HasKey((GameEnums.ESpecialStates.Actived + ID)))
+                _allowPopUp = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(GameConstants.PLAYER_TAG))
-            _tutorText.SetActive(true);
+        {
+            if (!_isApplySkillToPlayer)
+                _tutorText.SetActive(true);
+            else
+                _tutorText.SetActive((_allowPopUp) ? true : false);
+            //Debug.Log("Tutor !Popup");
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
-            _tutorText.SetActive(true);
+            if (!_isApplySkillToPlayer)
+                _tutorText.SetActive(true);
+            else
+                _tutorText.SetActive((_allowPopUp) ? true : false);
             //Debug.Log("Tutor !Popup");
         }
     }
@@ -61,5 +76,20 @@ public class TutorialZoneController : GameObjectManager
     private void OnDestroy()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.TutorOnDestroy, SelfDestroy);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnUnlockSkills, AllowPopUpTutor);
+    }
+
+    /// <summary>
+    /// Với 1 vài tutor hướng dẫn Player sau khi Unlock skill thì
+    /// phải chờ cái Event Unlock skill đc notify thì mới popup
+    /// </summary>
+
+    private void AllowPopUpTutor(object obj)
+    {
+        if ((GameEnums.EPlayerState)obj != _skillUnlocked)
+            return;
+
+        _allowPopUp = true;
+        PlayerPrefs.SetString(GameEnums.ESpecialStates.Actived + ID, "Unlocked");
     }
 }

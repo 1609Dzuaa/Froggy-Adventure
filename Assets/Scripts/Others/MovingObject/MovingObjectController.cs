@@ -53,7 +53,7 @@ public class MovingObjectController : GameObjectManager
             Debug.Log("false");
         }
 
-        transform.position += new Vector3(_speed, 0, 0) * Time.deltaTime;
+        transform.position += new Vector3(_speed, 0f, 0) * Time.deltaTime;
     }
 
     private void VerticalMove()

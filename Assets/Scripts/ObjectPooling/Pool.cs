@@ -12,25 +12,37 @@ public struct PoolableObject
     public int _ammount;
 }
 
+[System.Serializable]
+public struct BulletPiecePair
+{
+    public EPoolable _bulletType;
+    public GameObject _pair1;
+    public GameObject _pair2;
+    public int _ammount;
+
+    public BulletPiecePair(EPoolable bulletType, GameObject pair1, GameObject pair2, int ammount)
+    {
+        _bulletType = bulletType;
+        _pair1 = pair1;
+        _pair2 = pair2;
+        _ammount = ammount;
+    }
+
+    public GameObject Pair1 { get { return _pair1; } }
+
+    public GameObject Pair2 { get { return _pair2; } }
+}
+
 public class Pool : BaseSingleton<Pool>
 {
     //Define a pool class that maintains a collection of reusable objects
     //Pools are useful to avoid the cost of allocation and deallocation
     //Ref: https://gameprogrammingpatterns.com/object-pool.html
 
-    [SerializeField] List<PoolableObject> _list = new();
+    [SerializeField] List<PoolableObject> _listPoolableObj = new();
+    [SerializeField] List<BulletPiecePair> _listBPiecePair = new();
     private Dictionary<EPoolable, List<GameObject>> _dictPool = new();
     private Dictionary<EPoolable, List<BulletPiecePair>> _dictBPPPool = new();
-
-    #region BulletPieces
-    [SerializeField] GameObject _plantBulletPiece1;
-    [SerializeField] GameObject _plantBulletPiece2;
-    [SerializeField] GameObject _beeBulletPiece1;
-    [SerializeField] GameObject _beeBulletPiece2;
-    [SerializeField] GameObject _trunkBulletPiece1;
-    [SerializeField] GameObject _trunkBulletPiece2;
-    [SerializeField] int _piecePairAmmount;
-    #endregion
 
     protected override void Awake()
     {
@@ -43,54 +55,51 @@ public class Pool : BaseSingleton<Pool>
         FillInSecondDictionary();
 
         InstantiateGameObjects();
-
-        InstantiateBulletPiece(_plantBulletPiece1, _plantBulletPiece2, EPoolable.PlantBullet, _piecePairAmmount);
-        InstantiateBulletPiece(_beeBulletPiece1, _beeBulletPiece2, EPoolable.BeeBullet, _piecePairAmmount);
-        InstantiateBulletPiece(_trunkBulletPiece1, _trunkBulletPiece2, EPoolable.TrunkBullet, _piecePairAmmount);
     }
 
     private void FillInFirstDictionary()
     {
-        for (int i = 0; i < _list.Count; i++)
-            if (!_dictPool.ContainsKey(_list[i]._ePoolable))
-                _dictPool.Add(_list[i]._ePoolable, new());
+        for (int i = 0; i < _listPoolableObj.Count; i++)
+            if (!_dictPool.ContainsKey(_listPoolableObj[i]._ePoolable))
+                _dictPool.Add(_listPoolableObj[i]._ePoolable, new());
     }
 
     private void FillInSecondDictionary()
     {
-        _dictBPPPool.Add(EPoolable.PlantBullet, new());
-        _dictBPPPool.Add(EPoolable.BeeBullet, new());
-        _dictBPPPool.Add(EPoolable.TrunkBullet, new());
+        for (int i = 0; i < _listBPiecePair.Count; i++)
+            if (!_dictBPPPool.ContainsKey(_listBPiecePair[i]._bulletType))
+                _dictBPPPool.Add(_listBPiecePair[i]._bulletType, new());
     }
 
     private void InstantiateGameObjects()
     {
         //Duyệt này hơi chuối nhưng ch tìm đc cách khác
-        for (int i = 0; i < _list.Count; i++)
+        for (int i = 0; i < _listPoolableObj.Count; i++)
         {
-            for(int j = 0; j < _list[i]._ammount; j++)
+            for(int j = 0; j < _listPoolableObj[i]._ammount; j++)
             {
                 //Awake & OnEnable của gObj vẫn đc gọi dù SetActive(false)
-                GameObject gObj = Instantiate(_list[i]._GObjPoolable);
+                GameObject gObj = Instantiate(_listPoolableObj[i]._GObjPoolable);
                 gObj.SetActive(false);
-                _dictPool[_list[i]._ePoolable].Add(gObj);
+                _dictPool[_listPoolableObj[i]._ePoolable].Add(gObj);
+            }
+        }
+
+        for (int i = 0; i < _listBPiecePair.Count; i++)
+        {
+            for (int j = 0; j < _listBPiecePair[i]._ammount; j++)
+            {
+                //Awake & OnEnable của gObj vẫn đc gọi dù SetActive(false)
+                GameObject gObj1 = Instantiate(_listBPiecePair[i]._pair1);
+                gObj1.SetActive(false);
+                GameObject gObj2 = Instantiate(_listBPiecePair[i]._pair2);
+                gObj2.SetActive(false);
+                BulletPiecePair bPP = new(_listBPiecePair[i]._bulletType, gObj1, gObj2, _listBPiecePair[i]._ammount);
+                _dictBPPPool[_listBPiecePair[i]._bulletType].Add(bPP);
             }
         }
         //Duyệt từng object kiểu PoolableObjects trong cái list
         //Add GameObject của object đó dựa trên lượng của object đó
-    }
-
-    private void InstantiateBulletPiece(GameObject piecepair1, GameObject piecepair2, EPoolable BulletPieceType, int ammount)
-    {
-        for (int i = 0; i < ammount; i++)
-        {
-            GameObject gObj1 = Instantiate(piecepair1);
-            gObj1.SetActive(false);
-            GameObject gObj2 = Instantiate(piecepair2);
-            gObj2.SetActive(false);
-            BulletPiecePair piecePair = new(gObj1, gObj2);
-            _dictBPPPool[BulletPieceType].Add(piecePair);
-        }
     }
 
     public GameObject GetObjectInPool(EPoolable objType)
@@ -125,7 +134,7 @@ public class Pool : BaseSingleton<Pool>
             }
         }
 
-        Debug.Log("out of piece");
+        Debug.Log("out of piece " + bulletType);
         return bulletPiecePair;
     }
 

@@ -11,13 +11,6 @@ public class EnemiesManager : CharactersManager
     [Header("SO")]
     [SerializeField] protected EnemiesStats _enemiesSO;
 
-    [Header("Special Enemy"), Tooltip("Tick vào và chọn skill nếu đây là quái đặc biệt, " +
-        "cung cấp skill cho Player")]
-    [SerializeField] protected bool _isApplySkillToPlayer;
-    [SerializeField] protected GameEnums.EPlayerState _skillUnlocked;
-    [SerializeField] protected float _skillUnlockDelay;
-    //Nếu là quái đặc biệt sẽ Notify events unlock skill cho Player
-
     [Header("Boss's Minion ?"), Tooltip("Nếu là quái để Boss summon thì tick vào để nhận Event")]
     [SerializeField] protected bool _isBossMinion;
 
@@ -172,14 +165,6 @@ public class EnemiesManager : CharactersManager
             if (_isApplySkillToPlayer)
                 StartCoroutine(NotifyUnlockSkill());
         }
-    }
-
-    protected IEnumerator NotifyUnlockSkill()
-    {
-        yield return new WaitForSeconds(_skillUnlockDelay);
-
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnUnlockSkills, _skillUnlocked);
-        PlayerPrefs.SetString(GameEnums.ESpecialStates.SkillUnlocked + _skillUnlocked.ToString(), "Unlocked");
     }
 
 }

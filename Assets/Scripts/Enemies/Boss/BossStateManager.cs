@@ -31,6 +31,9 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] Vector2 _slamForceDown;
     [SerializeField] float _eachSlamTime;
 
+    //[Header("HP")]
+    //[SerializeField] int _maxHP;
+
     [Header("Text Related")]
     [SerializeField] private Text _txtOverHead;
     [SerializeField] private Transform _txtPosition;
@@ -68,6 +71,7 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] float _delayBackToNormal;
     [SerializeField] float _spawnDelay;
 
+    BossWaitState _waitState = new();
     BossNormalState _normalState = new();
     BossChargeState _chargeState = new();
     BossWallHitState _wallHitState = new();
@@ -86,25 +90,17 @@ public class BossStateManager : MEnemiesManager
     float _alpha;
     #endregion
 
-    public BossNormalState NormalState { get => _normalState; set => _normalState = value; }
-
     public BossChargeState ChargeState { get => _chargeState; set => _chargeState = value; }
 
     public BossWallHitState WallHitState { get => _wallHitState; set => _wallHitState = value; }
 
     public BossWeakState WeakState { get => _weakState; set => _weakState = value; }
 
-    public BossShieldOnState ShieldOnState { get => _shieldOnState; set => _shieldOnState = value; }
-
     public BossSummonState SummonState { get => _summonState; set => _summonState = value; }
-
-    public BossGotHitState GotHitState { get => _gotHitState; set => _gotHitState = value; }
 
     public BossParticleState ParticleState { get=>_particleState; set => _particleState = value; }  
 
     public Transform PlayerRef { get => _playerCheck; }
-
-    public float WeakStateTime { get => _weakStateTime; }
 
     public bool EnterBattle { get => _enterBattle; set => _enterBattle = value; }
 
@@ -128,7 +124,7 @@ public class BossStateManager : MEnemiesManager
 
     protected override void SetUpProperties()
     {
-        _state = _normalState;
+        _state = _waitState;
         _state.EnterState(this);
         _txtOverHead.enabled = false;
         Color textColor = _txtOverHead.color;
@@ -344,8 +340,68 @@ public class BossStateManager : MEnemiesManager
         transform.Rotate(0, 180, 0);
     }
 
+    #region Introduce Boss Related
+
+    public void StartIntroduceText()
+    {
+        StartCoroutine(Enable());
+    }
+
+    private IEnumerator Enable()
+    {
+        yield return new WaitForSeconds(_delayTxtEnable);
+
+        _txtOverHead.enabled = true;
+        _entryTime = Time.time; //Bấm giờ để tăng độ Alpha theo thgian cho Text
+
+        StartCoroutine(DisableText());
+    }
+
+    private IEnumerator DisableText()
+    {
+        yield return new WaitForSeconds(_timeEnableTxt);
+
+        _mustDecrease = true;
+        //StartCoroutine(MustDecrease());
+    }
+
+    private void IncreaseTextAlpha()
+    {
+        if (_alpha >= 1)
+            return;
+        if (Time.time - _entryTime >= _timeEachIncrease)
+        {
+            _alpha += _alphaEachIncrease;
+            Color textColor = _txtOverHead.color;
+            textColor.a = _alpha;
+            _txtOverHead.color = textColor;
+            //Debug.Log("Color: " + _txtOverHead.color.a);
+            _entryTime = Time.time;
+        }
+    }
+
+    private void DecreaseTextAlpha()
+    {
+        if (_alpha <= 0)
+            return;
+        if (Time.time - _entryTime >= _timeEachIncrease)
+        {
+            _alpha -= _alphaEachIncrease;
+            Color textColor = _txtOverHead.color;
+            textColor.a = _alpha;
+            _txtOverHead.color = textColor;
+            //if (_alpha <= 0f)
+            //attackChangeState(_dealerTalkState);
+            //Debug.Log("Color: " + _txtOverHead.color.a);
+            _entryTime = Time.time;
+        }
+    }
+
+    #endregion
+
     /// <summary>
     /// Các hàm dưới là event của các Animations
+    /// và Signal Emitter của Timeline
     /// </summary>
 
     private void ShieldOn()
@@ -378,58 +434,8 @@ public class BossStateManager : MEnemiesManager
         _isVunerable = false;
     }
 
-    public void StartIntroduceText()
+    public void AllowEnterBattle()
     {
-        StartCoroutine(Enable());
-    }
-
-    private IEnumerator Enable()
-    {
-        yield return new WaitForSeconds(_delayTxtEnable);
-
-        _txtOverHead.enabled = true;
-        _entryTime = Time.time; //Bấm giờ để tăng độ Alpha theo thgian cho Text
-
-        StartCoroutine(DisableText());
-    }
-
-    private IEnumerator DisableText()
-    {
-        yield return new WaitForSeconds(_timeEnableTxt);
-
-        _mustDecrease = true;
-        //StartCoroutine(MustDecrease());
-    }
-
-    private void IncreaseTextAlpha()
-    {
-        if (_alpha >= 1) 
-            return;
-        if (Time.time - _entryTime >= _timeEachIncrease)
-        {
-            _alpha += _alphaEachIncrease;
-            Color textColor = _txtOverHead.color;
-            textColor.a = _alpha;
-            _txtOverHead.color = textColor;
-            //Debug.Log("Color: " + _txtOverHead.color.a);
-            _entryTime = Time.time;
-        }
-    }
-
-    private void DecreaseTextAlpha()
-    {
-        if (_alpha <= 0)
-            return;
-        if (Time.time - _entryTime >= _timeEachIncrease)
-        {
-            _alpha -= _alphaEachIncrease;
-            Color textColor = _txtOverHead.color;
-            textColor.a = _alpha;
-            _txtOverHead.color = textColor;
-            //if (_alpha <= 0f)
-                //attackChangeState(_dealerTalkState);
-            //Debug.Log("Color: " + _txtOverHead.color.a);
-            _entryTime = Time.time;
-        }
+        _enterBattle = true;
     }
 }

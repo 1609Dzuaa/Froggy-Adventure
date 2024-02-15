@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossShieldOnState : CharacterBaseState
+public class BossShieldOnState : MEnemiesBaseState
 {
     BossStateManager _bossManager;
 

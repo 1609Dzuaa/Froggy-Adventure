@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BossWeakState : MEnemiesIdleState
+public class BossWeakState : MEnemiesBaseState
 {
     BossStateManager _bossManager;
     bool _isFirstEnterState = true; //Để start coroutine về Normal State duy nhất 1 lần
