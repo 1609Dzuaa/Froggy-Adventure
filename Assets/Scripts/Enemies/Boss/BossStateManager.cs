@@ -32,7 +32,7 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] float _eachSlamTime;
 
     //[Header("HP")]
-    //[SerializeField] int _maxHP;
+    [SerializeField] int _maxHP;
 
     [Header("Text Related")]
     [SerializeField] private Text _txtOverHead;
@@ -112,6 +112,8 @@ public class BossStateManager : MEnemiesManager
 
     public float ParticleOnSpeed { get => _particleOnSpeed; }
 
+    public int MaxHP { get => _maxHP; set => _maxHP = value; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -128,7 +130,7 @@ public class BossStateManager : MEnemiesManager
         _state.EnterState(this);
         _txtOverHead.enabled = false;
         Color textColor = _txtOverHead.color;
-        textColor.a = 0f; // Thiết lập alpha (độ trong suốt) về 0
+        textColor.a = 0f;
         _txtOverHead.color = textColor;
         _txtOverHead.transform.position = _txtPosition.position;
         _alpha = 0;
@@ -154,7 +156,7 @@ public class BossStateManager : MEnemiesManager
 
     private void OnDrawGizmos()
     {
-        //Gizmos.DrawCube(transform.position, _detectSize);
+        Gizmos.DrawCube(transform.position, _detectSize);
     }
 
     protected override void DrawRayDetectPlayer() { }
@@ -272,8 +274,16 @@ public class BossStateManager : MEnemiesManager
 
     private IEnumerator SpawnTrap()
     {
-        SpawnSummonEffect(_spawnTrapPos1.position);
-        SpawnSummonEffect(_spawnTrapPos2.position);
+        if (_playerCheck.position.x > _middleRoom.position.x)
+        {
+            SpawnSummonEffect(_spawnTrapPos1.position);
+            SpawnSummonEffect(_spawnTrapPos2.position);
+        }
+        else
+        {
+            SpawnSummonEffect(_spawnTrapPos3.position);
+            SpawnSummonEffect(_spawnTrapPos4.position);
+        }
 
         yield return new WaitForSeconds(_spawnDelay);
 
@@ -316,7 +326,7 @@ public class BossStateManager : MEnemiesManager
 
     private void SpawnSummonEffect(Vector3 pos)
     {
-        GameObject gObj = Pool.Instance.GetObjectInPool(EPoolable.BrownExplosion);
+        GameObject gObj = Pool.Instance.GetObjectInPool(EPoolable.RedExplode);
         gObj.SetActive(true);
         gObj.transform.position = pos;
     }
@@ -362,7 +372,6 @@ public class BossStateManager : MEnemiesManager
         yield return new WaitForSeconds(_timeEnableTxt);
 
         _mustDecrease = true;
-        //StartCoroutine(MustDecrease());
     }
 
     private void IncreaseTextAlpha()
@@ -390,8 +399,6 @@ public class BossStateManager : MEnemiesManager
             Color textColor = _txtOverHead.color;
             textColor.a = _alpha;
             _txtOverHead.color = textColor;
-            //if (_alpha <= 0f)
-            //attackChangeState(_dealerTalkState);
             //Debug.Log("Color: " + _txtOverHead.color.a);
             _entryTime = Time.time;
         }

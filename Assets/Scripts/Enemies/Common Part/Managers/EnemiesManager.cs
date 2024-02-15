@@ -11,9 +11,6 @@ public class EnemiesManager : CharactersManager
     [Header("SO")]
     [SerializeField] protected EnemiesStats _enemiesSO;
 
-    [Header("Boss's Minion ?"), Tooltip("Nếu là quái để Boss summon thì tick vào để nhận Event")]
-    [SerializeField] protected bool _isBossMinion;
-
     protected bool _hasDetectedPlayer;
     protected bool _hasGotHit; //Đánh dấu bị Hit, tránh Trigger nhiều lần
     protected Collider2D _collider2D;

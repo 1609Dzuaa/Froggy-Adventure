@@ -74,6 +74,7 @@
         PlayerOnBeingPushedBack,
         PlayerOnUpdateRespawnPosition,
         PlayerOnUnlockSkills,
+        PlayerOnWinGame,
         FanOnBeingDisabled,
         ObjectOnRestart,
         TutorOnDestroy,
@@ -99,7 +100,8 @@
         PlantBullet,
         BeeBullet,
         TrunkBullet,
-        Saw
+        Saw,
+        RedExplode
     }
 
     #endregion

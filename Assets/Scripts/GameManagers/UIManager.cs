@@ -34,6 +34,7 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] List<UISkillUnlocked> _listSkill;
 
     [SerializeField] float _delayPopUpLoosePanel;
+    [SerializeField] float _delayPopUpWinPanel;
 
     bool _canPopUpPanel = true;
     bool _canPlayCloseSfx; //Chỉ có thể play close sfx khi chủ động bấm X
@@ -49,6 +50,13 @@ public class UIManager : BaseSingleton<UIManager>
     private void OnEnable()
     {
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, PopUpSkillAchievedPanel);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnWinGame, WinPanel);
+    }
+
+    private void OnDestroy()
+    {
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, PopUpSkillAchievedPanel);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnWinGame, WinPanel);
     }
 
     private void Start()
@@ -193,6 +201,24 @@ public class UIManager : BaseSingleton<UIManager>
         if (_canPlayCloseSfx)
             SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
         _skillsAchievedPanel.SetActive(false);
+    }
+
+    private void PopUpWinPanel()
+    {
+        PopDownAllPanels();
+        _winPanel.SetActive(true);
+    }
+
+    private IEnumerator StartPopUpWinPanel()
+    {
+        yield return new WaitForSeconds(_delayPopUpWinPanel);
+
+        PopUpWinPanel();
+    }
+
+    private void WinPanel(object obj)
+    {
+        StartCoroutine(StartPopUpWinPanel());
     }
 
 }

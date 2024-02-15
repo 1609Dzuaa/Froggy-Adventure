@@ -84,14 +84,12 @@ public class JumpState : PlayerBaseState
                 float xVelo = _playerStateManager.GetRigidBody2D().velocity.x;
                 float yVelo = _jumpForceApplied;
                 _playerStateManager.GetRigidBody2D().velocity = new(xVelo, yVelo);
-                Debug.Log("yVelo: " + yVelo);
             }
             else
             {
                 float xVelo = _playerStateManager.GetRigidBody2D().velocity.x;
                 float yVelo = _playerStateManager.GetPlayerStats.SpeedY;
                 _playerStateManager.GetRigidBody2D().velocity = new(xVelo, yVelo);
-                Debug.Log("yVelo: " + yVelo);
             }
         }
         else

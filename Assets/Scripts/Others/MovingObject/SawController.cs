@@ -40,7 +40,7 @@ public class SawController : MovingObjectController
     private void ActiveGate(object obj)
     {
         Debug.Log("activated");
-        GameObject activeSfx = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.BrownExplosion);
+        GameObject activeSfx = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.RedExplode);
         activeSfx.SetActive(true);
         activeSfx.transform.position = transform.position;
         gameObject.SetActive(true);

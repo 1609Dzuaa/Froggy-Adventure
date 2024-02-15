@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 10
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -108,10 +108,10 @@ TextureImporter:
       name: 03_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 34
-        width: 28
-        height: 29
+        x: 0
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -129,10 +129,10 @@ TextureImporter:
       name: 03_1
       rect:
         serializedVersion: 2
-        x: 33
-        y: 2
-        width: 30
-        height: 61
+        x: 32
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,10 +150,10 @@ TextureImporter:
       name: 03_2
       rect:
         serializedVersion: 2
-        x: 57
-        y: 3
-        width: 39
-        height: 58
+        x: 64
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,10 +171,10 @@ TextureImporter:
       name: 03_3
       rect:
         serializedVersion: 2
-        x: 97
-        y: 33
-        width: 30
-        height: 29
+        x: 96
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,10 +192,10 @@ TextureImporter:
       name: 03_4
       rect:
         serializedVersion: 2
-        x: 107
-        y: 10
-        width: 57
-        height: 53
+        x: 128
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -213,10 +213,10 @@ TextureImporter:
       name: 03_5
       rect:
         serializedVersion: 2
-        x: 165
-        y: 55
-        width: 8
-        height: 7
+        x: 160
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -234,10 +234,10 @@ TextureImporter:
       name: 03_6
       rect:
         serializedVersion: 2
-        x: 169
-        y: 32
-        width: 21
-        height: 28
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -255,10 +255,10 @@ TextureImporter:
       name: 03_7
       rect:
         serializedVersion: 2
-        x: 184
-        y: 46
-        width: 8
-        height: 4
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -276,10 +276,10 @@ TextureImporter:
       name: 03_8
       rect:
         serializedVersion: 2
-        x: 167
-        y: 34
-        width: 7
-        height: 8
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -297,10 +297,10 @@ TextureImporter:
       name: 03_9
       rect:
         serializedVersion: 2
-        x: 0
-        y: 14
-        width: 15
-        height: 18
+        x: 96
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -318,10 +318,10 @@ TextureImporter:
       name: 03_10
       rect:
         serializedVersion: 2
-        x: 3
+        x: 128
         y: 0
-        width: 29
-        height: 27
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -331,48 +331,6 @@ TextureImporter:
       bones: []
       spriteID: 589ba8452b918a641b96e2edc3a310d1
       internalID: 298045202
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 03_11
-      rect:
-        serializedVersion: 2
-        x: 47
-        y: 11
-        width: 6
-        height: 4
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 057a6e482b2d70b448a3e7c400568bf3
-      internalID: 1713222054
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 03_12
-      rect:
-        serializedVersion: 2
-        x: 47
-        y: 17
-        width: 6
-        height: 5
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 584e6cfd82eb01f4c8fe7a59e61bb0d9
-      internalID: -1936325013
       vertices: []
       indices: 
       edges: []
@@ -391,8 +349,6 @@ TextureImporter:
       03_0: 1196822042
       03_1: 1328773770
       03_10: 298045202
-      03_11: 1713222054
-      03_12: -1936325013
       03_2: 1678544858
       03_3: -424650759
       03_4: 1770798380
