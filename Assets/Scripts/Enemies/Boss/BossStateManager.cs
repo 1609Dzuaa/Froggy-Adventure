@@ -70,6 +70,12 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] float _particleStateTime;
     [SerializeField] float _delayBackToNormal;
     [SerializeField] float _spawnDelay;
+    [SerializeField] float _delaySpawnAppearVfx; //2 th này dùng khi Player đã hạ đc boss
+    [SerializeField] float _delayBackToWeak;
+    [SerializeField] float _deadDelay;
+
+    [Header("Dialog")]
+    [SerializeField] Dialog _bossDialog;
 
     BossWaitState _waitState = new();
     BossNormalState _normalState = new();
@@ -80,9 +86,11 @@ public class BossStateManager : MEnemiesManager
     BossSummonState _summonState = new();
     BossGotHitState _gotHitState = new();
     BossParticleState _particleState = new();
+    BossTeleportState _teleportState = new();
 
     bool _enterBattle;
     bool _isVunerable;
+    bool _isLastBreath;
 
     #region Text Overhead Related
     bool _mustDecrease;
@@ -102,9 +110,15 @@ public class BossStateManager : MEnemiesManager
 
     public Transform PlayerRef { get => _playerCheck; }
 
+    public Transform MiddleRoom { get => _middleRoom; }
+
+    public Dialog BossDialog { get => _bossDialog; set => _bossDialog = value; }
+
     public bool EnterBattle { get => _enterBattle; set => _enterBattle = value; }
 
     public bool HasGotHit { get => _hasGotHit; set => _hasGotHit = value; }
+
+    public bool IsLastBreath { get => _isLastBreath; set => _isLastBreath = value; }
 
     public float RetreatSpeed { get => _retreatSpeed; }
 
@@ -117,6 +131,18 @@ public class BossStateManager : MEnemiesManager
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWhenPlayerWin);
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWhenPlayerWin);
     }
 
     protected override void Start()
@@ -402,6 +428,45 @@ public class BossStateManager : MEnemiesManager
             //Debug.Log("Color: " + _txtOverHead.color.a);
             _entryTime = Time.time;
         }
+    }
+
+    private void HandleWhenPlayerWin(object obj)
+    {
+        ChangeState(_teleportState);
+    }
+
+    public IEnumerator BackToWeak()
+    {
+        yield return new WaitForSeconds(_delaySpawnAppearVfx);
+
+        SpawnAppearVfx();
+        SoundsManager.Instance.PlaySfx(ESoundName.PlayerDashSfx, 0.5f);
+        yield return new WaitForSeconds(_delayBackToWeak);
+
+        ChangeState(_weakState);
+    }
+
+    private void SpawnAppearVfx()
+    {
+        GameObject gObj = Pool.Instance.GetObjectInPool(EPoolable.BossAppearVfx);
+        gObj.SetActive(true);
+        gObj.transform.position = transform.position;
+    }
+
+    public IEnumerator Dead()
+    {
+        yield return new WaitForSeconds(_deadDelay);
+
+        SpawnDeadVfx();
+        SoundsManager.Instance.PlaySfx(ESoundName.BossDeadSfx, 1.0f);
+        Destroy(gameObject);
+    }
+
+    private void SpawnDeadVfx()
+    {
+        GameObject gObj = Pool.Instance.GetObjectInPool(EPoolable.BossDeadVfx);
+        gObj.SetActive(true);
+        gObj.transform.position = transform.position;
     }
 
     #endregion

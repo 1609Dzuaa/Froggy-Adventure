@@ -56,13 +56,15 @@ public class Dialog : MonoBehaviour
     void Start()
     {
         //Render chỉ dẫn đầu tiên
-        _indicatorText.text = _indicatorString[0];
+        if (_indicatorText)
+            _indicatorText.text = _indicatorString[0];
     }
 
     // Update is called once per frame
     void Update()
     {
-        _indicatorText.transform.eulerAngles = Vector3.zero;
+        if (_indicatorText)
+            _indicatorText.transform.eulerAngles = Vector3.zero;
 
         //Chỉ khi bắt đầu Thoại thì mới Update
         if (!_started) 
@@ -127,7 +129,8 @@ public class Dialog : MonoBehaviour
 
     public void ToggleIndicator(bool show)
     {
-        _indicator.SetActive(show);
+        if (_indicator)
+            _indicator.SetActive(show);
         //Dùng để bật/tắt Indicator
     }
 
@@ -209,11 +212,14 @@ public class Dialog : MonoBehaviour
             StartCoroutine(Writing());
         else
         {
-            _indicatorText.text = string.Empty;
-            if (_rowIndex >= 0 && _indicatorString.Count > 1 && !_cantGetNextIndicatorText)
-                _indicatorText.text = _indicatorString[1]; //Render chỉ dẫn thứ 2
-            else
-                _indicatorText.text = _indicatorString[0];
+            if (_indicatorText)
+            {
+                _indicatorText.text = string.Empty;
+                if (_rowIndex >= 0 && _indicatorString.Count > 1 && !_cantGetNextIndicatorText)
+                    _indicatorText.text = _indicatorString[1]; //Render chỉ dẫn thứ 2
+                else
+                    _indicatorText.text = _indicatorString[0];
+            }
             ToggleIndicator(true);
             _isWaiting = true;
         }

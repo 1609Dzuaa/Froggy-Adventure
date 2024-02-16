@@ -11,11 +11,11 @@ public class BossGotHitState : MEnemiesBaseState
         _bossManager = (BossStateManager)charactersManager;
         _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBossState.hitShieldOff);
         _currentHP = _bossManager.MaxHP--;
-        
-        /*Thêm cho nó 1 cutscene lúc chết
+
+        //Thêm cho nó 1 cutscene lúc chết
         if (_currentHP < 0)
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnWinGame, null);
-        //Debug.Log("GH");*/
+        //Debug.Log("GH");
     }
 
     public override void ExitState() { _bossManager.HasGotHit = false; }

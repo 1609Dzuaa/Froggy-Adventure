@@ -14,6 +14,10 @@ public class SoundsManager : BaseSingleton<SoundsManager>
     [SerializeField] AudioSource _sfxSource, _musicSource;
     [SerializeField] float _bgmusicDelay;
 
+    bool _isPlayingBossTheme; //BossTheme sẽ có ngoại lệ != các Theme là nó sẽ tắt khi Replay
+
+    public bool IsPlayingBossTheme { get => _isPlayingBossTheme; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -52,6 +56,7 @@ public class SoundsManager : BaseSingleton<SoundsManager>
             Debug.Log(musicName + " Not Found");
         else
         {
+            if (musicName == ESoundName.BossTheme) _isPlayingBossTheme = true;
             _musicSource.clip = s.SoundAudioClip;
             _musicSource.PlayDelayed(_bgmusicDelay);
         }

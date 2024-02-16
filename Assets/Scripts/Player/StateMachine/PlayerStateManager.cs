@@ -48,6 +48,7 @@ public class PlayerStateManager : MonoBehaviour
     private bool _hasStart;
     private bool _canJump;
     private bool _forceApply;
+    private bool _hasWinGame;
 
     private bool _unlockedDbJump;
     private bool _unlockedWallSlide;
@@ -193,6 +194,7 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, UnlockSkill);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWinGame);
     }
 
     private void SetupProperties()
@@ -216,6 +218,7 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, UnlockSkill);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWinGame);
         //Unsub mọi Events khi load lại scene tránh bị null ref từ event cũ
     }
 
@@ -227,6 +230,9 @@ public class PlayerStateManager : MonoBehaviour
 
         //Nếu state kế vẫn là GotHit mà đang trong thgian miễn dmg thì 0 change
         if (state is GotHitState && Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && _isVunerable)
+            return;
+
+        if (_hasWinGame && state is not FallState && state is not IdleState)
             return;
 
         //Thêm đoạn check dưới nếu Upcoming state là GotHit
@@ -474,6 +480,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleInput()
     {
+        if (_hasWinGame) return;
         dirX = Input.GetAxisRaw(GameConstants.HORIZONTAL_AXIS);
         dirY = Input.GetAxisRaw(GameConstants.VERTICAL_AXIS);
     }
@@ -779,6 +786,11 @@ public class PlayerStateManager : MonoBehaviour
         PlayerPrefs.SetFloat(ESpecialStates.PlayerPositionUpdatedY.ToString(), checkPointPos.y);
         PlayerPrefs.SetFloat(ESpecialStates.PlayerPositionUpdatedZ.ToString(), checkPointPos.z);
         PlayerPrefs.Save();
+    }
+
+    private void HandleWinGame(object obj)
+    {
+        _hasWinGame = true;
     }
 
 }

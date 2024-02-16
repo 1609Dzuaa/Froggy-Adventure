@@ -41,13 +41,13 @@ public class EnemiesManager : CharactersManager
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    protected void OnEnable()
+    protected virtual void OnEnable()
     {
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);
     }
 
-    protected void OnDestroy()
+    protected virtual void OnDestroy()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);

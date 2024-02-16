@@ -10,7 +10,7 @@ public class FallState : PlayerBaseState
 
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        //Debug.Log("Fall");
+        Debug.Log("Fall");
         //Lỗi fall khi đang trượt hết tường mà dirX != nxWall thì bị kẹt luôn ở cái wall đó
         //DONE!~
     }

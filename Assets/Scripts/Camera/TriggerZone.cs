@@ -28,8 +28,6 @@ public class TriggerZone : MonoBehaviour
         {
             _boxCol.enabled = false;
             _playableDirector.Play();
-            if (_isBossTimeline)
-                StartCoroutine(CloseGate());
             //Debug.Log("PlayEnter");
         }
     }
@@ -41,7 +39,10 @@ public class TriggerZone : MonoBehaviour
             _boxCol.enabled = false;
             _playableDirector.Play();
             if (_isBossTimeline)
+            {
                 StartCoroutine(CloseGate());
+                SoundsManager.Instance.PlayMusic(GameEnums.ESoundName.BossTheme);
+            }
             //Debug.Log("PlayStay");
         }
     }
@@ -51,5 +52,6 @@ public class TriggerZone : MonoBehaviour
         yield return new WaitForSeconds(_delayCloseGate);
 
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BossGateOnClose, null);
+        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BossIntroduceSfx, 1.0f);
     }
 }

@@ -66,7 +66,8 @@ public class GotHitState : PlayerBaseState
         KnockBack();
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
         _playerStateManager.IsApplyGotHitEffect = true;
-        SoundsManager.Instance.PlaySfx(ESoundName.PlayerGotHitSfx, 1.0f);
+        if (PlayerHealthManager.Instance.CurrentHP > 0)
+            SoundsManager.Instance.PlaySfx(ESoundName.PlayerGotHitSfx, 1.0f);
         EventsManager.Instance.NotifyObservers(EEvents.CameraOnShake, null);
     }
 }

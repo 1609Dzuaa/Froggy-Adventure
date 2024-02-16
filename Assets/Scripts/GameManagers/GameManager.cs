@@ -94,6 +94,8 @@ public class GameManager : BaseSingleton<GameManager>
         {
             _isReplay = false;
             PlayerHealthManager.Instance.RestartHP();
+            if (SoundsManager.Instance.IsPlayingBossTheme)
+                SoundsManager.Instance.PlayMusic(GameEnums.ESoundName.Level2Theme);
         }
         else if (sceneIndex == GameConstants.GAME_LEVEL_2)
         {
@@ -129,6 +131,7 @@ public class GameManager : BaseSingleton<GameManager>
         UIManager.Instance.PopDownAllPanels();
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.ObjectOnRestart, null);
         ResetGameData();
+        StartCoroutine(PlayNextSceneSong(GameConstants.GAME_LEVEL_1, true));
         SwitchToScene(GameConstants.GAME_LEVEL_1);
         //OnClick của button "Restart"
         //Chơi lại từ đầu

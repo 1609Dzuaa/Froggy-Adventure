@@ -335,7 +335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: sfxSounds.Array.size
-      value: 39
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: sfxSounds.Array.data[11]._soundName
@@ -448,6 +448,18 @@ PrefabInstance:
     - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: sfxSounds.Array.data[38]._soundName
       value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[39]._soundName
+      value: 43
+      objectReference: {fileID: 0}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[40]._soundName
+      value: 44
+      objectReference: {fileID: 0}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[41]._soundName
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: sfxSounds.Array.data[2]._soundAudioClip
@@ -581,6 +593,26 @@ PrefabInstance:
       propertyPath: sfxSounds.Array.data[38]._soundAudioClip
       value: 
       objectReference: {fileID: 8300000, guid: 18e76a29ce04bda40b0a3525ac461bcc, type: 3}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[39]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e66f10618ad3b6144a2054120688ba8f, type: 3}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[40]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: eaeb0073d24ef174abec945c61f49ced, type: 3}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: sfxSounds.Array.data[41]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 626aeda33e0134a66a6257c865d0c5c0, type: 3}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: musicSounds.Array.data[2]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5431a05421a36534e93ae5225a8f0a0d, type: 3}
+    - target: {fileID: 1843851812090395493, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
+      propertyPath: musicSounds.Array.data[3]._soundAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 78482edd21ff3604a9ff52cbaa2ef301, type: 3}
     - target: {fileID: 1862278579615023080, guid: 2825ced6056fa3947826ae24e1da5705, type: 3}
       propertyPath: Loop
       value: 1
@@ -769,6 +801,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 156480704}
+    - target: {fileID: 9070924721466395991, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
+      propertyPath: _delayPopUpWinPanel
+      value: 7.5
+      objectReference: {fileID: 0}
     - target: {fileID: 9070924721466395992, guid: 24157cbeb51dcbf4c877f28708c33ea9, type: 3}
       propertyPath: m_RootOrder
       value: 1

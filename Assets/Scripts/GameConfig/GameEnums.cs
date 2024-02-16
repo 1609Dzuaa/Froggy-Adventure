@@ -47,7 +47,7 @@
     { idle, patrol, withdrawn, attack, gotHit }
 
     public enum EBossState
-    { idleShield, shieldRunOut, idleNoShield, hitShieldOn, hitShieldOff }
+    { idleShield, shieldRunOut, idleNoShield, hitShieldOn, hitShieldOff, teleport }
 
     public enum ERockMove { Left, Top, Right, Bottom }
 
@@ -101,7 +101,10 @@
         BeeBullet,
         TrunkBullet,
         Saw,
-        RedExplode
+        RedExplode,
+        BossTeleVfx,
+        BossAppearVfx,
+        BossDeadVfx
     }
 
     #endregion
@@ -152,7 +155,10 @@
         BossSummonSfx,
         BossShieldOnSfx,
         BossChargeSfx,
-        BossParticleSfx
+        BossParticleSfx,
+        BossTeleSfx,
+        BossDeadSfx,
+        BossIntroduceSfx
     }
 
     #endregion
