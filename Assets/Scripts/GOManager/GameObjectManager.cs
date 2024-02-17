@@ -51,12 +51,6 @@ public class GameObjectManager : MonoBehaviour
     {
         _ID = gameObject.name;
 
-        /*if (!PlayerPrefs.HasKey(_ID) && !_ID.Contains(GameConstants.CLONE))
-        {
-            PlayerPrefs.SetString(_ID, _ID);
-            PlayerPrefs.Save();
-        }*/
-
         if (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Deleted + _ID))
             Destroy(gameObject);
         //Debug.Log("ID: " + _ID);

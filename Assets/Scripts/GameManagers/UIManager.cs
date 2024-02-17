@@ -66,8 +66,8 @@ public class UIManager : BaseSingleton<UIManager>
 
     private void Update()
     {
-        //Chỉ cho bật Esc khi scene != start scene
-        if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex != 0)
+        //Chỉ cho bật Tab khi scene != start scene
+        if (Input.GetKeyDown(KeyCode.Tab) && SceneManager.GetActiveScene().buildIndex != 0)
             PopUpSettingsPanel();
     }
 

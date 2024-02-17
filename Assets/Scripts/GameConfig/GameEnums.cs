@@ -175,7 +175,8 @@
         PlayerPositionUpdatedX,
         PlayerPositionUpdatedY,
         PlayerPositionUpdatedZ,
-        PlayerSkillUnlockedLV1
+        PlayerSkillUnlockedLV1,
+        PlayerSkillUnlockedLV2 //Full unlock
     }
 
     #endregion

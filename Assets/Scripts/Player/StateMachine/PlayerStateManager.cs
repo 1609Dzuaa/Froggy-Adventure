@@ -165,7 +165,10 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandlePlayerSkills()
     {
-        if (PlayerPrefs.HasKey(ESpecialStates.PlayerSkillUnlockedLV1.ToString()))
+        //Ưu tiên lv2 trước
+        if (PlayerPrefs.HasKey(ESpecialStates.PlayerSkillUnlockedLV2.ToString()))
+            _unlockedDbJump = _unlockedWallSlide = _unlockedDash = true;
+        else if (PlayerPrefs.HasKey(ESpecialStates.PlayerSkillUnlockedLV1.ToString()))
             _unlockedDbJump = _unlockedWallSlide = true;
         else
         {
@@ -245,12 +248,12 @@ public class PlayerStateManager : MonoBehaviour
             return;
         }
 
-        if (state is DoubleJumpState && !_unlockedDbJump)
+        /*if (state is DoubleJumpState && !_unlockedDbJump)
             return;
         else if (state is WallSlideState && !_unlockedWallSlide)
             return;
         else if (state is DashState && !_unlockedDash)
-            return;
+            return;*/
 
         _state.ExitState();
         _state = state;
@@ -779,6 +782,7 @@ public class PlayerStateManager : MonoBehaviour
                 break;
             case EPlayerState.dash:
                 _unlockedDash = true;
+                PlayerPrefs.SetString(ESpecialStates.PlayerSkillUnlockedLV2.ToString(), "FullUnlock");
                 break;
         }
     }

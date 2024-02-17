@@ -27,6 +27,8 @@ public class GameManager : BaseSingleton<GameManager>
     [SerializeField] float _delayTrans;
     [SerializeField] float _delayPlayThemeMusic;
     bool _isReplay; //Nếu replay thì chờ loadscene r hẵng restart HP
+    bool _fullUnlock;
+    bool _deleteScene1Data;
 
     protected override void Awake()
     {
@@ -70,6 +72,7 @@ public class GameManager : BaseSingleton<GameManager>
         PlayerHealthManager.Instance.DecreaseHP();
         PlayerHealthManager.Instance.RestartHP();
         PlayerPrefs.DeleteAll();
+        _deleteScene1Data = false;
     }
 
     public void SwitchToScene(int sceneIndex)
@@ -87,6 +90,9 @@ public class GameManager : BaseSingleton<GameManager>
 
         yield return new WaitForSeconds(_delayTrans);
 
+        if (SceneManager.GetActiveScene().buildIndex == 1 && sceneIndex == 2)
+            _deleteScene1Data = true;
+
         SceneManager.LoadSceneAsync(sceneIndex);
         UIManager.Instance.TriggerAnimation(GameConstants.SCENE_TRANS_START);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.SceneEntrySfx, 1.0f);
@@ -99,8 +105,14 @@ public class GameManager : BaseSingleton<GameManager>
         }
         else if (sceneIndex == GameConstants.GAME_LEVEL_2)
         {
-            PlayerPrefs.DeleteAll();
-            PlayerPrefs.SetString(GameEnums.ESpecialStates.PlayerSkillUnlockedLV1.ToString(), "Unlocked");
+            if (PlayerPrefs.HasKey(GameEnums.ESpecialStates.PlayerSkillUnlockedLV2.ToString()))
+                _fullUnlock = true;
+            else
+                _fullUnlock = false;
+            //prob here
+            if (_deleteScene1Data)
+                PlayerPrefs.DeleteAll();
+            PlayerPrefs.SetString((_fullUnlock) ? GameEnums.ESpecialStates.PlayerSkillUnlockedLV2.ToString() : GameEnums.ESpecialStates.PlayerSkillUnlockedLV1.ToString(), "Unlocked");
             PlayerPrefs.Save();
             PlayerHealthManager.Instance.IncreaseHP();
         }
