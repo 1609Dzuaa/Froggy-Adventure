@@ -16,7 +16,7 @@
 
     //Định nghĩa các hằng số lock cam move cũng như player dưới
     public const float GAME_MIN_BOUNDARY = 10.0f;
-    public const float GAME_MAX_BOUNDARY = 417.0f;
+    public const float GAME_MAX_BOUNDARY = 416.0f;
 
     #endregion
 

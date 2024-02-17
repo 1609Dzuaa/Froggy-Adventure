@@ -248,12 +248,12 @@ public class PlayerStateManager : MonoBehaviour
             return;
         }
 
-        /*if (state is DoubleJumpState && !_unlockedDbJump)
+        if (state is DoubleJumpState && !_unlockedDbJump)
             return;
         else if (state is WallSlideState && !_unlockedWallSlide)
             return;
         else if (state is DashState && !_unlockedDash)
-            return;*/
+            return;
 
         _state.ExitState();
         _state = state;
