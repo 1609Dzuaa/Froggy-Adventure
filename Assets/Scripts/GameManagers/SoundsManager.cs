@@ -56,7 +56,10 @@ public class SoundsManager : BaseSingleton<SoundsManager>
             Debug.Log(musicName + " Not Found");
         else
         {
-            if (musicName == ESoundName.BossTheme) _isPlayingBossTheme = true;
+            if (musicName == ESoundName.BossTheme) 
+                _isPlayingBossTheme = true;
+            else 
+                _isPlayingBossTheme = false;
             _musicSource.clip = s.SoundAudioClip;
             _musicSource.PlayDelayed(_bgmusicDelay);
         }

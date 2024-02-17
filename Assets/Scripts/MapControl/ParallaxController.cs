@@ -16,6 +16,9 @@ public class ParallaxController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (SoundsManager.Instance.IsPlayingBossTheme) 
+            return; //prob here
+
         if (_lockYMove)
             transform.position = new Vector2(_camera.position.x * _relativeMoveRateX, transform.position.y);
         else

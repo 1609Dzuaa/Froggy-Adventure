@@ -57,6 +57,14 @@ public class BossStateManager : MEnemiesManager
     [Header("Minions")]
     [SerializeField] List<BossMinions> _listMinions = new();
 
+    [Header("Buffs"), Tooltip("Spawn thêm buff support Player")]
+    [SerializeField] GameObject _playerShield;
+    [SerializeField] GameObject _playerAbsorb;
+
+    [Header("Range")]
+    [SerializeField] Transform _minRange;
+    [SerializeField] Transform _maxRange;
+
     [Header("Position")]
     [SerializeField] Transform _spawnPos;
     [SerializeField] Transform _spawnTrapPos1; //2 Th này phải ref ở ngoài
@@ -69,10 +77,11 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] float _weakStateTime;
     [SerializeField] float _particleStateTime;
     [SerializeField] float _delayBackToNormal;
-    [SerializeField] float _spawnDelay;
+    [SerializeField] float _spawnDelay; //delay để chạy hết spawn vfx
     [SerializeField] float _delaySpawnAppearVfx; //2 th này dùng khi Player đã hạ đc boss
     [SerializeField] float _delayBackToWeak;
     [SerializeField] float _deadDelay;
+    [SerializeField] float _delaySpawnBuff;
 
     [Header("Dialog")]
     [SerializeField] Dialog _bossDialog;
@@ -91,6 +100,7 @@ public class BossStateManager : MEnemiesManager
     bool _enterBattle;
     bool _isVunerable;
     bool _isLastBreath;
+    float _startTickSpawnBuff;
 
     #region Text Overhead Related
     bool _mustDecrease;
@@ -296,6 +306,7 @@ public class BossStateManager : MEnemiesManager
                 break;
         }
         EventsManager.Instance.NotifyObservers(EEvents.BossOnSummonMinion, _isFacingRight);
+        SpawnBuff();
     }
 
     private IEnumerator SpawnTrap()
@@ -336,7 +347,8 @@ public class BossStateManager : MEnemiesManager
             trap2.GetComponentInChildren<SawController>().Speed = _trapSpeed;
             trap2.transform.position = _spawnTrapPos3.position;
         }
-        
+
+        SpawnBuff();
         //Dựa vào vị trí Player mà spawn Trap move ngc hướng nhau từ 2 vị trí trong Room
     }
 
@@ -348,6 +360,20 @@ public class BossStateManager : MEnemiesManager
 
         Debug.Log("No minion: " + minionName + " in Boss Pool");
         return null;
+    }
+
+    private void SpawnBuff()
+    {
+        if (Time.time - _startTickSpawnBuff >= _delaySpawnBuff)
+        {
+            int random = UnityEngine.Random.Range(0, 2);
+            float xPos = UnityEngine.Random.Range(_minRange.position.x, _maxRange.position.x);
+            float yPos = UnityEngine.Random.Range(_minRange.position.y, _maxRange.position.y);
+            Vector3 spawnPos = new(xPos, yPos, 0f);
+
+            Instantiate((random > 0) ? _playerShield : _playerAbsorb, spawnPos, Quaternion.identity);
+            _startTickSpawnBuff = Time.time;
+        }
     }
 
     private void SpawnSummonEffect(Vector3 pos)
@@ -468,6 +494,8 @@ public class BossStateManager : MEnemiesManager
         gObj.SetActive(true);
         gObj.transform.position = transform.position;
     }
+
+    protected override void HandleIfBossDie(object obj) { }
 
     #endregion
 

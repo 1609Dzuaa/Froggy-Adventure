@@ -32,6 +32,13 @@ public class NMEnemiesManager : EnemiesManager
         base.Update();
     }
 
+    protected override void HandleIfBossDie(object obj)
+    {
+        _hasGotHit = true;
+        _notPlayDeadSfx = true;
+        ChangeState(_nmEnemiesGotHitState);
+    }
+
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
         base.OnCollisionEnter2D(collision);
@@ -54,7 +61,8 @@ public class NMEnemiesManager : EnemiesManager
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
             ChangeState(_nmEnemiesGotHitState);
         }
-        else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState)
+        else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState
+            || collision.CompareTag(GameConstants.TRAP_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState)
         {
             _hasGotHit = true;
             ChangeState(_nmEnemiesGotHitState);

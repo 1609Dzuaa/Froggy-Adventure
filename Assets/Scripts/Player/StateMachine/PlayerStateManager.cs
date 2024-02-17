@@ -245,12 +245,12 @@ public class PlayerStateManager : MonoBehaviour
             return;
         }
 
-        /*if (state is DoubleJumpState && !_unlockedDbJump)
+        if (state is DoubleJumpState && !_unlockedDbJump)
             return;
         else if (state is WallSlideState && !_unlockedWallSlide)
             return;
         else if (state is DashState && !_unlockedDash)
-            return;*/
+            return;
 
         _state.ExitState();
         _state = state;
@@ -300,7 +300,7 @@ public class PlayerStateManager : MonoBehaviour
             SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
             anim.SetTrigger(GameConstants.DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
-            GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
+            GameManager.Instance.SwitchNextScene();
         }
     }
 
@@ -391,7 +391,7 @@ public class PlayerStateManager : MonoBehaviour
         HandleAlphaValueGotHit();
         HandleDustVelocity();
         SpawnDust();
-        //Debug.Log("OG, CanJ: " + isOnGround + ", " + _canJump);
+        Debug.Log("OG, CanJ: " + isOnGround + ", " + _canJump);
     }
 
     /// <summary>
@@ -547,6 +547,8 @@ public class PlayerStateManager : MonoBehaviour
         //Ở trên Platform thì 0 cần GCheck tránh bug
         if (!_isOnPlatform)
             _canJump = isOnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, wallLayer);
+        else
+            _canJump = true; //done bug
         if (isFacingRight)
         {
             IsWallTouch = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
@@ -752,6 +754,8 @@ public class PlayerStateManager : MonoBehaviour
     {
         if (transform.position.x < GameConstants.GAME_MIN_BOUNDARY)
             transform.position = new Vector3(GameConstants.GAME_MIN_BOUNDARY, transform.position.y, transform.position.z);
+        else if(transform.position.x > GameConstants.GAME_MAX_BOUNDARY)
+            transform.position = new Vector3(GameConstants.GAME_MAX_BOUNDARY, transform.position.y, transform.position.z);
     }
 
     private void PushBack(object obj)

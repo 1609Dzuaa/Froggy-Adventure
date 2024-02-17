@@ -154,6 +154,13 @@ public class MEnemiesManager : EnemiesManager
         //Với Bat thì là Event của Animation CeilOut
     }
 
+    protected override void HandleIfBossDie(object obj)
+    {
+        _hasGotHit = true;
+        _notPlayDeadSfx = true;
+        ChangeState(_mEnemiesGotHitState);
+    }
+
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
         base.OnCollisionEnter2D(collision);

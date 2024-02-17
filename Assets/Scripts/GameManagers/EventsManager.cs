@@ -25,6 +25,7 @@ public class EventsManager : BaseSingleton<EventsManager>
     private readonly Action<object> CameraOnShake;
     private readonly Action<object> BossOnSummonMinion;
     private readonly Action<object> BossGateOnClose;
+    private readonly Action<object> BossOnDie;
 
     //Làm việc với Event thì nên phân biệt với nhau bằng key là object
     //Tránh cùng 1 lúc nó Notify tất cả Func đã đky event đó
@@ -55,6 +56,7 @@ public class EventsManager : BaseSingleton<EventsManager>
         _dictEvents.Add(GameEnums.EEvents.CameraOnShake, CameraOnShake);
         _dictEvents.Add(GameEnums.EEvents.BossOnSummonMinion, BossOnSummonMinion);
         _dictEvents.Add(GameEnums.EEvents.BossGateOnClose, BossGateOnClose);
+        _dictEvents.Add(GameEnums.EEvents.BossOnDie, BossOnDie);
         //Val là cái event, còn thg nào quan tâm cái event đó thì gọi hàm dưới
     }
 

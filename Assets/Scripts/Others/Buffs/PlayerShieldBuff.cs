@@ -38,8 +38,16 @@ public class PlayerShieldBuff : PlayerBuffs
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag(GameConstants.BOSS_SHIELD_TAG))
+            DisableShield();
+        //Va phải boss thì thu hồi shield
+    }
+
     public override void ApplyBuff()
     {
+        gameObject.SetActive(true);
         //Reset lại data khi apply buff
         if (_shieldPos)
             transform.position = _shieldPos.position;
@@ -76,6 +84,7 @@ public class PlayerShieldBuff : PlayerBuffs
         _anim.SetTrigger("Disable");
         _circleCollider2D.enabled = false;
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.SpecialBuffDebuffSfx, 1.0f);
+        gameObject.SetActive(false);
     }
 
 }

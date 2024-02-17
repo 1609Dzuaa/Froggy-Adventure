@@ -18,7 +18,7 @@ public class BeeChaseState : MEnemiesAttackState
         if (!_beeManager.MustAttack)
         {
             _beeManager.MustAttack = true;
-            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BeeAngrySfx, 1.0f);
+            //SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BeeAngrySfx, 1.0f);
         }
         _beeManager.GetRigidbody2D().velocity = Vector2.zero;
         //Debug.Log("Bee Chase");
@@ -35,6 +35,8 @@ public class BeeChaseState : MEnemiesAttackState
 
         if (CheckIfCanAttack())
             _beeManager.ChangeState(_beeManager.GetBeeAttackState());
+        else if (CheckIfCanIdle())
+            _beeManager.ChangeState(_beeManager.GetBeeIdleState());
         else if (CheckIfOutOfMinMaxRange())
         {
             _beeManager.GetBeePatrolState().HasChangedDirection = true;
@@ -45,6 +47,11 @@ public class BeeChaseState : MEnemiesAttackState
         }
         else
             Attack();
+    }
+
+    private bool CheckIfCanIdle()
+    {
+        return !_beeManager.HasDetectedPlayer;
     }
 
     private bool CheckIfCanAttack()

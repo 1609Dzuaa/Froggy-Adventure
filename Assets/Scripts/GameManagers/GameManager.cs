@@ -101,6 +101,7 @@ public class GameManager : BaseSingleton<GameManager>
         {
             PlayerPrefs.DeleteAll();
             PlayerPrefs.SetString(GameEnums.ESpecialStates.PlayerSkillUnlockedLV1.ToString(), "Unlocked");
+            PlayerPrefs.Save();
             PlayerHealthManager.Instance.IncreaseHP();
         }
         //Nếu là Replay thì restart HP, nếu là chuyển scene 2

@@ -80,7 +80,8 @@
         TutorOnDestroy,
         CameraOnShake,
         BossOnSummonMinion,
-        BossGateOnClose
+        BossGateOnClose,
+        BossOnDie
     }
 
     #endregion

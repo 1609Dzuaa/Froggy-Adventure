@@ -16,6 +16,7 @@ public class EnemiesManager : CharactersManager
     protected Collider2D _collider2D;
     protected SpriteRenderer _spriteRenderer;
     protected bool _hasNotified; //Chỉ dành cho các Enemy cần Tutor
+    protected bool _notPlayDeadSfx; //Boss chet thi 0 play Sfx
 
     #region GETTER
 
@@ -26,6 +27,8 @@ public class EnemiesManager : CharactersManager
     public SpriteRenderer GetSpriteRenderer { get => _spriteRenderer; }
 
     public EnemiesStats EnemiesSO { get => _enemiesSO; }
+
+    public bool NotPlayDeadSfx { get => _notPlayDeadSfx; }
 
     #endregion
 
@@ -45,12 +48,14 @@ public class EnemiesManager : CharactersManager
     {
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BossOnDie, HandleIfBossDie);
     }
 
     protected virtual void OnDestroy()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BossOnDie, HandleIfBossDie);
     }
 
     // Start is called before the first frame update
@@ -137,6 +142,8 @@ public class EnemiesManager : CharactersManager
     {
         _ID = null;
     }
+
+    protected virtual void HandleIfBossDie(object obj) { }
 
     protected void ReceiveBossCommand(object obj)
     {
