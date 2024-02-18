@@ -138,8 +138,6 @@ public class PlayerStateManager : MonoBehaviour
     private void Awake()
     {
         GetReferenceComponents();
-        UpdatePosition();
-        HandlePlayerSkills();
     }
 
     private void GetReferenceComponents()
@@ -186,6 +184,8 @@ public class PlayerStateManager : MonoBehaviour
     {
         RegisterFunction();
         SetupProperties();
+        UpdatePosition();
+        HandlePlayerSkills();
     }
 
     private void RegisterFunction()
@@ -783,6 +783,7 @@ public class PlayerStateManager : MonoBehaviour
             case EPlayerState.dash:
                 _unlockedDash = true;
                 PlayerPrefs.SetString(ESpecialStates.PlayerSkillUnlockedLV2.ToString(), "FullUnlock");
+                PlayerPrefs.Save();
                 break;
         }
     }

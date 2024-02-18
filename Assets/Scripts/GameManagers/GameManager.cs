@@ -90,6 +90,7 @@ public class GameManager : BaseSingleton<GameManager>
 
         yield return new WaitForSeconds(_delayTrans);
 
+        //Nếu đang là scene 1 và scene tới là scene 2 thì cần xoá hết data
         if (SceneManager.GetActiveScene().buildIndex == 1 && sceneIndex == 2)
             _deleteScene1Data = true;
 
@@ -102,6 +103,7 @@ public class GameManager : BaseSingleton<GameManager>
             PlayerHealthManager.Instance.RestartHP();
             if (SoundsManager.Instance.IsPlayingBossTheme)
                 SoundsManager.Instance.PlayMusic(GameEnums.ESoundName.Level2Theme);
+            //Nếu là Replay thì restart HP
         }
         else if (sceneIndex == GameConstants.GAME_LEVEL_2)
         {
@@ -111,13 +113,16 @@ public class GameManager : BaseSingleton<GameManager>
                 _fullUnlock = false;
             //prob here
             if (_deleteScene1Data)
+            {
+                _deleteScene1Data = false; //xoá xong thì trả về false
                 PlayerPrefs.DeleteAll();
+            }
             PlayerPrefs.SetString((_fullUnlock) ? GameEnums.ESpecialStates.PlayerSkillUnlockedLV2.ToString() : GameEnums.ESpecialStates.PlayerSkillUnlockedLV1.ToString(), "Unlocked");
             PlayerPrefs.Save();
             PlayerHealthManager.Instance.IncreaseHP();
         }
-        //Nếu là Replay thì restart HP, nếu là chuyển scene 2
-        //thì xoá mọi data trừ Player's skills, tăng HP lên 
+        //Nếu là chuyển scene 2 thì có 2 lần check là đã full skills ch
+        //và có cần xoá hết data nếu scene trc là scene 1 kh
     }
 
     public void ReloadScene()

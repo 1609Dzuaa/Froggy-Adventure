@@ -9,7 +9,6 @@ public class BossTeleportState : MEnemiesBaseState
     {
         _bossManager = (BossStateManager)charactersManager;
         _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)EBossState.teleport);
-        _bossManager.StopAllCoroutines();
         _bossManager.GetRigidbody2D().velocity = Vector2.zero;
         _bossManager.IsLastBreath = true;
         SpawnTeleVfx();
