@@ -21,7 +21,7 @@ public class SawController : MovingObjectController
         if (_isBossGate)
         {
             EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BossGateOnClose, ActiveGate);
-            Debug.Log("Unsub");
+            //Debug.Log("Unsub");
         }
     }
 

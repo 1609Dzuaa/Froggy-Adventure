@@ -303,7 +303,7 @@ public class PlayerStateManager : MonoBehaviour
             SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
             anim.SetTrigger(GameConstants.DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
-            GameManager.Instance.SwitchNextScene();
+            GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 
@@ -394,7 +394,7 @@ public class PlayerStateManager : MonoBehaviour
         HandleAlphaValueGotHit();
         HandleDustVelocity();
         SpawnDust();
-        Debug.Log("OG, CanJ: " + isOnGround + ", " + _canJump);
+        //Debug.Log("OG, CanJ: " + isOnGround + ", " + _canJump);
     }
 
     /// <summary>

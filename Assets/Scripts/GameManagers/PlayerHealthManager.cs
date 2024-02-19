@@ -32,6 +32,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     private int _maxHP;
     private int _currentHP;
     private int _tempHP;
+    private bool _hasIncreaseHP;
 
     //Giúp cảnh báo Player khi máu ảo sắp hết thgian sử dụng ^^
     #region BLINK EFFECT FOR TEMP_HP WHEN RUNNING OUT
@@ -317,12 +318,17 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     public void IncreaseHP()
     {
+        if (_hasIncreaseHP) return;
+
+        _hasIncreaseHP = true;
         _playerSO.MaxHP = GameConstants.PLAYER_MAX_HP_LEVEL_2;
         Start();
+        Debug.Log("Incr");
     }
 
     public void DecreaseHP()
     {
+        _hasIncreaseHP = false;
         _playerSO.MaxHP = GameConstants.PLAYER_MAX_HP_LEVEL_1;
     }
 }

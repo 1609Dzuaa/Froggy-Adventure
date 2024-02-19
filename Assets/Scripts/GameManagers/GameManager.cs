@@ -20,6 +20,7 @@ using UnityEngine.SceneManagement;
 /// Vẫn còn bug quái có thể detect ra Player dù ở bên kia wall
 /// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
 /// Sửa lại state cho Boss chờ Player và Timeline, chỉnh lại camera 1 số chỗ đặc biệt và build game
+/// Nên rename func của các OnClick 
 /// </summary>
 
 public class GameManager : BaseSingleton<GameManager>
@@ -73,12 +74,11 @@ public class GameManager : BaseSingleton<GameManager>
         PlayerHealthManager.Instance.RestartHP();
         PlayerPrefs.DeleteAll();
         _deleteScene1Data = false;
+        Debug.Log("reset GData");
     }
 
     public void SwitchToScene(int sceneIndex)
     {
-        UIManager.Instance.IncreaseTransitionCanvasOrder();
-        UIManager.Instance.PopDownHPCanvas();
         StartCoroutine(SwitchScene(sceneIndex));
     }
 
@@ -101,6 +101,7 @@ public class GameManager : BaseSingleton<GameManager>
         {
             _isReplay = false;
             PlayerHealthManager.Instance.RestartHP();
+            Debug.Log("Replay");
             if (SoundsManager.Instance.IsPlayingBossTheme)
                 SoundsManager.Instance.PlayMusic(GameEnums.ESoundName.Level2Theme);
             //Nếu là Replay thì restart HP
@@ -119,6 +120,7 @@ public class GameManager : BaseSingleton<GameManager>
             }
             PlayerPrefs.SetString((_fullUnlock) ? GameEnums.ESpecialStates.PlayerSkillUnlockedLV2.ToString() : GameEnums.ESpecialStates.PlayerSkillUnlockedLV1.ToString(), "Unlocked");
             PlayerPrefs.Save();
+
             PlayerHealthManager.Instance.IncreaseHP();
         }
         //Nếu là chuyển scene 2 thì có 2 lần check là đã full skills ch
