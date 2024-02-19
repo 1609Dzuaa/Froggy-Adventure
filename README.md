@@ -8,7 +8,7 @@
 * <a href="https://github.com/huytl2107">Awesome Culi =]]]</a> - For Helping Me Finding Bugs & Testing Game 💯
 * ...
 
- 
+🎮 
 
 #### Main Screen
 ![image](https://github.com/1609Dzuaa/Simple-2D-Game/assets/106080372/da60e555-ef0e-4520-aa21-7d097e7936d5)
@@ -18,3 +18,6 @@
 ![image](https://github.com/1609Dzuaa/Simple-2D-Game/assets/106080372/fbdaaa89-023e-47eb-adf3-3d63c79050d7)
 #### Boss Fight
 ![image](https://github.com/1609Dzuaa/Simple-2D-Game/assets/106080372/c9b8f975-43da-4558-8ab6-76c99ce1405f)
+
+##### That's It, Tks for reading :D
+![B0ssonline-video-cutter com-ezgif com-video-to-gif-converter](https://github.com/1609Dzuaa/Simple-2D-Game/assets/106080372/4acbd8c0-f4b6-4305-9d12-1189d313522c)
