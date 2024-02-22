@@ -64,6 +64,7 @@ public class GameManager : BaseSingleton<GameManager>
 
             case 2:
                 SoundsManager.Instance.PlayMusic(GameEnums.ESoundName.Level2Theme);
+                Debug.Log("here");
                 break;
         }
     }
@@ -117,6 +118,8 @@ public class GameManager : BaseSingleton<GameManager>
             {
                 _deleteScene1Data = false; //xoá xong thì trả về false
                 PlayerPrefs.DeleteAll();
+                StartCoroutine(PlayNextSceneSong(sceneIndex, false));
+                Debug.Log("PlaySong: " + sceneIndex);
             }
             PlayerPrefs.SetString((_fullUnlock) ? GameEnums.ESpecialStates.PlayerSkillUnlockedLV2.ToString() : GameEnums.ESpecialStates.PlayerSkillUnlockedLV1.ToString(), "Unlocked");
             PlayerPrefs.Save();
