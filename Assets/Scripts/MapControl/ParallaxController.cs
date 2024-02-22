@@ -14,10 +14,10 @@ public class ParallaxController : MonoBehaviour
     //Object closer appear to be movin' faster
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (SoundsManager.Instance.IsPlayingBossTheme) 
-            return; //prob here
+            return;
 
         if (_lockYMove)
             transform.position = new Vector2(_camera.position.x * _relativeMoveRateX, transform.position.y);
