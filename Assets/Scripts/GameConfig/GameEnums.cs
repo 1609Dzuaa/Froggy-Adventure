@@ -105,7 +105,8 @@
         RedExplode,
         BossTeleVfx,
         BossAppearVfx,
-        BossDeadVfx
+        BossDeadVfx,
+        PlayerDeShieldVfx
     }
 
     #endregion

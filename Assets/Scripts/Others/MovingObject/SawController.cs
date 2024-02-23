@@ -33,6 +33,12 @@ public class SawController : MovingObjectController
         transform.Rotate(0f, 0f, 360f * _rotateSpeed * Time.deltaTime);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag(GameConstants.SHIELD_TAG))
+            gameObject.SetActive(false);
+    }
+
     /*/// <summary>
     /// Hàm dưới để active gate khi Player enter Boss Room
     /// </summary>*/

@@ -78,7 +78,7 @@ public class IdleState : PlayerBaseState
 
     public override void FixedUpdate() 
     {
-        _playerStateManager.GetRigidBody2D().velocity = Vector2.zero;
+        //_playerStateManager.GetRigidBody2D().velocity = Vector2.zero;
         //Hạn chế TH trơn trượt do hệ số ma sát nhỏ
     }
 

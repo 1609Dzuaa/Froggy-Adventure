@@ -528,6 +528,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c236fc1f2474c4dbe332a73cc37285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _needTutor: 0
+  _tutorRef: {fileID: 0}
+  _isApplySkillToPlayer: 0
+  _skillUnlocked: 0
+  _skillUnlockDelay: 0
   _triggerConversationRange: 5
   _adjustConversationRange: 3
   _triggerConvSize: {x: 10, y: 0.3}
@@ -735,7 +740,7 @@ PrefabInstance:
       objectReference: {fileID: 576322479}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.size
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog2.Array.size
@@ -747,27 +752,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[1]
-      value: What are you doing here ... ?
-      objectReference: {fileID: 0}
-    - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
-      propertyPath: _dialog.Array.data[2]
       value: Anyway, may I request your help ?!
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
-      propertyPath: _dialog.Array.data[3]
+      propertyPath: _dialog.Array.data[2]
       value: This place has been corrupted by Red Skull.
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
-      propertyPath: _dialog.Array.data[4]
+      propertyPath: _dialog.Array.data[3]
       value: He has taken control of the minds of almost living creatures...
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
-      propertyPath: _dialog.Array.data[5]
+      propertyPath: _dialog.Array.data[4]
       value: Controlled creatures will attack unaffected beings.
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
-      propertyPath: _dialog.Array.data[6]
+      propertyPath: _dialog.Array.data[5]
       value: You must come with me into his place and banish him.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
+      propertyPath: _dialog.Array.data[6]
+      value: Keep moving forward and I'll see you somewhere downthere!
       objectReference: {fileID: 0}
     - target: {fileID: 5974956397247850151, guid: 90c580d5960b07a47b6dec3164be4776, type: 3}
       propertyPath: _dialog.Array.data[7]

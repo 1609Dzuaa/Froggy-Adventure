@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerShieldBuff : PlayerBuffs
 {
     [SerializeField] private float _runningOutDuration;
+    [SerializeField] private Transform _deShieldVfxPos;
 
     private Animator _anim;
     private CircleCollider2D _circleCollider2D;
@@ -40,9 +41,19 @@ public class PlayerShieldBuff : PlayerBuffs
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.BOSS_SHIELD_TAG))
+        if (collision.CompareTag(GameConstants.BOSS_SHIELD_TAG) || collision.CompareTag(GameConstants.TRAP_TAG))
+        {
             DisableShield();
+            SpawnDeShieldVfx(collision.ClosestPoint(transform.position));
+        }
         //Va phải boss thì thu hồi shield
+    }
+
+    private void SpawnDeShieldVfx(Vector2 position)
+    {
+        GameObject deShieldVfx = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.PlayerDeShieldVfx);
+        deShieldVfx.SetActive(true);
+        deShieldVfx.transform.position = position;
     }
 
     public override void ApplyBuff()
