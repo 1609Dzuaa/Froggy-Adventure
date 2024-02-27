@@ -7,8 +7,9 @@
 * <a href="https://pixelfrog-assets.itch.io/">Pixel Frog</a> - For Awesome Free Game Assets
 * <a href="https://github.com/huytl2107">Awesome Culi =]]]</a> - For Helping Me Finding Bugs & Testing Game 💯
 * ...
-
+##### Nếu bạn thấy hữu ích thì có thể cho mình xin 1 star ⭐ ^^
 🎮 
+#### FULL GAMEPLAY: https://www.facebook.com/KaoruuuEntiddi/videos/1140555013604770?idorvanity=1593929644183691
 
 #### Main Screen
 ![image](https://github.com/1609Dzuaa/Simple-2D-Game/assets/106080372/da60e555-ef0e-4520-aa21-7d097e7936d5)
