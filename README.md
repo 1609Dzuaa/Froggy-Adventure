@@ -1,5 +1,5 @@
 # Name: Ech Op's Adventure.
-## Beta Version: https://l1ttl3turtl3.itch.io/ech-ops-adventure
+## Free 2 Play: https://l1ttl3turtl3.itch.io/ech-ops-adventure
 ### Special Thanks To:
 * <a href="https://www.youtube.com/@codinginflow">Coding in Flow</a> - For Awesome Basic Tutorial Videos
 * <a href="https://www.tiktok.com/@gamedevtoi">Mr. Huy</a> - For Spending Time Addressing My Naive Questions
