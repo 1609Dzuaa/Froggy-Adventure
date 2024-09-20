@@ -6,219 +6,234 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameEnums;
+using static GameConstants;
+using DG.Tweening;
 
 [Serializable]
-public struct UISkillUnlocked
+public struct PopupUI
 {
-    public EPlayerState _skillName;
-    public Sprite _skillImage;
+    public EPopup ID;
+    public Canvas UICanvas;
+}
+
+[Serializable]
+public struct ToggleButton
+{
+    public EToggleButton Name;
+    public GameObject ButtonOn;
+    public GameObject ButtonOff;
 }
 
 public class UIManager : BaseSingleton<UIManager>
 {
-    //Cần căn chỉnh pivot, anchors
-    //Còn panel Level 1 - 2, loose Panel, win Panel
+    [SerializeField] TextMeshProUGUI _txtFPS;
+    [SerializeField] List<PopupUI> _listPopupUI;
+    [SerializeField] Canvas _lockUICanvas;
+    [SerializeField] List<ToggleButton> _listToggleBtn;
+    [SerializeField] Canvas[] _arrMenuUICanvas;
+    [SerializeField] Canvas _HUDCanvas;
 
-    [SerializeField] Animator _anim;
-    [SerializeField] Canvas _sceneTransCanvas;
+    [Header("Times")]
+    [SerializeField] float _delayTrans1;
+    [SerializeField] float _delayTrans2;
 
-    [SerializeField] GameObject _startMenuCanvas;
-    [SerializeField] GameObject _creditsPanel;
-    [SerializeField] GameObject _settingsPanel;
-    [SerializeField] GameObject _winPanel;
-    [SerializeField] GameObject _loosePanel;
-    [SerializeField] GameObject _hpsPanel;
-    [SerializeField] GameObject _skillsAchievedPanel;
-    [SerializeField] Image _skillsImage;
-    [SerializeField] GameObject _txtSkillName;
-    [SerializeField] List<UISkillUnlocked> _listSkill;
+    [SerializeField, Tooltip("Thời gian tween chuyển scene")] float _transDuration;
 
-    [SerializeField] float _delayPopUpLoosePanel;
-    [SerializeField] float _delayPopUpWinPanel;
+    [Header("Animation While Switch Scene")]
+    [SerializeField] TweenListGameObjects _buttonContainer;
+    [SerializeField] Transform _imageSceneTrans;
+    [SerializeField] PopupResult _popupResult;
+    [SerializeField] PopupNotification _popupNotification;
 
-    bool _canPopUpPanel = true;
-    bool _canPlayCloseSfx; //Chỉ có thể play close sfx khi chủ động bấm X
-
-    public GameObject StartMenuCanvas { get => _startMenuCanvas; set => _startMenuCanvas = value; }
+    #region Internal Attributes
+    Dictionary<EPopup, Canvas> _dictPopupUI = new();
+    Dictionary<EToggleButton, ToggleButton> _dictToggleBtn = new();
+    Stack<Canvas> _stackPopupCanvas = new();
+    int _popupSortOrder = 1;
+    //từ điển lưu các gameobject UI cần Popup, dễ mở rộng hơn
+    //thay thế mấy đoạn popup...canvas... = popup(tham số)
+    #endregion
 
     protected override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
-    }
-
-    private void OnEnable()
-    {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, PopUpSkillAchievedPanel);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnWinGame, WinPanel);
-    }
-
-    private void OnDestroy()
-    {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, PopUpSkillAchievedPanel);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnWinGame, WinPanel);
+        FillInDictionary();
     }
 
     private void Start()
     {
-        PopDownAllPanels();
+        ToggleInGameCanvas(false);
+        ResetAllPopupSortOrder();
+        _buttonContainer.Tween(true);
     }
 
-    private void Update()
+    private void FillInDictionary()
     {
-        //Chỉ cho bật Tab khi scene != start scene
-        if (Input.GetKeyDown(KeyCode.Tab) && SceneManager.GetActiveScene().buildIndex != 0)
-            PopUpSettingsPanel();
-    }
-
-    public void PopUpSettingsPanel()
-    {
-        if (!_canPopUpPanel) return;
-
-        _settingsPanel.SetActive(true);
-        _creditsPanel.SetActive(false);
-        SoundsManager.Instance.PlaySfx(ESoundName.ButtonSelectedSfx, 1.0f);
-        if (SceneManager.GetActiveScene().buildIndex != 0)
-            Time.timeScale = 0f;
-    }
-
-    private void PopDownSettingsPanel()
-    {
-        _settingsPanel.SetActive(false);
-        if (_canPlayCloseSfx)
-            SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
-        if (SceneManager.GetActiveScene().buildIndex != 0)
-            Time.timeScale = 1f;
-    }
-
-    public void PopUpCreditsPanel()
-    {
-        if (!_canPopUpPanel) return;
-
-        _creditsPanel.SetActive(true);
-        _settingsPanel.SetActive(false);
-        SoundsManager.Instance.PlaySfx(ESoundName.ButtonSelectedSfx, 1.0f);
-    }
-
-    private void PopDownCreditsPanel()
-    {
-        if (_canPlayCloseSfx)
-            SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
-        _creditsPanel.SetActive(false);
-    }
-
-    public IEnumerator PopUpLoosePanel()
-    {
-        _canPlayCloseSfx = false;
-        PopDownAllPanels();
-
-        yield return new WaitForSeconds(_delayPopUpLoosePanel);
-
-        _loosePanel.SetActive(true);
-        Time.timeScale = 0f;
-    }
-
-    private void PopDownWinPanel()
-    {
-        _winPanel.SetActive(false);
-    }
-
-    private void PopDownLoosePanel()
-    {
-        _loosePanel.SetActive(false);
-    }
-
-    public void IncreaseTransitionCanvasOrder()
-    {
-        _canPopUpPanel = false;
-        _sceneTransCanvas.sortingOrder = 3;
-        _canPlayCloseSfx = false;
-        //Lúc này là đang chuyển Scene
-    }
-
-    public void DecreaseTransitionCanvasOrder()
-    {
-        _sceneTransCanvas.sortingOrder = -1;
-        _canPopUpPanel = true;
-        _canPlayCloseSfx = true;
-        //Lúc này là đã chuyển xong Scene
-    }
-
-    public void TriggerAnimation(string para)
-    {
-        switch(para)
+        foreach (var item in _listPopupUI)
         {
-            case GameConstants.SCENE_TRANS_END:
-                _anim.SetTrigger(GameConstants.SCENE_TRANS_END);
-                break;
-            case GameConstants.SCENE_TRANS_START:
-                _anim.SetTrigger(GameConstants.SCENE_TRANS_START);
-                break;
+            item.UICanvas.gameObject.SetActive(false);
+            if (!_dictPopupUI.ContainsKey(item.ID))
+                _dictPopupUI.Add(item.ID, item.UICanvas);
+        }
+
+        foreach (var item in _listToggleBtn)
+        {
+            if (!_dictToggleBtn.ContainsKey(item.Name))
+                _dictToggleBtn.Add(item.Name, item);
         }
     }
 
-    public void PopUpHPCanvas()
+    public void TogglePopup(EPopup id, bool isOn)
     {
-        if (SceneManager.GetActiveScene().buildIndex != 0)
-            _hpsPanel.SetActive(true);
-        //Thanh máu chỉ hiện ở các scene kh phải là Start Scene
-    }
+        if (isOn)
+        {
+            _stackPopupCanvas.Push(_dictPopupUI[id]);
 
-    public void PopDownHPCanvas()
-    {
-        _hpsPanel.SetActive(false);
-    }
+            //popup mới đc thêm vào stack sẽ có sortOrder
+            //cao nhất và sau nó là LockUI
+            _popupSortOrder++;
+            _dictPopupUI[id].sortingOrder = _popupSortOrder;
+            _lockUICanvas.sortingOrder = _popupSortOrder - 1;
 
-    public void PopDownAllPanels()
-    {
-        if (_canPlayCloseSfx)
-            _canPlayCloseSfx = false;
-        PopDownCreditsPanel();
-        PopDownSettingsPanel();
-        PopDownWinPanel();
-        PopDownLoosePanel();
-        PopDownHPCanvas();
-        PopDownSkillAchievedPanel();
-        _canPlayCloseSfx = true;
-    }
+            //nếu lượng phần tử stack nhiều hơn 1 thì:
+            //cập nhật sortOrder của phần tử kề top stack
+            //sao cho nó chỉ đứng sau sortOrder của LockUI và
+            //phần tử top (sortOrder cao nhất)
+            if (_stackPopupCanvas.Count > 1)
+                _stackPopupCanvas.ToArray()[1].sortingOrder = _popupSortOrder - 2;
 
-    private void PopUpSkillAchievedPanel(object obj)
-    {
-        foreach (var item in _listSkill)
-            if ((EPlayerState)obj == item._skillName)
+            _dictPopupUI[id].gameObject.SetActive(true);
+            _lockUICanvas.gameObject.SetActive(true);
+        }
+        else
+        {
+            //nếu tắt đi 1 popup thì:
+            //Lôi top ra khỏi stack, giảm sortOrder đi 1 đơn vị
+            //(vì top đã bị lấy ra)
+            //nếu trong stack có phần tử popup khác thì:
+            //gắn sortOrder của popup đó lại = sortOrder
+            //cũng như sortOrder của LockUI = sortOrder - 1
+
+            _stackPopupCanvas.Pop().gameObject.SetActive(false);
+            if (_stackPopupCanvas.Count > 0)
             {
-                _skillsImage.sprite = item._skillImage;
-                _txtSkillName.GetComponent<TextMeshProUGUI>().text = item._skillName.ToString();
+                _popupSortOrder--;
+                _stackPopupCanvas.Peek().sortingOrder = _popupSortOrder;
+                _lockUICanvas.sortingOrder = _popupSortOrder - 1;
             }
-        Time.timeScale = 0f;
-        _skillsAchievedPanel.SetActive(true);
-        SoundsManager.Instance.PlaySfx(ESoundName.SkillsAchivedSfx, 1.0f);
+            else
+            {
+                _popupSortOrder = 1;
+                ResetAllPopupSortOrder();
+            }
+            _lockUICanvas.gameObject.SetActive((_stackPopupCanvas.Count == 0) ? false : true);
+        }
+
+        Debug.Log("Popup: " + id + ", isOn: " + isOn + ", S-order: " + _popupSortOrder);
     }
 
-    public void PopDownSkillAchievedPanel()
+    private void ResetAllPopupSortOrder()
     {
-        Time.timeScale = 1.0f;
-        if (_canPlayCloseSfx)
-            SoundsManager.Instance.PlaySfx(ESoundName.CloseButtonSfx, 1.0f);
-        _skillsAchievedPanel.SetActive(false);
+        foreach (var item in _dictPopupUI)
+            item.Value.sortingOrder = _popupSortOrder;
     }
 
-    private void PopUpWinPanel()
+    public void ToggleInGameCanvas(bool isOn)
     {
-        PopDownAllPanels();
-        _winPanel.SetActive(true);
+        _HUDCanvas.gameObject.SetActive(isOn);
+        //Canvas này chỉ bật khi đang trong Gameplay
     }
 
-    private IEnumerator StartPopUpWinPanel()
+    public void ToggleButtonOnClick(EToggleButton btn, bool isBtnOn)
     {
-        yield return new WaitForSeconds(_delayPopUpWinPanel);
-
-        PopUpWinPanel();
+        _dictToggleBtn[btn].ButtonOn.SetActive(!isBtnOn);
+        _dictToggleBtn[btn].ButtonOff.SetActive(isBtnOn);
     }
 
-    private void WinPanel(object obj)
+    public void ToggleMenuUIsCanvas(bool isOn)
     {
-        StartCoroutine(StartPopUpWinPanel());
+        foreach (var canvas in _arrMenuUICanvas)
+            canvas.gameObject.SetActive(isOn);
     }
 
+    public void HandleDisplayMenuUI()
+    {
+        _buttonContainer.Tween(true);
+    }
+
+    public void AnimateAndTransitionScene(int indexLevel)
+    {
+        if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
+        {
+            //cần tween cụm button
+            _buttonContainer.Tween(false);
+            StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1));
+        }
+        else
+        {
+            //scene lúc này 0 phải là menu nên cần check có popupresult ko
+            //để gọi hàm tween nó
+            //nếu 0 phải thì chỉ còn TH out về MainMenu trong Gameplay => gọi tween Noti
+            if (_dictPopupUI[EPopup.Result].gameObject.activeInHierarchy)
+            {
+                _popupResult.OnClose();
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1));
+            }
+            else
+            {
+                _popupNotification.OnClose();
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2));
+            }
+        }
+    }
+
+    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        _imageSceneTrans.DOLocalMoveX(0f, _transDuration).OnComplete(() =>
+        {
+            ToggleMenuUIsCanvas((indexLevel != GAME_MENU) ? false : true);
+            ToggleInGameCanvas((indexLevel != GAME_MENU) ? true : false);
+            GameManager.Instance.SwitchScene(indexLevel, false);
+            _imageSceneTrans.DOLocalMoveX(-5000f, _transDuration).OnComplete(() =>
+            {
+                if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
+                    HandleDisplayMenuUI();
+                //else
+                    //StartCoroutine(Hello());
+                _imageSceneTrans.position = new(6652f, _imageSceneTrans.position.y);
+            });
+        });
+    }
+
+    /*private IEnumerator Hello()
+    {
+        yield return new WaitForSeconds(3f);
+
+        ResultParam pr = new(ELevelResult.Completed, 10, 10, 250, 270);
+        TogglePopup(EPopup.Result, true);
+        EventsManager.Instance.NotifyObservers(EEvents.OnFinishLevel, pr);
+    }*/
+
+    private void OnEnable()
+    {
+    }
+
+    private void OnDestroy()
+    {
+    }
+
+    private void Update()
+    {       
+        ShowFPS();
+    }
+
+    private void ShowFPS()
+    {
+        double fps = 1 / Time.deltaTime;
+        fps = Math.Round(fps, 2);
+        _txtFPS.text = fps.ToString();
+    }
 }

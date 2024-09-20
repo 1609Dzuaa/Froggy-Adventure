@@ -18,7 +18,7 @@ public class IdleState : PlayerBaseState
     public override void Update()
     {
         //Chỉ Update State này khi 0 tương tác với NPC, tránh bị loạn state
-        if(!_playerStateManager.IsInteractingWithNPC)
+        if (!_playerStateManager.IsInteractingWithNPC)
         {
             if (CheckIfCanRun())
                 _playerStateManager.ChangeState(_playerStateManager.runState);
@@ -27,7 +27,8 @@ public class IdleState : PlayerBaseState
             else if (CheckIfCanFall())
                 _playerStateManager.ChangeState(_playerStateManager.fallState);
             else if (CheckIfCanDash())
-                _playerStateManager.ChangeState(_playerStateManager.dashState);        }
+                _playerStateManager.ChangeState(_playerStateManager.dashState);
+        }
     }
 
     private bool CheckIfCanRun()
@@ -38,7 +39,7 @@ public class IdleState : PlayerBaseState
 
     private bool CheckIfCanJump()
     {
-        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && _playerStateManager.CanJump;
+        return _playerStateManager.BtnJumpDetect && _playerStateManager.CanJump;
     }
 
     private bool CheckIfCanFall()

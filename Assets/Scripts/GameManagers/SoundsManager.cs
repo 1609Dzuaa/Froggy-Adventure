@@ -18,6 +18,10 @@ public class SoundsManager : BaseSingleton<SoundsManager>
 
     public bool IsPlayingBossTheme { get => _isPlayingBossTheme; }
 
+    public AudioSource SFXSource => _sfxSource;
+
+    public AudioSource MusicSource => _musicSource;
+
     protected override void Awake()
     {
         base.Awake();

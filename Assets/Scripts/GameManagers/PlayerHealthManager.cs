@@ -29,7 +29,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     [SerializeField] private float _timeEachBlink;
 
     private HP[] _HPs = new HP[GameConstants.PLAYER_MAX_HP];
-    private int _maxHP;
+    [HideInInspector] public int MaxHP;
     private int _currentHP;
     private int _tempHP;
     private bool _hasIncreaseHP;
@@ -46,7 +46,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     public HP[] HPs { get { return _HPs; } set { HPs = value; } }
 
-    public int CurrentHP { get { return _currentHP; } }
+    public int CurrentHP { get { return _currentHP; } set { _currentHP = value; } }
 
     protected override void Awake()
     {
@@ -63,14 +63,14 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void InitHP()
     {
-        _maxHP = _playerSO.MaxHP;
-        _currentHP = _maxHP;
+        //MaxHP = _playerSO.MaxHP;
+        //_currentHP = MaxHP;
         _tempHP = 0;
     }
 
     private void InitHPDictionary()
     {
-        for (int i = 0; i < _maxHP; i++)
+        for (int i = 0; i < MaxHP; i++)
         {
             _HPs[i]._dictHP = new Dictionary<int, Sprite>()
             {
@@ -86,7 +86,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     {
         for (int i = 0; i < GameConstants.PLAYER_MAX_HP; i++)
         {
-            if (i < _maxHP)
+            if (i < MaxHP)
                 _uiHP[i].enabled = true;
             else
                 _uiHP[i].enabled = false;
@@ -97,7 +97,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void InitHPArray()
     {
-        for (int i = 0; i < _maxHP; i++)
+        for (int i = 0; i < MaxHP; i++)
         {
             _HPs[i]._state = GameConstants.HP_STATE_NORMAL;
             //Khởi tạo cho các HP mặc định là state Normal
@@ -133,7 +133,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         if (state == GameConstants.HP_STATE_NORMAL)
         {
             //Quên mất current phải < max thì mới + HP
-            if (_currentHP < _maxHP)
+            if (_currentHP < MaxHP)
             {
                 _HPs[_currentHP]._state = state;
                 _currentHP++;
@@ -149,7 +149,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
             //Check có máu ảo thì trừ nó, 0 thì trừ thẳng hp hiện tại
             if (_tempHP != 0)
             {
-                if (_tempHP + _currentHP > _maxHP)
+                if (_tempHP + _currentHP > MaxHP)
                 {
                     //Minus 1 bcuz it's a array
                     //Nếu tổng máu ảo + máu real vượt quá maxHP thì disable máu ảo 
@@ -196,7 +196,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
             //Sau khi đã tăng máu ảo thì check nếu tổng máu hiện tại + máu ảo >= maxHP
             //thì cho phép các thanh máu sau maxHP enable
-            if (_tempHP + _currentHP >= _maxHP)
+            if (_tempHP + _currentHP >= MaxHP)
                 _uiHP[_tempHP + _currentHP - 1].enabled = true;
         }
         //Ổn
@@ -210,7 +210,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         //2. Loop đến máu ảo hiện tại, render từng phần máu
 
         //Loop đến max
-        for (int i = 0; i < _maxHP; i++)
+        for (int i = 0; i < MaxHP; i++)
         {
             _uiHP[i].sprite = _HPs[i]._dictHP[_HPs[i]._state];
             //Debug.Log("Curr, TempHP , Curr_state: " + _currentHP + ", " + _tempHP + "," + _HPs[_currentHP]._state);
@@ -297,7 +297,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         //Nếu 0 thì gán lại state lost cho vị trí đó
         for (int i = _currentHP; i < _currentHP + _tempHP; i++)
         {
-            if (i > _maxHP - 1)
+            if (i > MaxHP - 1)
                 _uiHP[i].enabled = false;
             else
                 _HPs[i]._state = GameConstants.HP_STATE_LOST;

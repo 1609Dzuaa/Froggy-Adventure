@@ -21,15 +21,11 @@ public class EventsManager : BaseSingleton<EventsManager>
     private readonly Action<object> FanOnBeingDisabled;
     private readonly Action<object> ObjectOnRestart;
     private readonly Action<object> TutorOnDestroy;
-    private readonly Action<object> PlayerOnUnlockSkills;
+    private readonly Action<object> OnUnlockSkill;
     private readonly Action<object> CameraOnShake;
     private readonly Action<object> BossOnSummonMinion;
     private readonly Action<object> BossGateOnClose;
     private readonly Action<object> BossOnDie;
-
-    //Làm việc với Event thì nên phân biệt với nhau bằng key là object
-    //Tránh cùng 1 lúc nó Notify tất cả Func đã đky event đó
-    //thay vì chỉ Notify những Func cần
 
     protected override void Awake()
     {
@@ -52,16 +48,21 @@ public class EventsManager : BaseSingleton<EventsManager>
         _dictEvents.Add(GameEnums.EEvents.FanOnBeingDisabled, FanOnBeingDisabled);
         _dictEvents.Add(GameEnums.EEvents.ObjectOnRestart, ObjectOnRestart);
         _dictEvents.Add(GameEnums.EEvents.TutorOnDestroy, TutorOnDestroy);
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnUnlockSkills, PlayerOnUnlockSkills);
+        //_dictEvents.Add(GameEnums.EEvents.OnUnlockSkill, OnUnlockSkill);
         _dictEvents.Add(GameEnums.EEvents.CameraOnShake, CameraOnShake);
         _dictEvents.Add(GameEnums.EEvents.BossOnSummonMinion, BossOnSummonMinion);
         _dictEvents.Add(GameEnums.EEvents.BossGateOnClose, BossGateOnClose);
         _dictEvents.Add(GameEnums.EEvents.BossOnDie, BossOnDie);
-        //Val là cái event, còn thg nào quan tâm cái event đó thì gọi hàm dưới
     }
 
     public void SubcribeToAnEvent(GameEnums.EEvents eventType, Action<object> function)
     {
+        if (!_dictEvents.ContainsKey(eventType))
+        {
+            _dictEvents.Add(eventType, function);
+            return;
+            //Debug.Log("Added");
+        }
         _dictEvents[eventType] += function;
     }
 
@@ -72,8 +73,6 @@ public class EventsManager : BaseSingleton<EventsManager>
 
     public void NotifyObservers(GameEnums.EEvents eventType, object eventArgsType)
     {
-        //Gọi thằng đã sub cái eventType với tham số eventArgsType
-        //(tránh bị gọi tất cả func đã đki cùng 1 lúc)
         _dictEvents[eventType]?.Invoke(eventArgsType);
     }
 }
