@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ScriptableObject", menuName = "ScriptableObject/MEnemiesStats")]
+[CreateAssetMenu(fileName = "ScriptableObject", menuName = "ScriptableObjects/MEnemiesStats")]
 public class MEnemiesStats : ScriptableObject
 {
     [Header("Wall Check")]

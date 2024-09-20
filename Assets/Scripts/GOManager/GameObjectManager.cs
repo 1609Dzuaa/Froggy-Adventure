@@ -62,7 +62,7 @@ public class GameObjectManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_skillUnlockDelay);
 
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnUnlockSkills, _skillUnlocked);
+        //EventsManager.Instance.NotifyObservers(GameEnums.EEvents.OnUnlockSkill, _skillUnlocked);
         PlayerPrefs.SetString(GameEnums.ESpecialStates.SkillUnlocked + _skillUnlocked.ToString(), "Unlocked");
     }
 

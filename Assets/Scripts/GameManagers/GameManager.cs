@@ -2,31 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-/// <summary>
-/// Xử lý UI nâng cấp skill: Mỗi khi unlock đc skills thì Popup UI skills achieved lên
-/// Thông qua notify kèm theo tham số là tên skill, sau đó bên UI sẽ nhận và hiển thị UI
-/// skill dựa trên tham số đó
-/// UIManager sẽ chứa 1 ref gameobject là SkillAchievedPanel, 1 text tên skill, 1 Img ảnh skill 
-/// Kèm thêm các dòng Text:
-/// Skill Unlocked:
-/// Tên Skill và ảnh skill ở phía dưới
-/// 
-/// Build Level 2 và Boss ở cuối Level
-/// Build nốt state spawn Particle cho Boss, xử lý việc chuyển state của boss và random skill (?)
-/// Gecko có bung ?
-/// Xong boss, còn build map lv2 và bố trí Room Boss là end game
-/// Qua lv2 thì xoá hết data lv1 (quái, checkpoint) giữ skill player
-/// Vẫn còn bug quái có thể detect ra Player dù ở bên kia wall
-/// Gđ cuối r nên chấp nhận code bẩn, 0 còn time refactor
-/// Sửa lại state cho Boss chờ Player và Timeline, chỉnh lại camera 1 số chỗ đặc biệt và build game
-/// Nên rename func của các OnClick 
-/// </summary>
+using DG.Tweening;
+using static GameConstants;
+using static GameEnums;
 
 public class GameManager : BaseSingleton<GameManager>
 {
-    [SerializeField] float _delayTrans;
-    [SerializeField] float _delayPlayThemeMusic;
     bool _isReplay; //Nếu replay thì chờ loadscene r hẵng restart HP
     bool _fullUnlock;
     bool _deleteScene1Data;
@@ -37,17 +18,28 @@ public class GameManager : BaseSingleton<GameManager>
         DontDestroyOnLoad(gameObject);
     }
 
+    public void SwitchScene(int sceneIndex, bool canTweenImmediately)
+    {
+        //Nên tối giản func này chỉ làm đúng nhiệm vụ chuyển scene
+        //UIManager sẽ lo hết tween, togglepopup
+        SceneManager.LoadScene(sceneIndex);
+    }
+
+    public void OnQuit()
+    {
+        Application.Quit();
+    }
+
     public void SwitchNextScene()
     {
-        UIManager.Instance.IncreaseTransitionCanvasOrder();
-        StartCoroutine(SwitchScene(SceneManager.GetActiveScene().buildIndex + 1));
+        //StartCoroutine(SwitchScene(SceneManager.GetActiveScene().buildIndex + 1));
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.ButtonSelectedSfx, 1.0f);
-        StartCoroutine(PlayNextSceneSong(SceneManager.GetActiveScene().buildIndex + 1, true));
+        //StartCoroutine(PlayNextSceneSong(SceneManager.GetActiveScene().buildIndex + 1, true));
         ResetGameData();
         //OnClick của button "Play"
     }
 
-    private IEnumerator PlayNextSceneSong(int index, bool needWait)
+    /*private IEnumerator PlayNextSceneSong(int index, bool needWait)
     {
         if (needWait)
             yield return new WaitForSeconds(_delayPlayThemeMusic);
@@ -67,7 +59,7 @@ public class GameManager : BaseSingleton<GameManager>
                 Debug.Log("here");
                 break;
         }
-    }
+    }*/
 
     private void ResetGameData()
     {
@@ -75,15 +67,15 @@ public class GameManager : BaseSingleton<GameManager>
         PlayerHealthManager.Instance.RestartHP();
         PlayerPrefs.DeleteAll();
         _deleteScene1Data = false;
-        Debug.Log("reset GData");
+        //Debug.Log("reset GData");
     }
 
     public void SwitchToScene(int sceneIndex)
     {
-        StartCoroutine(SwitchScene(sceneIndex));
+        //StartCoroutine(SwitchScene(sceneIndex));
     }
 
-    public IEnumerator SwitchScene(int sceneIndex)
+    /*public IEnumerator SwitchScene(int sceneIndex)
     {
         UIManager.Instance.IncreaseTransitionCanvasOrder();
         UIManager.Instance.PopDownAllPanels();
@@ -128,12 +120,11 @@ public class GameManager : BaseSingleton<GameManager>
         }
         //Nếu là chuyển scene 2 thì có 2 lần check là đã full skills ch
         //và có cần xoá hết data nếu scene trc là scene 1 kh
-    }
+    }*/
 
     public void ReloadScene()
     {
         Time.timeScale = 1.0f;
-        UIManager.Instance.PopDownAllPanels();
         _isReplay = true;
         SwitchToScene(SceneManager.GetActiveScene().buildIndex);
         //OnClick của button "Replay"
@@ -142,19 +133,16 @@ public class GameManager : BaseSingleton<GameManager>
 
     public void BackHome()
     {
-        UIManager.Instance.PopDownAllPanels();
-        UIManager.Instance.StartMenuCanvas.SetActive(true);
         SceneManager.LoadSceneAsync(GameConstants.GAME_MENU);
-        StartCoroutine(PlayNextSceneSong(GameConstants.GAME_MENU, false));
+        //StartCoroutine(PlayNextSceneSong(GameConstants.GAME_MENU, false));
         //OnClick của button "Home"
     }
 
     public void Restart()
     {
-        UIManager.Instance.PopDownAllPanels();
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.ObjectOnRestart, null);
         ResetGameData();
-        StartCoroutine(PlayNextSceneSong(GameConstants.GAME_LEVEL_1, true));
+        //StartCoroutine(PlayNextSceneSong(GameConstants.GAME_LEVEL_1, true));
         SwitchToScene(GameConstants.GAME_LEVEL_1);
         //OnClick của button "Restart"
         //Chơi lại từ đầu
@@ -164,7 +152,7 @@ public class GameManager : BaseSingleton<GameManager>
     {
         PlayerPrefs.DeleteAll();
         PlayerHealthManager.Instance.DecreaseHP();
-        Debug.Log("Quit");
+        //Debug.Log("Quit");
     }
 
 }

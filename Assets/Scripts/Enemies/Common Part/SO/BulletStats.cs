@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ScriptableObject", menuName = "ScriptableObject/BulletStats")]
+[CreateAssetMenu(fileName = "ScriptableObject", menuName = "ScriptableObjects/BulletStats")]
 public class BulletStats : ScriptableObject
 {
     [Header("Speed")]

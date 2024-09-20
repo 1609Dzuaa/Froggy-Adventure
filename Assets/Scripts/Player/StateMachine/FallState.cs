@@ -7,6 +7,7 @@ public class FallState : PlayerBaseState
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.fall);
+        _playerStateManager.GetRigidBody2D().gravityScale = GameConstants.PLAYER_FALL_GRAV_SCALE;
 
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
@@ -15,7 +16,10 @@ public class FallState : PlayerBaseState
         //DONE!~
     }
 
-    public override void ExitState() { }
+    public override void ExitState() 
+    {
+        _playerStateManager.GetRigidBody2D().gravityScale = GameConstants.PLAYER_INIT_GRAV_SCALE;
+    }
 
     public override void Update()
     {

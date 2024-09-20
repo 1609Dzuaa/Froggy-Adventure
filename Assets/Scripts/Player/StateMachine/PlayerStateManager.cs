@@ -84,6 +84,10 @@ public class PlayerStateManager : MonoBehaviour
     [Header("Dashable Sign")]
     [SerializeField] private Transform _dashableSignPos;
 
+    [SerializeField] private Joystick _joystick;
+
+    [SerializeField] private ButtonHoldDetect _btnJumpDetect;
+
     //GET Functions
 
     public Transform DashableSignPosition { get { return _dashableSignPos; } }
@@ -134,6 +138,8 @@ public class PlayerStateManager : MonoBehaviour
     public PlayerStats GetPlayerStats { get { return _playerStats; } set { _playerStats = value; } } 
 
     public bool IsApplyGotHitEffect { set { _isApplyGotHitEffect = value; } }
+
+    public bool BtnJumpDetect { get => _btnJumpDetect.IsHolding; }
     
     private void Awake()
     {
@@ -144,7 +150,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
+        //dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _capCollider2D = GetComponent<CapsuleCollider2D>();
     }
@@ -196,7 +202,7 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, UnlockSkill);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWinGame);
     }
 
@@ -220,7 +226,7 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUnlockSkills, UnlockSkill);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWinGame);
         //Unsub mọi Events khi load lại scene tránh bị null ref từ event cũ
     }
@@ -248,12 +254,12 @@ public class PlayerStateManager : MonoBehaviour
             return;
         }
 
-        if (state is DoubleJumpState && !_unlockedDbJump)
+        /*if (state is DoubleJumpState && !_unlockedDbJump)
             return;
         else if (state is WallSlideState && !_unlockedWallSlide)
             return;
         else if (state is DashState && !_unlockedDash)
-            return;
+            return;*/
 
         _state.ExitState();
         _state = state;
@@ -331,9 +337,6 @@ public class PlayerStateManager : MonoBehaviour
         _isHitFromRightSide = (bool)obj;
         //Debug.Log("bi hit tu right: " + (bool)obj);
         ChangeState(gotHitState);
-        //Đky event = func này, không phải gây tight-coupling ở class enemies
-        //Enemies đ' cần quan tâm về rb của player, nó chỉ việc phát thông báo (Invoke)
-        //Thằng nào có liên quan đến thì đăng ký và xử lý
     }
 
     private void JumpPassive(object obj)
@@ -348,7 +351,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         _isInteractingWithNPC = true;
         _interactPosition = (Vector2)obj;
-        Debug.Log("inter: " + _interactPosition);
+        //Debug.Log("inter: " + _interactPosition);
     }
 
     private void StopInteractWithNPC(object obj)
@@ -392,8 +395,8 @@ public class PlayerStateManager : MonoBehaviour
         _state.Update();
         HandleFlipSprite();
         HandleAlphaValueGotHit();
-        HandleDustVelocity();
-        SpawnDust();
+        //HandleDustVelocity();
+        //SpawnDust();
         //Debug.Log("OG, CanJ: " + isOnGround + ", " + _canJump);
     }
 
@@ -484,8 +487,16 @@ public class PlayerStateManager : MonoBehaviour
     private void HandleInput()
     {
         if (_hasWinGame) return;
-        dirX = Input.GetAxisRaw(GameConstants.HORIZONTAL_AXIS);
-        dirY = Input.GetAxisRaw(GameConstants.VERTICAL_AXIS);
+
+        if (_joystick.Horizontal > 0.2f)
+            dirX = 1f;
+        else if (_joystick.Horizontal < -0.2f)
+            dirX = -1f;
+        else
+            dirX = 0f;
+
+        //dirY = _joystick.Vertical;
+        //Debug.Log("ver: " + dirY);
     }
 
     public void FlippingSprite()
@@ -622,13 +633,13 @@ public class PlayerStateManager : MonoBehaviour
         if (PlayerHealthManager.Instance.CurrentHP > 0)
         {
             PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
-            if (PlayerHealthManager.Instance.CurrentHP == 0)
-                UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
-            else
-                GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
+            //if (PlayerHealthManager.Instance.CurrentHP == 0)
+                //UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
+            //else
+                //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
         }
-        else
-            UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
+        //else
+            //UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
 
         anim.SetTrigger(GameConstants.DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
@@ -692,7 +703,7 @@ public class PlayerStateManager : MonoBehaviour
     public void Enable()
     {
         _hasBeenDisabled = false;
-        Debug.Log("Enable");
+        //Debug.Log("Enable");
     }
 
     /// <summary>
@@ -801,5 +812,4 @@ public class PlayerStateManager : MonoBehaviour
     {
         _hasWinGame = true;
     }
-
 }

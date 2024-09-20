@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GCoin_Animator
+  m_Controller: {fileID: 9100000, guid: 03d40fc31386e4345a4e70ecbcd6e379, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 16c4fd500bc816e429d0f986e90d1356, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a31004ad806eb66468305372d12b95dc, type: 2}

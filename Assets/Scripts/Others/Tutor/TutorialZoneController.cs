@@ -17,8 +17,8 @@ public class TutorialZoneController : GameObjectManager
     {
         if (_canDestroy)
             EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.TutorOnDestroy, SelfDestroy);
-        if (_isApplySkillToPlayer)
-            EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.PlayerOnUnlockSkills, AllowPopUpTutor);
+        //if (_isApplySkillToPlayer)
+            //EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.OnUnlockSkill, AllowPopUpTutor);
     }
 
     // Start is called before the first frame update
@@ -76,7 +76,7 @@ public class TutorialZoneController : GameObjectManager
     private void OnDestroy()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.TutorOnDestroy, SelfDestroy);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.PlayerOnUnlockSkills, AllowPopUpTutor);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.OnUnlockSkill, AllowPopUpTutor);
     }
 
     /// <summary>

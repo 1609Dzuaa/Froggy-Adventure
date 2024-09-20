@@ -19,7 +19,7 @@ using UnityEngine;
 //https://www.reddit.com/r/Unity2D/comments/mayjhy/should_i_edit_scriptable_objects_at_runtime/
 //https://forum.unity.com/threads/change-scriptableobject-at-runtime.1008376/
 
-[CreateAssetMenu(fileName ="ScriptableObject", menuName = "ScriptableObject/PlayerStats")]
+[CreateAssetMenu(fileName ="ScriptableObject", menuName = "ScriptableObjects/PlayerStats")]
 public class PlayerStats : ScriptableObject
 {
     [Header("Speed")]

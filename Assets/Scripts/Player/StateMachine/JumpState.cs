@@ -113,7 +113,7 @@ public class JumpState : PlayerBaseState
 
     private void PhysicsUpdateVertical()
     {
-        if (Input.GetButton(GameConstants.JUMP_BUTTON) && Time.time - _playerStateManager.JumpStart < _playerStateManager.GetPlayerStats.JumpTime)
+        if (_playerStateManager.BtnJumpDetect && Time.time - _playerStateManager.JumpStart < _playerStateManager.GetPlayerStats.JumpTime)
         {
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetRigidBody2D().velocity.y * _playerStateManager.GetPlayerStats.JumpSpeedFactor);
             //Debug.Log("hereeee");

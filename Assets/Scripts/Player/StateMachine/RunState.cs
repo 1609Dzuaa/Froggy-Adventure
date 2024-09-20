@@ -47,7 +47,7 @@ public class RunState : PlayerBaseState
 
     private bool CheckIfCanJump()
     {
-        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && _playerStateManager.CanJump;
+        return _playerStateManager.BtnJumpDetect && _playerStateManager.CanJump;
     }
 
     private bool CheckIfCanFall()
