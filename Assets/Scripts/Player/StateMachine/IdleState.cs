@@ -39,7 +39,8 @@ public class IdleState : PlayerBaseState
 
     private bool CheckIfCanJump()
     {
-        return _playerStateManager.BtnJumpDetect && _playerStateManager.CanJump;
+        //Debug.Log("Jdetect, canJ" + _playerStateManager.BtnJumpDetect + ", " + _playerStateManager.CanJump);
+        return _playerStateManager.BtnJumpControl.IsHolding && _playerStateManager.CanJump;
     }
 
     private bool CheckIfCanFall()
@@ -52,7 +53,7 @@ public class IdleState : PlayerBaseState
     private bool CheckIfCanDash()
     {
         //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
-        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
+        return _playerStateManager.BtnDashControl.IsDashing
              && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
              || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
     }

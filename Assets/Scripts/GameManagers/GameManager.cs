@@ -150,7 +150,7 @@ public class GameManager : BaseSingleton<GameManager>
 
     private void OnApplicationQuit()
     {
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         PlayerHealthManager.Instance.DecreaseHP();
         //Debug.Log("Quit");
     }

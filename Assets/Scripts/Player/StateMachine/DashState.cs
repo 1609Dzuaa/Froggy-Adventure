@@ -29,7 +29,7 @@ public class DashState : PlayerBaseState
     { 
         _allowUpdate = false;
         _dashDelayStart = Time.time;
-        _playerStateManager.GetTrailRenderer().emitting = false;
+        //_playerStateManager.GetTrailRenderer().emitting = false;
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.PLAYER_LAYER);
         BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).gameObject.layer = LayerMask.NameToLayer(GameConstants.SHIELD_LAYER);
         //Thêm dòng dưới khi Exit phòng TH: dash nhưng ch update thì đã exit state 
@@ -87,7 +87,7 @@ public class DashState : PlayerBaseState
         //Vô hiệu hoá grav khi dash (cho ảo hơn)
         _playerStateManager.GetRigidBody2D().gravityScale = 0f;
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlayerDashSfx, 0.5f);
-        _playerStateManager.GetTrailRenderer().emitting = true;
+        //_playerStateManager.GetTrailRenderer().emitting = true;
         _playerStateManager.gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
         BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Shield).gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
 

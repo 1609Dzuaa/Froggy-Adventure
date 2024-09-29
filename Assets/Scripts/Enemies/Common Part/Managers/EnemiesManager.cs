@@ -161,14 +161,14 @@ public class EnemiesManager : CharactersManager
 
     protected void HandleIfIsSpecialEnemy()
     {
-        if (_hasGotHit && !_hasNotified && _needTutor)
+        /*if (_hasGotHit && !_hasNotified && _needTutor)
         {
             _hasNotified = true;
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.TutorOnDestroy, _tutorRef);
 
             if (_isApplySkillToPlayer)
                 StartCoroutine(NotifyUnlockSkill());
-        }
+        }*/
     }
 
 }

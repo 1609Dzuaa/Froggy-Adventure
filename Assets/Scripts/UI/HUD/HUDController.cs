@@ -23,16 +23,16 @@ public class HUDController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSetupTimeAllow, SetupAndCountTime);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSetupLevel, SetupAndCountTime);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUnlockSkill, BonusTimer);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSetupTimeAllow, SetupAndCountTime);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSetupLevel, SetupAndCountTime);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUnlockSkill, BonusTimer);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
 
     /*private void Update()
@@ -49,10 +49,18 @@ public class HUDController : MonoBehaviour
 
     private void SetupAndCountTime(object obj)
     {
-        performanceMarker.Begin();
-        _timeLeft = _timeAllow = (int)obj + _bonusTime;
-        _timeLeft += _delayCount;
-        TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeLeft, _timeAllow);
+        //performanceMarker.Begin();
+        LevelInfo info = (LevelInfo)obj;
+        _bonusTime = info.ListActiveSkills.Find(x => x.SkillName == ESkills.Hourglass) != null ? HOURGLASS_BONUS_TIME : 0;
+        _timeLeft = _timeAllow = info.LevelTimeAllow + _bonusTime;
+        TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeLeft, _bonusTime);
+        Countdown();
+        //performanceMarker.End();
+    }
+
+    private void Countdown(bool isReset = false)
+    {
+        _timeLeft = (isReset) ? _timeAllow : _timeAllow + _delayCount;
         _timerTween = DOTween.To(() => _timeLeft, x => _timeLeft = x, 0, _timeLeft).OnUpdate(() =>
         {
             TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeLeft, _timeAllow);
@@ -63,19 +71,21 @@ public class HUDController : MonoBehaviour
             ResultParam pr = new(ELevelResult.Failed, _tweenCoin.SCoinCollected, _tweenCoin.GCoinCollected, timeComplete, _timeAllow);
             UIManager.Instance.TogglePopup(EPopup.Result, true);
             EventsManager.Instance.NotifyObservers(EEvents.OnFinishLevel, pr);
+            EventsManager.Instance.NotifyObservers(EEvents.OnLockLimitedSkills);
         });
-        performanceMarker.End();
     }
 
     private void KillTweenTimer(object obj)
     {
         _timerTween.Kill();
+        _bonusTime = 0;
+        EventsManager.Instance.NotifyObservers(EEvents.OnLockLimitedSkills, null);
     }
 
-    private void BonusTimer(object obj)
+    private void HandleReset(object obj)
     {
-        SpecialItemStaticData sItemSData = obj as SpecialItemStaticData;
-        if (sItemSData.Ability.AbilityName == ESkills.Hourglass)
-            _bonusTime = HOURGLASS_BONUS_TIME;
+        _tweenCoin.ResetCoins();
+        TimeDisplayHelper.DisplayTime(ref _txtTimer, 0, _timeAllow);
+        Countdown(true);
     }
 }

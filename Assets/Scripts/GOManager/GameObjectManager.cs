@@ -7,7 +7,7 @@ public class GameObjectManager : MonoBehaviour
     protected Animator _anim;
     protected string _ID;
 
-    [Tooltip("Với vài GObj cần Tutor thì để ý 2 phần này, còn kh thì bỏ qua. Nó sẽ " +
+    /*[Tooltip("Với vài GObj cần Tutor thì để ý 2 phần này, còn kh thì bỏ qua. Nó sẽ " +
         "Link GObj này với Tutor để tắt Tutor khi Player đã tác động lên GObj này")]
     [SerializeField] protected bool _needTutor;
     [SerializeField] protected GameObject _tutorRef;
@@ -16,7 +16,7 @@ public class GameObjectManager : MonoBehaviour
     "cung cấp skill cho Player")]
     [SerializeField] protected bool _isApplySkillToPlayer;
     [SerializeField] protected GameEnums.EPlayerState _skillUnlocked;
-    [SerializeField] protected float _skillUnlockDelay;
+    [SerializeField] protected float _skillUnlockDelay;*/
     //Nếu là obj đặc biệt sẽ Notify events unlock skill cho Player
 
     public Animator Animator { get { return _anim; } }
@@ -58,12 +58,12 @@ public class GameObjectManager : MonoBehaviour
 
     protected virtual void SetUpProperties() { }
 
-    protected IEnumerator NotifyUnlockSkill()
+    /*protected IEnumerator NotifyUnlockSkill()
     {
         yield return new WaitForSeconds(_skillUnlockDelay);
 
         //EventsManager.Instance.NotifyObservers(GameEnums.EEvents.OnUnlockSkill, _skillUnlocked);
         PlayerPrefs.SetString(GameEnums.ESpecialStates.SkillUnlocked + _skillUnlocked.ToString(), "Unlocked");
-    }
+    }*/
 
 }

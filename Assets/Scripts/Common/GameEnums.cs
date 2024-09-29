@@ -73,7 +73,6 @@
         PlayerOnStopInteractWithNPCs,
         PlayerOnBeingPushedBack,
         PlayerOnUpdateRespawnPosition,
-        OnUnlockSkill,
         PlayerOnWinGame,
         FanOnBeingDisabled,
         ObjectOnRestart,
@@ -86,11 +85,16 @@
         ShopItemOnClick,
         PlayerOnBuyShopItem,
         NotificationOnPopup,
-        OnFinishLevel,
+        OnFinishLevel, //bắn đi khi đã hoàn thành 1 level (win/lose) để nhận thưởng
         OnCollectCoin,
-        OnSetupTimeAllow,
-        OnPlayLevel, //event cho phép tween và tắt popupLevel
-        OnReturnMainMenu,
+        OnSetupLevel, //đc bắn đi để biết thông tin level đó (thgian, skill đã mua,...)
+        OnPlayLevel, //event cho phép tween và tắt popupLevel (lúc chuyển scene)
+        OnReturnMainMenu, //bắn khi player chọn thoát level, để kill tween timer
+        OnUnlockSkill,
+        OnLockLimitedSkills, //lock những limited skill khi xong 1 level nào đó
+        OnCollectFruit,
+        OnItemEligibleCheck,
+        OnResetLevel, //bắn đi để reset các data cũ từ level trước
 
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using static GameEnums;
+using static GameConstants;
 
 public class CoinInfo
 {
@@ -42,9 +43,10 @@ public class TweenCoin : MonoBehaviour
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnCollectCoin, CollectCoin);
     }
 
-    private void ResetCoins()
+    public void ResetCoins()
     {
-        SCoinCollected = GCoinCollected = 0;
+        SCoinCollected = GCoinCollected = DEFAULT_ITEM_COUNT;
+        _txtSCoinCollected.text = _txtGCoinCollected.text = DEFAULT_ITEM_COUNT.ToString();
     }
 
     private void CollectCoin(object obj) 

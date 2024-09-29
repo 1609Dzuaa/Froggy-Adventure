@@ -25,33 +25,33 @@ public class TutorialZoneController : GameObjectManager
     protected override void Start()
     {
         _tutorText.SetActive(false);
-        if (_isApplySkillToPlayer)
+        /*if (_isApplySkillToPlayer)
             if (PlayerPrefs.HasKey((GameEnums.ESpecialStates.Actived + ID)))
-                _allowPopUp = true;
+                _allowPopUp = true;*/
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.PLAYER_TAG))
+        /*if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             if (!_isApplySkillToPlayer)
                 _tutorText.SetActive(true);
             else
                 _tutorText.SetActive((_allowPopUp) ? true : false);
             //Debug.Log("Tutor !Popup");
-        }
+        }*/
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.PLAYER_TAG))
+        /*if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             if (!_isApplySkillToPlayer)
                 _tutorText.SetActive(true);
             else
                 _tutorText.SetActive((_allowPopUp) ? true : false);
             //Debug.Log("Tutor !Popup");
-        }
+        }*/
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -86,8 +86,8 @@ public class TutorialZoneController : GameObjectManager
 
     private void AllowPopUpTutor(object obj)
     {
-        if ((GameEnums.EPlayerState)obj != _skillUnlocked)
-            return;
+        //if ((GameEnums.EPlayerState)obj != _skillUnlocked)
+            //return;
 
         _allowPopUp = true;
         PlayerPrefs.SetString(GameEnums.ESpecialStates.Actived + ID, "Unlocked");

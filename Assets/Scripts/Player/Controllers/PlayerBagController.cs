@@ -4,6 +4,20 @@ using UnityEngine;
 using static GameEnums;
 using static GameConstants;
 using DG.Tweening;
+using System;
+
+public class FruitCollectedData
+{
+    public int Count;
+    public Sprite FruitImage;
+    public EFruits FruitName;
+
+    public FruitCollectedData(int count, Sprite fruitImage)
+    {
+        Count = count;
+        FruitImage = fruitImage;
+    }
+}
 
 public class PlayerBagController : MonoBehaviour
 {
@@ -16,7 +30,12 @@ public class PlayerBagController : MonoBehaviour
     [Header("Dùng cho Tween Text")]
     [SerializeField] float _duration;
     [SerializeField] Ease _ease;
-    Dictionary<ECurrency, CurrencyInfoComponents> _dictCurrencyInfoComps = new();
+    Dictionary<ECurrency, CurrencyInfoComponents> _dictCurrencyInfoComps;
+    //2 dictionary này phục vụ việc unlock fruit trong file
+    public Dictionary<EFruits, Fruits> DictFruits;
+    public Dictionary<EFruits, Fruits> TempDictFruits;
+    //dictionary này phục vụ việc ghi lại kết quả bên popupresult
+    public Dictionary<EFruits, FruitCollectedData> DictFruitsCollected;
 
     [HideInInspector] public int SilverCoin;
     [HideInInspector] public int GoldCoin;
@@ -26,23 +45,31 @@ public class PlayerBagController : MonoBehaviour
     {
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnFinishLevel, HandleFinishLevel);
-        SetupDictionary();
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
+    }
+
+    private void Start()
+    {
         DisplayCurrencyTexts();
     }
 
-    private void SetupDictionary()
+    public void SetupDictionary()
     {
+        _dictCurrencyInfoComps = new();
+        DictFruitsCollected = new();
         foreach (var item in _listCurrencyInfoComps)
             if (!_dictCurrencyInfoComps.ContainsKey(item.Currency))
                 _dictCurrencyInfoComps.Add(item.Currency, item);
-    }
-
-    private void GetPlayerCoins()
-    {
-        string filePath = Application.dataPath + PLAYER_DATA_PATH;
-        PlayerData playerData = JSONDataHelper.LoadFromJSon<PlayerData>(filePath);
-        SilverCoin = playerData.SilverCoin;
-        GoldCoin = playerData.GoldCoin;
+        DictFruits = new();
+        TempDictFruits = new();
+        string filePath = Application.dataPath + FRUITS_DATA_PATH;
+        FruitsIventory fI = JSONDataHelper.LoadFromJSon<FruitsIventory>(filePath);
+        foreach (var fruit in fI.Fruits)
+        {
+            DictFruits.Add(fruit.FruitName, fruit);
+            TempDictFruits.Add(fruit.FruitName, fruit);
+        }
     }
 
     private void DisplayCurrencyTexts()
@@ -55,12 +82,13 @@ public class PlayerBagController : MonoBehaviour
     {
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnFinishLevel, HandleFinishLevel);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
 
     private void HandleBuyShopItem(object obj)
     {
         ItemShop item = (ItemShop)obj;
-        //ItemStaticData itemSData = (ItemStaticData)obj;
         int itemSCoinPrice = item.ItemSData.DictPriceInfo[ECurrency.Silver].Price;
         int itemGCoinPrice = 0;
         if (item.ItemSData.DictPriceInfo.ContainsKey(ECurrency.Gold))
@@ -90,6 +118,30 @@ public class PlayerBagController : MonoBehaviour
         ResultParam pr = (ResultParam)obj;
         SilverCoin += pr.SilverCollected;
         GoldCoin += pr.GoldCollected;
+        foreach (var item in DictFruits)
+            item.Value.FruitCount = TempDictFruits[item.Key].FruitCount;
+        //Debug.Log("Finish");
+    }
+
+    private void CollectFruit(object obj)
+    {
+        //ăn trái thì add vào cái dictionary tạm
+        //khi nào thực sự có result game thì mới add vào cái fruit riel
+        FruitData fruitData = (FruitData)obj;
+        TempDictFruits[fruitData.FruitName].FruitCount++;
+        if (!DictFruitsCollected.ContainsKey(fruitData.FruitName))
+        {
+            FruitCollectedData data = new(1, fruitData.FruitImage);
+            DictFruitsCollected.Add(fruitData.FruitName, data);
+        }
+        else
+            DictFruitsCollected[fruitData.FruitName].Count++;
+        //Debug.Log(DictFruits.Values);
+    }
+
+    private void HandleReset(object obj)
+    {
+        DictFruitsCollected.Clear();
     }
 
     private void TweenTextCoins(int sCoinPrice, int gCoinPrice)
@@ -112,88 +164,6 @@ public class PlayerBagController : MonoBehaviour
         if (goldPrice > 0)
             _dictCurrencyInfoComps[ECurrency.Gold].ImgCurrency.transform.DOShakePosition(_shakeDuration, _shakeIntensity);//.SetEase(_shakeEase);
         //Debug.Log("tween icon");
-    }
-
-    private bool PurchaseItem(ItemStaticData itemSData, ref bool isSpecialItem)
-    {
-        bool isPurchaseSuccess = true;
-
-        //vì lượng Item ít nên xử lý sw case
-        switch (itemSData.ItemName)
-        {
-            case "HP":
-                if (PlayerHealthManager.Instance.CurrentHP == 3)
-                {
-                    string content = "Purchase Fail,\nMaximum Health Point Reached!";
-                    NotificationParam param = new(content, true, false, null, null, null);
-                    HandlePurchaseFailed(param);
-                    isPurchaseSuccess = false;
-                }
-                PlayerHealthManager.Instance.CurrentHP = Mathf.Clamp(++PlayerHealthManager.Instance.CurrentHP, 0, 3);
-                break;
-
-            case "Temp HP":
-
-                break;
-
-            case "Blue Potion":
-                isPurchaseSuccess = HandleUnlockSkill(ESkills.DoubleJump);
-                if (isPurchaseSuccess)
-                {
-                    EventsManager.Instance.NotifyObservers(EEvents.OnUnlockSkill, itemSData);
-                    UIManager.Instance.TogglePopup(EPopup.Ability, true);
-                    isSpecialItem = true;
-                }
-                break;
-
-            case "Red Potion":
-                isPurchaseSuccess = HandleUnlockSkill(ESkills.WallSlide);
-                if (isPurchaseSuccess)
-                {
-                    EventsManager.Instance.NotifyObservers(EEvents.OnUnlockSkill, itemSData);
-                    UIManager.Instance.TogglePopup(EPopup.Ability, true);
-                    isSpecialItem = true;
-                }
-                break;
-
-            case "Green Potion":
-                isPurchaseSuccess = HandleUnlockSkill(ESkills.Dash);
-                if (isPurchaseSuccess)
-                {
-                    EventsManager.Instance.NotifyObservers(EEvents.OnUnlockSkill, itemSData);
-                    UIManager.Instance.TogglePopup(EPopup.Ability, true);
-                    isSpecialItem = true;
-                }
-                break;
-        }
-
-        return isPurchaseSuccess;
-    }    
-
-    private bool HandleUnlockSkill(ESkills skillName)
-    {
-        bool isUnlockSuccess = true;
-        string filePath = Application.dataPath + SKILLS_DATA_PATH;
-        SkillsController sC = JSONDataHelper.LoadFromJSon<SkillsController>(filePath);
-        foreach (var skill in sC.skills)
-        {
-            if (skill.SkillName == skillName)
-            {
-                if (skill.IsUnlock)
-                {
-                    string content = "Purchase Failed,\n" + skillName.ToString() + " Already Unlock!";
-                    NotificationParam param = new(content, true, false, null, null, null);
-                    HandlePurchaseFailed(param);
-                    return !isUnlockSuccess;
-                }
-
-                skill.IsUnlock = true;
-                break;
-            }
-        }
-        JSONDataHelper.SaveToJSon<SkillsController>(sC, filePath);
-
-        return isUnlockSuccess;
     }
 
     private void HandlePurchaseFailed(NotificationParam param)

@@ -73,7 +73,6 @@ public class Pool : BaseSingleton<Pool>
 
     private void InstantiateGameObjects()
     {
-        //Duyệt này hơi chuối nhưng ch tìm đc cách khác
         for (int i = 0; i < _listPoolableObj.Count; i++)
         {
             for(int j = 0; j < _listPoolableObj[i]._ammount; j++)
@@ -89,7 +88,6 @@ public class Pool : BaseSingleton<Pool>
         {
             for (int j = 0; j < _listBPiecePair[i]._ammount; j++)
             {
-                //Awake & OnEnable của gObj vẫn đc gọi dù SetActive(false)
                 GameObject gObj1 = Instantiate(_listBPiecePair[i]._pair1);
                 gObj1.SetActive(false);
                 GameObject gObj2 = Instantiate(_listBPiecePair[i]._pair2);
@@ -102,20 +100,21 @@ public class Pool : BaseSingleton<Pool>
         //Add GameObject của object đó dựa trên lượng của object đó
     }
 
-    public GameObject GetObjectInPool(EPoolable objType)
+    public GameObject GetObjectInPool(EPoolable gObj)
     {
-        for (int i = 0; i < _dictPool[objType].Count; i++)
+        for (int i = 0; i < _dictPool[gObj].Count; i++)
         {
             //Tìm xem trong cái pool có thằng nào 0 kích hoạt kh thì lôi nó ra
-            if (!_dictPool[objType][i].activeInHierarchy)
+            if (!_dictPool[gObj][i].activeInHierarchy)
             {
                 //Debug.Log("Bullet: " + _dictPool[bulletType][i].name + " " + i);
-                return _dictPool[objType][i];
+                return _dictPool[gObj][i];
             }
         }
 
-        Debug.Log("out of " + objType);
-        return null;
+        GameObject gO = Instantiate(_dictPool[gObj][0], transform);
+        Debug.Log("out of " + gObj + " create new one!");
+        return gO;
     }
 
     public BulletPiecePair GetPiecePairInPool(EPoolable bulletType)

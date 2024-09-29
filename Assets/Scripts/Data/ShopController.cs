@@ -18,10 +18,28 @@ public class ShopController : MonoBehaviour
     [SerializeField] ItemShop[] _arrItemPrefabs;
     ItemShop[] _arrItems;
 
+    [Header("Ref cái túi để gọi hàm Setup Dictionary bên túi, Shouldn't do this way;)")]
+    [SerializeField] PlayerBagController _playerBag;
+
     private void Awake()
     {
         CreateItem();
         ResetScaleItems(_arrItems);
+        StartCoroutine(InitFiles());
+        _playerBag.SetupDictionary();
+    }
+
+    private IEnumerator InitFiles()
+    {
+        yield return null;
+
+        //đợi 1 frame để check xem object bị destroy ch
+        //r mới init files
+        if (gameObject)
+        {
+            InitFileHelper.InitAbilityAndFruitFiles(_arrItems);
+            Debug.Log("INIT FILES in ShopController");
+        }
     }
 
     private void CreateItem()
@@ -36,44 +54,7 @@ public class ShopController : MonoBehaviour
 
     void Start()
     {
-        HandleCreateSkillFile();
-    }
-
-    private void HandleCreateSkillFile()
-    {
-        PlayerPrefs.DeleteAll();
-        HashSet<EFruits> hashFruits = new(); 
-        if (!PlayerPrefs.HasKey(LIST_SKILL_CREATED))
-        {
-            List<Skills> listSkills = new();
-            List<Fruits> listFruits = new();
-            for (int i = 0; i < _arrItems.Length; i++)
-            {
-                if (_arrItems[i] is AbilityItemShop)
-                {
-                    var abilityItem = (AbilityItemShop)_arrItems[i];
-                    Skills skill = new Skills(abilityItem.SISData.Ability.AbilityName, false);
-                    listSkills.Add(skill);
-
-                    if (!hashFruits.Contains(abilityItem.SISData.Ability.FruitName))
-                    {
-                        hashFruits.Add(abilityItem.SISData.Ability.FruitName);
-                        Fruits fr = new Fruits(abilityItem.SISData.Ability.FruitName, 0);
-                        listFruits.Add(fr);
-                    }
-                }
-            }
-
-            string skillsFilePath = Application.dataPath + SKILLS_DATA_PATH;
-            SkillsController sC = new(listSkills);
-            JSONDataHelper.SaveToJSon<SkillsController>(sC, skillsFilePath);
-
-            string fruitsFilePath = Application.dataPath + FRUITS_DATA_PATH;
-            FruitsIventory fI = new(listFruits);
-            JSONDataHelper.SaveToJSon<FruitsIventory>(fI, fruitsFilePath);
-
-            PlayerPrefs.SetInt(LIST_SKILL_CREATED, CREATED);
-        }
+        //HandleCreateSkillFile();
     }
 
     private void OnEnable()

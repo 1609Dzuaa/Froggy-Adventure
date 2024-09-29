@@ -7,6 +7,8 @@ using static GameConstants;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
+using System.Linq;
 
 public class ResultParam
 {
@@ -32,8 +34,14 @@ public class PopupResult : PopupController
     [SerializeField] TextMeshProUGUI _txtSilver;
     [SerializeField] TextMeshProUGUI _txtGold;
     [SerializeField] TextMeshProUGUI _txtTime;
+
+    [Header("Để ý gắn thứ tự 1 2 3 cho đúng")]
+    [SerializeField] TextMeshProUGUI[] _arrTxtFruit;
+    [SerializeField] Image[] _arrImgFruit;
+    [SerializeField] TextMeshProUGUI[] _arrTextTime;
     [SerializeField] Image _imageBanner;
     [SerializeField] Sprite[] _spritesBanner;
+    [SerializeField] PlayerBagController _playerBag;
 
     [Header("Tween related")]
     [SerializeField] float _distance;
@@ -63,32 +71,63 @@ public class PopupResult : PopupController
         _imageBanner.sprite = (_param.Result == ELevelResult.Completed) ? _spritesBanner[0] : _spritesBanner[1];
         _txtSilver.text = "0";
         _txtGold.text = "0";
-        TimeDisplayHelper.DisplayTime(ref _txtTime, _param.TimeCompleted, _param.TimeAllow);
     }
 
     protected override void OnEnable()
     {
         int startSCoin = 0;
         int startGCoin = 0;
+
         if (_isFirstOnEnable)
             _isFirstOnEnable = false;
         else
         {
             transform.DOLocalMoveY(_endPosition, _duration).SetEase(_ease).OnComplete(() =>
             {
+                //tween sCoin
                 DOTween.To(() => startSCoin, x => startSCoin = x, _param.SilverCollected, _tweenChildDuration)
-                .OnUpdate(() => { _txtSilver.text = startSCoin.ToString(); })
-                .OnComplete(() =>
+                .OnUpdate(() => { _txtSilver.text = startSCoin.ToString(); });
+
+                //tween gCoin
+                DOTween.To(() => startGCoin, x => startGCoin = x, _param.GoldCollected, _tweenChildDuration)
+                    .OnUpdate(() => { _txtGold.text = startGCoin.ToString(); });
+
+                //assign fruit's image & tween fruit's count
+                var arrayFruitCollected = _playerBag.DictFruitsCollected.ToArray();
+                for (int i = 0; i < arrayFruitCollected.Length; i++)
                 {
-                    DOTween.To(() => startGCoin, x => startGCoin = x, _param.GoldCollected, _tweenChildDuration)
-                    .OnUpdate(() => { _txtGold.text = startGCoin.ToString(); })
-                    .OnComplete(() =>
-                    {
-                        TweenButton();
-                    });
-                });
+                    //sử dụng biến tạm vì nếu sd biến i trong callback OnUpdate
+                    //thì i có thể bị thay đổi trong quá trình update
+                    int localIndex = i;
+                    int startFruit = 0;
+                    _arrImgFruit[localIndex].sprite = arrayFruitCollected[localIndex].Value.FruitImage;
+                    DOTween.To(() => startFruit, x => startFruit = x, arrayFruitCollected[localIndex].Value.Count, _tweenChildDuration)
+                .OnUpdate(() => { _arrTxtFruit[localIndex].text = startFruit.ToString(); });
+                }
+
+                //tween 3 thằng fruit count
+                FadeImageFruits(1.0f);
+                FadeTextFruits(1.0f, TweenTextTimerCallback);
             }).SetUpdate(true);
         }
+    }
+
+    private void TweenTextTimerCallback()
+    {
+        //tween text timer
+        int startTimer = 0;
+        _arrTextTime[0].DOFade(1.0f, _tweenChildDuration);
+        _arrTextTime[1].DOFade(1.0f, _tweenChildDuration).OnComplete(() =>
+        {
+            DOTween.To(() => startTimer, x => startTimer = x, _param.TimeCompleted, _tweenChildDuration)
+            .OnUpdate(() =>
+            {
+                TimeDisplayHelper.DisplayTime(ref _arrTextTime[1], startTimer, _param.TimeAllow);
+            }).OnComplete(() =>
+            {
+                TweenButton();
+            });
+        });
     }
 
     private void TweenButton()
@@ -107,6 +146,36 @@ public class PopupResult : PopupController
     protected override void OnDisable()
     {
         ResetScaleButtons();
+        FadeTextFruits(0f);
+        FadeImageFruits(0f);
+        FadeTextTimer(0f);
+    }
+
+    private void FadeImageFruits(float value)
+    {
+        for (int i = 0; i < _arrImgFruit.Length; i++)
+            _arrImgFruit[i].DOFade(value, _duration);
+    }
+
+    private void FadeTextFruits(float value, TweenCallback callback = null)
+    {
+        bool callbackCalled = false;
+        for (int i = 0; i < _arrTxtFruit.Length; i++)
+        {
+            if (!callbackCalled && callback != null)
+            {
+                callbackCalled = true;
+                _arrTxtFruit[i].DOFade(value, _tweenChildDuration).OnComplete(callback);
+            }
+            else
+                _arrTxtFruit[i].DOFade(value, _tweenChildDuration);
+        }
+    }
+
+    private void FadeTextTimer(float value)
+    {
+        for (int i = 0; i < _arrTextTime.Length; i++)
+            _arrTextTime[i].DOFade(value, _duration);
     }
 
     public override void OnClose()
@@ -127,11 +196,12 @@ public class PopupResult : PopupController
 
             case (int)EButtonName.Replay:
                 int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-                UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex);
+                UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex, true);
+                //EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel);
                 break;
 
             case (int)EButtonName.Home:
-                UIManager.Instance.AnimateAndTransitionScene(GAME_MENU);
+                UIManager.Instance.AnimateAndTransitionScene(GAME_MENU, true);
                 break;
 
             case (int)EButtonName.Shop:

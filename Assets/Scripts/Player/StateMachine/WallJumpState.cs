@@ -42,8 +42,8 @@ public class WallJumpState : PlayerBaseState
 
     private bool CheckIfCanDbJump()
     {
-        //Press Space While WallJump => Double Jump
-        return Input.GetButtonDown(GameConstants.JUMP_BUTTON);
+        //Press Jump While WallJump => Double Jump
+        return _playerStateManager.BtnJumpControl.DbJump;
     }
 
     private bool CheckIfCanFall()
@@ -58,9 +58,10 @@ public class WallJumpState : PlayerBaseState
 
     private bool CheckIfCanDash()
     {
-        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
+        return _playerStateManager.BtnDashControl.IsDashing
             && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-            || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
+            || _playerStateManager.BtnDashControl.IsDashing
+            && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     public override void FixedUpdate()

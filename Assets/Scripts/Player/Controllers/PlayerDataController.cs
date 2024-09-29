@@ -6,8 +6,11 @@ using static GameEnums;
 
 public class PlayerDataController : BaseSingleton<PlayerDataController>
 {
-    [SerializeField] PlayerBagController _pCoin;
+    [SerializeField] PlayerBagController _pBag;
     [SerializeField] PlayerHealthManager _pHealth;
+    List<Fruits> _listFruits = new();
+    //PlayerData _pDataInstance;
+    FruitsIventory _fInventoryInstance;
 
     protected override void Awake()
     {
@@ -15,30 +18,59 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
         GetPlayerData();
         DontDestroyOnLoad(gameObject);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnFinishLevel, SaveData);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
     }
 
     private void GetPlayerData()
     {
         string filePath = Application.dataPath + PLAYER_DATA_PATH;
-        PlayerData playerData = JSONDataHelper.LoadFromJSon<PlayerData>(filePath);
-        _pCoin.SilverCoin = playerData.SilverCoin;
-        _pCoin.GoldCoin = playerData.GoldCoin;
+        PlayerData playerData /*_pDataInstance*/ = JSONDataHelper.LoadFromJSon<PlayerData>(filePath);
+        _fInventoryInstance = JSONDataHelper.LoadFromJSon<FruitsIventory>(Application.dataPath + FRUITS_DATA_PATH);
+        _pBag.SilverCoin = playerData.SilverCoin;
+        _pBag.GoldCoin = playerData.GoldCoin;
         _pHealth.CurrentHP = playerData.HealthPoint;
         _pHealth.MaxHP = playerData.MaxHealthPoint;
     }
 
     private void OnDestroy()
     {
-        //khi tắt ứng dụng sẽ đồng loạt lưu hết tất cả data
-        PlayerData pData = new(_pHealth.CurrentHP, _pHealth.MaxHP, _pCoin.SilverCoin, _pCoin.GoldCoin);
-        JSONDataHelper.SaveToJSon<PlayerData>(pData, Application.dataPath + PLAYER_DATA_PATH);
+        //SavePlayerData();
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnFinishLevel, SaveData);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
+        //Debug.Log("Ondes");
+    }
+
+    private void SavePlayerData()
+    {
+        PlayerData pData = new(_pHealth.CurrentHP, _pHealth.MaxHP, _pBag.SilverCoin, _pBag.GoldCoin);
+        JSONDataHelper.SaveToJSon<PlayerData>(pData, Application.dataPath + PLAYER_DATA_PATH);
+
+        _listFruits.Clear();
+        foreach (var item in _pBag.DictFruits)
+            _listFruits.Add(item.Value);
+
+        _fInventoryInstance.Fruits = _listFruits;
+        JSONDataHelper.SaveToJSon<FruitsIventory>(_fInventoryInstance, Application.dataPath + FRUITS_DATA_PATH);
     }
 
     private void SaveData(object obj)
     {
         ResultParam pr = obj as ResultParam;
-        PlayerData pData = new(_pHealth.CurrentHP, _pHealth.MaxHP, _pCoin.SilverCoin, _pCoin.GoldCoin);
-        JSONDataHelper.SaveToJSon<PlayerData>(pData, Application.dataPath + PLAYER_DATA_PATH);
+        _pBag.SilverCoin += pr.SilverCollected;
+        _pBag.GoldCoin += pr.GoldCollected;
+
+        SavePlayerData();
+        EventsManager.Instance.NotifyObservers(EEvents.OnItemEligibleCheck);
+        //Debug.Log("save when finish level");
+    }
+
+    private void LockLimitedSkills(object obj)
+    {
+        string filePath = Application.dataPath + SKILLS_DATA_PATH;
+        SkillsController sC = JSONDataHelper.LoadFromJSon<SkillsController>(filePath);
+        foreach (var s in sC.skills)
+            if (s.IsLimited)
+                s.IsUnlock = false;
+        JSONDataHelper.SaveToJSon<SkillsController>(sC, filePath);
     }
 }

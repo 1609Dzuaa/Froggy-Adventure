@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameEnums;
 
 public class EventsManager : BaseSingleton<EventsManager>
 {
     //You can assign values of any type to variables of type object
     //https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/reference-types
-    private Dictionary<GameEnums.EEvents, Action<object>> _dictEvents = new();
+    private Dictionary<EEvents, Action<object>> _dictEvents = new();
     //Thêm sẵn các Action tương ứng với Event trong EnumEvents tại đây
     private readonly Action<object> PlayerOnTakeDamage;
     private readonly Action<object> BulletOnHit;
@@ -36,43 +37,43 @@ public class EventsManager : BaseSingleton<EventsManager>
 
     public void AddEventsToDictionary()
     {
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnTakeDamage, PlayerOnTakeDamage);
-        _dictEvents.Add(GameEnums.EEvents.BulletOnHit, BulletOnHit);
-        _dictEvents.Add(GameEnums.EEvents.BulletOnReceiveInfo, BulletOnReceiveInfo);
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnJumpPassive, PlayerOnJumpPassive);
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnInteractWithNPCs, PlayerOnInteractWithNPCs);
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, PlayerOnStopInteractWithNPCs); 
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnBeingPushedBack, PlayerOnBeingPushedBack);
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnUpdateRespawnPosition, PlayerOnUpdateRespawnPosition);
-        _dictEvents.Add(GameEnums.EEvents.PlayerOnWinGame, PlayerOnWinGame);
-        _dictEvents.Add(GameEnums.EEvents.FanOnBeingDisabled, FanOnBeingDisabled);
-        _dictEvents.Add(GameEnums.EEvents.ObjectOnRestart, ObjectOnRestart);
-        _dictEvents.Add(GameEnums.EEvents.TutorOnDestroy, TutorOnDestroy);
-        //_dictEvents.Add(GameEnums.EEvents.OnUnlockSkill, OnUnlockSkill);
-        _dictEvents.Add(GameEnums.EEvents.CameraOnShake, CameraOnShake);
-        _dictEvents.Add(GameEnums.EEvents.BossOnSummonMinion, BossOnSummonMinion);
-        _dictEvents.Add(GameEnums.EEvents.BossGateOnClose, BossGateOnClose);
-        _dictEvents.Add(GameEnums.EEvents.BossOnDie, BossOnDie);
+        _dictEvents.Add(EEvents.PlayerOnTakeDamage, PlayerOnTakeDamage);
+        _dictEvents.Add(EEvents.BulletOnHit, BulletOnHit);
+        _dictEvents.Add(EEvents.BulletOnReceiveInfo, BulletOnReceiveInfo);
+        _dictEvents.Add(EEvents.PlayerOnJumpPassive, PlayerOnJumpPassive);
+        _dictEvents.Add(EEvents.PlayerOnInteractWithNPCs, PlayerOnInteractWithNPCs);
+        _dictEvents.Add(EEvents.PlayerOnStopInteractWithNPCs, PlayerOnStopInteractWithNPCs); 
+        _dictEvents.Add(EEvents.PlayerOnBeingPushedBack, PlayerOnBeingPushedBack);
+        _dictEvents.Add(EEvents.PlayerOnUpdateRespawnPosition, PlayerOnUpdateRespawnPosition);
+        _dictEvents.Add(EEvents.PlayerOnWinGame, PlayerOnWinGame);
+        _dictEvents.Add(EEvents.FanOnBeingDisabled, FanOnBeingDisabled);
+        _dictEvents.Add(EEvents.ObjectOnRestart, ObjectOnRestart);
+        _dictEvents.Add(EEvents.TutorOnDestroy, TutorOnDestroy);
+        //_dictEvents.Add(EEvents.OnUnlockSkill, OnUnlockSkill);
+        _dictEvents.Add(EEvents.CameraOnShake, CameraOnShake);
+        _dictEvents.Add(EEvents.BossOnSummonMinion, BossOnSummonMinion);
+        _dictEvents.Add(EEvents.BossGateOnClose, BossGateOnClose);
+        _dictEvents.Add(EEvents.BossOnDie, BossOnDie);
     }
 
-    public void SubcribeToAnEvent(GameEnums.EEvents eventType, Action<object> function)
+    public void SubcribeToAnEvent(EEvents eventName, Action<object> callback)
     {
-        if (!_dictEvents.ContainsKey(eventType))
+        if (!_dictEvents.ContainsKey(eventName))
         {
-            _dictEvents.Add(eventType, function);
+            _dictEvents.Add(eventName, callback);
             return;
             //Debug.Log("Added");
         }
-        _dictEvents[eventType] += function;
+        _dictEvents[eventName] += callback;
     }
 
-    public void UnSubcribeToAnEvent(GameEnums.EEvents eventType, Action<object> function)
+    public void UnSubcribeToAnEvent(EEvents eventName, Action<object> callback)
     {
-        _dictEvents[eventType] -= function;
+        _dictEvents[eventName] -= callback;
     }
 
-    public void NotifyObservers(GameEnums.EEvents eventType, object eventArgsType)
+    public void NotifyObservers(EEvents eventName, object eventArgsType = null)
     {
-        _dictEvents[eventType]?.Invoke(eventArgsType);
+        _dictEvents[eventName]?.Invoke(eventArgsType);
     }
 }

@@ -15,7 +15,6 @@ public static class JSONDataHelper
     {
         string jsonData = File.ReadAllText(jsonFile);
         return JsonUtility.FromJson<T>(jsonData);
-        //cached
     }
 
     //lúc vào game, gọi th firebase => lấy device ID của nó

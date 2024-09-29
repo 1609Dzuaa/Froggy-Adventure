@@ -25,11 +25,13 @@ public class Skills
 {
     public ESkills SkillName;
     public bool IsUnlock;
+    public bool IsLimited;
 
-    public Skills(ESkills skillName, bool isUnlock)
+    public Skills(ESkills skillName, bool isUnlock, bool isLimited)
     {
         SkillName = skillName;
         IsUnlock = isUnlock;
+        IsLimited = isLimited;
     }
 }
 
