@@ -80,7 +80,7 @@ public class OnlyFanController : GameObjectManager
         else
         {
             _anim.SetTrigger("Off");
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.TutorOnDestroy, _tutorRef);
+            //EventsManager.Instance.NotifyObservers(GameEnums.EEvents.TutorOnDestroy, _tutorRef);
             PlayerPrefs.SetString(GameEnums.ESpecialStates.Disabled + _ID, "Off");
         }
         _state = 1;

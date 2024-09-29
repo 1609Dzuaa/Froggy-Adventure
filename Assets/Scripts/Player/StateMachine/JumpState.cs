@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using static GameEnums;
+using static GameConstants;
 
 public class JumpState : PlayerBaseState
 {
@@ -16,7 +17,7 @@ public class JumpState : PlayerBaseState
     public override void EnterState(PlayerStateManager playerStateManager)
     {
         base.EnterState(playerStateManager);
-        _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)EPlayerState.jump);
+        _playerStateManager.GetAnimator().SetInteger(ANIM_PARA_STATE, (int)EPlayerState.jump);
         _playerStateManager.GetDustPS().Play();
         HandleJump();
         if (_playerStateManager.GetPrevStateIsWallSlide())
@@ -44,12 +45,15 @@ public class JumpState : PlayerBaseState
 
     private bool CheckIfCanDbJump()
     {
-        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && !_playerStateManager.GetIsWallTouch();
+        //Debug.Log("can: " + _playerStateManager.JumpDetect.DbJump);
+        return _playerStateManager.BtnJumpControl.DbJump
+            && !_playerStateManager.GetIsWallTouch()
+            && Time.time - _playerStateManager.JumpStart >= DELAY_PLAYER_DOUBLE_JUMP;
     }
 
     private bool CheckIfCanFall()
     {
-        return _playerStateManager.GetRigidBody2D().velocity.y < -GameConstants.NEAR_ZERO_THRESHOLD;
+        return _playerStateManager.GetRigidBody2D().velocity.y < -NEAR_ZERO_THRESHOLD;
     }
 
     private bool CheckIfCanWallSlide()
@@ -62,15 +66,16 @@ public class JumpState : PlayerBaseState
     private bool CheckIfCanWallJump()
     {
         //Đè dirX (run) va vào tường + nhấn S lúc đang Jump (current State) thì switch sang WallJump
-        return _playerStateManager.GetIsWallTouch() && Input.GetButtonDown(GameConstants.JUMP_BUTTON) && _isRunStateHitWall;
+        return _playerStateManager.GetIsWallTouch() && _playerStateManager.BtnJumpControl.DbJump
+            /*Input.GetButtonDown(JUMP_BUTTON)*/ && _isRunStateHitWall;
     }
 
     private bool CheckIfCanDash()
     {
         //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
-        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
+        return _playerStateManager.BtnDashControl.IsDashing
              && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-             || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
+             || Input.GetButtonDown(DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     private void HandleJump()
@@ -113,7 +118,7 @@ public class JumpState : PlayerBaseState
 
     private void PhysicsUpdateVertical()
     {
-        if (_playerStateManager.BtnJumpDetect && Time.time - _playerStateManager.JumpStart < _playerStateManager.GetPlayerStats.JumpTime)
+        if (_playerStateManager.BtnJumpControl.IsHolding && Time.time - _playerStateManager.JumpStart < _playerStateManager.GetPlayerStats.JumpTime)
         {
             _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetRigidBody2D().velocity.y * _playerStateManager.GetPlayerStats.JumpSpeedFactor);
             //Debug.Log("hereeee");

@@ -19,6 +19,21 @@ public struct DataDetail
     }
 }
 
+//Truyền các thông tin quan trọng khi vào gameplay:
+//Thời gian của level
+//List các skill đã được active (mua) trong shop (chỉ các skill Limited)
+public struct LevelInfo
+{
+    public List<Skills> ListActiveSkills;
+    public int LevelTimeAllow;
+
+    public LevelInfo(List<Skills> listActiveSkills, int timeAllow)
+    {
+        ListActiveSkills = listActiveSkills;
+        LevelTimeAllow = timeAllow;
+    }
+}
+
 public class LevelDetailData : MonoBehaviour
 {
     [SerializeField] Image _imageLevel;
@@ -87,7 +102,9 @@ public class LevelDetailData : MonoBehaviour
     private void StartLevel()
     {
         UIManager.Instance.AnimateAndTransitionScene(_indexLevel);
-        EventsManager.Instance.NotifyObservers(EEvents.OnSetupTimeAllow, _levelTimeAllow);
         EventsManager.Instance.NotifyObservers(EEvents.OnPlayLevel, true);
+        List<Skills> listActiveSkills = ToggleAbilityItemHelper.GetListActivatedSkills();
+        LevelInfo levelInfo = new(listActiveSkills, _levelTimeAllow);
+        EventsManager.Instance.NotifyObservers(EEvents.OnSetupLevel, levelInfo);
     }
 }

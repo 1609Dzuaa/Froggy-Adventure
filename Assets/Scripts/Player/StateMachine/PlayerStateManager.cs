@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static GameEnums;
+using static GameConstants;
 
 public class PlayerStateManager : MonoBehaviour
 {
@@ -79,14 +80,16 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private PlayerStats _playerStats;
    
     [Header("Trail Renderer")]
-    [SerializeField] private TrailRenderer _trailRenderer;
+    //[SerializeField] private TrailRenderer _trailRenderer;
 
     [Header("Dashable Sign")]
     [SerializeField] private Transform _dashableSignPos;
 
     [SerializeField] private Joystick _joystick;
 
-    [SerializeField] private ButtonHoldDetect _btnJumpDetect;
+    [Header("Button Skill References")]
+    [SerializeField] private ButtonJumpController _btnJumpControl;
+    [SerializeField] private ButtonDashController _btnDashControl;
 
     //GET Functions
 
@@ -116,7 +119,7 @@ public class PlayerStateManager : MonoBehaviour
 
     public ParticleSystem GetDustPS() { return dustPS; }
 
-    public TrailRenderer GetTrailRenderer() { return _trailRenderer; }
+    //public TrailRenderer GetTrailRenderer() { return _trailRenderer; }
 
     public RaycastHit2D WallHit { get { return wallHit; } }
 
@@ -130,6 +133,10 @@ public class PlayerStateManager : MonoBehaviour
 
     public bool ForceApply { get => _forceApply; }
 
+    public ButtonJumpController BtnJumpControl { get => _btnJumpControl; set => _btnJumpControl = value; }
+
+    public ButtonDashController BtnDashControl { get => _btnDashControl; set => _btnDashControl = value; }
+
     //SET Functions
     public void SetCanDbJump(bool para) { _canDbJump = para; }
 
@@ -138,8 +145,6 @@ public class PlayerStateManager : MonoBehaviour
     public PlayerStats GetPlayerStats { get { return _playerStats; } set { _playerStats = value; } } 
 
     public bool IsApplyGotHitEffect { set { _isApplyGotHitEffect = value; } }
-
-    public bool BtnJumpDetect { get => _btnJumpDetect.IsHolding; }
     
     private void Awake()
     {
@@ -150,7 +155,6 @@ public class PlayerStateManager : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        //dustVelocity = GameObject.Find("Dust").GetComponent<ParticleSystem>().velocityOverLifetime;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _capCollider2D = GetComponent<CapsuleCollider2D>();
     }
@@ -169,20 +173,10 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandlePlayerSkills()
     {
-        //Ưu tiên lv2 trước
-        if (PlayerPrefs.HasKey(ESpecialStates.PlayerSkillUnlockedLV2.ToString()))
-            _unlockedDbJump = _unlockedWallSlide = _unlockedDash = true;
-        else if (PlayerPrefs.HasKey(ESpecialStates.PlayerSkillUnlockedLV1.ToString()))
-            _unlockedDbJump = _unlockedWallSlide = true;
-        else
-        {
-            if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.doubleJump.ToString()))
-                _unlockedDbJump = true;
-            if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.wallSlide.ToString()))
-                _unlockedWallSlide = true;
-            if (PlayerPrefs.HasKey(ESpecialStates.SkillUnlocked + EPlayerState.dash.ToString()))
-                _unlockedDash = true;
-        }
+        var list = ToggleAbilityItemHelper.GetListActivatedSkills(false);
+        _unlockedDbJump = list.Find(x => x.SkillName == ESkills.DoubleJump) != null;
+        _unlockedWallSlide = list.Find(x => x.SkillName == ESkills.WallSlide) != null;
+        _unlockedDash = list.Find(x => x.SkillName == ESkills.Dash) != null;
     }
 
     // Start is called before the first frame update
@@ -254,12 +248,12 @@ public class PlayerStateManager : MonoBehaviour
             return;
         }
 
-        /*if (state is DoubleJumpState && !_unlockedDbJump)
+        if (state is DoubleJumpState && !_unlockedDbJump)
             return;
         else if (state is WallSlideState && !_unlockedWallSlide)
             return;
         else if (state is DashState && !_unlockedDash)
-            return;*/
+            return;
 
         _state.ExitState();
         _state = state;
@@ -272,9 +266,9 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag(GameConstants.GROUND_TAG) || collision.collider.CompareTag(GameConstants.PLATFORM_TAG))
+        if (collision.collider.CompareTag(GROUND_TAG) || collision.collider.CompareTag(PLATFORM_TAG))
             HandleCollideGround();
-        else if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
+        else if (collision.collider.CompareTag(TRAP_TAG) && _state is not GotHitState)
         {
             gotHitState.IsHitByTrap = true;
             ChangeState(gotHitState);
@@ -283,7 +277,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
+        if (collision.collider.CompareTag(TRAP_TAG) && _state is not GotHitState)
         {
             gotHitState.IsHitByTrap = true;
             ChangeState(gotHitState);
@@ -292,22 +286,22 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.PLATFORM_TAG))
+        if (collision.CompareTag(PLATFORM_TAG))
         {
             transform.SetParent(collision.gameObject.transform);
             _isOnPlatform = true;
         }
-        else if (collision.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
+        else if (collision.CompareTag(TRAP_TAG) && _state is not GotHitState)
         {
             gotHitState.IsHitByTrap = true;
             ChangeState(gotHitState);
         }
-        else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG))
+        else if (collision.CompareTag(DEAD_ZONE_TAG))
             HandleDeadState();
-        else if (collision.CompareTag(GameConstants.PORTAL_TAG))
+        else if (collision.CompareTag(PORTAL_TAG))
         {
             SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
-            anim.SetTrigger(GameConstants.DEAD_ANIMATION);
+            anim.SetTrigger(DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
             GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
@@ -315,7 +309,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.TRAP_TAG) && _state is not GotHitState)
+        if (collision.CompareTag(TRAP_TAG) && _state is not GotHitState)
         {
             gotHitState.IsHitByTrap = true;
             ChangeState(gotHitState);
@@ -325,7 +319,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.PLATFORM_TAG))
+        if (collision.CompareTag(PLATFORM_TAG))
         {
             transform.SetParent(null);
             _isOnPlatform = false;
@@ -341,6 +335,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void JumpPassive(object obj)
     {
+        //Jump lên đầu quái thì jump tiếp (passive)
         _canDbJump = true;
         if (obj != null)
             jumpState.JumpForceApplied = (float)obj;
@@ -411,11 +406,11 @@ public class PlayerStateManager : MonoBehaviour
     private void UpdateLayer()
     {
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && _isVunerable)
-            gameObject.layer = LayerMask.NameToLayer(GameConstants.IGNORE_ENEMIES_LAYER);
+            gameObject.layer = LayerMask.NameToLayer(IGNORE_ENEMIES_LAYER);
         else if (_state is not DashState)
         {
             _isVunerable = false;
-            gameObject.layer = LayerMask.NameToLayer(GameConstants.PLAYER_LAYER);
+            gameObject.layer = LayerMask.NameToLayer(PLAYER_LAYER);
         }
     }
 
@@ -435,15 +430,15 @@ public class PlayerStateManager : MonoBehaviour
             _hasFlip = true;
 
             //Nếu ở rất gần vị trí trò chuyện thì return 0 cần flip tránh bug
-            if (Mathf.Abs(transform.position.x - _interactPosition.x) < GameConstants.NEAR_CONVERSATION_RANGE)
+            if (Mathf.Abs(transform.position.x - _interactPosition.x) < NEAR_CONVERSATION_RANGE)
                 return;
 
-            if (isFacingRight && transform.position.x > InteractPosition.x + GameConstants.CAN_START_CONVERSATION_RANGE)
+            if (isFacingRight && transform.position.x > InteractPosition.x + CAN_START_CONVERSATION_RANGE)
             {
                 FlippingSprite();
                 //Debug.Log("Flip to Left");
             }
-            else if (!isFacingRight && transform.position.x < InteractPosition.x - GameConstants.CAN_START_CONVERSATION_RANGE)
+            else if (!isFacingRight && transform.position.x < InteractPosition.x - CAN_START_CONVERSATION_RANGE)
             {
                 FlippingSprite();
                 //Debug.Log("Flip to Right");
@@ -457,12 +452,12 @@ public class PlayerStateManager : MonoBehaviour
         {
             _hasChange = true;
             //Nếu ở rất gần vị trí trò chuyện thì switch sang Idle luôn tránh bug chạy lung tung ở Run
-            if (Mathf.Abs(transform.position.x - _interactPosition.x) < GameConstants.NEAR_CONVERSATION_RANGE)
+            if (Mathf.Abs(transform.position.x - _interactPosition.x) < NEAR_CONVERSATION_RANGE)
                 ChangeState(idleState);
             else
             {
                 Debug.Log("run");
-                Invoke(nameof(ChangeToRun), GameConstants.DELAYPLAYERRUNSTATE);
+                Invoke(nameof(ChangeToRun), DELAY_PLAYER_RUN);
             }
         }
     }
@@ -632,7 +627,7 @@ public class PlayerStateManager : MonoBehaviour
         //Check vì có thể dính DeadZone nên 0 vào state GotHit
         if (PlayerHealthManager.Instance.CurrentHP > 0)
         {
-            PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
+            PlayerHealthManager.Instance.ChangeHPState(HP_STATE_LOST);
             //if (PlayerHealthManager.Instance.CurrentHP == 0)
                 //UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
             //else
@@ -641,7 +636,7 @@ public class PlayerStateManager : MonoBehaviour
         //else
             //UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
 
-        anim.SetTrigger(GameConstants.DEAD_ANIMATION);
+        anim.SetTrigger(DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
         _capCollider2D.enabled = false;
         gameObject.layer = LayerMask.NameToLayer("Enemies"); //Đổi layer tránh bị quái Detect dù đã chết
@@ -766,10 +761,10 @@ public class PlayerStateManager : MonoBehaviour
 
     private void LockIfOutMinBound()
     {
-        if (transform.position.x < GameConstants.GAME_MIN_BOUNDARY)
-            transform.position = new Vector3(GameConstants.GAME_MIN_BOUNDARY, transform.position.y, transform.position.z);
-        else if(transform.position.x > GameConstants.GAME_MAX_BOUNDARY)
-            transform.position = new Vector3(GameConstants.GAME_MAX_BOUNDARY, transform.position.y, transform.position.z);
+        if (transform.position.x < GAME_MIN_BOUNDARY)
+            transform.position = new Vector3(GAME_MIN_BOUNDARY, transform.position.y, transform.position.z);
+        else if(transform.position.x > GAME_MAX_BOUNDARY)
+            transform.position = new Vector3(GAME_MAX_BOUNDARY, transform.position.y, transform.position.z);
     }
 
     private void PushBack(object obj)
@@ -783,18 +778,16 @@ public class PlayerStateManager : MonoBehaviour
 
     private void UnlockSkill(object obj)
     {
-        switch ((EPlayerState)obj)
+        switch ((ESkills)obj)
         {
-            case EPlayerState.doubleJump:
+            case ESkills.DoubleJump:
                 _unlockedDbJump = true; 
                 break;
-            case EPlayerState.wallSlide:
+            case ESkills.WallSlide:
                 _unlockedWallSlide = true;
                 break;
-            case EPlayerState.dash:
+            case ESkills.Dash:
                 _unlockedDash = true;
-                PlayerPrefs.SetString(ESpecialStates.PlayerSkillUnlockedLV2.ToString(), "FullUnlock");
-                PlayerPrefs.Save();
                 break;
         }
     }

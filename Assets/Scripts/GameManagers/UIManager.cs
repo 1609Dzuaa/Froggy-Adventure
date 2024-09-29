@@ -58,11 +58,19 @@ public class UIManager : BaseSingleton<UIManager>
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
-        FillInDictionary();
+        //StartCoroutine(hell());
+    }
+
+    private IEnumerator hell()
+    {
+        yield return null;
+        if (gameObject)
+            Debug.Log("UIManager awake");
     }
 
     private void Start()
     {
+        FillInDictionary();
         ToggleInGameCanvas(false);
         ResetAllPopupSortOrder();
         _buttonContainer.Tween(true);
@@ -130,7 +138,7 @@ public class UIManager : BaseSingleton<UIManager>
             _lockUICanvas.gameObject.SetActive((_stackPopupCanvas.Count == 0) ? false : true);
         }
 
-        Debug.Log("Popup: " + id + ", isOn: " + isOn + ", S-order: " + _popupSortOrder);
+        //Debug.Log("Popup: " + id + ", isOn: " + isOn + ", S-order: " + _popupSortOrder);
     }
 
     private void ResetAllPopupSortOrder()
@@ -162,7 +170,7 @@ public class UIManager : BaseSingleton<UIManager>
         _buttonContainer.Tween(true);
     }
 
-    public void AnimateAndTransitionScene(int indexLevel)
+    public void AnimateAndTransitionScene(int indexLevel, bool needReset = false)
     {
         if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
         {
@@ -178,7 +186,7 @@ public class UIManager : BaseSingleton<UIManager>
             if (_dictPopupUI[EPopup.Result].gameObject.activeInHierarchy)
             {
                 _popupResult.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset));
             }
             else
             {
@@ -188,7 +196,7 @@ public class UIManager : BaseSingleton<UIManager>
         }
     }
 
-    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime)
+    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime, bool needReset = false)
     {
         yield return new WaitForSeconds(waitTime);
 
@@ -197,12 +205,14 @@ public class UIManager : BaseSingleton<UIManager>
             ToggleMenuUIsCanvas((indexLevel != GAME_MENU) ? false : true);
             ToggleInGameCanvas((indexLevel != GAME_MENU) ? true : false);
             GameManager.Instance.SwitchScene(indexLevel, false);
+            if (needReset)
+                EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel);
             _imageSceneTrans.DOLocalMoveX(-5000f, _transDuration).OnComplete(() =>
             {
                 if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
-                    HandleDisplayMenuUI();
+                    HandleDisplayMenuUI();          
                 //else
-                    //StartCoroutine(Hello());
+                //StartCoroutine(Hello());
                 _imageSceneTrans.position = new(6652f, _imageSceneTrans.position.y);
             });
         });
@@ -223,6 +233,7 @@ public class UIManager : BaseSingleton<UIManager>
 
     private void OnDestroy()
     {
+        Debug.Log("UI Manager OnDestroy, this, frame: " + this + Time.frameCount);
     }
 
     private void Update()

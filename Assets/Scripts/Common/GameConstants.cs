@@ -24,7 +24,8 @@ public static class GameConstants
 
     #region Time Constants
 
-    public const float DELAYPLAYERRUNSTATE = 0.1f;
+    public const float DELAY_PLAYER_RUN = 0.1f;
+    public const float DELAY_PLAYER_DOUBLE_JUMP = 0.15f;
     public const int HOURGLASS_BONUS_TIME = 30;
 
     #endregion
@@ -92,6 +93,7 @@ public static class GameConstants
     public const string DEAD_ZONE_TAG = "DeadZone";
     public const string BOSS_SHIELD_TAG = "BossShield";
     public const string CLONE = "Clone";
+    public const string COIN_TAG = "Coin";
     #endregion
 
     #region Axis Constants
@@ -140,11 +142,18 @@ public static class GameConstants
     #region PLAYERPREFS'S KEYS
 
     //string
-    public const string LIST_SKILL_CREATED = "ListSkillCreated";
+    public const string FRUIT_AND_SKILL_CREATED = "ListCreated";
 
 
     //int
     public const int CREATED = 1;
+
+    #endregion
+
+    #region Skills & Fruits
+
+    public const bool DEFAULT_UNLOCK_ITEM = false;
+    public const int DEFAULT_ITEM_COUNT = 0;
 
     #endregion
 }

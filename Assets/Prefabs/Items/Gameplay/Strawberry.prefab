@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 459109964652750506}
   - component: {fileID: 459109964652750507}
   - component: {fileID: 459109964652750504}
-  - component: {fileID: 459109964652750505}
+  - component: {fileID: 132300343098639766}
   m_Layer: 0
   m_Name: Strawberry
-  m_TagString: Buff
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459109964652750508}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.6677585, y: -30.738913, z: -0.006705866}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &459109964652750506
 Animator:
@@ -118,13 +118,32 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.002157092, y: 0.04654932}
   serializedVersion: 2
   m_Radius: 0.49531126
---- !u!114 &459109964652750505
+--- !u!114 &132300343098639766
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,7 +152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 459109964652750508}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56d20bf2c232baa4ca9e626b0be5fbb4, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d6cb58bc114fcd4486549dbc7c56a82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buff: 5
+  _fruitData: {fileID: 11400000, guid: cabfcfaf51d59dc438d71a4a39c59494, type: 2}
