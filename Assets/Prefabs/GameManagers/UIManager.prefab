@@ -12549,18 +12549,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8754697945069336843}
-        m_TargetAssemblyTypeName: PopupResult, Assembly-CSharp
-        m_MethodName: OnClose
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1786804525086716161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14030,6 +14018,7 @@ MonoBehaviour:
   - {fileID: 8961642643694951696}
   - {fileID: 2543614053444261122}
   - {fileID: 5982308779905637428}
+  _notification: {fileID: 4220371875776451895}
 --- !u!1 &8786172040795387499
 GameObject:
   m_ObjectHideFlags: 0
@@ -14635,6 +14624,7 @@ MonoBehaviour:
   _imageSceneTrans: {fileID: 2037626403197363274}
   _popupResult: {fileID: 8754697945069336843}
   _popupNotification: {fileID: 4220371875776451895}
+  _hudControl: {fileID: 2730395521648638653}
 --- !u!1 &9152814823837482222
 GameObject:
   m_ObjectHideFlags: 0

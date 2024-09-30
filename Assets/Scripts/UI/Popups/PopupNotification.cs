@@ -17,26 +17,24 @@ public class NotificationParam
     public UnityAction BtnNoCallback;
 
     public NotificationParam(string content, bool showBtnContinue, 
-        bool showBtnYesNo, UnityAction btnContinueCallback, 
-        UnityAction btnYesCallback, UnityAction btnNoCallback)
+        UnityAction btnContinueCallback = null, 
+        UnityAction btnYesCallback = null, UnityAction btnNoCallback = null)
     {
         Content = content;
         ShowBtnContinue = showBtnContinue;
-        ShowBtnYesNo = showBtnYesNo;
+        ShowBtnYesNo = !showBtnContinue;
         BtnContinueCallback = btnContinueCallback;
         BtnYesCallback = btnYesCallback;
         BtnNoCallback = btnNoCallback;
     }
 }
 
-//OnClick của 3 button đều phải có HidePopupNoti
 public class PopupNotification : PopupController
 {
     [SerializeField] TextMeshProUGUI _txtNotification;
     [SerializeField] Button _btnContinue;
     [SerializeField] Button _btnYes;
     [SerializeField] Button _btnNo;
-    bool _canClose = true;
 
     private void Awake()
     {

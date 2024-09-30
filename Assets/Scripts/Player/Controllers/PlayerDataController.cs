@@ -72,5 +72,6 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
             if (s.IsLimited)
                 s.IsUnlock = false;
         JSONDataHelper.SaveToJSon<SkillsController>(sC, filePath);
+        Debug.Log("Lock skills");
     }
 }

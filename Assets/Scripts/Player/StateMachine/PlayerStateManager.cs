@@ -778,7 +778,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void UnlockSkill(object obj)
     {
-        switch ((ESkills)obj)
+        SpecialItemStaticData sItemSData = (SpecialItemStaticData)obj;
+        switch (sItemSData.Ability.AbilityName)
         {
             case ESkills.DoubleJump:
                 _unlockedDbJump = true; 

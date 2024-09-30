@@ -47,8 +47,11 @@ public class PopupResult : PopupController
     [SerializeField] float _distance;
     [SerializeField] float _tweenChildDuration;
     [SerializeField] Transform[] _arrButton;
+
+    [SerializeField] PopupNotification _notification;
     float _initPosition;
     float _endPosition;
+    bool _canClick = true; //prevent mutliple click
     ResultParam _param;
 
     private void Awake()
@@ -184,32 +187,80 @@ public class PopupResult : PopupController
                 .OnComplete(() => { UIManager.Instance.TogglePopup(_popupName, false); });
     }
 
+    private IEnumerator CooldownButton()
+    {
+        yield return new WaitForSeconds(0.75f);
+
+        _canClick = true;
+    }
+
     public void ButtonOnClick(int buttonName)
     {
         switch (buttonName)
         {
             case (int)EButtonName.NextLevel:
-                //check maxlevel here
-                int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-                UIManager.Instance.AnimateAndTransitionScene(nextSceneIndex);
+                if (SceneManager.GetActiveScene().buildIndex == MAX_GAME_LEVEL)
+                {
+                    string content = "Max Level Reached!";
+                    NotificationParam param = new(content, true, () =>
+                    {
+                        if (_canClick)
+                        {
+                            _canClick = false;
+                            StartCoroutine(CooldownButton());
+                            _notification.OnClose();
+                        }
+                    });
+                    ShowNotificationHelper.ShowNotification(param);
+                }
+                else
+                {
+                    if(_canClick)
+                    {
+                        _canClick = false;
+                        StartCoroutine(CooldownButton());
+                        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+                        UIManager.Instance.AnimateAndTransitionScene(nextSceneIndex);
+                        OnClose();
+                    }
+                }
                 break;
 
             case (int)EButtonName.Replay:
-                int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-                UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex, true);
-                //EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel);
+                if (_canClick)
+                {
+                    _canClick = false;
+                    StartCoroutine(CooldownButton());
+                    int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+                    UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex, true);
+                }
                 break;
 
             case (int)EButtonName.Home:
-                UIManager.Instance.AnimateAndTransitionScene(GAME_MENU, true);
+                if (_canClick)
+                {
+                    _canClick = false;
+                    StartCoroutine(CooldownButton());
+                    UIManager.Instance.AnimateAndTransitionScene(GAME_MENU, true);
+                }
                 break;
 
             case (int)EButtonName.Shop:
-                UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                if (_canClick)
+                {
+                    _canClick = false;
+                    StartCoroutine(CooldownButton());
+                    UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                }
                 break;
 
             case (int)EButtonName.ChooseLevel:
-                UIManager.Instance.TogglePopup(EPopup.Level, true);
+                if (_canClick) 
+                {
+                    _canClick = false;
+                    StartCoroutine(CooldownButton());
+                    UIManager.Instance.TogglePopup(EPopup.Level, true);
+                }
                 break;
         }
     }

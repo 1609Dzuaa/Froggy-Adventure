@@ -21,7 +21,7 @@ public static class ToggleAbilityItemHelper
                     if (skill.IsUnlock)
                     {
                         string content = "Purchase Failed,\n" + skillName.ToString() + " Already Unlock!";
-                        NotificationParam param = new(content, true, false, null, null, null);
+                        NotificationParam param = new(content, true);
                         ShowNotificationHelper.ShowNotification(param);
                         return !isProcessSuccess;
                     }
