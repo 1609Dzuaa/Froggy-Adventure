@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameConstants;
 
 public class EnemiesManager : CharactersManager
 {
@@ -17,6 +18,7 @@ public class EnemiesManager : CharactersManager
     protected SpriteRenderer _spriteRenderer;
     protected bool _hasNotified; //Chỉ dành cho các Enemy cần Tutor
     protected bool _notPlayDeadSfx; //Boss chet thi 0 play Sfx
+    protected RaycastHit2D _hit2D;
 
     #region GETTER
 
@@ -74,14 +76,19 @@ public class EnemiesManager : CharactersManager
     protected override void Update()
     {
         base.Update();
-        DetectPlayer(); //Enemies nào thì cũng phải DetectPlayer, cho vào đây là hợp lý
         DrawRayDetectPlayer();
         HandleIfIsSpecialEnemy();
     }
 
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        DetectPlayer();
+    }
+
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
+        if (collision.collider.CompareTag(PLAYER_TAG))
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
     }
 
@@ -93,26 +100,35 @@ public class EnemiesManager : CharactersManager
             return;
         }
 
-        if (!_isFacingRight)
-        {
-            /*RaycastHit2D hit = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
+        _hit2D = Physics2D.Raycast(_playerCheck.position, (!_isFacingRight) ? Vector2.left : Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
 
-            if (hit && hit.collider.CompareTag(GameConstants.PLAYER_TAG))
-                _hasDetectedPlayer = true;
+        if (_hit2D)
+            _hasDetectedPlayer = _hit2D.collider.CompareTag(PLAYER_TAG);
+        else
+            _hasDetectedPlayer = false;
+
+        /*if (!_isFacingRight)
+        {
+            _hit2D = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
+
+            if (_hit2D)
+                _hasDetectedPlayer = _hit2D.collider.CompareTag(PLAYER_TAG);
             else
-                _hasDetectedPlayer = false;*/ 
-            _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
+                _hasDetectedPlayer = false;
+
+            //_hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
         }
         else
         {
-            /*RaycastHit2D hit = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
-            if (hit && hit.collider.CompareTag(GameConstants.PLAYER_TAG))
-                _hasDetectedPlayer = true;
+            _hit2D = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
+            
+            if (_hit2D)
+                _hasDetectedPlayer = _hit2D.collider.CompareTag(PLAYER_TAG);
             else
-                _hasDetectedPlayer = false;*/
+                _hasDetectedPlayer = false;
 
-            _hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
-        }
+            //_hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
+        }*/
     }
 
     protected virtual void DrawRayDetectPlayer()

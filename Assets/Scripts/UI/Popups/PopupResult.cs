@@ -69,6 +69,7 @@ public class PopupResult : PopupController
 
     private void ReceiveResultParam(object obj)
     {
+        if (obj == null) return;
         _param = obj as ResultParam;
         _txtBanner.text = (_param.Result == ELevelResult.Completed) ? "Level Completed" : "Level Failed";
         _imageBanner.sprite = (_param.Result == ELevelResult.Completed) ? _spritesBanner[0] : _spritesBanner[1];

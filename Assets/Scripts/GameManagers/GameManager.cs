@@ -15,6 +15,7 @@ public class GameManager : BaseSingleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
+        PlayerPrefs.DeleteAll();
         DontDestroyOnLoad(gameObject);
     }
 

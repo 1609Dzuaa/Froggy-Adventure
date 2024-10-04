@@ -36,6 +36,12 @@ public class CharactersManager : GameObjectManager
             _state.Update();
     }
 
+    protected virtual void FixedUpdate()
+    {
+        if (_state != null)
+            _state.FixedUpdate();
+    }
+
     public virtual void ChangeState(CharacterBaseState state)
     {
         _state.ExitState();
