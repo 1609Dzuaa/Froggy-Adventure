@@ -77,7 +77,7 @@ public class LevelDetailData : MonoBehaviour
         if (PlayerHealthManager.Instance.CurrentHP == 0)
         {
             string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !";
-            NotificationParam param = new(content, true, false, ShowShop, null, null);
+            NotificationParam param = new(content, true, ShowShop);
             ShowNotificationHelper.ShowNotification(param);
             EventsManager.Instance.NotifyObservers(EEvents.OnPlayLevel, false);
         }
@@ -85,7 +85,7 @@ public class LevelDetailData : MonoBehaviour
         {
             //Thêm loại param mới để quyết định thêm hay ẩn nút trong Notification
             string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
-            NotificationParam param = new(content, false, true, null, ShowShop, StartLevel);
+            NotificationParam param = new(content, false, ShowShop, StartLevel);
             ShowNotificationHelper.ShowNotification(param);
             EventsManager.Instance.NotifyObservers(EEvents.OnPlayLevel, false);
         }

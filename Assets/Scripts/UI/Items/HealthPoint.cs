@@ -9,7 +9,7 @@ public class HealthPoint : ItemShop
         if (PlayerHealthManager.Instance.CurrentHP == 3)
         {
             string content = "Purchase Fail,\nMaximum Health Point Reached!";
-            NotificationParam param = new(content, true, false, null, null, null);
+            NotificationParam param = new(content, true);
             ShowNotificationHelper.ShowNotification(param);
             _isPurchaseSuccess = false;
             return _isPurchaseSuccess;

@@ -72,12 +72,6 @@ public class MEnemiesManager : EnemiesManager
         //Debug.Log("Hit Wall: " + _hasCollidedWall);
     }
 
-    protected virtual void FixedUpdate()
-    {
-        _state.FixedUpdate();
-        //Debug.Log("Called");
-    }
-
     public override void ChangeState(CharacterBaseState state)
     {
         //Chết là hết

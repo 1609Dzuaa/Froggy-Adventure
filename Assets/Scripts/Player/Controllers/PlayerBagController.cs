@@ -108,7 +108,7 @@ public class PlayerBagController : MonoBehaviour
         else
         {
             string content = "Purchase Fail,\nNot Enough Coins!";
-            NotificationParam param = new(content, true, false, null, null, null);
+            NotificationParam param = new(content, true);
             HandlePurchaseFailed(param);
         }
     }

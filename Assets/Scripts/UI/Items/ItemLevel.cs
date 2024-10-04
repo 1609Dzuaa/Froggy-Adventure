@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static GameEnums;
+using static UnityEditor.Progress;
 
 public class ItemLevel : MonoBehaviour
 {
@@ -17,9 +18,32 @@ public class ItemLevel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUpdateLevel, HandleUpdateLevel);
+        HandleLockLevel();
+        _txtLevelOrder.text = LvlSData.OrderID.ToString();
+    }
+
+    private void OnDestroy()
+    {
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUpdateLevel, HandleUpdateLevel);
+    }
+
+    private void HandleUpdateLevel(object obj = null)
+    {
+        if (obj != null)
+        {
+            //int levelIndex = (int)obj;
+            //if (LvlSData.OrderID == levelIndex)
+                HandleLockLevel();
+        }
+    }
+
+    private void HandleLockLevel()
+    {
+        string itemFilePath = Application.dataPath + GameConstants.LEVEL_DATA_PATH + LvlSData.OrderID.ToString() + ".json";
+        LvlPData = JSONDataHelper.LoadFromJSon<LevelProgressData>(itemFilePath);
         _lockLevel.SetActive(!LvlPData.IsUnlock);
         _imgUnlock.gameObject.SetActive(LvlPData.IsUnlock);
-        _txtLevelOrder.text = LvlSData.OrderID.ToString();
         _dataDetail = new(LvlSData, LvlPData);
     }
 

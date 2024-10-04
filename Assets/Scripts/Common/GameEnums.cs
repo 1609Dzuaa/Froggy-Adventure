@@ -73,7 +73,7 @@
         PlayerOnStopInteractWithNPCs,
         PlayerOnBeingPushedBack,
         PlayerOnUpdateRespawnPosition,
-        PlayerOnWinGame,
+        PlayerOnWinGame, //bắn đi khi win level
         FanOnBeingDisabled,
         ObjectOnRestart,
         TutorOnDestroy,
@@ -95,7 +95,7 @@
         OnCollectFruit,
         OnItemEligibleCheck,
         OnResetLevel, //bắn đi để reset các data cũ từ level trước
-
+        OnUpdateLevel, //bắn đi khi hoàn thành level này và update data level này và level sau
     }
 
     #endregion

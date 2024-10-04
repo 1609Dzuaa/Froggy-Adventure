@@ -303,7 +303,8 @@ public class PlayerStateManager : MonoBehaviour
             SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
             anim.SetTrigger(DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
-            GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
+            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnWinGame);            
+            //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 
@@ -778,7 +779,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void UnlockSkill(object obj)
     {
-        switch ((ESkills)obj)
+        SpecialItemStaticData sItemSData = (SpecialItemStaticData)obj;
+        switch (sItemSData.Ability.AbilityName)
         {
             case ESkills.DoubleJump:
                 _unlockedDbJump = true; 

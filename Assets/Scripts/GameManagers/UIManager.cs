@@ -44,6 +44,7 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] Transform _imageSceneTrans;
     [SerializeField] PopupResult _popupResult;
     [SerializeField] PopupNotification _popupNotification;
+    [SerializeField] HUDController _hudControl;
 
     #region Internal Attributes
     Dictionary<EPopup, Canvas> _dictPopupUI = new();
@@ -191,7 +192,7 @@ public class UIManager : BaseSingleton<UIManager>
             else
             {
                 _popupNotification.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset));
             }
         }
     }
@@ -210,7 +211,9 @@ public class UIManager : BaseSingleton<UIManager>
             _imageSceneTrans.DOLocalMoveX(-5000f, _transDuration).OnComplete(() =>
             {
                 if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
-                    HandleDisplayMenuUI();          
+                    HandleDisplayMenuUI();
+                else
+                    _hudControl.Countdown();
                 //else
                 //StartCoroutine(Hello());
                 _imageSceneTrans.position = new(6652f, _imageSceneTrans.position.y);

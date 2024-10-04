@@ -4,6 +4,7 @@ using System.IO;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameEnums;
 
 public class LevelController : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class LevelController : MonoBehaviour
         //performanceMarker.Begin();
         SetupForLevelButtons(_arrItemLevels);
         //performanceMarker.End();
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnPlayLevel, ResetHighlightButtons);
+    }
+
+    private void OnDestroy()
+    {
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnPlayLevel, ResetHighlightButtons);
     }
 
     private void LoadDataItemLevel()
@@ -33,10 +40,14 @@ public class LevelController : MonoBehaviour
             {
                 ItemLevel itemLevel = Instantiate(_itemLevel, transform);
                 itemLevel.LvlSData = item;
-                string jsonFIle = Application.dataPath + GameConstants.LEVEL_DATA_PATH + item.OrderID.ToString() + ".json";
-                itemLevel.LvlPData = JSONDataHelper.LoadFromJSon<LevelProgressData>(jsonFIle);
             }
         }
+    }
+
+    private void ResetHighlightButtons(object obj = null)
+    {
+        foreach (var item in _dictButtonLevels)
+            item.Value.color = new(0.45f, 0.45f, 0.45f, 1f);
     }
 
     private void SetupDictionary()
@@ -55,9 +66,7 @@ public class LevelController : MonoBehaviour
 
     private void ButtonLevelOnClick(Button buttonClicked)
     {
-        foreach (var item in _dictButtonLevels)
-            item.Value.color = new(0.45f, 0.45f, 0.45f, 1f);
-
+        ResetHighlightButtons();
         _dictButtonLevels[buttonClicked].color = new(1f, 1f, 1f, 1f);
     }
 }

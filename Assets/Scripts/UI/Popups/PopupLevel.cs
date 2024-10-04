@@ -5,6 +5,7 @@ using static GameEnums;
 
 public class PopupLevel : PopupController
 {
+    [SerializeField] LevelDetailData _levelDetailData;
     bool _canClose = true;
 
     private void Awake()
@@ -20,7 +21,12 @@ public class PopupLevel : PopupController
     public override void OnClose()
     {
         if (_canClose)
+        {
             base.OnClose();
+            if (_levelDetailData != null)
+                _levelDetailData.gameObject.SetActive(false);
+
+        }
     }
 
     private void OnPlayLevel(object obj)
