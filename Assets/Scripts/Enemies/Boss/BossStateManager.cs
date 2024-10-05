@@ -146,13 +146,13 @@ public class BossStateManager : MEnemiesManager
     protected override void OnEnable()
     {
         base.OnEnable();
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWhenPlayerWin);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWhenPlayerWin);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
     }
 
     protected override void Start()

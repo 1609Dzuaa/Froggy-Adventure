@@ -9,7 +9,6 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
     [SerializeField] PlayerBagController _pBag;
     [SerializeField] PlayerHealthManager _pHealth;
     List<Fruits> _listFruits = new();
-    //PlayerData _pDataInstance;
     FruitsIventory _fInventoryInstance;
 
     protected override void Awake()
@@ -17,14 +16,14 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
         base.Awake();
         GetPlayerData();
         DontDestroyOnLoad(gameObject);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnFinishLevel, SaveData);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
     }
 
     private void GetPlayerData()
     {
         string filePath = Application.dataPath + PLAYER_DATA_PATH;
-        PlayerData playerData /*_pDataInstance*/ = JSONDataHelper.LoadFromJSon<PlayerData>(filePath);
+        PlayerData playerData = JSONDataHelper.LoadFromJSon<PlayerData>(filePath);
         _fInventoryInstance = JSONDataHelper.LoadFromJSon<FruitsIventory>(Application.dataPath + FRUITS_DATA_PATH);
         _pBag.SilverCoin = playerData.SilverCoin;
         _pBag.GoldCoin = playerData.GoldCoin;
@@ -35,7 +34,7 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
     private void OnDestroy()
     {
         //SavePlayerData();
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnFinishLevel, SaveData);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
         //Debug.Log("Ondes");
     }
@@ -55,13 +54,16 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
 
     private void SaveData(object obj)
     {
-        ResultParam pr = obj as ResultParam;
-        _pBag.SilverCoin += pr.SilverCollected;
-        _pBag.GoldCoin += pr.GoldCollected;
+        if (obj != null)
+        {
+            ResultParam pr = obj as ResultParam;
+            _pBag.SilverCoin += pr.SilverCollected;
+            _pBag.GoldCoin += pr.GoldCollected;
+        }
 
         SavePlayerData();
         EventsManager.Instance.NotifyObservers(EEvents.OnItemEligibleCheck);
-        //Debug.Log("save when finish level");
+        Debug.Log("check");
     }
 
     private void LockLimitedSkills(object obj)
@@ -72,6 +74,6 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
             if (s.IsLimited)
                 s.IsUnlock = false;
         JSONDataHelper.SaveToJSon<SkillsController>(sC, filePath);
-        Debug.Log("Lock skills");
+        //Debug.Log("Lock skills");
     }
 }

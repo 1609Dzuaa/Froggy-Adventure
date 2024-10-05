@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameEnums;
+using static GameConstants;
 
 public class CheckPointController : GameObjectManager
 {
@@ -21,30 +23,28 @@ public class CheckPointController : GameObjectManager
             PlayerPrefs.Save();
         }
 
-        if (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Actived + _ID))
+        if (PlayerPrefs.HasKey(ESpecialStates.Actived + _ID))
         {
-            _anim.SetTrigger(GameConstants.CHECKPOINT_ANIM_FLAG_IDLE);
+            _anim.SetTrigger(CHECKPOINT_ANIM_FLAG_IDLE);
             _checkActivated = true;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_checkActivated)
+        if (collision.CompareTag(PLAYER_TAG) && !_checkActivated)
         {
             _checkActivated = true;
-            _anim.SetTrigger(GameConstants.CHECKPOINT_ANIM_FLAG_OUT);
-            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.CheckpointSfx, 1.0f);
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnUpdateRespawnPosition, transform.position);
-            PlayerPrefs.SetString(GameEnums.ESpecialStates.Actived + _ID, "Activated");
-            //if (_isApplySkillToPlayer)
-                //StartCoroutine(NotifyUnlockSkill());
+            _anim.SetTrigger(CHECKPOINT_ANIM_FLAG_OUT);
+            SoundsManager.Instance.PlaySfx(ESoundName.CheckpointSfx, 1.0f);
+            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnUpdateRespawnPosition, transform.position);
+            PlayerPrefs.SetString(ESpecialStates.Actived + _ID, "Activated");
         }
     }
 
     private void SetIdleAnimation()
     {
-        _anim.SetTrigger(GameConstants.CHECKPOINT_ANIM_FLAG_IDLE);
+        _anim.SetTrigger(CHECKPOINT_ANIM_FLAG_IDLE);
         //Event của animation flag out
     }
 }

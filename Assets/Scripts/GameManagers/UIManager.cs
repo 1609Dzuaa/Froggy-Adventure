@@ -171,7 +171,13 @@ public class UIManager : BaseSingleton<UIManager>
         _buttonContainer.Tween(true);
     }
 
-    public void AnimateAndTransitionScene(int indexLevel, bool needReset = false)
+    /// <summary>
+    /// Chuyển scene = hàm này, 0 phải hàm bên GameManager
+    /// </summary>
+    /// <param name="indexLevel">Chú ý thằng này phải khớp với Build Index ngoài Editor</param>
+    /// <param name="needReset">Có cần bắn event reset vài thứ khi chuyển scene không</param>
+    /// <param name="isReplay">Nếu chơi lại thì 0 cần phải start new countdown</param>
+    public void AnimateAndTransitionScene(int indexLevel, bool needReset = false, bool isReplay = false)
     {
         if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
         {
@@ -187,17 +193,17 @@ public class UIManager : BaseSingleton<UIManager>
             if (_dictPopupUI[EPopup.Result].gameObject.activeInHierarchy)
             {
                 _popupResult.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay));
             }
             else
             {
                 _popupNotification.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay));
             }
         }
     }
 
-    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime, bool needReset = false)
+    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime, bool needReset = false, bool isReplay = false)
     {
         yield return new WaitForSeconds(waitTime);
 
@@ -205,30 +211,19 @@ public class UIManager : BaseSingleton<UIManager>
         {
             ToggleMenuUIsCanvas((indexLevel != GAME_MENU) ? false : true);
             ToggleInGameCanvas((indexLevel != GAME_MENU) ? true : false);
-            GameManager.Instance.SwitchScene(indexLevel, false);
+            GameManager.Instance.SwitchScene(indexLevel);
             if (needReset)
                 EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel);
             _imageSceneTrans.DOLocalMoveX(-5000f, _transDuration).OnComplete(() =>
             {
                 if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
                     HandleDisplayMenuUI();
-                else
-                    _hudControl.Countdown();
-                //else
-                //StartCoroutine(Hello());
+                else if (!isReplay)
+                    _hudControl.Countdown(); //0 phải replay thì mới count
                 _imageSceneTrans.position = new(6652f, _imageSceneTrans.position.y);
             });
         });
     }
-
-    /*private IEnumerator Hello()
-    {
-        yield return new WaitForSeconds(3f);
-
-        ResultParam pr = new(ELevelResult.Completed, 10, 10, 250, 270);
-        TogglePopup(EPopup.Result, true);
-        EventsManager.Instance.NotifyObservers(EEvents.OnFinishLevel, pr);
-    }*/
 
     private void OnEnable()
     {
@@ -236,7 +231,7 @@ public class UIManager : BaseSingleton<UIManager>
 
     private void OnDestroy()
     {
-        Debug.Log("UI Manager OnDestroy, this, frame: " + this + Time.frameCount);
+        //Debug.Log("UI Manager OnDestroy, this, frame: " + this + Time.frameCount);
     }
 
     private void Update()

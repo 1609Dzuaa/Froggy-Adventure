@@ -22,12 +22,11 @@ public class LevelController : MonoBehaviour
         //performanceMarker.Begin();
         SetupForLevelButtons(_arrItemLevels);
         //performanceMarker.End();
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnPlayLevel, ResetHighlightButtons);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnPlayLevel, ResetHighlightButtons);
+        ResetHighlightButtons();
     }
 
     private void LoadDataItemLevel()

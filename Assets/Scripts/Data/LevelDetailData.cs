@@ -74,35 +74,27 @@ public class LevelDetailData : MonoBehaviour
 
     public void ButtonPlayOnClick()
     {
-        if (PlayerHealthManager.Instance.CurrentHP == 0)
+        if (PlayerHealthManager.Instance.CurrentHP <= 1)
         {
-            string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !";
-            NotificationParam param = new(content, true, ShowShop);
+            string content = (PlayerHealthManager.Instance.CurrentHP == 0)
+                ? "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !"
+                : "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
+            NotificationParam param = new(content, true, () =>
+            {
+                UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                UIManager.Instance.TogglePopup(EPopup.Shop, true);
+            });
             ShowNotificationHelper.ShowNotification(param);
-            EventsManager.Instance.NotifyObservers(EEvents.OnPlayLevel, false);
-        }
-        else if (PlayerHealthManager.Instance.CurrentHP == 1)
-        {
-            //Thêm loại param mới để quyết định thêm hay ẩn nút trong Notification
-            string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
-            NotificationParam param = new(content, false, ShowShop, StartLevel);
-            ShowNotificationHelper.ShowNotification(param);
-            EventsManager.Instance.NotifyObservers(EEvents.OnPlayLevel, false);
+            EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
         }
         else
             StartLevel();
     }
 
-    private void ShowShop()
-    {
-        UIManager.Instance.TogglePopup(EPopup.Notification, false);
-        UIManager.Instance.TogglePopup(EPopup.Shop, true);
-    }
-
     private void StartLevel()
     {
         UIManager.Instance.AnimateAndTransitionScene(_indexLevel);
-        EventsManager.Instance.NotifyObservers(EEvents.OnPlayLevel, true);
+        //EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
         List<Skills> listActiveSkills = ToggleAbilityItemHelper.GetListActivatedSkills();
         LevelInfo levelInfo = new(listActiveSkills, _levelTimeAllow);
         EventsManager.Instance.NotifyObservers(EEvents.OnSetupLevel, levelInfo);

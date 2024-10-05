@@ -19,7 +19,7 @@ public class GameManager : BaseSingleton<GameManager>
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SwitchScene(int sceneIndex, bool canTweenImmediately)
+    public void SwitchScene(int sceneIndex)
     {
         //Nên tối giản func này chỉ làm đúng nhiệm vụ chuyển scene
         //UIManager sẽ lo hết tween, togglepopup

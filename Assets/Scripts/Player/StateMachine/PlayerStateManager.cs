@@ -197,7 +197,7 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWinGame);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
     }
 
     private void SetupProperties()
@@ -221,7 +221,7 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWinGame);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
         //Unsub mọi Events khi load lại scene tránh bị null ref từ event cũ
     }
 
@@ -303,7 +303,7 @@ public class PlayerStateManager : MonoBehaviour
             SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
             anim.SetTrigger(DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
-            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnWinGame);            
+            EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Completed);            
             //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
@@ -629,13 +629,13 @@ public class PlayerStateManager : MonoBehaviour
         if (PlayerHealthManager.Instance.CurrentHP > 0)
         {
             PlayerHealthManager.Instance.ChangeHPState(HP_STATE_LOST);
-            //if (PlayerHealthManager.Instance.CurrentHP == 0)
-                //UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
-            //else
-                //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
+            if (PlayerHealthManager.Instance.CurrentHP == 0)
+            {
+                EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
+            }
+            else
+                UIManager.Instance.AnimateAndTransitionScene(SceneManager.GetActiveScene().buildIndex, false, true);
         }
-        //else
-            //UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
 
         anim.SetTrigger(DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;

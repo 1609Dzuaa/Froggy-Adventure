@@ -78,16 +78,8 @@ public class AbilityItemShop : ItemShop
         Skills sk;
 
         //tìm skill trong list skill đã mở khoá
-        if (SISData.Ability.IsLimited)
-        {
-            List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills();
-            sk = skills.Find(x => x.SkillName == SISData.Ability.AbilityName);
-        }
-        else
-        {
-            List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills(false);
-            sk = skills.Find(x => x.SkillName == SISData.Ability.AbilityName);
-        }
+        List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills((SISData.Ability.IsLimited) ? true : false);
+        sk = skills.Find(x => x.SkillName == SISData.Ability.AbilityName);
 
         foreach (var fruit in fI.Fruits)
         {
@@ -124,6 +116,6 @@ public class AbilityItemShop : ItemShop
         _dictCurrencyInfoComps[ECurrency.Silver].TxtPrice.text = (!_isBuyable) ? "???" : SISData.DictPriceInfo[ECurrency.Silver].Price.ToString();
         _dictCurrencyInfoComps[ECurrency.Gold].TxtPrice.text = (!_isBuyable) ? "???" : SISData.DictPriceInfo[ECurrency.Gold].Price.ToString();
 
-        Debug.Log("display called");
+        //Debug.Log("display called");
     }
 }
