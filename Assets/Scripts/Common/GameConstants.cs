@@ -157,4 +157,12 @@ public static class GameConstants
     public const int DEFAULT_ITEM_COUNT = 0;
 
     #endregion
+
+    #region Buffs's Constants
+
+    public const float SPEED_BUFF_FACTOR = 1.3f;
+    public const float JUMP_BUFF_FACTOR = 1.3f;
+    public const float MAGNETIC_BUFF_RADIUS = 5.0f;
+
+    #endregion
 }

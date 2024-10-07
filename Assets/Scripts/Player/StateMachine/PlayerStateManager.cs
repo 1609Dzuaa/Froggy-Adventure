@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static GameEnums;
 using static GameConstants;
+using Unity.Profiling;
 
 public class PlayerStateManager : MonoBehaviour
 {
@@ -50,10 +51,16 @@ public class PlayerStateManager : MonoBehaviour
     private bool _canJump;
     private bool _forceApply;
     private bool _hasWinGame;
+    private bool _isMagnetized;
+    private bool _isCursed;
 
     private bool _unlockedDbJump;
     private bool _unlockedWallSlide;
     private bool _unlockedDash;
+
+    HashSet<Collider2D> _hashCoinsMagnetized = new();
+    Collider2D[] _arrCoinsMagnetized;
+    private static ProfilerMarker performanceMarker = new ProfilerMarker("ImprovedCode");
 
     [Header("Dust")]
     [SerializeField] ParticleSystem dustPS;
@@ -70,6 +77,7 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float wallCheckDistance;
+    [SerializeField] private LayerMask _coinLayer;
 
     [Header("NPC Check")]
     [SerializeField] private Transform _npcCheck;
@@ -90,6 +98,9 @@ public class PlayerStateManager : MonoBehaviour
     [Header("Button Skill References")]
     [SerializeField] private ButtonJumpController _btnJumpControl;
     [SerializeField] private ButtonDashController _btnDashControl;
+
+    [HideInInspector] public float MoveSpeed;
+    [HideInInspector] public float JumpSpeed;
 
     //GET Functions
 
@@ -197,7 +208,8 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWinGame);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnValidatePlayerBuffs, ValidateBuffs);
     }
 
     private void SetupProperties()
@@ -221,8 +233,8 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnWinGame, HandleWinGame);
-        //Unsub mọi Events khi load lại scene tránh bị null ref từ event cũ
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnValidatePlayerBuffs, ValidateBuffs);
     }
 
     public void ChangeState(PlayerBaseState state)
@@ -303,7 +315,7 @@ public class PlayerStateManager : MonoBehaviour
             SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
             anim.SetTrigger(DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
-            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnWinGame);            
+            EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Completed);            
             //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
@@ -383,10 +395,9 @@ public class PlayerStateManager : MonoBehaviour
         }
         //=========Handle things related to NPC==========//
 
-        LockIfOutMinBound();
+        //LockIfOutMinBound();
         UpdateLayer();
         HandleInput();
-        GroundAndWallCheck();
         HandleCoyoteTime();
         _state.Update();
         HandleFlipSprite();
@@ -466,12 +477,32 @@ public class PlayerStateManager : MonoBehaviour
     private void FixedUpdate()
     {
         _state.FixedUpdate();
+        GroundAndWallCheck();
+        SweptForCoin();
+    }
+
+    private void SweptForCoin()
+    {
+        if (_isMagnetized)
+        {
+            _arrCoinsMagnetized = Physics2D.OverlapCircleAll(transform.position, MAGNETIC_BUFF_RADIUS, _coinLayer);
+            for (int i = 0; i < _arrCoinsMagnetized.Length; i++)
+            {
+                if (!_hashCoinsMagnetized.Contains(_arrCoinsMagnetized[i]))
+                {
+                    _hashCoinsMagnetized.Add(_arrCoinsMagnetized[i]);
+                    _arrCoinsMagnetized[i].GetComponent<Coin>().MoveTowardPlayer();
+                }
+            }
+            Debug.Log("magg");
+        }
     }
 
     private void OnDrawGizmos()
     {
-        //Draw Ground Check
+        //Draw Ground, Magnetic Check
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        Gizmos.DrawSphere(transform.position, MAGNETIC_BUFF_RADIUS);
 
         //Draw Wall Check
         if (isFacingRight)
@@ -629,13 +660,13 @@ public class PlayerStateManager : MonoBehaviour
         if (PlayerHealthManager.Instance.CurrentHP > 0)
         {
             PlayerHealthManager.Instance.ChangeHPState(HP_STATE_LOST);
-            //if (PlayerHealthManager.Instance.CurrentHP == 0)
-                //UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
-            //else
-                //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex);
+            if (PlayerHealthManager.Instance.CurrentHP == 0)
+            {
+                EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
+            }
+            else
+                UIManager.Instance.AnimateAndTransitionScene(SceneManager.GetActiveScene().buildIndex, false, true);
         }
-        //else
-            //UIManager.Instance.StartCoroutine(UIManager.Instance.PopUpLoosePanel());
 
         anim.SetTrigger(DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
@@ -806,5 +837,26 @@ public class PlayerStateManager : MonoBehaviour
     private void HandleWinGame(object obj)
     {
         _hasWinGame = true;
+    }
+
+    private void ValidateBuffs(object obj)
+    {
+        List<Skills> listSks = ToggleAbilityItemHelper.GetListActivatedSkills();
+        Skills speed = listSks.Find(x => x.SkillName == ESkills.FasterSpeed);
+        Skills jump = listSks.Find(x => x.SkillName == ESkills.HigherJump);
+        Skills magnetic = listSks.Find(x => x.SkillName == ESkills.Magnetic);
+        Skills curse = listSks.Find(x => x.SkillName == ESkills.Curse);
+        Skills bountyHunter = listSks.Find(x => x.SkillName == ESkills.BountyHunter);
+
+        MoveSpeed = (speed != null) ? _playerStats.SpeedX * SPEED_BUFF_FACTOR : _playerStats.SpeedX;
+        JumpSpeed = (jump != null) ? _playerStats.SpeedY * JUMP_BUFF_FACTOR : _playerStats.SpeedY;
+        _isMagnetized = (magnetic != null);
+        _isCursed = (curse != null);
+        if (bountyHunter != null)
+        {
+            EventsManager.Instance.NotifyObservers(EEvents.OnBountyMarked);
+            Debug.Log("bounty noti");
+        }
+        Debug.Log("vali buff");
     }
 }

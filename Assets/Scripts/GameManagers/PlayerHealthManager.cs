@@ -165,9 +165,6 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
             }
             else
             {
-                //Tại sao trừ trước r mới gán state
-                //=> vì là mảng nên index từ 0 (obviously!) nên phải trừ trước khi gán
-                //vd: máu hiện tại là 3 tương ứng với index là 2
                 if (_currentHP > 0)
                 {
                     _currentHP--;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameEnums;
 
 public class HealthPoint : ItemShop
 {
@@ -16,6 +17,8 @@ public class HealthPoint : ItemShop
         }
 
         PlayerHealthManager.Instance.CurrentHP = Mathf.Clamp(++PlayerHealthManager.Instance.CurrentHP, 0, 3);
+        if(PlayerHealthManager.Instance.CurrentHP > 0)
+            EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
         return true;
     }
 }

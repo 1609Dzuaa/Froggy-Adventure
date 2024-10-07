@@ -68,6 +68,6 @@ public class GotHitState : PlayerBaseState
         _playerStateManager.IsApplyGotHitEffect = true;
         if (PlayerHealthManager.Instance.CurrentHP > 0)
             SoundsManager.Instance.PlaySfx(ESoundName.PlayerGotHitSfx, 1.0f);
-        EventsManager.Instance.NotifyObservers(EEvents.CameraOnShake, null);
+        EventsManager.Instance.NotifyObservers(EEvents.CameraOnShake);
     }
 }

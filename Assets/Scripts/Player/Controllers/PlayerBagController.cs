@@ -44,7 +44,7 @@ public class PlayerBagController : MonoBehaviour
     void Awake()
     {
         EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnFinishLevel, HandleFinishLevel);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
@@ -81,7 +81,7 @@ public class PlayerBagController : MonoBehaviour
     private void OnDestroy()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnFinishLevel, HandleFinishLevel);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
@@ -96,12 +96,12 @@ public class PlayerBagController : MonoBehaviour
 
         if (SilverCoin >= itemSCoinPrice && GoldCoin >= itemGCoinPrice)
         {
-            //chỉ khi pass cổng thì mới gọi hàm xử lý mua item đó
+            //đủ tiền thì mới gọi hàm xử lý mua item đó
             if (item.HandleBuyItem())
             {
                 TweenTextCoins(itemSCoinPrice, itemGCoinPrice);
                 TweenIcon(itemGCoinPrice);
-                SoundsManager.Instance.PlaySfx(ESoundName.CollectHPSfx, 1.0f);
+                SoundsManager.Instance.PlaySfx(ESoundName.BountyAppearVfxSfx, 1.0f);
             }
             //Debug.Log("Mua thanh cong item: " + itemSData.ItemName);
         }
@@ -146,16 +146,20 @@ public class PlayerBagController : MonoBehaviour
 
     private void TweenTextCoins(int sCoinPrice, int gCoinPrice)
     {
+        Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(
         DOTween.To(() => SilverCoin, x => SilverCoin = x, SilverCoin - sCoinPrice, _duration).OnUpdate(() =>
         {
             DisplayCurrencyTexts();
             //Debug.Log("x: " + SilverCoin);
-        }).SetEase(_ease);
-
+        }).SetEase(_ease)).Join(
         DOTween.To(() => GoldCoin, x => GoldCoin = x, GoldCoin - gCoinPrice, _duration).OnUpdate(() =>
         {
             DisplayCurrencyTexts();
-        }).SetEase(_ease);
+        }).SetEase(_ease)).OnComplete(() =>
+                        EventsManager.Instance.NotifyObservers(EEvents.OnSavePlayerData)
+        );
     }
 
     private void TweenIcon(int goldPrice)

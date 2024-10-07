@@ -25,8 +25,7 @@ public class HUDController : MonoBehaviour
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSetupLevel, SetupTimer);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnWinGame, OnPlayerWin);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnFinishLevel, SaveLevelProgress);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
     }
 
     private void OnDestroy()
@@ -34,8 +33,7 @@ public class HUDController : MonoBehaviour
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSetupLevel, SetupTimer);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnWinGame, OnPlayerWin);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnFinishLevel, SaveLevelProgress);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
     }
 
     /*private void Update()
@@ -73,9 +71,9 @@ public class HUDController : MonoBehaviour
         //Debug.Log("start Count");
     }
 
-    private void OnPlayerWin(object obj)
+    private void ReceiveLevelResult(object obj)
     {
-        HandleFinishLevel(ELevelResult.Completed);
+        HandleFinishLevel((ELevelResult)obj);
     }
 
     private void HandleFinishLevel(ELevelResult result = ELevelResult.Failed)
@@ -84,16 +82,20 @@ public class HUDController : MonoBehaviour
         int timeComplete = _timeAllow - _timeLeft;
         ResultParam pr = new(result, _tweenCoin.SCoinCollected, _tweenCoin.GCoinCollected, timeComplete, _timeAllow);
         UIManager.Instance.TogglePopup(EPopup.Result, true);
-        EventsManager.Instance.NotifyObservers(EEvents.OnLockLimitedSkills);
-        EventsManager.Instance.NotifyObservers(EEvents.OnFinishLevel, pr);
+        SaveLevelProgress();
         KillTweenTimer();
+        EventsManager.Instance.NotifyObservers(EEvents.OnHandleLevelCompleted, pr);
+        EventsManager.Instance.NotifyObservers(EEvents.OnSavePlayerData);
     }
 
     private void KillTweenTimer(object obj = null)
     {
         _timerTween.Kill();
+        //Debug.Log(_timerTween.IsActive());
         _bonusTime = 0;
         EventsManager.Instance.NotifyObservers(EEvents.OnLockLimitedSkills);
+        //lock item trước r mới check sau
+        //Debug.Log("Kill");
     }
 
     private void HandleReset(object obj)
@@ -111,7 +113,7 @@ public class HUDController : MonoBehaviour
         //Debug.Log("Reset");
     }
 
-    private void SaveLevelProgress(object obj)
+    private void SaveLevelProgress()
     {
         int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
         LevelProgressData levelPData = new(currentLevelIndex, true, true, _timeAllow - _timeLeft);

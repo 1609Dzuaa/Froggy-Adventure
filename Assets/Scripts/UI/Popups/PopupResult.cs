@@ -52,19 +52,20 @@ public class PopupResult : PopupController
     float _initPosition;
     float _endPosition;
     bool _canClick = true; //prevent mutliple click
+    bool _canClose = true; //prevent close this popup when the tasks havent's finished yet
     ResultParam _param;
 
     private void Awake()
     {
         _initPosition = transform.localPosition.y;
         _endPosition = transform.localPosition.y - _distance;
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnFinishLevel, ReceiveResultParam);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
         ResetScaleButtons();
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnFinishLevel, ReceiveResultParam);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
     }
 
     private void ReceiveResultParam(object obj)
@@ -75,6 +76,7 @@ public class PopupResult : PopupController
         _imageBanner.sprite = (_param.Result == ELevelResult.Completed) ? _spritesBanner[0] : _spritesBanner[1];
         _txtSilver.text = "0";
         _txtGold.text = "0";
+        TimeDisplayHelper.DisplayTime(ref _txtTime, 0, _param.TimeAllow); //setup timer
     }
 
     protected override void OnEnable()
@@ -184,8 +186,9 @@ public class PopupResult : PopupController
 
     public override void OnClose()
     {
-        transform.DOLocalMoveY(_initPosition, _duration).SetEase(_ease)
-                .OnComplete(() => { UIManager.Instance.TogglePopup(_popupName, false); });
+        if (_canClose)
+            transform.DOLocalMoveY(_initPosition, _duration).SetEase(_ease)
+                    .OnComplete(() => { UIManager.Instance.TogglePopup(_popupName, false); });
     }
 
     private IEnumerator CooldownButton()
@@ -214,11 +217,29 @@ public class PopupResult : PopupController
                     });
                     ShowNotificationHelper.ShowNotification(param);
                 }
+                else if (PlayerHealthManager.Instance.CurrentHP <= 1)
+                {
+                    _canClose = false;
+                    string content = (PlayerHealthManager.Instance.CurrentHP == 0) 
+                        ? "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !"
+                        : "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
+                    NotificationParam param = new(content, true, () =>
+                    {
+                        if (_canClick)
+                        {
+                            _canClick = false;
+                            StartCoroutine(CooldownButton());
+                            ShowShop();
+                        }
+                    });
+                    ShowNotificationHelper.ShowNotification(param);
+                }
                 else
                 {
                     if(_canClick)
                     {
                         _canClick = false;
+                        _canClose = true;
                         StartCoroutine(CooldownButton());
                         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
                         UIManager.Instance.AnimateAndTransitionScene(nextSceneIndex);
@@ -228,9 +249,27 @@ public class PopupResult : PopupController
                 break;
 
             case (int)EButtonName.Replay:
-                if (_canClick)
+                if (PlayerHealthManager.Instance.CurrentHP <= 1)
+                {
+                    _canClose = false;
+                    string content = (PlayerHealthManager.Instance.CurrentHP == 0)
+                        ? "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !"
+                        : "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
+                    NotificationParam param = new(content, true, () =>
+                    {
+                        if (_canClick)
+                        {
+                            _canClick = false;
+                            StartCoroutine(CooldownButton());
+                            ShowShop();
+                        }
+                    });
+                    ShowNotificationHelper.ShowNotification(param);
+                }
+                else if (_canClick)
                 {
                     _canClick = false;
+                    _canClose = true;
                     StartCoroutine(CooldownButton());
                     int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
                     UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex, true);
@@ -264,5 +303,11 @@ public class PopupResult : PopupController
                 }
                 break;
         }
+    }
+
+    private void ShowShop()
+    {
+        UIManager.Instance.TogglePopup(EPopup.Notification, false);
+        UIManager.Instance.TogglePopup(EPopup.Shop, true);
     }
 }

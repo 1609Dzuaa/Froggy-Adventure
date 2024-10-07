@@ -18,7 +18,7 @@ public class EventsManager : BaseSingleton<EventsManager>
     private readonly Action<object> PlayerOnStopInteractWithNPCs;
     private readonly Action<object> PlayerOnBeingPushedBack;
     private readonly Action<object> PlayerOnUpdateRespawnPosition;
-    private readonly Action<object> PlayerOnWinGame;
+    private readonly Action<object> OnLevelCompleted;
     private readonly Action<object> FanOnBeingDisabled;
     private readonly Action<object> ObjectOnRestart;
     private readonly Action<object> TutorOnDestroy;
@@ -45,7 +45,7 @@ public class EventsManager : BaseSingleton<EventsManager>
         _dictEvents.Add(EEvents.PlayerOnStopInteractWithNPCs, PlayerOnStopInteractWithNPCs); 
         _dictEvents.Add(EEvents.PlayerOnBeingPushedBack, PlayerOnBeingPushedBack);
         _dictEvents.Add(EEvents.PlayerOnUpdateRespawnPosition, PlayerOnUpdateRespawnPosition);
-        _dictEvents.Add(EEvents.PlayerOnWinGame, PlayerOnWinGame);
+        _dictEvents.Add(EEvents.OnLevelCompleted, OnLevelCompleted);
         _dictEvents.Add(EEvents.FanOnBeingDisabled, FanOnBeingDisabled);
         _dictEvents.Add(EEvents.ObjectOnRestart, ObjectOnRestart);
         _dictEvents.Add(EEvents.TutorOnDestroy, TutorOnDestroy);

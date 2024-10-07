@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949696479440235328}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3947487852951774695
 MonoBehaviour:
@@ -93,6 +93,33 @@ MonoBehaviour:
   - _ePoolable: 16
     _GObjPoolable: {fileID: 2266789172445877265, guid: ccfcf1f33618c004a8ea7d4925a0f3d2, type: 3}
     _ammount: 1
+  - _ePoolable: 17
+    _GObjPoolable: {fileID: 4127298574320777749, guid: 2e21ac52425e1ed44908b909f4dbe98d, type: 3}
+    _ammount: 5
+  - _ePoolable: 18
+    _GObjPoolable: {fileID: 1562958422339561305, guid: e198abf5e2f0b244abaa15e7e8d68b87, type: 3}
+    _ammount: 5
+  - _ePoolable: 19
+    _GObjPoolable: {fileID: 1886694591926022909, guid: a9f2bcec74951c74f9d6d0e9775b281f, type: 3}
+    _ammount: 5
+  - _ePoolable: 20
+    _GObjPoolable: {fileID: 1270719276829448090, guid: 56ce47bf713cb514594589b97a85398f, type: 3}
+    _ammount: 5
+  - _ePoolable: 21
+    _GObjPoolable: {fileID: 2303604463617947872, guid: 0b9258743f2b6f44f9e38794a7333fb3, type: 3}
+    _ammount: 5
+  - _ePoolable: 22
+    _GObjPoolable: {fileID: 8789338497670952446, guid: 8ce84c6cb5c1497489fbd912b6016442, type: 3}
+    _ammount: 5
+  - _ePoolable: 23
+    _GObjPoolable: {fileID: 6214232629287141080, guid: 475f4c12beeeece40b171dd1b8fd1c56, type: 3}
+    _ammount: 5
+  - _ePoolable: 24
+    _GObjPoolable: {fileID: 459109964652750508, guid: 943e9e0b35196dc4480f30f0ba6b6811, type: 3}
+    _ammount: 5
+  - _ePoolable: 25
+    _GObjPoolable: {fileID: 8485598425969207973, guid: e14cc764bbc143744a97ab0a817d1514, type: 3}
+    _ammount: 5
   _listBPiecePair:
   - _bulletType: 8
     _pair1: {fileID: 4947116023734144812, guid: 8d1a916095ed2aa469e589971232746f, type: 3}

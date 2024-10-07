@@ -39,14 +39,14 @@ public class FrogHPController : ItemsController
         {
             SpawnEffect();
             PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_NORMAL);
-            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.CollectHPSfx, 1.0f);
+            SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BountyAppearVfxSfx, 1.0f);
             Destroy(_parent);
         }
     }
 
     protected override void SpawnEffect()
     {
-        GameObject collectEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.CollectHP);
+        GameObject collectEff = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.BountyAppearVfx);
         collectEff.SetActive(true);
         collectEff.transform.position = transform.position;
     }

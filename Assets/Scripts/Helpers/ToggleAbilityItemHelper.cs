@@ -56,21 +56,15 @@ public static class ToggleAbilityItemHelper
     {
         string filePath = Application.dataPath + SKILLS_DATA_PATH;
         SkillsController sC = JSONDataHelper.LoadFromJSon<SkillsController>(filePath);
-        var list = new List<Skills>();
+        var listLimited = new List<Skills>();
+        var listUnLimited = new List<Skills>();
 
-        if (isLimited)
-        {
-            foreach (var s in sC.skills)
-                if (s.IsUnlock == true && s.IsLimited)
-                    list.Add(s);
-        }
-        else 
-        {
-            foreach (var s in sC.skills)
-                if (s.IsUnlock == true && !s.IsLimited)
-                    list.Add(s);
-        }
+        foreach (var s in sC.skills)
+            if (s.IsUnlock && s.IsLimited)
+                listLimited.Add(s);
+            else if (s.IsUnlock && !s.IsLimited)
+                listUnLimited.Add(s);
 
-        return list;
+        return (isLimited) ? listLimited : listUnLimited;
     }
 }
