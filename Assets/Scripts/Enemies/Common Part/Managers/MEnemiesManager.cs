@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using static GameEnums;
 
 public class MEnemiesManager : EnemiesManager
 {
@@ -127,7 +127,7 @@ public class MEnemiesManager : EnemiesManager
     //Hàm này dùng để Invoke khi detect ra Player
     protected virtual void AllowAttackPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsAllowToUpdate)
         {
             ChangeState(_mEnemiesIdleState);
             return;
@@ -161,7 +161,7 @@ public class MEnemiesManager : EnemiesManager
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
             string bulletID = collision.collider.GetComponent<BulletController>().BulletID;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, bulletID);
+            EventsManager.Instance.NotifyObservers(EEvents.BulletOnHit, bulletID);
             ChangeState(_mEnemiesGotHitState);
         }
         else if (collision.collider.CompareTag(GameConstants.BOX_TAG) && _state is MEnemiesPatrolState)
@@ -178,8 +178,9 @@ public class MEnemiesManager : EnemiesManager
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)
         {
             _hasGotHit = true;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnJumpPassive);
             ChangeState(_mEnemiesGotHitState);
+            SpawnBountyIfMarked();
         }
         else if (collision.CompareTag(GameConstants.TRAP_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState
             || collision.CompareTag(GameConstants.DEAD_ZONE_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)

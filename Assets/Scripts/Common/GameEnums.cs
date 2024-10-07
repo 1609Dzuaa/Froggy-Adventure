@@ -97,12 +97,15 @@
         OnResetLevel, //bắn đi để reset các data cũ từ level trước
         OnUpdateLevel, //bắn đi khi hoàn thành level này và update data level này và level sau
         OnSavePlayerData, //bắn đi khi cần save player data (end level, mua item, ...)
+        OnValidatePlayerBuffs, //bắn đi khi play 1 level để xác thực player buff và xử lý
+        OnMagnetizeCoins,
+        OnBountyMarked,
 
     }
 
     #endregion
 
-    #region EnumVfxs&Bullets
+    #region EnumVfxs, Bullets, Fruits
 
     public enum EPoolable
     {
@@ -112,7 +115,7 @@
         GeckoDisappear,
         CollectFruits,
         CollectDiamond,
-        CollectHP,
+        BountyAppearVfx,
         BrownExplosion,
         PlantBullet,
         BeeBullet,
@@ -122,7 +125,15 @@
         BossTeleVfx,
         BossAppearVfx,
         BossDeadVfx,
-        PlayerDeShieldVfx
+        PlayerDeShieldVfx,
+        Apple,
+        Banana,
+        Cherry,
+        Kiwi,
+        Melon,
+        Orange,
+        Pineapple,
+        Strawberry,
     }
 
     #endregion
@@ -136,7 +147,7 @@
         Level2Theme,
         BossTheme,
         CollectFruitSfx,
-        CollectHPSfx,
+        BountyAppearVfxSfx,
         PlayerGotHitSfx,
         PlayerJumpSfx,
         PlayerDashSfx,
@@ -249,7 +260,7 @@
         Dash = 2,
         Shield = 3,
         Invisible = 4,
-        Absorb = 5,
+        BountyHunter = 5,
         FasterSpeed = 6,
         HigherJump = 7,
         Hourglass = 8,

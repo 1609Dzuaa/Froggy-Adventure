@@ -219,7 +219,11 @@ public class UIManager : BaseSingleton<UIManager>
                 if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
                     HandleDisplayMenuUI();
                 else if (!isReplay)
+                {
                     _hudControl.Countdown(); //0 phải replay thì mới count
+                }
+                List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills();
+                EventsManager.Instance.NotifyObservers(EEvents.OnValidatePlayerBuffs, skills);
                 _imageSceneTrans.position = new(6652f, _imageSceneTrans.position.y);
             });
         });

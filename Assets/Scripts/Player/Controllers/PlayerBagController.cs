@@ -101,7 +101,7 @@ public class PlayerBagController : MonoBehaviour
             {
                 TweenTextCoins(itemSCoinPrice, itemGCoinPrice);
                 TweenIcon(itemGCoinPrice);
-                SoundsManager.Instance.PlaySfx(ESoundName.CollectHPSfx, 1.0f);
+                SoundsManager.Instance.PlaySfx(ESoundName.BountyAppearVfxSfx, 1.0f);
             }
             //Debug.Log("Mua thanh cong item: " + itemSData.ItemName);
         }

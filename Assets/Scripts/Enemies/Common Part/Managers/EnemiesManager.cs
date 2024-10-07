@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static GameConstants;
+using static GameEnums;
 
 public class EnemiesManager : CharactersManager
 {
@@ -19,6 +20,7 @@ public class EnemiesManager : CharactersManager
     protected bool _hasNotified; //Chỉ dành cho các Enemy cần Tutor
     protected bool _notPlayDeadSfx; //Boss chet thi 0 play Sfx
     protected RaycastHit2D _hit2D;
+    protected bool _bountyMarked;
 
     #region GETTER
 
@@ -51,6 +53,8 @@ public class EnemiesManager : CharactersManager
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);
         EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BossOnDie, HandleIfBossDie);
+        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.OnBountyMarked, BountyMarked);
+        Debug.Log("Subbed");
     }
 
     protected virtual void OnDestroy()
@@ -58,6 +62,7 @@ public class EnemiesManager : CharactersManager
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);
         EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BossOnDie, HandleIfBossDie);
+        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.OnBountyMarked, BountyMarked);
     }
 
     // Start is called before the first frame update
@@ -167,6 +172,30 @@ public class EnemiesManager : CharactersManager
             FlippingSprite();
         _isFacingRight = (bool)obj;
         //Debug.Log("Received: " + _isFacingRight);
+    }
+
+    protected void BountyMarked(object obj) => _bountyMarked = true;
+
+    protected void SpawnBountyIfMarked()
+    {
+        if (_bountyMarked)
+        {
+            int start = (int)EPoolable.Apple;
+            int end = (int)EPoolable.Strawberry;
+            int random = UnityEngine.Random.Range(start, end + 1);
+
+            //vfx
+            GameObject vfx = Pool.Instance.GetObjectInPool(EPoolable.BountyAppearVfx);
+            vfx.SetActive(true);
+            vfx.transform.position = transform.position;
+
+            //bounty
+            //nên giới hạn chỉ random 3 loại có trong map đó 
+            GameObject go = Pool.Instance.GetObjectInPool((EPoolable)random);
+            go.SetActive(true);
+            go.transform.position = transform.position;
+        }
+        Debug.Log("marked: " + _bountyMarked);
     }
 
     /// <summary>

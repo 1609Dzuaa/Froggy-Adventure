@@ -58,8 +58,9 @@ public class NMEnemiesManager : EnemiesManager
             //có thể enemy này dính đòn từ bullet => rotate z khi GotHit
             //và Trigger collider của Player dẫn đến JumpPassive
             _hasGotHit = true;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive);
             ChangeState(_nmEnemiesGotHitState);
+            SpawnBountyIfMarked();
         }
         else if (collision.CompareTag(GameConstants.DEAD_ZONE_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState
             || collision.CompareTag(GameConstants.TRAP_TAG) && !_hasGotHit && _state is not NMEnemiesGotHitState)
