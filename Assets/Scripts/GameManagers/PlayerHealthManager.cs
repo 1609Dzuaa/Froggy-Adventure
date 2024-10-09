@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static GameConstants;
 
 public struct HP
 {
@@ -16,7 +17,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     //Class này dùng Quản lý HP và phụ trách render HP lên UI
 
     [Header("HP Icon")]
-    [SerializeField] private Image[] _uiHP = new Image[GameConstants.PLAYER_MAX_HP];
+    [SerializeField] private Image[] _uiHP = new Image[PLAYER_MAX_HP];
     [SerializeField] private Sprite _normalHPSprite;
     [SerializeField] private Sprite _lostHPSprite;
     [SerializeField] private Sprite _tempHPSprite;
@@ -28,7 +29,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     //khoảng thgian để blink máu ảo khi nó trong trạng thái RunningOut
     [SerializeField] private float _timeEachBlink;
 
-    private HP[] _HPs = new HP[GameConstants.PLAYER_MAX_HP];
+    private HP[] _HPs = new HP[PLAYER_MAX_HP];
     [HideInInspector] public int MaxHP;
     private int _currentHP;
     private int _tempHP;
@@ -74,9 +75,9 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         {
             _HPs[i]._dictHP = new Dictionary<int, Sprite>()
             {
-                {GameConstants.HP_STATE_NORMAL, _normalHPSprite },
-                {GameConstants.HP_STATE_LOST, _lostHPSprite },
-                {GameConstants.HP_STATE_TEMP, _tempHPSprite }
+                {HP_STATE_NORMAL, _normalHPSprite },
+                {HP_STATE_LOST, _lostHPSprite },
+                {HP_STATE_TEMP, _tempHPSprite }
             };        
         }
         //Thiết lập từng key - value cho từng HP
@@ -84,7 +85,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void InitUIHP()
     {
-        for (int i = 0; i < GameConstants.PLAYER_MAX_HP; i++)
+        for (int i = 0; i < PLAYER_MAX_HP; i++)
         {
             if (i < MaxHP)
                 _uiHP[i].enabled = true;
@@ -99,7 +100,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     {
         for (int i = 0; i < MaxHP; i++)
         {
-            _HPs[i]._state = GameConstants.HP_STATE_NORMAL;
+            _HPs[i]._state = HP_STATE_NORMAL;
             //Khởi tạo cho các HP mặc định là state Normal
         }
     }
@@ -117,6 +118,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     public void ChangeHPState(int state)
     {
+        
         HandleIfIncreaseHP(state);
         HandleIfDecreaseHP(state);
         HandleIfIncreaseTempHP(state);
@@ -128,11 +130,17 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         //Debug.Log("Cur HP: " + _currentHP);
     }
 
+    public void HandleIfCurse()
+    {
+        for (int i = 0; i < _currentHP; i++)
+            _HPs[i]._state = HP_STATE_LOST;
+        _currentHP = 0;
+    }
+
     private void HandleIfIncreaseHP(int state)
     {
-        if (state == GameConstants.HP_STATE_NORMAL)
+        if (state == HP_STATE_NORMAL)
         {
-            //Quên mất current phải < max thì mới + HP
             if (_currentHP < MaxHP)
             {
                 _HPs[_currentHP]._state = state;
@@ -144,7 +152,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void HandleIfDecreaseHP(int state)
     {
-        if (state == GameConstants.HP_STATE_LOST)
+        if (state == HP_STATE_LOST)
         {
             //Check có máu ảo thì trừ nó, 0 thì trừ thẳng hp hiện tại
             if (_tempHP != 0)
@@ -179,7 +187,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void HandleIfIncreaseTempHP(int state)
     {
-        if (state == GameConstants.HP_STATE_TEMP)
+        if (state == HP_STATE_TEMP)
         {
             if (_tempHP == 0)
             {
@@ -221,9 +229,9 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
             {
                 _HPs[i + _currentHP]._dictHP = new Dictionary<int, Sprite>()
                 {
-                        { GameConstants.HP_STATE_NORMAL, _normalHPSprite },
-                        { GameConstants.HP_STATE_LOST, _lostHPSprite },
-                        { GameConstants.HP_STATE_TEMP, _tempHPSprite }
+                        { HP_STATE_NORMAL, _normalHPSprite },
+                        { HP_STATE_LOST, _lostHPSprite },
+                        { HP_STATE_TEMP, _tempHPSprite }
                 };
             }
             //Debug.Log("Co vao day");
@@ -273,13 +281,13 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
             if (_blinkLost)
             {
                 for (int i = _currentHP; i < _currentHP + _tempHP; i++)
-                    _HPs[i]._state = GameConstants.HP_STATE_LOST;
+                    _HPs[i]._state = HP_STATE_LOST;
                 _blinkLost = false;
             }
             else
             {
                 for (int i = _currentHP; i < _currentHP + _tempHP; i++)
-                    _HPs[i]._state = GameConstants.HP_STATE_TEMP;
+                    _HPs[i]._state = HP_STATE_TEMP;
                 _blinkLost = true;
             }
             _tempHPEachRunOutEntryTime = Time.time;
@@ -297,7 +305,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
             if (i > MaxHP - 1)
                 _uiHP[i].enabled = false;
             else
-                _HPs[i]._state = GameConstants.HP_STATE_LOST;
+                _HPs[i]._state = HP_STATE_LOST;
         }
     }
 
@@ -318,7 +326,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         if (_hasIncreaseHP) return;
 
         _hasIncreaseHP = true;
-        _playerSO.MaxHP = GameConstants.PLAYER_MAX_HP_LEVEL_2;
+        _playerSO.MaxHP = PLAYER_MAX_HP_LEVEL_2;
         Start();
         Debug.Log("Incr");
     }
@@ -326,6 +334,6 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     public void DecreaseHP()
     {
         _hasIncreaseHP = false;
-        _playerSO.MaxHP = GameConstants.PLAYER_MAX_HP_LEVEL_1;
+        _playerSO.MaxHP = PLAYER_MAX_HP_LEVEL_1;
     }
 }

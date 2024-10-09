@@ -283,7 +283,10 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.collider.CompareTag(TRAP_TAG) && _state is not GotHitState)
         {
             gotHitState.IsHitByTrap = true;
-            ChangeState(gotHitState);
+            if (_isCursed)
+                HandleDeadState();
+            else
+                ChangeState(gotHitState);
         }
     }
 
@@ -292,7 +295,10 @@ public class PlayerStateManager : MonoBehaviour
         if (collision.collider.CompareTag(TRAP_TAG) && _state is not GotHitState)
         {
             gotHitState.IsHitByTrap = true;
-            ChangeState(gotHitState);
+            if (_isCursed)
+                HandleDeadState();
+            else
+                ChangeState(gotHitState);
         }
     }
 
@@ -306,7 +312,10 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.CompareTag(TRAP_TAG) && _state is not GotHitState)
         {
             gotHitState.IsHitByTrap = true;
-            ChangeState(gotHitState);
+            if (_isCursed)
+                HandleDeadState();
+            else
+                ChangeState(gotHitState);
         }
         else if (collision.CompareTag(DEAD_ZONE_TAG))
             HandleDeadState();
@@ -325,7 +334,10 @@ public class PlayerStateManager : MonoBehaviour
         if (collision.CompareTag(TRAP_TAG) && _state is not GotHitState)
         {
             gotHitState.IsHitByTrap = true;
-            ChangeState(gotHitState);
+            if (_isCursed)
+                HandleDeadState();
+            else
+                ChangeState(gotHitState);
         }
         //Tránh TH Overlap
     }
@@ -341,9 +353,14 @@ public class PlayerStateManager : MonoBehaviour
 
     private void BeingDamaged(object obj)
     {
-        _isHitFromRightSide = (bool)obj;
-        //Debug.Log("bi hit tu right: " + (bool)obj);
-        ChangeState(gotHitState);
+        if (_isCursed)
+            HandleDeadState();
+        else
+        {
+            _isHitFromRightSide = (bool)obj;
+            //Debug.Log("bi hit tu right: " + (bool)obj);
+            ChangeState(gotHitState);
+        }
     }
 
     private void JumpPassive(object obj)
@@ -656,18 +673,31 @@ public class PlayerStateManager : MonoBehaviour
         else
             return;
 
-        //Check vì có thể dính DeadZone nên 0 vào state GotHit
-        if (PlayerHealthManager.Instance.CurrentHP > 0)
+        if (_isCursed)
         {
-            PlayerHealthManager.Instance.ChangeHPState(HP_STATE_LOST);
-            if (PlayerHealthManager.Instance.CurrentHP == 0)
-            {
-                EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
-            }
-            else
-                UIManager.Instance.AnimateAndTransitionScene(SceneManager.GetActiveScene().buildIndex, false, true);
+            PlayerHealthManager.Instance.HandleIfCurse();
+            HandleDeadAnimation();
+            EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
         }
+        else
+        {
+            //Check vì có thể dính DeadZone nên 0 vào state GotHit
+            if (PlayerHealthManager.Instance.CurrentHP > 0)
+            {
+                PlayerHealthManager.Instance.ChangeHPState(HP_STATE_LOST);
+                if (PlayerHealthManager.Instance.CurrentHP == 0)
+                {
+                    EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
+                }
+                else
+                    UIManager.Instance.AnimateAndTransitionScene(SceneManager.GetActiveScene().buildIndex, false, true);
+            }
+            HandleDeadAnimation();
+        }
+    }
 
+    private void HandleDeadAnimation()
+    {
         anim.SetTrigger(DEAD_ANIMATION);
         rb.bodyType = RigidbodyType2D.Static;
         _capCollider2D.enabled = false;
@@ -852,10 +882,15 @@ public class PlayerStateManager : MonoBehaviour
         JumpSpeed = (jump != null) ? _playerStats.SpeedY * JUMP_BUFF_FACTOR : _playerStats.SpeedY;
         _isMagnetized = (magnetic != null);
         _isCursed = (curse != null);
-        if (bountyHunter != null)
+        if (_isMagnetized)
         {
             EventsManager.Instance.NotifyObservers(EEvents.OnBountyMarked);
             Debug.Log("bounty noti");
+        }
+        if (_isCursed)
+        {
+            EventsManager.Instance.NotifyObservers(EEvents.OnBeingCursed);
+            Debug.Log("curse noti");
         }
         Debug.Log("vali buff");
     }

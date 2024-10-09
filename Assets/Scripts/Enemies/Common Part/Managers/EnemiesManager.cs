@@ -50,19 +50,19 @@ public class EnemiesManager : CharactersManager
 
     protected virtual void OnEnable()
     {
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BossOnDie, HandleIfBossDie);
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.OnBountyMarked, BountyMarked);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.ObjectOnRestart, OnRestartID);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.BossOnSummonMinion, ReceiveBossCommand);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.BossOnDie, HandleIfBossDie);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnBountyMarked, BountyMarked);
         Debug.Log("Subbed");
     }
 
     protected virtual void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.ObjectOnRestart, OnRestartID);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BossOnSummonMinion, ReceiveBossCommand);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BossOnDie, HandleIfBossDie);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.OnBountyMarked, BountyMarked);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.ObjectOnRestart, OnRestartID);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.BossOnSummonMinion, ReceiveBossCommand);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.BossOnDie, HandleIfBossDie);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnBountyMarked, BountyMarked);
     }
 
     // Start is called before the first frame update
@@ -94,12 +94,12 @@ public class EnemiesManager : CharactersManager
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag(PLAYER_TAG))
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
+            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnTakeDamage, _isFacingRight);
     }
 
     protected virtual void DetectPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsAllowToUpdate)
         {
             _hasDetectedPlayer = false;
             return;
@@ -209,7 +209,7 @@ public class EnemiesManager : CharactersManager
         /*if (_hasGotHit && !_hasNotified && _needTutor)
         {
             _hasNotified = true;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.TutorOnDestroy, _tutorRef);
+            EventsManager.Instance.NotifyObservers(EEvents.TutorOnDestroy, _tutorRef);
 
             if (_isApplySkillToPlayer)
                 StartCoroutine(NotifyUnlockSkill());
