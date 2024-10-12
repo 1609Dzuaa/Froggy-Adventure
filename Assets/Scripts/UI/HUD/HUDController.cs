@@ -8,12 +8,20 @@ using Unity.Profiling;
 using static GameConstants;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public class BuffIcon
+{
+    public ESkills Name;
+    public GameObject Icon;
+}
+
 public class HUDController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _txtTimer;
     [SerializeField, Tooltip("Delay bộ đếm 1 khoảng nhỏ" +
         " lấy tương đối gần = thgian quá trình chuyển scene")] int _delayCount;
     [SerializeField] TweenCoin _tweenCoin;
+    [SerializeField] BuffIcon[] _arrBuffIcons;
     int _timeLeft, _timeAllow = 0, _bonusTime = 0;
     Tween _timerTween;
     LevelInfo _levelInfo;
@@ -22,7 +30,7 @@ public class HUDController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSetupLevel, SetupTimer);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSetupLevel, SetupHUD);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
@@ -30,10 +38,17 @@ public class HUDController : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSetupLevel, SetupTimer);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSetupLevel, SetupHUD);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
+    }
+
+    private void HandleDisplayBuffIcons()
+    {
+        var listLimitedSkills = ToggleAbilityItemHelper.GetListActivatedSkills();
+        foreach (var item in _arrBuffIcons)
+            item.Icon.SetActive(listLimitedSkills.Find(x => x.SkillName == item.Name) != null);
     }
 
     /*private void Update()
@@ -48,7 +63,7 @@ public class HUDController : MonoBehaviour
         performanceMarker.End();
     }*/
 
-    private void SetupTimer(object obj)
+    private void SetupHUD(object obj)
     {
         //performanceMarker.Begin();
         LevelInfo info = (LevelInfo)obj;
@@ -56,6 +71,7 @@ public class HUDController : MonoBehaviour
         _bonusTime = info.ListActiveSkills.Find(x => x.SkillName == ESkills.Hourglass) != null ? HOURGLASS_BONUS_TIME : 0;
         _timeLeft = _timeAllow = info.LevelTimeAllow + _bonusTime;
         TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeLeft, _timeAllow);
+        HandleDisplayBuffIcons();
         //performanceMarker.End();
     }
 
@@ -109,7 +125,7 @@ public class HUDController : MonoBehaviour
         _bonusTime = listActiveSkills.Find(x => x.SkillName == ESkills.Hourglass) != null ? HOURGLASS_BONUS_TIME : 0;
         _timeLeft = _timeAllow = _levelInfo.LevelTimeAllow + _bonusTime;
         TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeAllow, _timeAllow);
-
+        HandleDisplayBuffIcons();
         //Debug.Log("Reset");
     }
 
