@@ -100,6 +100,9 @@
         OnValidatePlayerBuffs, //bắn đi khi play 1 level để xác thực player buff và xử lý
         OnMagnetizeCoins,
         OnBountyMarked,
+        OnBeingCursed,
+        OnCooldownSkill,
+        OnUseSkill,
 
     }
 

@@ -19,4 +19,10 @@ public static class TimeDisplayHelper
 
         return result;
     }
+
+    public static TextMeshProUGUI DisplayCooldownTime(ref TextMeshProUGUI result, float timeLeft)
+    {
+        result.text = timeLeft.ToString("F1");
+        return result;
+    }
 }

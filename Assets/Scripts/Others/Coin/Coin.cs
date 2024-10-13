@@ -46,7 +46,7 @@ public class Coin : GameObjectManager
                .SetEase(Ease.Linear)
                .OnUpdate(() =>
                {
-                   Debug.Log("target: " + _playerRef.position);
+                   //Debug.Log("target: " + _playerRef.position);
                    //if (Vector3.Distance(transform.position, target) < NEAR_ZERO_THRESHOLD)
                    //{
                    //DOTween.Kill(transform.position);

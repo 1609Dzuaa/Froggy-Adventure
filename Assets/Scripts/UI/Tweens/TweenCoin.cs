@@ -30,17 +30,20 @@ public class TweenCoin : MonoBehaviour
     [SerializeField] float _duration;
     [SerializeField] Ease _ease;
     [HideInInspector] public int SCoinCollected, GCoinCollected = 0;
+    bool _isDoubleReward;
 
     // Start is called before the first frame update
     void Start()
     {
         ResetCoins();
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnCollectCoin, CollectCoin);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnBeingCursed, DoubleReward);
     }
 
     private void OnDestroy()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnCollectCoin, CollectCoin);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnBeingCursed, DoubleReward);
     }
 
     public void ResetCoins()
@@ -55,11 +58,13 @@ public class TweenCoin : MonoBehaviour
         Tween(info);
     }
 
+    private void DoubleReward(object obj) => _isDoubleReward = true;
+
     private void Tween(CoinInfo info)
     {
         if (info.Currency == ECurrency.Silver)
         {
-            int endValue = SCoinCollected + info.CoinGiven;
+            int endValue = SCoinCollected + ((!_isDoubleReward) ? info.CoinGiven : info.CoinGiven * 2);
             DOTween.To(() => SCoinCollected, x => SCoinCollected = x, endValue, _duration)
                 .OnUpdate(() =>
                 {
@@ -68,7 +73,7 @@ public class TweenCoin : MonoBehaviour
         }
         else
         {
-            int endValue = GCoinCollected + info.CoinGiven;
+            int endValue = GCoinCollected + ((!_isDoubleReward) ? info.CoinGiven : info.CoinGiven * 2);
             DOTween.To(() => GCoinCollected, x => GCoinCollected = x, endValue, _duration)
                 .OnUpdate(() =>
                 {
