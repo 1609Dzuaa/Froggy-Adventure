@@ -22,6 +22,8 @@ public class DashState : PlayerBaseState
         _isFirstTimeDash = false;
         HandleIfPrevStateWallSlide();
         HandleDash();
+        SkillData data = new(GameEnums.ESkills.Dash, _playerStateManager.GetPlayerStats.DelayDashTime);
+        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.OnCooldownSkill, data);
         //Debug.Log("Dash");
     }
 

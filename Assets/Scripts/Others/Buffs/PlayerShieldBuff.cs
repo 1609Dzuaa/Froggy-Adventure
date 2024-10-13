@@ -1,21 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using static GameEnums;
+using static GameConstants;
 
 public class PlayerShieldBuff : PlayerBuffs
 {
-    [SerializeField] private float _runningOutDuration;
     [SerializeField] private Transform _deShieldVfxPos;
 
     private Animator _anim;
     private CircleCollider2D _circleCollider2D;
-    private bool _hasTriggeredRunningOut;
-    private bool _hasDisabled;
     Transform _shieldPos;
 
     public override void Awake()
     {
         GetReferenceComponentsAndSetup();
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
+    }
+
+    private void OnDestroy()
+    {
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
+    }
+
+    private void PerformSkill(object obj)
+    {
+        ESkills name = (ESkills)obj;
+        if (name == ESkills.Shield)
+        {
+            DOTween.To(() => _entryTime, x => _entryTime = x, TRASH_VALUE, BUFF_DURATION)
+                .OnUpdate(() => transform.position = _shieldPos.position)
+                .OnComplete(() =>
+                {
+                    _anim.SetTrigger(RUNNINGOUT);
+                    _entryTime = 0;
+                    DOTween.To(() => _entryTime, x => _entryTime = x, TRASH_VALUE, BUFF_RUN_OUT_DURATION)
+                    .OnUpdate(() => transform.position = _shieldPos.position)
+                    .OnComplete(() =>
+                    {
+                        DisableShield();
+                    });
+                });
+        }
     }
 
     private void GetReferenceComponentsAndSetup()
@@ -26,7 +53,7 @@ public class PlayerShieldBuff : PlayerBuffs
         _circleCollider2D.enabled = false;
     }
 
-    public override void Update()
+    /*public override void Update()
     {
         if (_isAllowToUpdate)
         {
@@ -37,11 +64,11 @@ public class PlayerShieldBuff : PlayerBuffs
             else if (CheckIfCanDisable())
                 DisableShield();
         }
-    }
+    }*/
 
-    private void OnTriggerEnter2D(Collider2D collision)
+private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.BOSS_SHIELD_TAG) || collision.CompareTag(GameConstants.TRAP_TAG))
+        if (collision.CompareTag(BOSS_SHIELD_TAG) || collision.CompareTag(TRAP_TAG))
         {
             DisableShield();
             SpawnDeShieldVfx(collision.ClosestPoint(transform.position));
@@ -51,7 +78,7 @@ public class PlayerShieldBuff : PlayerBuffs
 
     private void SpawnDeShieldVfx(Vector2 position)
     {
-        GameObject deShieldVfx = Pool.Instance.GetObjectInPool(GameEnums.EPoolable.PlayerDeShieldVfx);
+        GameObject deShieldVfx = Pool.Instance.GetObjectInPool(EPoolable.PlayerDeShieldVfx);
         deShieldVfx.SetActive(true);
         deShieldVfx.transform.position = position;
     }
@@ -62,39 +89,19 @@ public class PlayerShieldBuff : PlayerBuffs
         //Reset lại data khi apply buff
         if (_shieldPos)
             transform.position = _shieldPos.position;
-        _entryTime = Time.time;
+        //_entryTime = Time.time;
         _isAllowToUpdate = true;
         _anim.SetTrigger("Idle");
-        _hasTriggeredRunningOut = false;
-        _hasDisabled = false;
         _circleCollider2D.enabled = true;
-        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.ShieldBuffSfx, 1.0f);
-    }
-
-    private bool CheckIfRunningOut()
-    {
-        return Time.time - _entryTime >= _buffDuration && !_hasTriggeredRunningOut;
-    }
-
-    private void HandleRunningOutState()
-    {
-        _hasTriggeredRunningOut = true;
-        _anim.SetTrigger(GameConstants.RUNNINGOUT);
-        _entryTime = Time.time;
-    }
-
-    private bool CheckIfCanDisable()
-    {
-        return Time.time - _entryTime >= _runningOutDuration && _hasTriggeredRunningOut && !_hasDisabled;
+        SoundsManager.Instance.PlaySfx(ESoundName.ShieldBuffSfx, 1.0f);
     }
 
     private void DisableShield()
     {
-        _hasDisabled = true;
-        _isAllowToUpdate = false;
+        //_isAllowToUpdate = false;
         _anim.SetTrigger("Disable");
         _circleCollider2D.enabled = false;
-        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.SpecialBuffDebuffSfx, 1.0f);
+        SoundsManager.Instance.PlaySfx(ESoundName.SpecialBuffDebuffSfx, 1.0f);
         gameObject.SetActive(false);
     }
 

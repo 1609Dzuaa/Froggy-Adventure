@@ -101,6 +101,8 @@
         OnMagnetizeCoins,
         OnBountyMarked,
         OnBeingCursed,
+        OnCooldownSkill,
+        OnUseSkill,
 
     }
 

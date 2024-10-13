@@ -4,9 +4,21 @@ using UnityEngine;
 using static GameConstants;
 using static GameEnums;
 
+public class SkillData
+{
+    public ESkills Name;
+    public float CooldownTime;
+
+    public SkillData(ESkills name, float cooldownTime)
+    {
+        Name = name;
+        CooldownTime = cooldownTime;
+    }
+}
+
 public class ButtonSkillController : MonoBehaviour
 {
-    [SerializeField] ESkills _btnSkill; //btnDash, btnDbJump,...
+    [SerializeField] protected ESkills _btnSkill; //btnDash, btnDbJump,...
     protected bool _isActivated;
 
     protected virtual void Awake()

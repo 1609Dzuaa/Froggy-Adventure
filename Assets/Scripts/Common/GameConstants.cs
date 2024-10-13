@@ -27,6 +27,9 @@ public static class GameConstants
     public const float DELAY_PLAYER_RUN = 0.1f;
     public const float DELAY_PLAYER_DOUBLE_JUMP = 0.15f;
     public const int HOURGLASS_BONUS_TIME = 30;
+    public const int BUFF_DURATION = 15;
+    public const int BUFF_RUN_OUT_DURATION = 3;
+    public const int TRASH_VALUE = 0123; //trash val for tween
 
     #endregion
 
