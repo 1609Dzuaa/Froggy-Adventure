@@ -82,7 +82,7 @@ public class JumpState : PlayerBaseState
     {
         _playerStateManager.JumpStart = Time.time;
 
-        if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Jump).IsAllowToUpdate)
+        if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Jump).IsActivating)
         {
             if (_jumpForceApplied != 0)
             {
@@ -129,7 +129,7 @@ public class JumpState : PlayerBaseState
     private void PhysicsUpdateHorizontal()
     {
         if (_playerStateManager.GetDirX() != 0)
-            if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Speed).IsAllowToUpdate)
+            if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Speed).IsActivating)
                 _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
             else
                 _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(EBuffs.Speed)).SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);

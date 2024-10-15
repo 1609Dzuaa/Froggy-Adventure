@@ -65,7 +65,7 @@ public class BunnyManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             ChangeState(_bunnyIdleState);
             return;
@@ -85,7 +85,7 @@ public class BunnyManager : MEnemiesManager
 
     private void BackwardCheck()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             _isPlayerBackward = false;
             return;

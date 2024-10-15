@@ -254,8 +254,9 @@ public class PlayerStateManager : MonoBehaviour
         //và đang có khiên thì 0 cho change vì có thể có TH
         //chọc xuyên qua collider của shield
 
-        if (state is GotHitState && BuffsManager.Instance.GetTypeOfBuff(EBuffs.Shield).IsAllowToUpdate)
+        if (state is GotHitState && BuffsManager.Instance.GetTypeOfBuff(EBuffs.Shield).IsActivating)
         {
+            //day
             //Debug.Log("Tao co khien");
             return;
         }
@@ -519,7 +520,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         //Draw Ground, Magnetic Check
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        Gizmos.DrawSphere(transform.position, MAGNETIC_BUFF_RADIUS);
+        //Gizmos.DrawSphere(transform.position, MAGNETIC_BUFF_RADIUS);
 
         //Draw Wall Check
         if (isFacingRight)
@@ -778,7 +779,7 @@ public class PlayerStateManager : MonoBehaviour
         yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
 
         //Thêm check đây nữa 
-        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsActivating)
         {
             _hasStartCoroutine = false;
             yield return null;
@@ -793,7 +794,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleAlphaValueGotHit()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsActivating)
             return;
 
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && !_hasStartCoroutine && _isApplyGotHitEffect)
@@ -802,7 +803,7 @@ public class PlayerStateManager : MonoBehaviour
         {
             //Hết thgian miễn dmg r thì trả màu về như cũ cho nó
             //NẾU trên ng 0 có buff vô hình, còn có thì return và set lại bool
-            if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsAllowToUpdate)
+            if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsActivating)
             {
                 _isApplyGotHitEffect = false;
                 return;

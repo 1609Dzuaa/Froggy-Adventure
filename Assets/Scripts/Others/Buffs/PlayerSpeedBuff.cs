@@ -16,7 +16,7 @@ public class PlayerSpeedBuff : PlayerBuffs
         _speedBuffIcon.gameObject.SetActive(false);
     }
 
-    public override void Update()
+    /*public override void Update()
     {
         if (_isAllowToUpdate)
         {
@@ -28,10 +28,10 @@ public class PlayerSpeedBuff : PlayerBuffs
                 //Debug.Log("Timeout!");
             }
             /*else
-                Debug.Log("dang buff Speed");*/
+                Debug.Log("dang buff Speed");
             _speedBuffIcon.transform.position = _speedBuffIconPos.position;
         }
-    }
+    }*/
 
     public override void ApplyBuff()
     {

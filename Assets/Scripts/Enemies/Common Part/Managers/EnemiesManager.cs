@@ -99,7 +99,7 @@ public class EnemiesManager : CharactersManager
 
     protected virtual void DetectPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsActivating)
         {
             _hasDetectedPlayer = false;
             return;

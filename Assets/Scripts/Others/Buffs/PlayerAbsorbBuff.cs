@@ -26,7 +26,7 @@ public class PlayerAbsorbBuff : PlayerBuffs
         _tempShieldIcon.gameObject.SetActive(false);
     }
 
-    public override void Update()
+    /*public override void Update()
     {
         if (_isAllowToUpdate)
         {
@@ -40,7 +40,7 @@ public class PlayerAbsorbBuff : PlayerBuffs
             else
                 _tempShieldIcon.transform.position = _tempShieldIconPos.position;
         }
-    }
+    }*/
 
     public override void ApplyBuff()
     {

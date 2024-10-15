@@ -20,9 +20,9 @@ public static class TimeDisplayHelper
         return result;
     }
 
-    public static TextMeshProUGUI DisplayCooldownTime(ref TextMeshProUGUI result, float timeLeft)
+    public static TextMeshProUGUI DisplayCooldownTime(ref TextMeshProUGUI result, float timeLeft, string decimalDisplayType)
     {
-        result.text = timeLeft.ToString("F1");
+        result.text = timeLeft.ToString(decimalDisplayType);
         return result;
     }
 }

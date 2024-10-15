@@ -23,8 +23,13 @@ public class ButtonSkillController : MonoBehaviour
 
     protected virtual void Awake()
     {
+        _isActivated = GetListSkills().Find(x => x.SkillName == _btnSkill) != null;
+    }
+
+    protected virtual List<Skills> GetListSkills(bool isLimited = false)
+    {
         string filePath = Application.dataPath + SKILLS_DATA_PATH;
-        var list = ToggleAbilityItemHelper.GetListActivatedSkills(false);
-        _isActivated = list.Find(x => x.SkillName == _btnSkill) != null;
+        var list = ToggleAbilityItemHelper.GetListActivatedSkills(isLimited);
+        return list;
     }
 }

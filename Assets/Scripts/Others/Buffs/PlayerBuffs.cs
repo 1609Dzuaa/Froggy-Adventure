@@ -6,9 +6,9 @@ public abstract class PlayerBuffs : MonoBehaviour
 {
     [SerializeField] protected float _buffDuration;
     protected float _entryTime;
-    protected bool _isAllowToUpdate;
+    protected bool _isActivating;
 
-    public bool IsAllowToUpdate { get => _isAllowToUpdate; set => _isAllowToUpdate = value; }
+    public bool IsActivating { get => _isActivating; set => _isActivating = value; }
 
     public virtual void Awake() { }
 
@@ -20,7 +20,7 @@ public abstract class PlayerBuffs : MonoBehaviour
     {
         //Xử lý cơ bản là bắt đầu bấm giờ và cho phép Update buff
         _entryTime = Time.time;
-        _isAllowToUpdate = true;
+        _isActivating = true;
         //Debug.Log("bat dau bam gio buff");
     }
 }

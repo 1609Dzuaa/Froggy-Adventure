@@ -15,7 +15,7 @@ public class PlayerJumpBuff : PlayerBuffs
         _jumpBuffIcon.gameObject.SetActive(false);
     }
 
-    public override void Update()
+    /*public override void Update()
     {
         if (_isAllowToUpdate)
         {
@@ -29,9 +29,9 @@ public class PlayerJumpBuff : PlayerBuffs
 
             _jumpBuffIcon.transform.position = _jumpBuffIconPos.position;
             /*else
-                Debug.Log("dang buff Jump");*/
+                Debug.Log("dang buff Jump");
         }
-    }
+    }*/
 
     public override void ApplyBuff()
     {

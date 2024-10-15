@@ -70,7 +70,7 @@ public class WallJumpState : PlayerBaseState
         {
             if (_playerStateManager.GetDirX() != 0)
             {
-                if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsAllowToUpdate)
+                if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsActivating)
                     _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
                 else
                     _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * _playerStateManager.GetDirX() * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed)).SpeedMultiplier, _playerStateManager.GetRigidBody2D().velocity.y);
