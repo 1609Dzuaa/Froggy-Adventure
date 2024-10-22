@@ -5,51 +5,55 @@ using DG.Tweening;
 using static GameEnums;
 using static GameConstants;
 
-public class PlayerShieldBuff : PlayerBuffs
+public class PlayerShieldBuff : PlayerActiveBuffs
 {
-    [SerializeField] private Transform _deShieldVfxPos;
+    [Header("Kiếm ShieldPos của Player kéo vào đây")]
+    [SerializeField] Transform _shieldPos;
 
     private Animator _anim;
     private CircleCollider2D _circleCollider2D;
-    Transform _shieldPos;
 
     public override void Awake()
     {
+        base.Awake();
         GetReferenceComponentsAndSetup();
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
     }
 
-    private void OnDestroy()
+    protected override void HandleActiveBuff()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
-    }
-
-    private void PerformSkill(object obj)
-    {
-        ESkills name = (ESkills)obj;
-        if (name == ESkills.Shield)
-        {
-            DOTween.To(() => _entryTime, x => _entryTime = x, TRASH_VALUE, BUFF_DURATION)
+        ActiveShield();
+        DOTween.To(() => _entryTime, x => _entryTime = x, TRASH_VALUE, BUFF_DURATION)
+            .OnUpdate(() => transform.position = _shieldPos.position)
+            .OnComplete(() =>
+            {
+                _anim.SetTrigger(RUNNINGOUT);
+                _entryTime = 0;
+                DOTween.To(() => _entryTime, x => _entryTime = x, TRASH_VALUE, BUFF_RUN_OUT_DURATION)
                 .OnUpdate(() => transform.position = _shieldPos.position)
                 .OnComplete(() =>
                 {
-                    _anim.SetTrigger(RUNNINGOUT);
-                    _entryTime = 0;
-                    DOTween.To(() => _entryTime, x => _entryTime = x, TRASH_VALUE, BUFF_RUN_OUT_DURATION)
-                    .OnUpdate(() => transform.position = _shieldPos.position)
-                    .OnComplete(() =>
-                    {
-                        DisableShield();
-                    });
+                    DisableShield();
+                    _isActivating = false;
                 });
-        }
+            });
+        //Debug.Log("clicked");
+    }
+
+    private void ActiveShield()
+    {
+        gameObject.SetActive(true);
+        if (_shieldPos)
+            transform.position = _shieldPos.position;
+        _anim.SetTrigger(IDLE);
+        _circleCollider2D.enabled = true;
+        _isActivating = true;
+        SoundsManager.Instance.PlaySfx(ESoundName.ShieldBuffSfx, 1.0f);
     }
 
     private void GetReferenceComponentsAndSetup()
     {
         _anim = GetComponent<Animator>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
-        _shieldPos = GameObject.Find("ShieldPosition").transform;
         _circleCollider2D.enabled = false;
     }
 
@@ -66,7 +70,7 @@ public class PlayerShieldBuff : PlayerBuffs
         }
     }*/
 
-private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(BOSS_SHIELD_TAG) || collision.CompareTag(TRAP_TAG))
         {
@@ -83,23 +87,9 @@ private void OnTriggerEnter2D(Collider2D collision)
         deShieldVfx.transform.position = position;
     }
 
-    public override void ApplyBuff()
-    {
-        gameObject.SetActive(true);
-        //Reset lại data khi apply buff
-        if (_shieldPos)
-            transform.position = _shieldPos.position;
-        //_entryTime = Time.time;
-        _isAllowToUpdate = true;
-        _anim.SetTrigger("Idle");
-        _circleCollider2D.enabled = true;
-        SoundsManager.Instance.PlaySfx(ESoundName.ShieldBuffSfx, 1.0f);
-    }
-
     private void DisableShield()
     {
-        //_isAllowToUpdate = false;
-        _anim.SetTrigger("Disable");
+        _anim.SetTrigger(DISABLE);
         _circleCollider2D.enabled = false;
         SoundsManager.Instance.PlaySfx(ESoundName.SpecialBuffDebuffSfx, 1.0f);
         gameObject.SetActive(false);

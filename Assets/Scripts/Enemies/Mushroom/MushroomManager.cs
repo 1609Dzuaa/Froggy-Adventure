@@ -46,7 +46,7 @@ public class MushroomManager : MEnemiesManager
 
     private void SafeCheck()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             ChangeState(_mEnemiesIdleState);
             return;
@@ -79,7 +79,7 @@ public class MushroomManager : MEnemiesManager
     //Hàm này dùng để Invoke trong state Attack
     private void AllowUpdateAttack()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             ChangeState(MEnemiesIdleState);
             return;

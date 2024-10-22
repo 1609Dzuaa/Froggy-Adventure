@@ -28,7 +28,7 @@ public class PlantManager : NMEnemiesManager
         //prob here 
         //enemy's bug khi player vô hình lúc chbi attack khiến cho
         //dù hết buff vô hình và bị detect nhưng enemy vẫn 0 attack player
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             ChangeState(_nmEnemiesIdleState);
             return;

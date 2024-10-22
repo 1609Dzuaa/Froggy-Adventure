@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerInvisibleBuff : PlayerBuffs
 {
-    //Record xem lại tăng giảm alpha
-
     [SerializeField] Transform _playerRef;
     [SerializeField] private float _alphaApply;
     [SerializeField] private float _alphaApplyRunOut;
@@ -24,7 +22,7 @@ public class PlayerInvisibleBuff : PlayerBuffs
         _playerSpriteRenderer = _playerRef.GetComponent<SpriteRenderer>();
     }
 
-    public override void Update()
+    /*public override void Update()
     {
         if (_isAllowToUpdate)
         {
@@ -41,18 +39,18 @@ public class PlayerInvisibleBuff : PlayerBuffs
                 }
             }
             /*else
-                Debug.Log("PlayerColor: " + _playerSpriteRenderer.color.a);*/
+                Debug.Log("PlayerColor: " + _playerSpriteRenderer.color.a);
         }
-    }
+    }*/
 
-    public override void ApplyBuff()
+    /*public override void ApplyBuff()
     {
         base.ApplyBuff();
         _hasTickRunOut = false; //Vì có thể runout r lại ăn buff
         _playerSpriteRenderer.color = new Color(1f, 1f, 1f, _alphaApply);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.InvisibleBuffSfx, 1.0f);
         //Debug.Log("da apply Invi");
-    }
+    }*/
 
     private void StartTickRunOut()
     {
@@ -84,7 +82,7 @@ public class PlayerInvisibleBuff : PlayerBuffs
 
     private void ResetBuffData()
     {
-        _isAllowToUpdate = false;
+        //_isAllowToUpdate = false;
         _hasTickRunOut = false;
         _playerSpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         //Debug.Log("Timeout!");

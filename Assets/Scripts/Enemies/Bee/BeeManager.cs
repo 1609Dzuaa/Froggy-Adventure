@@ -94,7 +94,7 @@ public class BeeManager : MEnemiesManager
 
     protected override void DetectPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             _hasDetectedPlayer = false;
             return;
@@ -114,7 +114,7 @@ public class BeeManager : MEnemiesManager
 
     private void SpawnBullet()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             ChangeState(_beeIdleState);
             _mustAttack = false;

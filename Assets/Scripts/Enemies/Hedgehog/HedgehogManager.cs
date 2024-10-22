@@ -46,7 +46,7 @@ public class HedgehogManager : NMEnemiesManager
 
     private void ChangeToSpikeIdle()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             ChangeState(_nmEnemiesIdleState);
             return;

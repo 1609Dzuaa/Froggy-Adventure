@@ -29,7 +29,8 @@ public static class GameConstants
     public const int HOURGLASS_BONUS_TIME = 30;
     public const int BUFF_DURATION = 15;
     public const int BUFF_RUN_OUT_DURATION = 3;
-    public const int TRASH_VALUE = 0123; //trash val for tween
+    public const int BUTTON_BUFF_COOLDOWN_DURATION = 30; 
+    public const int TRASH_VALUE = 0123; //trash val for tween, dùng khi tween đó 0 quan trọng value
 
     #endregion
 
@@ -49,6 +50,9 @@ public static class GameConstants
     #region Shield String Constants
     public const string RUNNINGOUT = "RunningOut";
     public const string IDLE = "Idle";
+    public const string DISABLE = "Disable";
+    public const string NO_DECIMAL_FORMAT = "F0";
+    public const string DECIMAL_DISPLAY_ONE_PLACE = "F1";
     #endregion
 
     #region Fire Trap Constants

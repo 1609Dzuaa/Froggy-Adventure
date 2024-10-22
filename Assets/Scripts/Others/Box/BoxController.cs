@@ -58,6 +58,7 @@ public class BoxController : GameObjectManager
     // Update is called once per frame
     void Update()
     {
+        //bỏ update đi, dùng invoke cho nó
         AnimationController();
     }
 
@@ -66,7 +67,7 @@ public class BoxController : GameObjectManager
         if (collision.gameObject.CompareTag(GameConstants.PLAYER_TAG) && !_isGotHit)
         {
             _healthPoint--;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive);
             
             _isGotHit = true; //Mark this box has been hitted and make sure only applied force once
             if (_healthPoint == 0)
@@ -84,7 +85,7 @@ public class BoxController : GameObjectManager
     {
         if(collision.gameObject.CompareTag(GameConstants.BULLET_TAG))
         {
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit);
             _isGotHit = true;
             Invoke(nameof(AllowSpawnPiece), _delaySpawnPiece);
         }

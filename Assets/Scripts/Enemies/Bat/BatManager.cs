@@ -99,7 +99,7 @@ public class BatManager : MEnemiesManager
 
     protected override void DetectPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             _hasDetectedPlayer = false;
             return;
@@ -137,7 +137,7 @@ public class BatManager : MEnemiesManager
 
     protected override void AllowAttackPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsAllowToUpdate)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
             return;
 
         ChangeState(_batAttackState);
