@@ -57,19 +57,6 @@ public class PlayerShieldBuff : PlayerActiveBuffs
         _circleCollider2D.enabled = false;
     }
 
-    /*public override void Update()
-    {
-        if (_isAllowToUpdate)
-        {
-            transform.position = _shieldPos.position;
-
-            if (CheckIfRunningOut())
-                HandleRunningOutState();
-            else if (CheckIfCanDisable())
-                DisableShield();
-        }
-    }*/
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(BOSS_SHIELD_TAG) || collision.CompareTag(TRAP_TAG))

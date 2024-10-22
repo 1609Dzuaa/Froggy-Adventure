@@ -23,12 +23,6 @@ public class BuffsManager : BaseSingleton<BuffsManager>
             buff.Start();
     }
 
-    /*private void Update()
-    {
-        foreach(var buff  in _dictBuffs.Values)
-            buff.Update();
-    }*/
-
     private void InitBuffDictionary()
     {
         _dictBuffs.Add(EBuffs.Invisible, _invisibleBuff);

@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static GameEnums;
-using static UnityEditor.Progress;
 
 public class ItemLevel : MonoBehaviour
 {
