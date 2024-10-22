@@ -21,10 +21,7 @@ public class DoubleJumpState : PlayerBaseState
     private void PhysicsUpdate()
     {
         if (_playerStateManager.GetDirX() != 0)
-            if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed).IsActivating)
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
-            else
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Speed)).SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 
     private void LogicUpdate()
@@ -63,10 +60,7 @@ public class DoubleJumpState : PlayerBaseState
     private void HandleDbJump()
     {
         _playerStateManager.SetCanDbJump(false);
-        if (!BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Jump).IsActivating)
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY * _playerStateManager.GetPlayerStats.DbJumpSpeedFactor);
-        else
-            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.GetPlayerStats.SpeedY * ((PlayerJumpBuff)BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Jump)).JumpMutiplier * _playerStateManager.GetPlayerStats.DbJumpSpeedFactor);
+        _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.GetRigidBody2D().velocity.x, _playerStateManager.JumpSpeed);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.DoubleJumpSfx, 1.0f);
     }
 }

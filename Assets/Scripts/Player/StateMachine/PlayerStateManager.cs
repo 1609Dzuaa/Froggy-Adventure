@@ -254,7 +254,7 @@ public class PlayerStateManager : MonoBehaviour
         //và đang có khiên thì 0 cho change vì có thể có TH
         //chọc xuyên qua collider của shield
 
-        if (state is GotHitState && BuffsManager.Instance.GetTypeOfBuff(EBuffs.Shield).IsActivating)
+        if (state is GotHitState && BuffsManager.Instance.GetBuff(EBuffs.Shield).IsActivating)
         {
             //day
             //Debug.Log("Tao co khien");
@@ -413,7 +413,6 @@ public class PlayerStateManager : MonoBehaviour
         }
         //=========Handle things related to NPC==========//
 
-        //LockIfOutMinBound();
         UpdateLayer();
         HandleInput();
         HandleCoyoteTime();
@@ -779,7 +778,7 @@ public class PlayerStateManager : MonoBehaviour
         yield return new WaitForSeconds(_playerStats.TimeEachApplyAlpha);
 
         //Thêm check đây nữa 
-        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsActivating)
+        if (BuffsManager.Instance.GetBuff(EBuffs.Invisible).IsActivating)
         {
             _hasStartCoroutine = false;
             yield return null;
@@ -794,7 +793,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void HandleAlphaValueGotHit()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsActivating)
+        if (BuffsManager.Instance.GetBuff(EBuffs.Invisible).IsActivating)
             return;
 
         if (Time.time - gotHitState.EntryTime <= _playerStats.InvulnerableTime && !_hasStartCoroutine && _isApplyGotHitEffect)
@@ -803,7 +802,7 @@ public class PlayerStateManager : MonoBehaviour
         {
             //Hết thgian miễn dmg r thì trả màu về như cũ cho nó
             //NẾU trên ng 0 có buff vô hình, còn có thì return và set lại bool
-            if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsActivating)
+            if (BuffsManager.Instance.GetBuff(EBuffs.Invisible).IsActivating)
             {
                 _isApplyGotHitEffect = false;
                 return;
@@ -820,14 +819,6 @@ public class PlayerStateManager : MonoBehaviour
         dEff.SetActive(true);
         //Event của Dash animation
         //Dùng để ra dấu hiệu chỉ đc dash khi hết effect
-    }
-
-    private void LockIfOutMinBound()
-    {
-        if (transform.position.x < GAME_MIN_BOUNDARY)
-            transform.position = new Vector3(GAME_MIN_BOUNDARY, transform.position.y, transform.position.z);
-        else if(transform.position.x > GAME_MAX_BOUNDARY)
-            transform.position = new Vector3(GAME_MAX_BOUNDARY, transform.position.y, transform.position.z);
     }
 
     private void PushBack(object obj)

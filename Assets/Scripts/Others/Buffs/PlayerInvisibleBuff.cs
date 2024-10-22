@@ -43,14 +43,14 @@ public class PlayerInvisibleBuff : PlayerBuffs
         }
     }*/
 
-    public override void ApplyBuff()
+    /*public override void ApplyBuff()
     {
         base.ApplyBuff();
         _hasTickRunOut = false; //Vì có thể runout r lại ăn buff
         _playerSpriteRenderer.color = new Color(1f, 1f, 1f, _alphaApply);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.InvisibleBuffSfx, 1.0f);
         //Debug.Log("da apply Invi");
-    }
+    }*/
 
     private void StartTickRunOut()
     {

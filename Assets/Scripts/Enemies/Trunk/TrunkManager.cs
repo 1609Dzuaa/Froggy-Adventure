@@ -61,7 +61,7 @@ public class TrunkManager : MEnemiesManager
 
     private bool WithDrawnCheck()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsActivating)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
             return _canWithDrawn = false;
 
         if (!_isFacingRight)
@@ -79,7 +79,7 @@ public class TrunkManager : MEnemiesManager
 
     private void SpawnBullet()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsActivating)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             ChangeState(_trunkIdleState);
             return;

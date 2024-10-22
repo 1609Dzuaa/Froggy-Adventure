@@ -36,7 +36,7 @@ public class PlayerShieldBuff : PlayerActiveBuffs
                     _isActivating = false;
                 });
             });
-        Debug.Log("clicked");
+        //Debug.Log("clicked");
     }
 
     private void ActiveShield()

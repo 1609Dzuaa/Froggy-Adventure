@@ -35,7 +35,7 @@ public class GotHitState : PlayerBaseState
 
     private void KnockBack()
     {
-        if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Absorb).IsActivating)
+        if (!BuffsManager.Instance.GetBuff(EBuffs.Absorb).IsActivating)
         {
             if (_isHitByTrap)
             {
@@ -56,7 +56,7 @@ public class GotHitState : PlayerBaseState
 
     private void HandleGotHit()
     {     
-        if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Absorb).IsActivating)
+        if (!BuffsManager.Instance.GetBuff(EBuffs.Absorb).IsActivating)
             PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
         else
             PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_TEMP);

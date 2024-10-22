@@ -57,10 +57,10 @@ public class GhostManager : NPCManagers
         //Debug.Log("is near: " + _isPlayerNearBy);
     }
 
-    private void FixedUpdate()
+    /*private void FixedUpdate()
     {
         _state.FixedUpdate();
-    }
+    }*/
 
     private void ChangeToIdle()
     {

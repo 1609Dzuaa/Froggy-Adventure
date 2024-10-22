@@ -54,7 +54,7 @@ public class EnemiesManager : CharactersManager
         EventsManager.Instance.SubcribeToAnEvent(EEvents.BossOnSummonMinion, ReceiveBossCommand);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.BossOnDie, HandleIfBossDie);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnBountyMarked, BountyMarked);
-        Debug.Log("Subbed");
+        //Debug.Log("Subbed");
     }
 
     protected virtual void OnDestroy()
@@ -99,7 +99,7 @@ public class EnemiesManager : CharactersManager
 
     protected virtual void DetectPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(EBuffs.Invisible).IsActivating)
+        if (BuffsManager.Instance.GetBuff(EBuffs.Invisible).IsActivating)
         {
             _hasDetectedPlayer = false;
             return;

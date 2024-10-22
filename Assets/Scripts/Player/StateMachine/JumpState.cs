@@ -82,26 +82,17 @@ public class JumpState : PlayerBaseState
     {
         _playerStateManager.JumpStart = Time.time;
 
-        if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Jump).IsActivating)
+        if (_jumpForceApplied != 0)
         {
-            if (_jumpForceApplied != 0)
-            {
-                float xVelo = _playerStateManager.GetRigidBody2D().velocity.x;
-                float yVelo = _jumpForceApplied;
-                _playerStateManager.GetRigidBody2D().velocity = new(xVelo, yVelo);
-            }
-            else
-            {
-                float xVelo = _playerStateManager.GetRigidBody2D().velocity.x;
-                float yVelo = _playerStateManager.GetPlayerStats.SpeedY;
-                _playerStateManager.GetRigidBody2D().velocity = new(xVelo, yVelo);
-            }
+            float xVelo = _playerStateManager.GetRigidBody2D().velocity.x;
+            float yVelo = _jumpForceApplied;
+            _playerStateManager.GetRigidBody2D().velocity = new(xVelo, yVelo);
         }
         else
         {
             float xVelo = _playerStateManager.GetRigidBody2D().velocity.x;
-            float yVelo = _playerStateManager.GetPlayerStats.SpeedY * ((PlayerJumpBuff)BuffsManager.Instance.GetTypeOfBuff(EBuffs.Jump)).JumpMutiplier;
-            _playerStateManager.GetRigidBody2D().velocity = new (xVelo, yVelo);
+            float yVelo = _playerStateManager.JumpSpeed;
+            _playerStateManager.GetRigidBody2D().velocity = new(xVelo, yVelo);
         }
 
         SoundsManager.Instance.PlaySfx(ESoundName.PlayerJumpSfx, 1.0f);
@@ -129,10 +120,7 @@ public class JumpState : PlayerBaseState
     private void PhysicsUpdateHorizontal()
     {
         if (_playerStateManager.GetDirX() != 0)
-            if (!BuffsManager.Instance.GetTypeOfBuff(EBuffs.Speed).IsActivating)
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
-            else
-                _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * ((PlayerSpeedBuff)BuffsManager.Instance.GetTypeOfBuff(EBuffs.Speed)).SpeedMultiplier * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
+            _playerStateManager.GetRigidBody2D().velocity = new Vector2(_playerStateManager.MoveSpeed * _playerStateManager.GetDirX(), _playerStateManager.GetRigidBody2D().velocity.y);
     }
 
 }

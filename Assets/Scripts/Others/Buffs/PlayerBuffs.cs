@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//refactor ?
 public abstract class PlayerBuffs : MonoBehaviour
 {
-    [SerializeField] protected float _buffDuration;
-    protected float _entryTime;
     protected bool _isActivating;
+    protected float _entryTime;
 
     public bool IsActivating { get => _isActivating; set => _isActivating = value; }
 
@@ -14,13 +14,5 @@ public abstract class PlayerBuffs : MonoBehaviour
 
     public virtual void Start() { }
 
-    public virtual void Update() { }
-
-    public virtual void ApplyBuff()
-    {
-        //Xử lý cơ bản là bắt đầu bấm giờ và cho phép Update buff
-        _entryTime = Time.time;
-        _isActivating = true;
-        //Debug.Log("bat dau bam gio buff");
-    }
+    //public virtual void Update() { }
 }

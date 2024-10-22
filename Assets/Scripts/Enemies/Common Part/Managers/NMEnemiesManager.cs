@@ -72,7 +72,7 @@ public class NMEnemiesManager : EnemiesManager
 
     protected virtual void AllowAttackPlayer()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsActivating)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             ChangeState(_nmEnemiesIdleState);
             return;

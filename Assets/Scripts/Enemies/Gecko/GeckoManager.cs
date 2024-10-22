@@ -174,7 +174,7 @@ public class GeckoManager : MEnemiesManager
 
     private void ChangeToAttack()
     {
-        if (BuffsManager.Instance.GetTypeOfBuff(GameEnums.EBuffs.Invisible).IsActivating)
+        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
         {
             ChangeState(_geckoIdleState);
             return;
