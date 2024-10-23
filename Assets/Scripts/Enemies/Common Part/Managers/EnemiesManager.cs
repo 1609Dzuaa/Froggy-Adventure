@@ -82,7 +82,6 @@ public class EnemiesManager : CharactersManager
     {
         base.Update();
         DrawRayDetectPlayer();
-        HandleIfIsSpecialEnemy();
     }
 
     protected override void FixedUpdate()
@@ -111,29 +110,6 @@ public class EnemiesManager : CharactersManager
             _hasDetectedPlayer = _hit2D.collider.CompareTag(PLAYER_TAG);
         else
             _hasDetectedPlayer = false;
-
-        /*if (!_isFacingRight)
-        {
-            _hit2D = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
-
-            if (_hit2D)
-                _hasDetectedPlayer = _hit2D.collider.CompareTag(PLAYER_TAG);
-            else
-                _hasDetectedPlayer = false;
-
-            //_hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.left, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
-        }
-        else
-        {
-            _hit2D = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
-            
-            if (_hit2D)
-                _hasDetectedPlayer = _hit2D.collider.CompareTag(PLAYER_TAG);
-            else
-                _hasDetectedPlayer = false;
-
-            //_hasDetectedPlayer = Physics2D.Raycast(_playerCheck.position, Vector2.right, _enemiesSO.PlayerCheckDistance, _enemiesSO.PlayerLayer);
-        }*/
     }
 
     protected virtual void DrawRayDetectPlayer()
@@ -196,24 +172,6 @@ public class EnemiesManager : CharactersManager
             go.transform.position = transform.position;
         }
         Debug.Log("marked: " + _bountyMarked);
-    }
-
-    /// <summary>
-    /// Các hàm dưới chỉ dùng cho các Enemy đặc biệt:
-    /// Mục đích để tắt Tutor || unlock skill sau khi Player tìm cách hạ đc nó
-    /// Còn Enemy bthg thì 0 cần quan tâm hàm này
-    /// </summary>
-
-    protected void HandleIfIsSpecialEnemy()
-    {
-        /*if (_hasGotHit && !_hasNotified && _needTutor)
-        {
-            _hasNotified = true;
-            EventsManager.Instance.NotifyObservers(EEvents.TutorOnDestroy, _tutorRef);
-
-            if (_isApplySkillToPlayer)
-                StartCoroutine(NotifyUnlockSkill());
-        }*/
     }
 
 }
