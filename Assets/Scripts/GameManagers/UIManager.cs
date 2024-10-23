@@ -221,6 +221,9 @@ public class UIManager : BaseSingleton<UIManager>
                 else if (!isReplay)
                 {
                     _hudControl.Countdown(); //0 phải replay thì mới count
+                    string strLevelTheme = "Level" + indexLevel.ToString() + "Theme";
+                    ESoundName levelTheme = (ESoundName)Enum.Parse(typeof(ESoundName), strLevelTheme);
+                    SoundsManager.Instance.PlayMusic(levelTheme);
                 }
                 List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills();
                 EventsManager.Instance.NotifyObservers(EEvents.OnValidatePlayerBuffs, skills);
