@@ -148,6 +148,7 @@
         StartMenuTheme,
         Level1Theme,
         Level2Theme,
+        Level3Theme,
         BossTheme,
         CollectFruitSfx,
         BountyAppearVfxSfx,
