@@ -1,12 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameEnums;
+
+[System.Serializable]
+public class FruitLimited
+{
+    public EFruits Name;
+    public Transform Fruit;
+}
 
 public class BoxController : GameObjectManager
 {
-    //Box loại 1 cho Speed, Jump Buff
-    //Loại 2 cho Invisible, Absorb, Shield Buff
-    //Loại 3 cho HP
+    //Remake lại box:
+    //Type 1 cho tiền
+    //Type 2 cho hoa quả
+    //Type 3 cho HP
+
     [Header("Type")]
     [Range(1,3)]
     [SerializeField] private int _boxType;
@@ -23,13 +33,14 @@ public class BoxController : GameObjectManager
     [SerializeField] private Transform _pos3;
     [SerializeField] private Transform _pos4;
 
-    //Box type 1 thì có 5 loại gift, type 3 khó phá nhất thì cho special Buff
-    [Header("Mystery Gift")] //Random 1 trong các gift sau
-    [SerializeField] private Transform _apple;
-    [SerializeField] private Transform _cherry;
-    [SerializeField] private Transform _strawberry;
-    [SerializeField] private Transform _orange;
-    [SerializeField] private Transform _shield;
+    [Header("Gifts, Type 1 thì chỉ cần 2 field s, gCoin, type 2 cần 3 field fruits, type 3 cần HP")]
+    [SerializeField] private Transform _sCoin;
+    [SerializeField] private Transform _gCoin;
+
+    [Header("Mỗi level chỉ giới hạn 3 loại fruit có thể lụm")]
+    [SerializeField] private FruitLimited[] _arrFruitAllow;
+
+    [Header("HP")]
     [SerializeField] private Transform _hp;
 
     [Header("Time")]
@@ -67,17 +78,17 @@ public class BoxController : GameObjectManager
         if (collision.gameObject.CompareTag(GameConstants.PLAYER_TAG) && !_isGotHit)
         {
             _healthPoint--;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive);
+            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnJumpPassive);
             
             _isGotHit = true; //Mark this box has been hitted and make sure only applied force once
             if (_healthPoint == 0)
             {
                 Invoke(nameof(AllowSpawnPiece), _delaySpawnPiece);
-                SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BoxBrokeSfx, 1.0f);
-                PlayerPrefs.SetString(GameEnums.ESpecialStates.Deleted + _ID, "deleted");
+                SoundsManager.Instance.PlaySfx(ESoundName.BoxBrokeSfx, 1.0f);
+                //PlayerPrefs.SetString(ESpecialStates.Deleted + _ID, "deleted");
             }
             else
-                SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BoxGotHitSfx, 1.0f);
+                SoundsManager.Instance.PlaySfx(ESoundName.BoxGotHitSfx, 1.0f);
         }
     }
 
@@ -85,7 +96,7 @@ public class BoxController : GameObjectManager
     {
         if(collision.gameObject.CompareTag(GameConstants.BULLET_TAG))
         {
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit);
+            EventsManager.Instance.NotifyObservers(EEvents.BulletOnHit);
             _isGotHit = true;
             Invoke(nameof(AllowSpawnPiece), _delaySpawnPiece);
         }
@@ -132,30 +143,19 @@ public class BoxController : GameObjectManager
             switch (randomGift)
             {
                 case 0:
-                    Instantiate(_orange, transform.position, Quaternion.identity, null);
+                    Instantiate(_sCoin, transform.position, Quaternion.identity, null);
                     break;
                 case 1:
-                    Instantiate(_apple, transform.position, Quaternion.identity, null);
+                    Instantiate(_gCoin, transform.position, Quaternion.identity, null);
                     break;
             }
         }
-        else if (type == 2)
+        else if (type == 3)
             Instantiate(_hp, transform.position, Quaternion.identity, null);
         else
         {
             int randomGift = Random.Range(0, 3);
-            switch (randomGift)
-            {
-                case 0:
-                    Instantiate(_cherry, transform.position, Quaternion.identity, null);
-                    break;
-                case 1:
-                    Instantiate(_strawberry, transform.position, Quaternion.identity, null);
-                    break;
-                case 2:
-                    Instantiate(_shield, transform.position, Quaternion.identity, null);
-                    break;
-            }
+            Instantiate(_arrFruitAllow[randomGift].Fruit, transform.position, Quaternion.identity, null);
         }
     }
 
