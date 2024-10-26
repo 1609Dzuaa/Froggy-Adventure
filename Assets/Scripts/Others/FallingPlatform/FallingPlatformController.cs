@@ -1,16 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class FallingPlatformController : GameObjectManager
 {
     [Header("Time")]
     [SerializeField] private float _disableDelay;
+    [SerializeField] private float _enableDelay;
+    [SerializeField] private float _tweenDuration;
 
     private bool _hasBeenStepOn;
-    private bool _allowDisable;
     private Rigidbody2D _rb;
     private BoxCollider2D _boxCollider2D;
+    private Vector2 _initPosition;
+    private int _initLayer;
 
     protected override void Awake()
     {
@@ -24,20 +28,26 @@ public class FallingPlatformController : GameObjectManager
         _rb = GetComponent<Rigidbody2D>();
     }
 
+    protected override void SetUpProperties()
+    {
+        _initPosition = transform.position;
+        _initLayer = gameObject.layer;
+    }
+
     protected override void Start()
     {
         base.Start();
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if(_hasBeenStepOn && _allowDisable)
         {
             _boxCollider2D.enabled = false;
             _rb.bodyType = RigidbodyType2D.Dynamic;
         }
-    }
+    }*/
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -52,17 +62,26 @@ public class FallingPlatformController : GameObjectManager
     {
         yield return new WaitForSeconds(_disableDelay);
 
-        _allowDisable = true;
-        _anim.SetTrigger("Off");
+        _boxCollider2D.enabled = false;
+        _rb.bodyType = RigidbodyType2D.Dynamic;
+        _anim.SetBool("Off", true);
         //Set layer về mặc định nếu 0 nó vẫn giữ layer Ground
         //=> làm cho Player vẫn ở trên Ground dù platform đã bị disable
         gameObject.layer = 0;
-        StartCoroutine(Destroy());
+        StartCoroutine(Enable());
     }
 
-    private IEnumerator Destroy()
+    private IEnumerator Enable()
     {
-        yield return new WaitForSeconds(1.5f);
-        Destroy(gameObject);
+        yield return new WaitForSeconds(_enableDelay);
+
+        _anim.SetBool("Off", false);
+        _rb.DOMove(_initPosition, _tweenDuration).OnComplete(() =>
+        {
+            _boxCollider2D.enabled = true;
+            gameObject.layer = _initLayer;
+            _hasBeenStepOn = false;
+            _rb.bodyType = RigidbodyType2D.Kinematic;
+        });
     }
 }
