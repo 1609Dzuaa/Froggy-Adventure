@@ -149,6 +149,7 @@
         Level1Theme,
         Level2Theme,
         Level3Theme,
+        Level4Theme,
         BossTheme,
         CollectFruitSfx,
         BountyAppearVfxSfx,
