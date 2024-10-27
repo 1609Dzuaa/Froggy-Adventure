@@ -28,7 +28,7 @@ public class ButtonSkillController : MonoBehaviour
 
     protected virtual List<Skills> GetListSkills(bool isLimited = false)
     {
-        string filePath = Application.dataPath + SKILLS_DATA_PATH;
+        string filePath = Application.persistentDataPath + SKILLS_DATA_PATH;
         var list = ToggleAbilityItemHelper.GetListActivatedSkills(isLimited);
         return list;
     }

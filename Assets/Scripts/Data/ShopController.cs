@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using static GameConstants;
 using static GameEnums;
+using System.IO;
 
 //gridlayoutgroup
 public class ShopController : MonoBehaviour
@@ -15,7 +16,7 @@ public class ShopController : MonoBehaviour
     [SerializeField] float _startPositionY;
 
     [Header("Prefab Items để Instantiate")]
-    [SerializeField] ItemShop[] _arrItemPrefabs;
+    public ItemShop[] ArrItemPrefabs;
     ItemShop[] _arrItems;
 
     [Header("Ref cái túi để gọi hàm Setup Dictionary bên túi, Shouldn't do this way;)")]
@@ -23,38 +24,76 @@ public class ShopController : MonoBehaviour
 
     private void Awake()
     {
-        CreateItem();
-        ResetScaleItems(_arrItems);
         StartCoroutine(InitFiles());
+    }
+
+    //delay để việc khởi tạo file (nếu chưa có) đc diễn ra
+    //và lấy data từ file đó
+    private IEnumerator InitFiles()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        ResetScaleItems(_arrItems);
         _playerBag.SetupDictionary();
     }
 
-    private IEnumerator InitFiles()
+    public void CreateItemAndInitFiles()
     {
-        yield return null;
-
-        //đợi 1 frame để check xem object bị destroy ch
-        //r mới init files
-        if (gameObject)
+        _arrItems = new ItemShop[ArrItemPrefabs.Length];
+        for (int i = 0; i < ArrItemPrefabs.Length; i++)
         {
-            InitFileHelper.InitAbilityAndFruitFiles(_arrItems);
-            Debug.Log("INIT FILES in ShopController");
-        }
-    }
-
-    private void CreateItem()
-    {
-        _arrItems = new ItemShop[_arrItemPrefabs.Length];
-        for (int i = 0; i < _arrItemPrefabs.Length; i++)
-        {
-            ItemShop itemShop = Instantiate(_arrItemPrefabs[i], transform);
+            ItemShop itemShop = Instantiate(ArrItemPrefabs[i], transform);
             _arrItems[i] = itemShop;
         }
+        InitAbilityAndFruitFiles(_arrItems);
     }
 
-    void Start()
+    private void InitAbilityAndFruitFiles(ItemShop[] arrParam)
     {
-        //HandleCreateSkillFile();
+        string skillsFilePath = Application.persistentDataPath + SKILLS_DATA_PATH;
+        if (!Directory.Exists(skillsFilePath))
+        {
+            List<Skills> listSkills = new();
+            List<Fruits> listFruits = new();
+            HashSet<ESkills> hashSkill = new();
+            HashSet<EFruits> hashFruits = new();
+
+            //Fill in List Skill và Fruit
+            foreach (var item in arrParam)
+            {
+                if (item is AbilityItemShop)
+                {
+                    var ability = (AbilityItemShop)item;
+
+                    //add skill vào list skills
+                    if (!hashSkill.Contains(ability.SISData.Ability.AbilityName))
+                    {
+                        var name = ability.SISData.Ability.AbilityName;
+                        var isLimited = ability.SISData.Ability.IsLimited;
+                        hashSkill.Add(name);
+                        Skills sk = new(name, DEFAULT_UNLOCK_ITEM, isLimited);
+                        listSkills.Add(sk);
+                    }
+
+                    //add fruit vào list fruits
+                    if (!hashFruits.Contains(ability.SISData.Ability.FruitName))
+                    {
+                        var name = ability.SISData.Ability.FruitName;
+                        hashFruits.Add(name);
+                        Fruits fr = new(name, DEFAULT_ITEM_COUNT);
+                        listFruits.Add(fr);
+                    }
+                }
+            }
+
+            SkillsController sC = new(listSkills);
+            JSONDataHelper.SaveToJSon<SkillsController>(sC, skillsFilePath);
+            Debug.Log("persistentDataPath: " + skillsFilePath);
+
+            string fruitsFilePath = Application.persistentDataPath + FRUITS_DATA_PATH;
+            FruitsIventory fI = new(listFruits);
+            JSONDataHelper.SaveToJSon<FruitsIventory>(fI, fruitsFilePath);
+        }
     }
 
     private void OnEnable()
@@ -79,9 +118,9 @@ public class ShopController : MonoBehaviour
     {
         Sequence sequence = DOTween.Sequence();
         bool isplay = false;
-        for (int i = 0; i < _arrItemPrefabs.Length; i++)
+        for (int i = 0; i < ArrItemPrefabs.Length; i++)
         {
-            sequence.Append(_arrItemPrefabs[i].transform.DOScale(Vector3.one, _tweenDuration).SetEase(_ease));
+            sequence.Append(ArrItemPrefabs[i].transform.DOScale(Vector3.one, _tweenDuration).SetEase(_ease));
             if(!isplay)
             {
                 isplay = true;
@@ -98,20 +137,20 @@ public class ShopController : MonoBehaviour
 
         yield return null;
 
-        //Debug.Log("Current Frame: " + Time.frameCount);
-        Sequence sequence = DOTween.Sequence();
-        for (int i = 0; i < arr.Length; i++)
-            sequence.Append(arr[i].transform.DOScale(Vector3.one, _tweenDuration).SetEase(_ease));
+        if (arr != null)
+        {
+            //Debug.Log("Current Frame: " + Time.frameCount);
+            Sequence sequence = DOTween.Sequence();
+            for (int i = 0; i < arr.Length; i++)
+                sequence.Append(arr[i].transform.DOScale(Vector3.one, _tweenDuration).SetEase(_ease));
+        }
     }
 
     private void ResetScaleItems(ItemShop[] arr)
     {
+        if (arr == null) return;
+
         for (int i = 0; i < arr.Length; i++)
             arr[i].transform.localScale = Vector3.zero;
-    }
-
-    public void ChangePos()
-    {
-        Debug.Log("hello");
     }
 }

@@ -20,8 +20,17 @@ public class AbilityItemShop : ItemShop
         SISData = (SpecialItemStaticData)ItemSData;
         if (SISData == null)
             Debug.Log("Null cmnr");
-        HandleDisplayItem();
+        StartCoroutine(DelayHandleDisplayItem());
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnItemEligibleCheck, HandleDisplayItem);
+    }
+
+    //Cần delay việc check display item để chắc chắn rằng
+    //các file data đã đc tạo (để lấy data từ các file đó)
+    private IEnumerator DelayHandleDisplayItem()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        HandleDisplayItem();
     }
 
     protected override void Start()
@@ -72,7 +81,7 @@ public class AbilityItemShop : ItemShop
 
     private void HandleDisplayItem(object obj = null)
     {
-        string filePath = Application.dataPath + FRUITS_DATA_PATH;
+        string filePath = Application.persistentDataPath + FRUITS_DATA_PATH;
         _fruitLack = SISData.Ability.FruitsRequired;
         FruitsIventory fI = JSONDataHelper.LoadFromJSon<FruitsIventory>(filePath);
         Skills sk;

@@ -49,11 +49,6 @@ public class PlayerBagController : MonoBehaviour
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
 
-    private void Start()
-    {
-        DisplayCurrencyTexts();
-    }
-
     public void SetupDictionary()
     {
         _dictCurrencyInfoComps = new();
@@ -63,13 +58,14 @@ public class PlayerBagController : MonoBehaviour
                 _dictCurrencyInfoComps.Add(item.Currency, item);
         DictFruits = new();
         TempDictFruits = new();
-        string filePath = Application.dataPath + FRUITS_DATA_PATH;
+        string filePath = Application.persistentDataPath + FRUITS_DATA_PATH;
         FruitsIventory fI = JSONDataHelper.LoadFromJSon<FruitsIventory>(filePath);
         foreach (var fruit in fI.Fruits)
         {
             DictFruits.Add(fruit.FruitName, fruit);
             TempDictFruits.Add(fruit.FruitName, fruit);
         }
+        DisplayCurrencyTexts();
     }
 
     private void DisplayCurrencyTexts()

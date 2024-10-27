@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 using static GameConstants;
 using static GameEnums;
 
@@ -9,22 +10,36 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
     [SerializeField] PlayerBagController _pBag;
     [SerializeField] PlayerHealthManager _pHealth;
     List<Fruits> _listFruits = new();
-    FruitsIventory _fInventoryInstance;
+    FruitsIventory _fInventory;
 
     protected override void Awake()
     {
         base.Awake();
-        GetPlayerData();
         DontDestroyOnLoad(gameObject);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
     }
 
-    private void GetPlayerData()
+    //đc gọi ở script InitializeFiles để đồng nhất việc init các file cùng 1 lúc
+    public void InitializePlayerData()
     {
-        string filePath = Application.dataPath + PLAYER_DATA_PATH;
+        string filePath = Application.persistentDataPath + PLAYER_DATA_PATH;
+        if (!Directory.Exists(filePath))
+        {
+            PlayerData pData = new PlayerData(DEFAULT_PLAYER_HP, DEFAULT_PLAYER_HP, DEFAULT_PLAYER_COIN, DEFAULT_PLAYER_COIN);
+            JSONDataHelper.SaveToJSon<PlayerData>(pData, filePath);
+            GetPlayerData(filePath);
+        }
+        else
+        {
+            GetPlayerData(filePath);
+        }
+    }
+
+    private void GetPlayerData(string filePath)
+    {
         PlayerData playerData = JSONDataHelper.LoadFromJSon<PlayerData>(filePath);
-        _fInventoryInstance = JSONDataHelper.LoadFromJSon<FruitsIventory>(Application.dataPath + FRUITS_DATA_PATH);
+        _fInventory = JSONDataHelper.LoadFromJSon<FruitsIventory>(Application.persistentDataPath + FRUITS_DATA_PATH);
         _pBag.SilverCoin = playerData.SilverCoin;
         _pBag.GoldCoin = playerData.GoldCoin;
         _pHealth.CurrentHP = playerData.HealthPoint;
@@ -42,14 +57,14 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
     private void SavePlayerData()
     {
         PlayerData pData = new(_pHealth.CurrentHP, _pHealth.MaxHP, _pBag.SilverCoin, _pBag.GoldCoin);
-        JSONDataHelper.SaveToJSon<PlayerData>(pData, Application.dataPath + PLAYER_DATA_PATH);
+        JSONDataHelper.SaveToJSon<PlayerData>(pData, Application.persistentDataPath + PLAYER_DATA_PATH);
 
         _listFruits.Clear();
         foreach (var item in _pBag.DictFruits)
             _listFruits.Add(item.Value);
 
-        _fInventoryInstance.Fruits = _listFruits;
-        JSONDataHelper.SaveToJSon<FruitsIventory>(_fInventoryInstance, Application.dataPath + FRUITS_DATA_PATH);
+        _fInventory.Fruits = _listFruits;
+        JSONDataHelper.SaveToJSon<FruitsIventory>(_fInventory, Application.persistentDataPath + FRUITS_DATA_PATH);
     }
 
     private void SaveData(object obj)
@@ -68,7 +83,7 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
 
     private void LockLimitedSkills(object obj)
     {
-        string filePath = Application.dataPath + SKILLS_DATA_PATH;
+        string filePath = Application.persistentDataPath + SKILLS_DATA_PATH;
         SkillsController sC = JSONDataHelper.LoadFromJSon<SkillsController>(filePath);
         foreach (var s in sC.skills)
             if (s.IsLimited)
