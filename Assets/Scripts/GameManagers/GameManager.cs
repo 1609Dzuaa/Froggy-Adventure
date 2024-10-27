@@ -17,6 +17,9 @@ public class GameManager : BaseSingleton<GameManager>
         base.Awake();
         PlayerPrefs.DeleteAll();
         DontDestroyOnLoad(gameObject);
+        //Mobile platforms always ignore QualitySettings.vSyncCount and instead
+        //use Application.targetFrameRate to choose a target frame rate for the game.
+        Application.targetFrameRate = DEFAULT_TARGET_FRAME_RATE;
     }
 
     public void SwitchScene(int sceneIndex)

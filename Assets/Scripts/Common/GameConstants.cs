@@ -167,6 +167,7 @@ public static class GameConstants
     public const bool DEFAULT_LEVEL_UNLOCK = false;
     public const bool DEFAULT_LEVEL_COMPLETED = false;
     public const int DEFAULT_TIME_COMPLETED = 0;
+    public const int DEFAULT_TARGET_FRAME_RATE = 120;
 
     #endregion
 
