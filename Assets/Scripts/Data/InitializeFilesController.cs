@@ -7,10 +7,12 @@ public class InitializeFilesController : MonoBehaviour
 {
     [SerializeField] PlayerDataController _pData;
     [SerializeField] ShopController _shopController;
+    [SerializeField] PlayerBagController _bagController;
 
     private void Awake()
     {
         _shopController.CreateItemAndInitFiles();
+        _bagController.SetupDictionary();
         _pData.InitializePlayerData();
     }
 }

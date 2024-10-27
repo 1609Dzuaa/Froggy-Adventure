@@ -19,24 +19,6 @@ public class ShopController : MonoBehaviour
     public ItemShop[] ArrItemPrefabs;
     ItemShop[] _arrItems;
 
-    [Header("Ref cái túi để gọi hàm Setup Dictionary bên túi, Shouldn't do this way;)")]
-    [SerializeField] PlayerBagController _playerBag;
-
-    private void Awake()
-    {
-        StartCoroutine(InitFiles());
-    }
-
-    //delay để việc khởi tạo file (nếu chưa có) đc diễn ra
-    //và lấy data từ file đó
-    private IEnumerator InitFiles()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        ResetScaleItems(_arrItems);
-        _playerBag.SetupDictionary();
-    }
-
     public void CreateItemAndInitFiles()
     {
         _arrItems = new ItemShop[ArrItemPrefabs.Length];
@@ -46,6 +28,7 @@ public class ShopController : MonoBehaviour
             _arrItems[i] = itemShop;
         }
         InitAbilityAndFruitFiles(_arrItems);
+        ResetScaleItems();
     }
 
     private void InitAbilityAndFruitFiles(ItemShop[] arrParam)
@@ -111,7 +94,7 @@ public class ShopController : MonoBehaviour
 
     private void OnDisable()
     {
-        ResetScaleItems(_arrItems);
+        ResetScaleItems();
     }
 
     /*private void TweenItems()
@@ -146,11 +129,11 @@ public class ShopController : MonoBehaviour
         }
     }
 
-    private void ResetScaleItems(ItemShop[] arr)
+    public void ResetScaleItems()
     {
-        if (arr == null) return;
+        if (_arrItems == null) return;
 
-        for (int i = 0; i < arr.Length; i++)
-            arr[i].transform.localScale = Vector3.zero;
+        for (int i = 0; i < _arrItems.Length; i++)
+            _arrItems[i].transform.localScale = Vector3.zero;
     }
 }
