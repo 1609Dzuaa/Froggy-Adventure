@@ -133,12 +133,12 @@ public class HUDController : MonoBehaviour
     {
         int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
         LevelProgressData levelPData = new(currentLevelIndex, true, true, _timeAllow - _timeLeft);
-        string levelFilePath = Application.dataPath + LEVEL_DATA_PATH + currentLevelIndex.ToString() + ".json";
+        string levelFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + currentLevelIndex.ToString() + ".json";
         JSONDataHelper.SaveToJSon<LevelProgressData>(levelPData, levelFilePath);
 
         int nextLevelIndex = currentLevelIndex + 1;
         LevelProgressData nextLevelPData = new(nextLevelIndex, true, false, 0);
-        string nextLevelFilePath = Application.dataPath + LEVEL_DATA_PATH + nextLevelIndex.ToString() + ".json";
+        string nextLevelFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + nextLevelIndex.ToString() + ".json";
         JSONDataHelper.SaveToJSon<LevelProgressData>(nextLevelPData, nextLevelFilePath);
         EventsManager.Instance.NotifyObservers(EEvents.OnUpdateLevel, nextLevelIndex);
     }

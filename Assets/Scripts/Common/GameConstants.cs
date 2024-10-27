@@ -140,10 +140,10 @@ public static class GameConstants
 
     #region FILES
 
-    public const string LEVEL_DATA_PATH = "\\JSON Data\\Levels Data\\";
-    public const string PLAYER_DATA_PATH = "\\JSON Data\\Player Data.json";
-    public const string SKILLS_DATA_PATH = "\\JSON Data\\List Skill.json";
-    public const string FRUITS_DATA_PATH = "\\JSON Data\\List Fruit.json";
+    public const string LEVEL_DATA_PATH = "\\";
+    public const string PLAYER_DATA_PATH = "\\Player Data.json";
+    public const string SKILLS_DATA_PATH = "\\List Skill.json";
+    public const string FRUITS_DATA_PATH = "\\List Fruit.json";
 
     #endregion
 
@@ -158,10 +158,15 @@ public static class GameConstants
 
     #endregion
 
-    #region Skills & Fruits
+    #region DEFAULT CONST
 
     public const bool DEFAULT_UNLOCK_ITEM = false;
     public const int DEFAULT_ITEM_COUNT = 0;
+    public const int DEFAULT_PLAYER_HP = 3;
+    public const int DEFAULT_PLAYER_COIN = 0;
+    public const bool DEFAULT_LEVEL_UNLOCK = false;
+    public const bool DEFAULT_LEVEL_COMPLETED = false;
+    public const int DEFAULT_TIME_COMPLETED = 0;
 
     #endregion
 

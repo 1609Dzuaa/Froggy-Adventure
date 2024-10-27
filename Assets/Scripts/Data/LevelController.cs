@@ -4,7 +4,7 @@ using System.IO;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.UI;
-using static GameEnums;
+using static GameConstants;
 
 public class LevelController : MonoBehaviour
 {
@@ -39,6 +39,14 @@ public class LevelController : MonoBehaviour
             {
                 ItemLevel itemLevel = Instantiate(_itemLevel, transform);
                 itemLevel.LvlSData = item;
+                string itemFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + item.OrderID.ToString() + ".json";
+                if (!Directory.Exists(itemFilePath))
+                {
+                    LevelProgressData data = new LevelProgressData(item.OrderID, 
+                        (item.OrderID != 1) ? DEFAULT_LEVEL_UNLOCK : true, DEFAULT_LEVEL_COMPLETED,
+                        DEFAULT_TIME_COMPLETED);
+                    JSONDataHelper.SaveToJSon<LevelProgressData>(data, itemFilePath);
+                }
             }
         }
     }

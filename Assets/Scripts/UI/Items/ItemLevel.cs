@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static GameEnums;
+using static GameConstants;
 
 public class ItemLevel : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class ItemLevel : MonoBehaviour
 
     private void HandleLockLevel()
     {
-        string itemFilePath = Application.dataPath + GameConstants.LEVEL_DATA_PATH + LvlSData.OrderID.ToString() + ".json";
+        string itemFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + LvlSData.OrderID.ToString() + ".json";
         LvlPData = JSONDataHelper.LoadFromJSon<LevelProgressData>(itemFilePath);
         _lockLevel.SetActive(!LvlPData.IsUnlock);
         _imgUnlock.gameObject.SetActive(LvlPData.IsUnlock);

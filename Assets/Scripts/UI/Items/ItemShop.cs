@@ -63,7 +63,7 @@ public class ItemShop : MonoBehaviour
             _dictCurrencyInfoComps[item.Key].ImgCurrency.gameObject.SetActive(true);
         }*/
 
-        /*string filePath = Application.dataPath + FRUITS_DATA_PATH;
+        /*string filePath = Application.persistentDataPath + FRUITS_DATA_PATH;
 
         List<Fruits> list = new();
         Fruits a = new(EFruits.Apple, 5);

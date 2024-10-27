@@ -9,7 +9,7 @@ public static class ToggleAbilityItemHelper
     public static bool ToggleLockSkill(ESkills skillName, bool isLock)
     {
         bool isProcessSuccess = true;
-        string filePath = Application.dataPath + SKILLS_DATA_PATH;
+        string filePath = Application.persistentDataPath + SKILLS_DATA_PATH;
         SkillsController sC = JSONDataHelper.LoadFromJSon<SkillsController>(filePath);
 
         if (!isLock)
@@ -54,7 +54,7 @@ public static class ToggleAbilityItemHelper
     /// <returns></returns>
     public static List<Skills> GetListActivatedSkills(bool isLimited = true)
     {
-        string filePath = Application.dataPath + SKILLS_DATA_PATH;
+        string filePath = Application.persistentDataPath + SKILLS_DATA_PATH;
         SkillsController sC = JSONDataHelper.LoadFromJSon<SkillsController>(filePath);
         var listLimited = new List<Skills>();
         var listUnLimited = new List<Skills>();
