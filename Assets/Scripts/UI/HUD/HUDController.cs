@@ -27,8 +27,7 @@ public class HUDController : MonoBehaviour
     LevelInfo _levelInfo;
     private static ProfilerMarker performanceMarker = new ProfilerMarker("ImprovedCode");
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSetupLevel, SetupHUD);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);

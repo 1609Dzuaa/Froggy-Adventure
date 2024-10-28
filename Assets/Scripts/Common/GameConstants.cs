@@ -126,7 +126,7 @@ public static class GameConstants
     public const int GAME_MENU = 0;
     public const int GAME_LEVEL_1 = 1;
     public const int GAME_LEVEL_2 = 2;
-    public const int MAX_GAME_LEVEL = 1;//10;
+    public const int MAX_GAME_LEVEL = 4;
 
     #endregion
 

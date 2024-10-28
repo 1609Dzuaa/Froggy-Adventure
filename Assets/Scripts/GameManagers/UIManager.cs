@@ -45,6 +45,8 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] PopupResult _popupResult;
     [SerializeField] PopupNotification _popupNotification;
     [SerializeField] HUDController _hudControl;
+    [SerializeField] float _target;
+    [SerializeField] float _initPos;
 
     #region Internal Attributes
     Dictionary<EPopup, Canvas> _dictPopupUI = new();
@@ -214,7 +216,7 @@ public class UIManager : BaseSingleton<UIManager>
             GameManager.Instance.SwitchScene(indexLevel);
             if (needReset)
                 EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel);
-            _imageSceneTrans.DOLocalMoveX(-5000f, _transDuration).OnComplete(() =>
+            _imageSceneTrans.DOLocalMoveX(_target, _transDuration).OnComplete(() =>
             {
                 if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
                     HandleDisplayMenuUI();
@@ -227,7 +229,7 @@ public class UIManager : BaseSingleton<UIManager>
                 }
                 List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills();
                 EventsManager.Instance.NotifyObservers(EEvents.OnValidatePlayerBuffs, skills);
-                _imageSceneTrans.position = new(6652f, _imageSceneTrans.position.y);
+                _imageSceneTrans.position = new(_initPos, _imageSceneTrans.position.y);
             });
         });
     }

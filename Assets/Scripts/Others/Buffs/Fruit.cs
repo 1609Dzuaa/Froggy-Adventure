@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GameEnums;
 using static GameConstants;
-using UnityEngine.UI;
 
 public class Fruit : GameObjectManager
 {
@@ -17,7 +16,7 @@ public class Fruit : GameObjectManager
             GameObject go = Pool.Instance.GetObjectInPool(EPoolable.CollectFruits);
             go.SetActive(true);
             go.transform.position = collision.ClosestPoint(transform.position);
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }
