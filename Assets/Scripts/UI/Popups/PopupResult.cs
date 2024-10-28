@@ -217,54 +217,33 @@ public class PopupResult : PopupController
                     });
                     ShowNotificationHelper.ShowNotification(param);
                 }
-                else if (PlayerHealthManager.Instance.CurrentHP <= 1)
+                else if (PlayerHealthManager.Instance.CurrentHP == 0)
                 {
-                    _canClose = false;
-                    string content = (PlayerHealthManager.Instance.CurrentHP == 0) 
-                        ? "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !"
-                        : "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
-                    NotificationParam param = new(content, true, () =>
-                    {
-                        if (_canClick)
-                        {
-                            _canClick = false;
-                            StartCoroutine(CooldownButton());
-                            ShowShop();
-                        }
-                    });
-                    ShowNotificationHelper.ShowNotification(param);
+                    ProcessBasedOnPlayerHP(0);
+                }
+                else if (PlayerHealthManager.Instance.CurrentHP == 1)
+                {
+                    ProcessBasedOnPlayerHP(1, SwitchNextLevel);
                 }
                 else
                 {
-                    if(_canClick)
-                    {
-                        _canClick = false;
-                        _canClose = true;
-                        StartCoroutine(CooldownButton());
-                        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-                        UIManager.Instance.AnimateAndTransitionScene(nextSceneIndex);
-                        OnClose();
-                    }
+                    SwitchNextLevel();
                 }
                 break;
 
             case (int)EButtonName.Replay:
-                if (PlayerHealthManager.Instance.CurrentHP <= 1)
+                if (PlayerHealthManager.Instance.CurrentHP == 0)
                 {
-                    _canClose = false;
-                    string content = (PlayerHealthManager.Instance.CurrentHP == 0)
-                        ? "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !"
-                        : "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
-                    NotificationParam param = new(content, true, () =>
+                    ProcessBasedOnPlayerHP(0);
+                }
+                else if (PlayerHealthManager.Instance.CurrentHP == 1)
+                {
+                    ProcessBasedOnPlayerHP(1, () =>
                     {
-                        if (_canClick)
-                        {
-                            _canClick = false;
-                            StartCoroutine(CooldownButton());
-                            ShowShop();
-                        }
+                        _canClose = true;
+                        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+                        UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex, true);
                     });
-                    ShowNotificationHelper.ShowNotification(param);
                 }
                 else if (_canClick)
                 {
@@ -309,5 +288,55 @@ public class PopupResult : PopupController
     {
         UIManager.Instance.TogglePopup(EPopup.Notification, false);
         UIManager.Instance.TogglePopup(EPopup.Shop, true);
+    }
+
+    private void ProcessBasedOnPlayerHP(int hp, Action callback = null)
+    {
+        _canClose = false;
+        if (hp == 0)
+        {
+            string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !";
+            NotificationParam param = new(content, true, () =>
+            {
+                if (_canClick)
+                {
+                    _canClick = false;
+                    StartCoroutine(CooldownButton());
+                    ShowShop();
+                }
+            });
+            ShowNotificationHelper.ShowNotification(param);
+        }
+        else
+        {
+            string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
+            NotificationParam param = new(content, false, null, () =>
+            {
+                if (_canClick)
+                {
+                    _canClick = false;
+                    StartCoroutine(CooldownButton());
+                    ShowShop();
+                }
+            }, () =>
+            {
+                //perform callback tuy` tinh` huong'
+                callback?.Invoke();
+            });
+            ShowNotificationHelper.ShowNotification(param);
+        }
+    }
+
+    private void SwitchNextLevel()
+    {
+        if (_canClick)
+        {
+            _canClick = false;
+            _canClose = true;
+            StartCoroutine(CooldownButton());
+            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            UIManager.Instance.AnimateAndTransitionScene(nextSceneIndex);
+            OnClose();
+        }
     }
 }
