@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 149717812}
   - component: {fileID: 149717811}
   - component: {fileID: 4868109513047380652}
+  - component: {fileID: 1878899496379628701}
   m_Layer: 5
   m_Name: ImageOption
   m_TagString: Untagged
@@ -244,7 +245,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -139679045, guid: 6f57f6fb90efe464b95714ceb5f603da, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -269,6 +270,20 @@ MonoBehaviour:
   _duration: 0.3
   _ease: 7
   _popupName: 1
+--- !u!114 &1878899496379628701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149717809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0656d624d5309648bf0d76bd0b0e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteAtlas: {fileID: 4343727234628468602, guid: e7ec8331c49756648a3e1d0842fb1d88, type: 2}
+  _spriteName: Pixel UI pack 1_57
 --- !u!1 &236735412
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +370,7 @@ MonoBehaviour:
   - {fileID: 4504162601688304760}
   - {fileID: 5009334655236997453}
   - {fileID: 849050086}
-  _duration: 0.2
+  _duration: 0.15
   _distance: 350
   _ease: 1
 --- !u!1 &322760588
@@ -866,6 +881,7 @@ GameObject:
   - component: {fileID: 849050086}
   - component: {fileID: 849050085}
   - component: {fileID: 6713308391689666117}
+  - component: {fileID: 5261528614802200886}
   m_Layer: 5
   m_Name: BtnQuit
   m_TagString: Untagged
@@ -999,6 +1015,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sfxName: 17
+--- !u!114 &5261528614802200886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849050083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0656d624d5309648bf0d76bd0b0e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteAtlas: {fileID: 4343727234628468602, guid: e7ec8331c49756648a3e1d0842fb1d88, type: 2}
+  _spriteName: Pixel UI pack 1_270
 --- !u!1 &941943897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,6 +1379,7 @@ GameObject:
   - component: {fileID: 1358952861}
   - component: {fileID: 1358952860}
   - component: {fileID: 6694994223835784136}
+  - component: {fileID: 6249019250420900602}
   m_Layer: 5
   m_Name: BtnStart
   m_TagString: Untagged
@@ -1483,6 +1514,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sfxName: 16
   _popupController: 0
+--- !u!114 &6249019250420900602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358952858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0656d624d5309648bf0d76bd0b0e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteAtlas: {fileID: 4343727234628468602, guid: e7ec8331c49756648a3e1d0842fb1d88, type: 2}
+  _spriteName: Pixel UI pack 1_219
 --- !u!1 &1534595506
 GameObject:
   m_ObjectHideFlags: 0
@@ -2036,7 +2081,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: d834f506e9479e24e9dd25659882c18c, type: 3}
+  m_Texture: {fileID: 2800000, guid: 98fcb7c84acd2454280a72fe3de758b5, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -4177,6 +4222,7 @@ GameObject:
   - component: {fileID: 5009334655236997453}
   - component: {fileID: 2376977994515195522}
   - component: {fileID: 4561118924262880572}
+  - component: {fileID: 678418146935544108}
   m_Layer: 0
   m_Name: BtnCredits
   m_TagString: Untagged
@@ -4311,6 +4357,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sfxName: 16
   _popupController: 2
+--- !u!114 &678418146935544108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052193438415867303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0656d624d5309648bf0d76bd0b0e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteAtlas: {fileID: 4343727234628468602, guid: e7ec8331c49756648a3e1d0842fb1d88, type: 2}
+  _spriteName: Pixel UI pack 1_13
 --- !u!1 &1291107488549814514
 GameObject:
   m_ObjectHideFlags: 0
@@ -4641,6 +4701,7 @@ GameObject:
   - component: {fileID: 8523187114300495098}
   - component: {fileID: 1241646099133413533}
   - component: {fileID: 5109662748159705489}
+  - component: {fileID: 2641172749561390195}
   m_Layer: 5
   m_Name: BtnShop
   m_TagString: Untagged
@@ -4775,6 +4836,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sfxName: 16
   _popupController: 3
+--- !u!114 &2641172749561390195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557167208862970256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0656d624d5309648bf0d76bd0b0e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteAtlas: {fileID: 4343727234628468602, guid: e7ec8331c49756648a3e1d0842fb1d88, type: 2}
+  _spriteName: Pixel UI pack 1_213
 --- !u!1 &1558289322761636099
 GameObject:
   m_ObjectHideFlags: 0
@@ -4831,7 +4906,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 15
+  m_Spacing: 25
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -5455,7 +5530,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 130, y: -80}
+  m_AnchoredPosition: {x: 115, y: -80}
   m_SizeDelta: {x: 100, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5405414929598223641
@@ -5521,7 +5596,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -5615,7 +5690,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 99
   m_TargetDisplay: 0
 --- !u!114 &4149108684577992528
 MonoBehaviour:
@@ -7103,6 +7178,7 @@ GameObject:
   - component: {fileID: 4504162601688304760}
   - component: {fileID: 9113076612840901622}
   - component: {fileID: 4107300158824046334}
+  - component: {fileID: 3030474218544172064}
   m_Layer: 0
   m_Name: BtnOption
   m_TagString: Untagged
@@ -7237,6 +7313,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sfxName: 16
   _popupController: 1
+--- !u!114 &3030474218544172064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3118244656785960423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0656d624d5309648bf0d76bd0b0e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteAtlas: {fileID: 4343727234628468602, guid: e7ec8331c49756648a3e1d0842fb1d88, type: 2}
+  _spriteName: Pixel UI pack 1_43
 --- !u!1 &3152105526432571016
 GameObject:
   m_ObjectHideFlags: 0
@@ -10064,8 +10154,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 190, y: -60}
-  m_SizeDelta: {x: 180, y: 70}
+  m_AnchoredPosition: {x: 155, y: -60}
+  m_SizeDelta: {x: 145, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6907686159415754352
 CanvasRenderer:
@@ -10095,7 +10185,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea82616035de70b4b908cd9853c23d01, type: 2}
   m_sharedMaterial: {fileID: -650886965973754784, guid: ea82616035de70b4b908cd9853c23d01, type: 2}
@@ -10122,7 +10212,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10130,7 +10220,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -10787,7 +10877,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 400}
+  m_SizeDelta: {x: 800, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1470355647053729998
 CanvasRenderer:
@@ -10880,7 +10970,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 130, y: -80}
+  m_AnchoredPosition: {x: 115, y: -80}
   m_SizeDelta: {x: 100, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3730807514337164848
@@ -10946,7 +11036,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -11991,7 +12081,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 850, y: 120}
+  m_SizeDelta: {x: 850, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5453403755950915720
 MonoBehaviour:
@@ -13279,8 +13369,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 190, y: -60}
-  m_SizeDelta: {x: 180, y: 70}
+  m_AnchoredPosition: {x: 155, y: -60}
+  m_SizeDelta: {x: 145, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &689845825056787933
 CanvasRenderer:
@@ -13337,7 +13427,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -13345,7 +13435,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -13587,7 +13677,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 250}
+  m_SizeDelta: {x: 740, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8941343552443481079
 CanvasRenderer:
@@ -13875,7 +13965,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 130, y: -80}
+  m_AnchoredPosition: {x: 115, y: -80}
   m_SizeDelta: {x: 100, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8085238350453252294
@@ -13941,7 +14031,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -14848,7 +14938,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 270, y: 100}
+  m_SizeDelta: {x: 270, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6080294125032878643
 CanvasRenderer:
@@ -15006,7 +15096,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 270, y: 100}
+  m_SizeDelta: {x: 270, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8007923287716533116
 CanvasRenderer:
@@ -15252,7 +15342,7 @@ MonoBehaviour:
   - {fileID: 4400673145477785121}
   - {fileID: 1669191863}
   _HUDCanvas: {fileID: 3199351508480690642}
-  _delayTrans1: 1.18
+  _delayTrans1: 1
   _delayTrans2: 0.35
   _transDuration: 1
   _buttonContainer: {fileID: 6203923463090845172}

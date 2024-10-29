@@ -193,7 +193,7 @@ public class PopupResult : PopupController
 
     private IEnumerator CooldownButton()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(COOLDOWN_BUTTON);
 
         _canClick = true;
     }
@@ -217,33 +217,46 @@ public class PopupResult : PopupController
                     });
                     ShowNotificationHelper.ShowNotification(param);
                 }
-                else if (PlayerHealthManager.Instance.CurrentHP == 0)
+                else if (PlayerHealthManager.Instance.CurrentHP <= 1)
                 {
-                    ProcessBasedOnPlayerHP(0);
-                }
-                else if (PlayerHealthManager.Instance.CurrentHP == 1)
-                {
-                    ProcessBasedOnPlayerHP(1, SwitchNextLevel);
+                    if (PlayerHealthManager.Instance.CurrentHP == 0)
+                        ProcessBasedOnPlayerHP(0);
+                    else
+                        ProcessBasedOnPlayerHP(1, SwitchNextLevel);
                 }
                 else
                 {
-                    SwitchNextLevel();
+                    if (_param.Result == ELevelResult.Failed)
+                    {
+                        string content = "Finish This Level To Open Next Level!";
+                        NotificationParam param = new(content, true, () =>
+                        {
+                            if (_canClick)
+                            {
+                                _canClick = false;
+                                StartCoroutine(CooldownButton());
+                                _notification.OnClose();
+                            }
+                        });
+                        ShowNotificationHelper.ShowNotification(param);
+                    }
+                    else
+                        SwitchNextLevel();
                 }
                 break;
 
             case (int)EButtonName.Replay:
-                if (PlayerHealthManager.Instance.CurrentHP == 0)
+                if (PlayerHealthManager.Instance.CurrentHP <= 1)
                 {
-                    ProcessBasedOnPlayerHP(0);
-                }
-                else if (PlayerHealthManager.Instance.CurrentHP == 1)
-                {
-                    ProcessBasedOnPlayerHP(1, () =>
-                    {
-                        _canClose = true;
-                        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-                        UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex, true);
-                    });
+                    if (PlayerHealthManager.Instance.CurrentHP == 0)
+                        ProcessBasedOnPlayerHP(0);
+                    else
+                        ProcessBasedOnPlayerHP(1, () =>
+                        {
+                            _canClose = true;
+                            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+                            UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex, true);
+                        });
                 }
                 else if (_canClick)
                 {

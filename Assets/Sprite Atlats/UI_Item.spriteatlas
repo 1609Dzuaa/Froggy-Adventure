@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI_Item
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 512
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 21300000, guid: 9d438327e129f1142b653c1d3ddc137d, type: 3}
+    - {fileID: 21300000, guid: afbcae84a9d351e45a4c4550ed53bb12, type: 3}
+    - {fileID: 21300000, guid: 5188d778f52c65b44bbf02dda190b88c, type: 3}
+    - {fileID: 21300000, guid: a3b848ec64e6c164a867cea442791902, type: 3}
+    - {fileID: 21300000, guid: e050b1833252ac641bbb2138f84b6103, type: 3}
+    - {fileID: 21300000, guid: afb98fb2fb8a48743acdb2534fbde400, type: 3}
+    - {fileID: 21300000, guid: ff3624512f436d8498497fa735d8e767, type: 3}
+    - {fileID: 21300000, guid: a36b4c68824bd2d4f8131499d94f4a20, type: 3}
+    - {fileID: 21300000, guid: c9e50d177f8cd62428ae9e3493ceae3e, type: 3}
+    - {fileID: 21300000, guid: 29a0a94f5547ab0429563690bb5d4b87, type: 3}
+    - {fileID: 21300000, guid: 8e5a83108e90dd345b59ed31570ccc02, type: 3}
+    - {fileID: 21300000, guid: 57dbe23936e5f0d449dc02f0e4e8c48d, type: 3}
+    - {fileID: 21300000, guid: 0247e4079ab94774a9382f4f9a83b446, type: 3}
+    - {fileID: 359874343, guid: aeedf08cd4d56fa43b557958b6954c83, type: 3}
+    - {fileID: -3246028407001408874, guid: f42176bbc0b84b54e83c161abc6eb071, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 8e5a83108e90dd345b59ed31570ccc02: 21300000
+    - ff3624512f436d8498497fa735d8e767: 21300000
+    - afb98fb2fb8a48743acdb2534fbde400: 21300000
+    - e050b1833252ac641bbb2138f84b6103: 21300000
+    - afbcae84a9d351e45a4c4550ed53bb12: 21300000
+    - 0247e4079ab94774a9382f4f9a83b446: 21300000
+    - c9e50d177f8cd62428ae9e3493ceae3e: 21300000
+    - 9d438327e129f1142b653c1d3ddc137d: 21300000
+    - a36b4c68824bd2d4f8131499d94f4a20: 21300000
+    - 5188d778f52c65b44bbf02dda190b88c: 21300000
+    - 57dbe23936e5f0d449dc02f0e4e8c48d: 21300000
+    - f42176bbc0b84b54e83c161abc6eb071: -3246028407001408874
+    - aeedf08cd4d56fa43b557958b6954c83: 359874343
+    - a3b848ec64e6c164a867cea442791902: 21300000
+    - 29a0a94f5547ab0429563690bb5d4b87: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 8e5a83108e90dd345b59ed31570ccc02, type: 3}
+  - {fileID: 21300000, guid: ff3624512f436d8498497fa735d8e767, type: 3}
+  - {fileID: 21300000, guid: afb98fb2fb8a48743acdb2534fbde400, type: 3}
+  - {fileID: 21300000, guid: e050b1833252ac641bbb2138f84b6103, type: 3}
+  - {fileID: 21300000, guid: afbcae84a9d351e45a4c4550ed53bb12, type: 3}
+  - {fileID: 21300000, guid: 0247e4079ab94774a9382f4f9a83b446, type: 3}
+  - {fileID: 21300000, guid: c9e50d177f8cd62428ae9e3493ceae3e, type: 3}
+  - {fileID: 21300000, guid: 9d438327e129f1142b653c1d3ddc137d, type: 3}
+  - {fileID: 21300000, guid: a36b4c68824bd2d4f8131499d94f4a20, type: 3}
+  - {fileID: 21300000, guid: 5188d778f52c65b44bbf02dda190b88c, type: 3}
+  - {fileID: 21300000, guid: 57dbe23936e5f0d449dc02f0e4e8c48d, type: 3}
+  - {fileID: -3246028407001408874, guid: f42176bbc0b84b54e83c161abc6eb071, type: 3}
+  - {fileID: 359874343, guid: aeedf08cd4d56fa43b557958b6954c83, type: 3}
+  - {fileID: 21300000, guid: a3b848ec64e6c164a867cea442791902, type: 3}
+  - {fileID: 21300000, guid: 29a0a94f5547ab0429563690bb5d4b87, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - hourglass-removebg-preview
+  - 01
+  - 01
+  - 01
+  - 01
+  - potion_02b
+  - TempFrogHPNew
+  - 01
+  - 01
+  - 01
+  - potion_02a
+  - Idle (18x18)_0
+  - magne-removebg-preview_1
+  - 01
+  - FrogHPNew
+  m_RenderDataMap: {}
+  m_Tag: UI_Item
+  m_IsVariant: 0
