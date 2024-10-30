@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Map_Decorator
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 256
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 2179052757e6ffa4c81048d4378ceb70, type: 3}
+    - {fileID: 2800000, guid: 7cc86dd537d32494899fd43a66d8492b, type: 3}
+    - {fileID: 2800000, guid: 5566182e8366c9d4ebe2ae3acf2a9ae5, type: 3}
+    - {fileID: 2800000, guid: 8a72a56d40cf2064abf66d0ada1afeb4, type: 3}
+    - {fileID: 2800000, guid: 1289f897d5b473d4eac3d9a535a9d103, type: 3}
+    - {fileID: 2800000, guid: b6a123991bc2c1b46b31ba0da8a9d633, type: 3}
+    - {fileID: 2800000, guid: e5396703cdc8fce4a99562f3c7570345, type: 3}
+    - {fileID: 2800000, guid: 7e1ef8df05c38d9458afa7d5c9fca2e7, type: 3}
+    - {fileID: 2800000, guid: e3996fc438bd47547a7f6ace2a60dbd5, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - e5396703cdc8fce4a99562f3c7570345: 21300000
+    - e3996fc438bd47547a7f6ace2a60dbd5: 21300000
+    - 7cc86dd537d32494899fd43a66d8492b: 21300000
+    - 2179052757e6ffa4c81048d4378ceb70: 21300000
+    - 1289f897d5b473d4eac3d9a535a9d103: 21300000
+    - b6a123991bc2c1b46b31ba0da8a9d633: 21300000
+    - 8a72a56d40cf2064abf66d0ada1afeb4: 21300000
+    - 5566182e8366c9d4ebe2ae3acf2a9ae5: 21300000
+    - 7e1ef8df05c38d9458afa7d5c9fca2e7: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: e5396703cdc8fce4a99562f3c7570345, type: 3}
+  - {fileID: 21300000, guid: e3996fc438bd47547a7f6ace2a60dbd5, type: 3}
+  - {fileID: 21300000, guid: 7cc86dd537d32494899fd43a66d8492b, type: 3}
+  - {fileID: 21300000, guid: 2179052757e6ffa4c81048d4378ceb70, type: 3}
+  - {fileID: 21300000, guid: 1289f897d5b473d4eac3d9a535a9d103, type: 3}
+  - {fileID: 21300000, guid: b6a123991bc2c1b46b31ba0da8a9d633, type: 3}
+  - {fileID: 21300000, guid: 8a72a56d40cf2064abf66d0ada1afeb4, type: 3}
+  - {fileID: 21300000, guid: 5566182e8366c9d4ebe2ae3acf2a9ae5, type: 3}
+  - {fileID: 21300000, guid: 7e1ef8df05c38d9458afa7d5c9fca2e7, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - rock
+  - rock-1
+  - shrooms
+  - bush
+  - spike-skull
+  - tree
+  - skulls
+  - sign
+  - rock-2
+  m_RenderDataMap: {}
+  m_Tag: Map_Decorator
+  m_IsVariant: 0
