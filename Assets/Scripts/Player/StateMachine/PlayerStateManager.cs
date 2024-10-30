@@ -692,6 +692,9 @@ public class PlayerStateManager : MonoBehaviour
                 else
                     UIManager.Instance.AnimateAndTransitionScene(SceneManager.GetActiveScene().buildIndex, false, true);
             }
+            else
+                EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
+
             HandleDeadAnimation();
         }
     }
