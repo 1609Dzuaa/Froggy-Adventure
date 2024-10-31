@@ -40,7 +40,7 @@ public class LevelController : MonoBehaviour
                 ItemLevel itemLevel = Instantiate(_itemLevel, transform);
                 itemLevel.LvlSData = item;
                 string itemFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + item.OrderID.ToString() + ".json";
-                if (!Directory.Exists(itemFilePath))
+                if (!File.Exists(itemFilePath))
                 {
                     LevelProgressData data = new LevelProgressData(item.OrderID, 
                         (item.OrderID != 1) ? DEFAULT_LEVEL_UNLOCK : true, DEFAULT_LEVEL_COMPLETED,

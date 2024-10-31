@@ -13,7 +13,7 @@ public class GameManager : BaseSingleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         DontDestroyOnLoad(gameObject);
         //Mobile platforms always ignore QualitySettings.vSyncCount and instead
         //use Application.targetFrameRate to choose a target frame rate for the game.

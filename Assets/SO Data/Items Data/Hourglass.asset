@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Hourglass
   ListPriceInfos:
-  - Price: 150
+  - Price: 60
     Image: {fileID: 21300000, guid: a36b4c68824bd2d4f8131499d94f4a20, type: 3}
     Currency: 0
   - Price: 10
@@ -26,6 +26,6 @@ MonoBehaviour:
     AbilityName: 8
     FruitName: 0
     IsLimited: 1
-    FruitsRequired: 1
+    FruitsRequired: 5
     AbilityImage: {fileID: 21300000, guid: 8e5a83108e90dd345b59ed31570ccc02, type: 3}
     AbilityDescribe: Give you 30 seconds extratime in your upcoming journey.

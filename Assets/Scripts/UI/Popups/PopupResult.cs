@@ -348,7 +348,7 @@ public class PopupResult : PopupController
             _canClose = true;
             StartCoroutine(CooldownButton());
             int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-            UIManager.Instance.AnimateAndTransitionScene(nextSceneIndex);
+            UIManager.Instance.AnimateAndTransitionScene(nextSceneIndex, true);
             OnClose();
         }
     }

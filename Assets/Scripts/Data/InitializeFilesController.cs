@@ -1,7 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static GameConstants;
+using static GameEnums;
 
 public class InitializeFilesController : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class InitializeFilesController : MonoBehaviour
     private void Awake()
     {
         _shopController.CreateItemAndInitFiles();
+        _pData.InitializePlayerData(); //có data r mới setup dict
         _bagController.SetupDictionary();
-        _pData.InitializePlayerData();
+        EventsManager.Instance.NotifyObservers(EEvents.OnItemEligibleCheck);
     }
 }

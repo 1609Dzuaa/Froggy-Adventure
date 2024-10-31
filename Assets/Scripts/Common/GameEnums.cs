@@ -103,6 +103,7 @@
         OnBeingCursed,
         OnCooldownSkill,
         OnUseSkill,
+        OnRewardCoin, //reward coin <=> diệt quái
 
     }
 

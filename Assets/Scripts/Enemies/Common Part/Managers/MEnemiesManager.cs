@@ -65,11 +65,16 @@ public class MEnemiesManager : EnemiesManager
     {
         //Đã bao gồm việc Update state, detect và draw Ray detect Player ở base
         base.Update();
-        DetectWall();
         DrawRayDetectWall();
-        DetectGround();
         DrawRayDetectGround();
         //Debug.Log("Hit Wall: " + _hasCollidedWall);
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        DetectWall();
+        DetectGround();
     }
 
     public override void ChangeState(CharacterBaseState state)
@@ -179,6 +184,12 @@ public class MEnemiesManager : EnemiesManager
         {
             _hasGotHit = true;
             EventsManager.Instance.NotifyObservers(EEvents.PlayerOnJumpPassive);
+            int sCoinGiven = UnityEngine.Random.Range(_enemiesSO.MinSilverGiven, _enemiesSO.MaxSilverGiven + 1);
+            int gCoinGiven = UnityEngine.Random.Range(_enemiesSO.MinGoldGiven, _enemiesSO.MaxGoldGiven + 1);
+            int SilverOrCoin = UnityEngine.Random.Range(0, 2);
+
+            CoinInfo info = new CoinInfo((SilverOrCoin == 0) ? ECurrency.Silver : ECurrency.Gold, (SilverOrCoin == 0) ? sCoinGiven : gCoinGiven);
+            EventsManager.Instance.NotifyObservers(EEvents.OnRewardCoin, info);
             ChangeState(_mEnemiesGotHitState);
             SpawnBountyIfMarked();
         }

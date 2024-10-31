@@ -24,7 +24,7 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
     public void InitializePlayerData()
     {
         string filePath = Application.persistentDataPath + PLAYER_DATA_PATH;
-        if (!Directory.Exists(filePath))
+        if (!File.Exists(filePath))
         {
             PlayerData pData = new PlayerData(DEFAULT_PLAYER_HP, DEFAULT_PLAYER_HP, DEFAULT_PLAYER_COIN, DEFAULT_PLAYER_COIN);
             JSONDataHelper.SaveToJSon<PlayerData>(pData, filePath);
@@ -48,7 +48,7 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
 
     private void OnDestroy()
     {
-        //SavePlayerData();
+        SavePlayerData();
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
         //Debug.Log("Ondes");

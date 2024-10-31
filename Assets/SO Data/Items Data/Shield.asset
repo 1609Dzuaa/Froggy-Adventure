@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Shield
   ListPriceInfos:
-  - Price: 150
+  - Price: 400
     Image: {fileID: 21300000, guid: a36b4c68824bd2d4f8131499d94f4a20, type: 3}
     Currency: 0
-  - Price: 10
+  - Price: 200
     Image: {fileID: 21300000, guid: ff3624512f436d8498497fa735d8e767, type: 3}
     Currency: 1
   ItemImage: {fileID: -3246028407001408874, guid: f42176bbc0b84b54e83c161abc6eb071, type: 3}
   ItemDescribe: Protect you from any thing that could harm you for a period of time.
   Ability:
     AbilityName: 3
-    FruitName: 4
+    FruitName: 6
     IsLimited: 1
-    FruitsRequired: 7
+    FruitsRequired: 15
     AbilityImage: {fileID: 3974224528455760076, guid: 3b332af1e6c55e94f8e5eb08fb4ab06b, type: 3}
     AbilityDescribe: Stick to a wall to slide against it, jump from wall to wall
       to reach new areas.
