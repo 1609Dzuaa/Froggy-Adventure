@@ -116,6 +116,7 @@ public class PlayerBagController : MonoBehaviour
         GoldCoin += pr.GoldCollected;
         foreach (var item in DictFruits)
             item.Value.FruitCount = TempDictFruits[item.Key].FruitCount;
+        DisplayCurrencyTexts();
         //Debug.Log("Finish");
     }
 

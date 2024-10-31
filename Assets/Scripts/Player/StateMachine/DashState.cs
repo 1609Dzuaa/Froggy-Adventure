@@ -24,7 +24,7 @@ public class DashState : PlayerBaseState
         HandleDash();
         SkillData data = new(GameEnums.ESkills.Dash, _playerStateManager.GetPlayerStats.DelayDashTime);
         EventsManager.Instance.NotifyObservers(GameEnums.EEvents.OnCooldownSkill, data);
-        //Debug.Log("Dash");
+        Debug.Log("Dash");
     }
 
     public override void ExitState() 
@@ -81,6 +81,7 @@ public class DashState : PlayerBaseState
     {
         //Chạm tường và tích 2 vector inputX và Nx của wall trái dấu
         return _playerStateManager.GetIsWallTouch()
+            && _playerStateManager.UnlockedWallSlide
             && _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f;
     }
 

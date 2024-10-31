@@ -11,7 +11,7 @@ public class FallState : PlayerBaseState
 
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        //Debug.Log("Fall");
+        Debug.Log("Fall");
         //Lỗi fall khi đang trượt hết tường mà dirX != nxWall thì bị kẹt luôn ở cái wall đó
         //DONE!~
     }
@@ -65,13 +65,16 @@ public class FallState : PlayerBaseState
     private bool CheckIfCanDbJump()
     {
         return _playerStateManager.BtnJumpControl.DbJump
+            && _playerStateManager.UnlockedDbJump
             && _playerStateManager.GetCanDbJump();
     }
 
+    //Thêm * tương tự như TH DbJump nhưng chưa unlock bên Jump dẫn đến kẹt state
     private bool CheckIfCanWallSlide()
     {
-        return _playerStateManager.GetIsWallTouch() && 
-            _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f;
+        return _playerStateManager.GetIsWallTouch()
+            && _playerStateManager.UnlockedWallSlide //*
+            && _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f;
     }
 
     private bool CheckIfCanDash()

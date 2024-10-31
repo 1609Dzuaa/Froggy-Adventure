@@ -54,8 +54,8 @@ public class PlayerStateManager : MonoBehaviour
     private bool _isMagnetized;
     private bool _isCursed;
 
-    private bool _unlockedDbJump;
-    private bool _unlockedWallSlide;
+    [HideInInspector] public bool UnlockedDbJump;
+    [HideInInspector] public bool UnlockedWallSlide;
     private bool _unlockedDash;
 
     HashSet<Collider2D> _hashCoinsMagnetized = new();
@@ -185,8 +185,8 @@ public class PlayerStateManager : MonoBehaviour
     private void HandlePlayerSkills()
     {
         var list = ToggleAbilityItemHelper.GetListActivatedSkills(false);
-        _unlockedDbJump = list.Find(x => x.SkillName == ESkills.DoubleJump) != null;
-        _unlockedWallSlide = list.Find(x => x.SkillName == ESkills.WallSlide) != null;
+        UnlockedDbJump = list.Find(x => x.SkillName == ESkills.DoubleJump) != null;
+        UnlockedWallSlide = list.Find(x => x.SkillName == ESkills.WallSlide) != null;
         _unlockedDash = list.Find(x => x.SkillName == ESkills.Dash) != null;
     }
 
@@ -261,9 +261,9 @@ public class PlayerStateManager : MonoBehaviour
             return;
         }
 
-        if (state is DoubleJumpState && !_unlockedDbJump)
+        if (state is DoubleJumpState && !UnlockedDbJump)
             return;
-        else if (state is WallSlideState && !_unlockedWallSlide)
+        else if (state is WallSlideState && !UnlockedWallSlide)
             return;
         else if (state is DashState && !_unlockedDash)
             return;
@@ -325,7 +325,8 @@ public class PlayerStateManager : MonoBehaviour
             SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
             anim.SetTrigger(DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
-            EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Completed);            
+            EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Completed);
+            PlayerPrefs.DeleteAll(); //xoá hết data trong đây khi win level
             //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
@@ -366,7 +367,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void JumpPassive(object obj)
     {
-        //Jump lên đầu quái thì jump tiếp (passive)
+        //Jump lên đầu quái, hoặc vật nảy thì jump tiếp (passive)
         _canDbJump = true;
         if (obj != null)
             jumpState.JumpForceApplied = (float)obj;
@@ -839,10 +840,10 @@ public class PlayerStateManager : MonoBehaviour
         switch (sItemSData.Ability.AbilityName)
         {
             case ESkills.DoubleJump:
-                _unlockedDbJump = true; 
+                UnlockedDbJump = true; 
                 break;
             case ESkills.WallSlide:
-                _unlockedWallSlide = true;
+                UnlockedWallSlide = true;
                 break;
             case ESkills.Dash:
                 _unlockedDash = true;

@@ -14,7 +14,7 @@ public class WallJumpState : PlayerBaseState
         _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.wallJump);
         _playerStateManager.FlipSpriteAfterWallSlide();
         HandleWallJump();
-        //Debug.Log("WallJump");
+        Debug.Log("WallJump");
         _disableStart = Time.time;
     }
 
@@ -43,7 +43,8 @@ public class WallJumpState : PlayerBaseState
     private bool CheckIfCanDbJump()
     {
         //Press Jump While WallJump => Double Jump
-        return _playerStateManager.BtnJumpControl.DbJump;
+        return _playerStateManager.BtnJumpControl.DbJump 
+            && _playerStateManager.UnlockedDbJump;
     }
 
     private bool CheckIfCanFall()
