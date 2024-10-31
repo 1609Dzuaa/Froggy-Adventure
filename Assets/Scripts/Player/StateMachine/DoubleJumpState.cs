@@ -8,7 +8,7 @@ public class DoubleJumpState : PlayerBaseState
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.doubleJump);
         HandleDbJump();
-        //Debug.Log("DBJump");
+        Debug.Log("DBJump");
     }
 
     public override void ExitState() { }
@@ -41,15 +41,17 @@ public class DoubleJumpState : PlayerBaseState
 
     private bool CheckIfCanWallSlide()
     {
-        return _playerStateManager.GetIsWallTouch() && !_playerStateManager.GetIsOnGround();
+        return _playerStateManager.GetIsWallTouch()
+            && _playerStateManager.UnlockedWallSlide
+            && !_playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanDash()
     {
         //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
-        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
+        return _playerStateManager.BtnDashControl.IsDashing
              && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-             || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
+             || _playerStateManager.BtnDashControl.IsDashing && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     public override void FixedUpdate()

@@ -22,7 +22,7 @@ public class JumpState : PlayerBaseState
         HandleJump();
         if (_playerStateManager.GetPrevStateIsWallSlide())
             _playerStateManager.FlipSpriteAfterWallSlide();
-        //Debug.Log("Jump");
+        Debug.Log("Jump");
     }
 
     public override void ExitState() { _isRunStateHitWall = false; _jumpForceApplied = 0; }
@@ -41,12 +41,16 @@ public class JumpState : PlayerBaseState
             _playerStateManager.ChangeState(_playerStateManager.wallJumpState);
         else if (CheckIfCanDash())
             _playerStateManager.ChangeState(_playerStateManager.dashState);
+        Debug.Log("Jump Update");
     }
 
+    //Thêm dòng * vì có thể bên nút Jump đã perform DbJump = true nhưng
+    //DbJump bị khoá dẫn đến kẹt state này mãi
     private bool CheckIfCanDbJump()
     {
         //Debug.Log("can: " + _playerStateManager.JumpDetect.DbJump);
         return _playerStateManager.BtnJumpControl.DbJump
+            && _playerStateManager.UnlockedDbJump //*
             && !_playerStateManager.GetIsWallTouch()
             && Time.time - _playerStateManager.JumpStart >= DELAY_PLAYER_DOUBLE_JUMP;
     }
@@ -59,6 +63,7 @@ public class JumpState : PlayerBaseState
     private bool CheckIfCanWallSlide()
     {
         return _playerStateManager.GetIsWallTouch()
+            && _playerStateManager.UnlockedWallSlide
             && _playerStateManager.GetDirX() * _playerStateManager.WallHit.normal.x < 0f
             && !_isRunStateHitWall;
     }
@@ -66,8 +71,10 @@ public class JumpState : PlayerBaseState
     private bool CheckIfCanWallJump()
     {
         //Đè dirX (run) va vào tường + nhấn S lúc đang Jump (current State) thì switch sang WallJump
-        return _playerStateManager.GetIsWallTouch() && _playerStateManager.BtnJumpControl.DbJump
-            /*Input.GetButtonDown(JUMP_BUTTON)*/ && _isRunStateHitWall;
+        return _playerStateManager.GetIsWallTouch() 
+            && _playerStateManager.BtnJumpControl.DbJump
+            && _playerStateManager.UnlockedWallSlide //unlock wallslide thi moi cho wallJump
+            && _isRunStateHitWall;
     }
 
     private bool CheckIfCanDash()

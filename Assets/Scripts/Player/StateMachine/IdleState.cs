@@ -55,7 +55,7 @@ public class IdleState : PlayerBaseState
         //Debug.Log("Dashed?: " + _playerStateManager.dashState.IsFirstTimeDash);
         return _playerStateManager.BtnDashControl.IsDashing
              && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-             || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
+             || _playerStateManager.BtnDashControl.IsDashing && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     private void HandleIfInteractWithNPC()

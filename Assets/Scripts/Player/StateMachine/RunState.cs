@@ -7,7 +7,7 @@ public class RunState : PlayerBaseState
         base.EnterState(playerStateManager);
         playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.run);
         playerStateManager.GetDustPS().Play();
-        //Debug.Log("Run");
+        Debug.Log("Run");
     }
 
     public override void ExitState() { }
@@ -61,7 +61,7 @@ public class RunState : PlayerBaseState
     {
         return _playerStateManager.BtnDashControl.IsDashing
             && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-            || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
+            || _playerStateManager.BtnDashControl.IsDashing && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     private bool CheckIfNearInteractPosition()

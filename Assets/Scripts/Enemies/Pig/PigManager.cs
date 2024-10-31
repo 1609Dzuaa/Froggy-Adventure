@@ -73,7 +73,7 @@ public class PigManager : MEnemiesManager
         {
             _hasGotHit = true;
             _hp--;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive, null);
+            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive);
             
             if(!_isTurnRed)
             {

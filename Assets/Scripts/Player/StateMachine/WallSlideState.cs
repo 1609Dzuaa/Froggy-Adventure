@@ -6,7 +6,7 @@ public class WallSlideState : PlayerBaseState
     {
         base.EnterState(playerStateManager);
         _playerStateManager.GetAnimator().SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EPlayerState.wallSlide);
-        //Debug.Log("WS");
+        Debug.Log("WS");
         //Flip sprite khi chuyển từ state này sang state bất kì
         //Theo đúng chiều của nhân vật khi đang slide
         //WS còn vài chỗ lăn tăn nhỏ nữa nhưng chắc thế này là đủ ^^
@@ -50,7 +50,7 @@ public class WallSlideState : PlayerBaseState
 
     private bool CheckIfCanWallJump()
     {
-        return Input.GetButtonDown(GameConstants.JUMP_BUTTON) && !_playerStateManager.GetIsOnGround();
+        return _playerStateManager.BtnJumpControl.IsHolding && !_playerStateManager.GetIsOnGround();
     }
 
     private bool CheckIfCanFall()
@@ -59,16 +59,16 @@ public class WallSlideState : PlayerBaseState
         //cùng dấu với directionX
         //hoặc trượt hết tường mà vẫn ở trên không thì Fall
         return _playerStateManager.WallHit.normal.x * _playerStateManager.GetDirX() > 0
-            && !Input.GetButtonDown(GameConstants.JUMP_BUTTON) && !_playerStateManager.GetIsOnGround()
+            && !_playerStateManager.BtnJumpControl.IsHolding && !_playerStateManager.GetIsOnGround()
             || !_playerStateManager.GetIsOnGround() && !_playerStateManager.GetIsWallTouch()
             && _playerStateManager.GetRigidBody2D().velocity.y < -GameConstants.NEAR_ZERO_THRESHOLD;
     }
 
     private bool CheckIfCanDash()
     {
-        return Input.GetButtonDown(GameConstants.DASH_BUTTON)
+        return _playerStateManager.BtnDashControl.IsDashing
              && Time.time - _playerStateManager.dashState.DashDelayStart >= _playerStateManager.GetPlayerStats.DelayDashTime
-             || Input.GetButtonDown(GameConstants.DASH_BUTTON) && _playerStateManager.dashState.IsFirstTimeDash;
+             || _playerStateManager.BtnDashControl.IsDashing && _playerStateManager.dashState.IsFirstTimeDash;
     }
 
     public override void FixedUpdate()

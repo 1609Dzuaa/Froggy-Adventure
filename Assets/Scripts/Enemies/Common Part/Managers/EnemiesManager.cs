@@ -171,7 +171,7 @@ public class EnemiesManager : CharactersManager
             go.SetActive(true);
             go.transform.position = transform.position;
         }
-        Debug.Log("marked: " + _bountyMarked);
+        //Debug.Log("marked: " + _bountyMarked);
     }
 
 }
