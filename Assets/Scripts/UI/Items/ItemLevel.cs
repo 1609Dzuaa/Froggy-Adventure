@@ -5,12 +5,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using static GameEnums;
 using static GameConstants;
+using System;
+
+[Serializable]
+public struct LevelHighlight
+{
+    public Image LevelImage;
+    public Image SelectedFrame;
+}
 
 public class ItemLevel : MonoBehaviour
 {
     [SerializeField] GameObject _lockLevel;
     [SerializeField] Image _imgUnlock;
     [SerializeField] TextMeshProUGUI _txtLevelOrder;
+    public LevelHighlight LvlHighlight;
     [HideInInspector] public LevelStaticData LvlSData;
     [HideInInspector] public LevelProgressData LvlPData;
     DataDetail _dataDetail;
