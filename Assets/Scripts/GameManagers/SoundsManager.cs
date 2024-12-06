@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine;
 using static GameEnums;
+using static GameConstants;
+using UnityEngine.UI;
 
 public class SoundsManager : BaseSingleton<SoundsManager>
 {
@@ -26,6 +28,31 @@ public class SoundsManager : BaseSingleton<SoundsManager>
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void LoadVolumeConfigs(Slider musicSlider, Slider sfxSlider)
+    {
+        if (PlayerPrefs.HasKey(MUSIC_CONFIG))
+        {
+            _musicSource.volume = PlayerPrefs.GetFloat(MUSIC_CONFIG);
+            musicSlider.value = PlayerPrefs.GetFloat(MUSIC_CONFIG);
+        }
+        else
+        {
+            _musicSource.volume = DEFAULT_VOLUME;
+            musicSlider.value = DEFAULT_VOLUME;
+        }
+
+        if (PlayerPrefs.HasKey(SFX_CONFIG))
+        {
+            _sfxSource.volume = PlayerPrefs.GetFloat(SFX_CONFIG);
+            sfxSlider.value = PlayerPrefs.GetFloat(SFX_CONFIG);
+        }
+        else
+        {
+            _musicSource.volume = DEFAULT_VOLUME;
+            sfxSlider.value = DEFAULT_VOLUME;
+        }
     }
 
     private void Start()
@@ -69,13 +96,11 @@ public class SoundsManager : BaseSingleton<SoundsManager>
         }
     }
 
-    public void ChangeMusicVolume(float para)
+    public void ConfigVolume(string key, float value)
     {
-        _musicSource.volume = para;
-    }
-
-    public void ChangeSfxVolume(float para)
-    {
-        _sfxSource.volume = para;
+        if (key == MUSIC_CONFIG)
+            _musicSource.volume = value;
+        else
+            _sfxSource.volume = value;
     }
 }
