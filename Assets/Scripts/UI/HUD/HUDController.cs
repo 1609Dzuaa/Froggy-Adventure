@@ -20,7 +20,7 @@ public class HUDController : MonoBehaviour
     [SerializeField] TextMeshProUGUI _txtTimer;
     [SerializeField, Tooltip("Delay bộ đếm 1 khoảng nhỏ" +
         " lấy tương đối gần = thgian quá trình chuyển scene")] int _delayCount;
-    [SerializeField] TweenCoin _tweenCoin;
+    [SerializeField] HUDCoin _HUDCoin;
     [SerializeField] BuffIcon[] _arrBuffIcons;
     int _timeLeft, _timeAllow = 0, _bonusTime = 0;
     Tween _timerTween;
@@ -95,7 +95,7 @@ public class HUDController : MonoBehaviour
     {
         //truyen them tham so fail hay win
         int timeComplete = _timeAllow - _timeLeft;
-        ResultParam pr = new(result, _tweenCoin.SCoinCollected, _tweenCoin.GCoinCollected, timeComplete, _timeAllow);
+        ResultParam pr = new(result, _HUDCoin.SCoinCollected, _HUDCoin.GCoinCollected, timeComplete, _timeAllow);
         UIManager.Instance.TogglePopup(EPopup.Result, true);
         SaveLevelProgress();
         KillTweenTimer();
@@ -115,7 +115,7 @@ public class HUDController : MonoBehaviour
 
     private void HandleReset(object obj)
     {
-        _tweenCoin.ResetCoins();
+        _HUDCoin.ResetCoins();
 
         //TH replay level, có mua cgi
         //thì gọi cái list active skill

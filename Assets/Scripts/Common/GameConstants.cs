@@ -152,7 +152,8 @@ public static class GameConstants
 
     //string
     public const string FRUIT_AND_SKILL_CREATED = "ListCreated";
-
+    public const string MUSIC_CONFIG = "PrefsMusic";
+    public const string SFX_CONFIG = "PrefsSfx";
 
     //int
     public const int CREATED = 1;
@@ -168,6 +169,7 @@ public static class GameConstants
     public const bool DEFAULT_LEVEL_UNLOCK = false;
     public const bool DEFAULT_LEVEL_COMPLETED = false;
     public const int DEFAULT_TIME_COMPLETED = 0;
+    public const float DEFAULT_VOLUME = 0.75f;
 
     #endregion
 

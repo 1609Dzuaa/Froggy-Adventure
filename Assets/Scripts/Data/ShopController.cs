@@ -34,7 +34,7 @@ public class ShopController : MonoBehaviour
     private void InitAbilityAndFruitFiles(ItemShop[] arrParam)
     {
         string skillsFilePath = Application.persistentDataPath + SKILLS_DATA_PATH;
-        if (!Directory.Exists(skillsFilePath))
+        if (!File.Exists(skillsFilePath))
         {
             List<Skills> listSkills = new();
             List<Fruits> listFruits = new();

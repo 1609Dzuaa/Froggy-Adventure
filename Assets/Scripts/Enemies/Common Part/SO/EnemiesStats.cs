@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +18,9 @@ public class EnemiesStats : ScriptableObject
     [Header("Z Rotation When Dead")]
     [SerializeField] private float _degreeEachRotation;
     [SerializeField] private float _timeEachRotate;
+
+    [Header("Random cho player lượng vàng bạc trong khoảng này khi bị hạ")]
+    public int MinSilverGiven, MaxSilverGiven, MinGoldGiven, MaxGoldGiven;
 
     public LayerMask PlayerLayer { get { return _playerLayer; } }
 

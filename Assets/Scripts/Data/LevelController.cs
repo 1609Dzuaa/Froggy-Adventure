@@ -10,8 +10,8 @@ public class LevelController : MonoBehaviour
 {
     [SerializeField] ItemLevel _itemLevel;
     LevelStaticData[] _dataLevels;
-    Button[] _arrItemLevels;
-    Dictionary<Button, Image> _dictButtonLevels = new();
+    ItemLevel[] _arrItemLevels;
+    Dictionary<ItemLevel, LevelHighlight> _dictButtonLevels = new();
     private static ProfilerMarker performanceMarker = new ProfilerMarker("ImprovedCode");
 
     // Start is called before the first frame update
@@ -40,7 +40,7 @@ public class LevelController : MonoBehaviour
                 ItemLevel itemLevel = Instantiate(_itemLevel, transform);
                 itemLevel.LvlSData = item;
                 string itemFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + item.OrderID.ToString() + ".json";
-                if (!Directory.Exists(itemFilePath))
+                if (!File.Exists(itemFilePath))
                 {
                     LevelProgressData data = new LevelProgressData(item.OrderID, 
                         (item.OrderID != 1) ? DEFAULT_LEVEL_UNLOCK : true, DEFAULT_LEVEL_COMPLETED,
@@ -54,26 +54,30 @@ public class LevelController : MonoBehaviour
     private void ResetHighlightButtons(object obj = null)
     {
         foreach (var item in _dictButtonLevels)
-            item.Value.color = new(0.45f, 0.45f, 0.45f, 1f);
+        {
+            item.Value.LevelImage.color = new(0.45f, 0.45f, 0.45f, 1f);
+            item.Value.SelectedFrame.gameObject.SetActive(false);
+        }
     }
 
     private void SetupDictionary()
     {
-        _arrItemLevels = GetComponentsInChildren<Button>();
+        _arrItemLevels = GetComponentsInChildren<ItemLevel>();
         foreach (var item in _arrItemLevels)
             if (!_dictButtonLevels.ContainsKey(item))
-                _dictButtonLevels.Add(item, item.GetComponent<Image>());
+                _dictButtonLevels.Add(item, item.LvlHighlight);
     }
 
-    private void SetupForLevelButtons(Button[] buttons)
+    private void SetupForLevelButtons(ItemLevel[] buttons)
     {
         foreach (var button in buttons)
-            button.onClick.AddListener(() => ButtonLevelOnClick(button));
+            button.GetComponentInChildren<Button>().onClick.AddListener(() => ButtonLevelOnClick(button));
     }
 
-    private void ButtonLevelOnClick(Button buttonClicked)
+    private void ButtonLevelOnClick(ItemLevel buttonClicked)
     {
         ResetHighlightButtons();
-        _dictButtonLevels[buttonClicked].color = new(1f, 1f, 1f, 1f);
+        _dictButtonLevels[buttonClicked].LevelImage.color = new(1f, 1f, 1f, 1f);
+        _dictButtonLevels[buttonClicked].SelectedFrame.gameObject.SetActive(true);
     }
 }
