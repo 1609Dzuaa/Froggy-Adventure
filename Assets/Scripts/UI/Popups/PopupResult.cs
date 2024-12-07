@@ -131,6 +131,10 @@ public class PopupResult : PopupController
                 FadeImageFruits(1.0f);
                 FadeTextFruits(1.0f, TweenTextTimerCallback);
             }).SetUpdate(true);
+            //save data here
+            PlayerDataController.Instance.PlayerBag.SilverCoin += _param.SilverCollected;
+            PlayerDataController.Instance.PlayerBag.GoldCoin += _param.GoldCollected;
+            EventsManager.Instance.NotifyObservers(EEvents.OnSavePlayerData);
         }
     }
 
@@ -220,10 +224,12 @@ public class PopupResult : PopupController
         switch (buttonName)
         {
             case (int)EButtonName.NextLevel:
+                GetCurrentPlayerData();
                 ProcessBasedOnPlayerHP(_currentHP, _currentSCoin, _nextLevel);
                 break;
 
             case (int)EButtonName.Replay:
+                GetCurrentPlayerData();
                 ProcessBasedOnPlayerHP(_currentHP, _currentSCoin, _currentLevel);
                 break;
 
@@ -265,19 +271,26 @@ public class PopupResult : PopupController
     private void ProcessBasedOnPlayerHP(int hp, int silverCoin, int levelToSwitch, Action<int> callback = null)
     {
         _canClose = false;
-        GetCurrentPlayerData();
 
         if (levelToSwitch > MAX_GAME_LEVEL)
         {
             string content = "Max Level Reached!";
             NotificationParam param = new(content, true, () =>
             {
-                if (_canClick)
-                {
-                    _canClick = false;
-                    StartCoroutine(CooldownButton());
-                    _notification.OnClose();
-                }
+                _canClick = false;
+                StartCoroutine(CooldownButton());
+                _notification.OnClose();
+            });
+            ShowNotificationHelper.ShowNotification(param);
+        }
+        else if (_param.Result == ELevelResult.Failed && levelToSwitch == SceneManager.GetActiveScene().buildIndex + 1)
+        {
+            string content = "Finish This Level To Open Next Level !";
+            NotificationParam param = new(content, true, () =>
+            {
+                _canClick = false;
+                StartCoroutine(CooldownButton());
+                _notification.OnClose();
             });
             ShowNotificationHelper.ShowNotification(param);
         }
@@ -303,7 +316,7 @@ public class PopupResult : PopupController
                 string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !";
                 NotificationParam param = new(content, true, () =>
                 {
-                    _notification.OnClose();
+                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
                     UIManager.Instance.TogglePopup(EPopup.Shop, true);
                 });
                 ShowNotificationHelper.ShowNotification(param);
@@ -328,7 +341,7 @@ public class PopupResult : PopupController
                 string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
                 NotificationParam param = new(content, false, null, () =>
                 {
-                    _notification.OnClose();
+                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
                     UIManager.Instance.TogglePopup(EPopup.Shop, true);
                 }, () =>
                 {
@@ -344,54 +357,6 @@ public class PopupResult : PopupController
             }
         }
         else
-        {
-            if (_param.Result == ELevelResult.Failed && levelToSwitch == SceneManager.GetActiveScene().buildIndex + 1)
-            {
-                string content = "Finish This Level To Open Next Level !";
-                NotificationParam param = new(content, true, () =>
-                {
-                    if (_canClick)
-                    {
-                        _canClick = false;
-                        StartCoroutine(CooldownButton());
-                        _notification.OnClose();
-                    }
-                });
-                ShowNotificationHelper.ShowNotification(param);
-            }
-            else
-                SwitchNextLevel();
-        }
-    }
-
-    private void SwitchNextLevel()
-    {
-        if (_canClick)
-        {
-
-            _canClick = false;
-            _canClose = true;
-            StartCoroutine(CooldownButton());
-
-            if (SceneManager.GetActiveScene().buildIndex == MAX_GAME_LEVEL)
-            {
-                string content = "Max Level Reached!";
-                NotificationParam param = new(content, true, () =>
-                {
-                    if (_canClick)
-                    {
-                        _canClick = false;
-                        StartCoroutine(CooldownButton());
-                        _notification.OnClose();
-                    }
-                });
-                ShowNotificationHelper.ShowNotification(param);
-                return;
-            }
-
-            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-            UIManager.Instance.AnimateAndTransitionScene(nextSceneIndex, true);
-            OnClose();
-        }
+            UIManager.Instance.AnimateAndTransitionScene(levelToSwitch);
     }
 }
