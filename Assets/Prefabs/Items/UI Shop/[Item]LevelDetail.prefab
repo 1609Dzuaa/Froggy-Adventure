@@ -294,8 +294,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0:00 / 3:00
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 377d4a7537419e5448b7e8c00de30870, type: 2}
-  m_sharedMaterial: {fileID: -5668574046496596361, guid: 377d4a7537419e5448b7e8c00de30870, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ea82616035de70b4b908cd9853c23d01, type: 2}
+  m_sharedMaterial: {fileID: -650886965973754784, guid: ea82616035de70b4b908cd9853c23d01, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -325,7 +325,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -518,6 +518,8 @@ MonoBehaviour:
   _imageLevel: {fileID: 6636315249277391924}
   _levelDescribe: {fileID: 587972734363707895}
   _timeDisplay: {fileID: 1815540573523124669}
+  _popupLevelGrid: {fileID: 0}
+  _popupLevelDetail: {fileID: 0}
 --- !u!1 &3759321263593004849
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,8 +651,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: zasuo
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a896646fa6724c54a9f71a3a735224d3, type: 2}
-  m_sharedMaterial: {fileID: -1465590196361543859, guid: a896646fa6724c54a9f71a3a735224d3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ea82616035de70b4b908cd9853c23d01, type: 2}
+  m_sharedMaterial: {fileID: -650886965973754784, guid: ea82616035de70b4b908cd9853c23d01, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

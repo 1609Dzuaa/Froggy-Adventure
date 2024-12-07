@@ -125,6 +125,7 @@ public class HUDController : MonoBehaviour
         _timeLeft = _timeAllow = _levelInfo.LevelTimeAllow + _bonusTime;
         TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeAllow, _timeAllow);
         HandleDisplayBuffIcons();
+        //Countdown();
         //Debug.Log("Reset");
     }
 

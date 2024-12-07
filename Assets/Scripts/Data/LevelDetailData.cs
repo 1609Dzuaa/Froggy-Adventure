@@ -39,6 +39,9 @@ public class LevelDetailData : MonoBehaviour
     [SerializeField] Image _imageLevel;
     [SerializeField] TextMeshProUGUI _levelDescribe;
     [SerializeField] TextMeshProUGUI _timeDisplay;
+    [SerializeField] PopupLevel _popupLevelGrid;
+    [SerializeField] PopupLevel _popupLevelDetail;
+
     LevelStaticData _LvlSData;
     LevelProgressData _LvlProgressData;
     int _indexLevel;
@@ -74,29 +77,82 @@ public class LevelDetailData : MonoBehaviour
 
     public void ButtonPlayOnClick()
     {
-        if (PlayerHealthManager.Instance.CurrentHP <= 1)
+        if (PlayerHealthManager.Instance.CurrentHP <= HP_ALARM_THRESHOLD)
         {
-            string content = (PlayerHealthManager.Instance.CurrentHP == 0)
-                ? "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !"
-                : "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
-            NotificationParam param = new(content, true, () =>
+            //xét thêm nếu hết máu và còn tiền hoặc nếu hết máu và hết tiền
+
+            //Bần cùng
+            if (PlayerHealthManager.Instance.CurrentHP == 0 && 
+                PlayerDataController.Instance.PlayerBag.SilverCoin < DEFAULT_MINIMUM_SILVER_PLAYABLE)
             {
-                UIManager.Instance.TogglePopup(EPopup.Notification, false);
-                UIManager.Instance.TogglePopup(EPopup.Shop, true);
-            });
-            ShowNotificationHelper.ShowNotification(param);
-            EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+                string content = "Based On The Amount Of Silver You Have, You Are Granted 1 HP And 2 Temporary HP.";
+                NotificationParam param = new NotificationParam(content, true, () =>
+                {
+                    EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
+                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    _popupLevelGrid.ButtonOnClick(false);
+                    _popupLevelDetail.ButtonOnClick(false);
+                    StartLevel(true);
+                });
+                ShowNotificationHelper.ShowNotification(param);
+                EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+            }
+            else if (PlayerHealthManager.Instance.CurrentHP == 0)
+            {
+                string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !";
+                NotificationParam param = new(content, true, () =>
+                {
+                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                });
+                ShowNotificationHelper.ShowNotification(param);
+                EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+            }
+            else if (PlayerDataController.Instance.PlayerBag.SilverCoin < DEFAULT_MINIMUM_SILVER_PLAYABLE)
+            {
+                string content = "Based On The Amount Of Silver You Have, You Are Granted 2 Temporary HP.";
+                NotificationParam param = new NotificationParam(content, true, () =>
+                {
+                    EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
+                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    _popupLevelGrid.ButtonOnClick(false);
+                    _popupLevelDetail.ButtonOnClick(false);
+                    StartLevel(true);
+                });
+                ShowNotificationHelper.ShowNotification(param);
+                EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+            }
+            else
+            {
+                string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
+                NotificationParam param = new(content, false, null, () =>
+                {
+                    //EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                }, () =>
+                {
+                    EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
+                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    _popupLevelGrid.ButtonOnClick(false);
+                    _popupLevelDetail.ButtonOnClick(false);
+                    StartLevel();
+                });
+                ShowNotificationHelper.ShowNotification(param);
+                EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+            }
         }
         else
             StartLevel();
     }
 
-    private void StartLevel()
+    private void StartLevel(bool needAid = false)
     {
-        UIManager.Instance.AnimateAndTransitionScene(_indexLevel);
+        UIManager.Instance.AnimateAndTransitionScene(_indexLevel, false, false, needAid);
         //EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
         List<Skills> listActiveSkills = ToggleAbilityItemHelper.GetListActivatedSkills();
         LevelInfo levelInfo = new(listActiveSkills, _levelTimeAllow);
         EventsManager.Instance.NotifyObservers(EEvents.OnSetupLevel, levelInfo);
+        //Debug.Log("need aid");
     }
 }

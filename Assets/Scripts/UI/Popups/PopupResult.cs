@@ -54,6 +54,10 @@ public class PopupResult : PopupController
     bool _canClick = true; //prevent mutliple click
     bool _canClose = true; //prevent close this popup when the tasks havent's finished yet
     ResultParam _param;
+    int _currentHP;
+    int _currentSCoin;
+    int _currentLevel;
+    int _nextLevel;
 
     private void Awake()
     {
@@ -77,6 +81,18 @@ public class PopupResult : PopupController
         _txtSilver.text = "0";
         _txtGold.text = "0";
         TimeDisplayHelper.DisplayTime(ref _txtTime, 0, _param.TimeAllow); //setup timer
+
+        _currentHP = PlayerHealthManager.Instance.CurrentHP;
+        _currentSCoin = PlayerDataController.Instance.PlayerBag.SilverCoin;
+        _currentLevel = SceneManager.GetActiveScene().buildIndex;
+        _nextLevel = _currentLevel + 1;
+    }
+
+    //Vì có thể player đã mua đồ nhưng đống current data của player ch đc update
+    private void GetCurrentPlayerData()
+    {
+        _currentHP = PlayerHealthManager.Instance.CurrentHP;
+        _currentSCoin = PlayerDataController.Instance.PlayerBag.SilverCoin;
     }
 
     protected override void OnEnable()
@@ -115,6 +131,10 @@ public class PopupResult : PopupController
                 FadeImageFruits(1.0f);
                 FadeTextFruits(1.0f, TweenTextTimerCallback);
             }).SetUpdate(true);
+            //save data here
+            PlayerDataController.Instance.PlayerBag.SilverCoin += _param.SilverCollected;
+            PlayerDataController.Instance.PlayerBag.GoldCoin += _param.GoldCollected;
+            EventsManager.Instance.NotifyObservers(EEvents.OnSavePlayerData);
         }
     }
 
@@ -200,72 +220,17 @@ public class PopupResult : PopupController
 
     public void ButtonOnClick(int buttonName)
     {
+
         switch (buttonName)
         {
             case (int)EButtonName.NextLevel:
-                if (SceneManager.GetActiveScene().buildIndex == MAX_GAME_LEVEL)
-                {
-                    string content = "Max Level Reached!";
-                    NotificationParam param = new(content, true, () =>
-                    {
-                        if (_canClick)
-                        {
-                            _canClick = false;
-                            StartCoroutine(CooldownButton());
-                            _notification.OnClose();
-                        }
-                    });
-                    ShowNotificationHelper.ShowNotification(param);
-                }
-                else if (PlayerHealthManager.Instance.CurrentHP <= 1)
-                {
-                    if (PlayerHealthManager.Instance.CurrentHP == 0)
-                        ProcessBasedOnPlayerHP(0);
-                    else
-                        ProcessBasedOnPlayerHP(1, SwitchNextLevel);
-                }
-                else
-                {
-                    if (_param.Result == ELevelResult.Failed)
-                    {
-                        string content = "Finish This Level To Open Next Level!";
-                        NotificationParam param = new(content, true, () =>
-                        {
-                            if (_canClick)
-                            {
-                                _canClick = false;
-                                StartCoroutine(CooldownButton());
-                                _notification.OnClose();
-                            }
-                        });
-                        ShowNotificationHelper.ShowNotification(param);
-                    }
-                    else
-                        SwitchNextLevel();
-                }
+                GetCurrentPlayerData();
+                ProcessBasedOnPlayerHP(_currentHP, _currentSCoin, _nextLevel);
                 break;
 
             case (int)EButtonName.Replay:
-                if (PlayerHealthManager.Instance.CurrentHP <= 1)
-                {
-                    if (PlayerHealthManager.Instance.CurrentHP == 0)
-                        ProcessBasedOnPlayerHP(0);
-                    else
-                        ProcessBasedOnPlayerHP(1, () =>
-                        {
-                            _canClose = true;
-                            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-                            UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex, true);
-                        });
-                }
-                else if (_canClick)
-                {
-                    _canClick = false;
-                    _canClose = true;
-                    StartCoroutine(CooldownButton());
-                    int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-                    UIManager.Instance.AnimateAndTransitionScene(currentSceneIndex, true);
-                }
+                GetCurrentPlayerData();
+                ProcessBasedOnPlayerHP(_currentHP, _currentSCoin, _currentLevel);
                 break;
 
             case (int)EButtonName.Home:
@@ -303,53 +268,95 @@ public class PopupResult : PopupController
         UIManager.Instance.TogglePopup(EPopup.Shop, true);
     }
 
-    private void ProcessBasedOnPlayerHP(int hp, Action callback = null)
+    private void ProcessBasedOnPlayerHP(int hp, int silverCoin, int levelToSwitch, Action<int> callback = null)
     {
         _canClose = false;
-        if (hp == 0)
+
+        if (levelToSwitch > MAX_GAME_LEVEL)
         {
-            string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !";
+            string content = "Max Level Reached!";
             NotificationParam param = new(content, true, () =>
             {
-                if (_canClick)
-                {
-                    _canClick = false;
-                    StartCoroutine(CooldownButton());
-                    ShowShop();
-                }
+                _canClick = false;
+                StartCoroutine(CooldownButton());
+                _notification.OnClose();
             });
             ShowNotificationHelper.ShowNotification(param);
+        }
+        else if (_param.Result == ELevelResult.Failed && levelToSwitch == SceneManager.GetActiveScene().buildIndex + 1)
+        {
+            string content = "Finish This Level To Open Next Level !";
+            NotificationParam param = new(content, true, () =>
+            {
+                _canClick = false;
+                StartCoroutine(CooldownButton());
+                _notification.OnClose();
+            });
+            ShowNotificationHelper.ShowNotification(param);
+        }
+        else if (hp <= HP_ALARM_THRESHOLD)
+        {
+            if (hp == 0 && silverCoin <= DEFAULT_MINIMUM_SILVER_PLAYABLE)
+            {
+                string content = "Based On The Amount Of Silver You Have, You Are Granted 1 HP And 2 Temporary HP.";
+                NotificationParam param = new NotificationParam(content, true, () =>
+                {
+                    _notification.OnClose();
+                    _canClose = true;
+                    OnClose();
+                    if (levelToSwitch == _currentLevel)
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, true);
+                    else
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, false, false, true);
+                });
+                ShowNotificationHelper.ShowNotification(param);
+            }
+            else if (hp == 0)
+            {
+                string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !";
+                NotificationParam param = new(content, true, () =>
+                {
+                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                });
+                ShowNotificationHelper.ShowNotification(param);
+            }
+            else if (_currentSCoin < DEFAULT_MINIMUM_SILVER_PLAYABLE)
+            {
+                string content = "Based On The Amount Of Silver You Have, You Are Granted 2 Temporary HP.";
+                NotificationParam param = new NotificationParam(content, true, () =>
+                {
+                    _notification.OnClose();
+                    _canClose = true;
+                    OnClose();
+                    if (levelToSwitch == _currentLevel)
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, true);
+                    else
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, false, false, true);
+                });
+                ShowNotificationHelper.ShowNotification(param);
+            }
+            else
+            {
+                string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
+                NotificationParam param = new(content, false, null, () =>
+                {
+                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                }, () =>
+                {
+                    _notification.OnClose();
+                    _canClose = true;
+                    OnClose();
+                    if (levelToSwitch == _currentLevel)
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, true);
+                    else
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, false, false, true);
+                });
+                ShowNotificationHelper.ShowNotification(param);
+            }
         }
         else
-        {
-            string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
-            NotificationParam param = new(content, false, null, () =>
-            {
-                if (_canClick)
-                {
-                    _canClick = false;
-                    StartCoroutine(CooldownButton());
-                    ShowShop();
-                }
-            }, () =>
-            {
-                //perform callback tuy` tinh` huong'
-                callback?.Invoke();
-            });
-            ShowNotificationHelper.ShowNotification(param);
-        }
-    }
-
-    private void SwitchNextLevel()
-    {
-        if (_canClick)
-        {
-            _canClick = false;
-            _canClose = true;
-            StartCoroutine(CooldownButton());
-            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-            UIManager.Instance.AnimateAndTransitionScene(nextSceneIndex, true);
-            OnClose();
-        }
+            UIManager.Instance.AnimateAndTransitionScene(levelToSwitch);
     }
 }

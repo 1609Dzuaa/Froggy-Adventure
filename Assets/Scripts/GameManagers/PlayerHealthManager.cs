@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameConstants;
+using static GameEnums;
 
 public struct HP
 {
@@ -28,6 +29,8 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     [Header("Time")]
     //khoảng thgian để blink máu ảo khi nó trong trạng thái RunningOut
     [SerializeField] private float _timeEachBlink;
+    [SerializeField] float _tempHPDuration;
+    [SerializeField] float _tempHPRunoutDuration;
 
     private HP[] _HPs = new HP[PLAYER_MAX_HP];
     [HideInInspector] public int MaxHP;
@@ -52,12 +55,28 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     protected override void Awake()
     {
         base.Awake();
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
+    }
+
+    private void AidForPlayer(object obj)
+    {
+        _currentHP = DEFAULT_AID_PLAYER_HP;
+        _tempHP = DEFAULT_AID_PLAYER_TEMP_HP;
+        _hasGotTempHP = true; //Đánh dấu đã nhận đc máu ảo để tính giờ
+        _tempHPEntryTime = Time.time; //Bắt đầu tính giờ thgian để sd máu ảo
+        AssignHPArray(); //assign lại cái HP UI
+        Debug.Log("Aid");
+    }
+
+    private void OnDestroy()
+    {
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
     }
 
     private void Start()
     {
         InitHP();
-        InitHPArray();
+        AssignHPArray();
         InitHPDictionary();
         InitUIHP();
     }
@@ -65,8 +84,8 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     private void InitHP()
     {
         //MaxHP = _playerSO.MaxHP;
-        //_currentHP = MaxHP;
-        _tempHP = 0;
+        //MaxHP = DEFAULT_MAX_HP;
+        //_tempHP = 0;
     }
 
     private void InitHPDictionary()
@@ -96,12 +115,17 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         //Disable những thằng còn lại
     }
 
-    private void InitHPArray()
+    private void AssignHPArray()
     {
         for (int i = 0; i < MaxHP; i++)
         {
-            _HPs[i]._state = HP_STATE_NORMAL;
-            //Khởi tạo cho các HP mặc định là state Normal
+            if (i <= _currentHP - 1)
+                _HPs[i]._state = HP_STATE_NORMAL;
+            else if (_tempHP != 0)
+                _HPs[i]._state = HP_STATE_TEMP;
+            else
+                _HPs[i]._state = HP_STATE_LOST;
+            
         }
     }
 
@@ -244,14 +268,14 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     private void HandleIterateTempHP()
     {
         //Nếu hết thgian sử dụng tempHP
-        /*if (Time.time - _tempHPEntryTime >=  ((PlayerAbsorbBuff)BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Absorb)).TempHPDuration && _hasGotTempHP)
+        if (Time.time - _tempHPEntryTime >=  _tempHPDuration && _hasGotTempHP)
         {
             //Debug.Log("TempHP Ready Run Out Of Time");
             //Bắt đầu bấm giờ cho RunOut
             StartTickRunOut();
 
             //Nếu vẫn đang trong thgian RunOut thì xử lý blink blink cho tempHP
-            if (Time.time - _tempHPRunOutEntryTime < ((PlayerAbsorbBuff)BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Absorb)).TempHPRunOutDuration)
+            if (Time.time - _tempHPRunOutEntryTime < _tempHPRunoutDuration)
                 HandleTempHPRunOutState();
             else
             {
@@ -259,7 +283,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
                 HandleExpireTempHP();
                 ResetDataRelatedToTempHP();
             }
-        }*/
+        }
     }
 
     private void StartTickRunOut()

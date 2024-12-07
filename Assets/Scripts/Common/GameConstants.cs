@@ -110,9 +110,12 @@ public static class GameConstants
     #endregion
 
     #region HEALTHPOINT(HP) Constants
+
     public const int HP_STATE_NORMAL = 0;
     public const int HP_STATE_LOST = 1;
     public const int HP_STATE_TEMP = 2;
+    public const int HP_ALARM_THRESHOLD = 1;
+
     #endregion
 
     #region Button Constants
@@ -170,6 +173,9 @@ public static class GameConstants
     public const bool DEFAULT_LEVEL_COMPLETED = false;
     public const int DEFAULT_TIME_COMPLETED = 0;
     public const float DEFAULT_VOLUME = 0.75f;
+    public const int DEFAULT_MINIMUM_SILVER_PLAYABLE = 20; //Mặc định số bạc tối thiểu để cho player vào level
+    public const int DEFAULT_AID_PLAYER_HP = 1;
+    public const int DEFAULT_AID_PLAYER_TEMP_HP = 2;
 
     #endregion
 
