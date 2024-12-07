@@ -17,7 +17,7 @@ public class HealthPoint : ItemShop
         }
 
         PlayerHealthManager.Instance.CurrentHP = Mathf.Clamp(++PlayerHealthManager.Instance.CurrentHP, 0, 3);
-        if(PlayerHealthManager.Instance.CurrentHP > 0)
+        if (PlayerHealthManager.Instance.CurrentHP > 0)
             EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
         return true;
     }

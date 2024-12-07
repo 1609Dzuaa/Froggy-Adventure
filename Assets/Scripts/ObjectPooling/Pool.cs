@@ -113,6 +113,7 @@ public class Pool : BaseSingleton<Pool>
         }
 
         GameObject gO = Instantiate(_dictPool[gObj][0], transform);
+        _dictPool[gObj].Add(gO);
         Debug.Log("out of " + gObj + " create new one!");
         return gO;
     }
@@ -133,7 +134,14 @@ public class Pool : BaseSingleton<Pool>
             }
         }
 
-        Debug.Log("out of piece " + bulletType);
+        GameObject p1 = Instantiate(_dictBPPPool[bulletType][0].Pair1, transform);
+        GameObject p2 = Instantiate(_dictBPPPool[bulletType][0].Pair2, transform);
+        int ammount = _dictBPPPool[bulletType][0]._ammount;
+
+        bulletPiecePair = new BulletPiecePair(bulletType, p1, p2, ammount);
+        _dictBPPPool[bulletType].Add(bulletPiecePair);
+
+        Debug.Log("out of piece pair " + bulletType + " create a new pair");
         return bulletPiecePair;
     }
 

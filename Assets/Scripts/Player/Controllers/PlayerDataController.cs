@@ -7,8 +7,8 @@ using static GameEnums;
 
 public class PlayerDataController : BaseSingleton<PlayerDataController>
 {
-    [SerializeField] PlayerBagController _pBag;
-    [SerializeField] PlayerHealthManager _pHealth;
+    public PlayerBagController PlayerBag;
+    public PlayerHealthManager PlayerHealth;
     List<Fruits> _listFruits = new();
     FruitsIventory _fInventory;
 
@@ -40,10 +40,10 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
     {
         PlayerData playerData = JSONDataHelper.LoadFromJSon<PlayerData>(filePath);
         _fInventory = JSONDataHelper.LoadFromJSon<FruitsIventory>(Application.persistentDataPath + FRUITS_DATA_PATH);
-        _pBag.SilverCoin = playerData.SilverCoin;
-        _pBag.GoldCoin = playerData.GoldCoin;
-        _pHealth.CurrentHP = playerData.HealthPoint;
-        _pHealth.MaxHP = playerData.MaxHealthPoint;
+        PlayerBag.SilverCoin = playerData.SilverCoin;
+        PlayerBag.GoldCoin = playerData.GoldCoin;
+        PlayerHealth.CurrentHP = playerData.HealthPoint;
+        PlayerHealth.MaxHP = playerData.MaxHealthPoint;
     }
 
     private void OnDestroy()
@@ -56,11 +56,11 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
 
     private void SavePlayerData()
     {
-        PlayerData pData = new(_pHealth.CurrentHP, _pHealth.MaxHP, _pBag.SilverCoin, _pBag.GoldCoin);
+        PlayerData pData = new(PlayerHealth.CurrentHP, PlayerHealth.MaxHP, PlayerBag.SilverCoin, PlayerBag.GoldCoin);
         JSONDataHelper.SaveToJSon<PlayerData>(pData, Application.persistentDataPath + PLAYER_DATA_PATH);
 
         _listFruits.Clear();
-        foreach (var item in _pBag.DictFruits)
+        foreach (var item in PlayerBag.DictFruits)
             _listFruits.Add(item.Value);
 
         _fInventory.Fruits = _listFruits;
@@ -72,13 +72,13 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
         if (obj != null)
         {
             ResultParam pr = obj as ResultParam;
-            _pBag.SilverCoin += pr.SilverCollected;
-            _pBag.GoldCoin += pr.GoldCollected;
+            PlayerBag.SilverCoin += pr.SilverCollected;
+            PlayerBag.GoldCoin += pr.GoldCollected;
         }
 
         SavePlayerData();
         EventsManager.Instance.NotifyObservers(EEvents.OnItemEligibleCheck);
-        Debug.Log("check");
+        //Debug.Log("check");
     }
 
     private void LockLimitedSkills(object obj)

@@ -179,13 +179,13 @@ public class UIManager : BaseSingleton<UIManager>
     /// <param name="indexLevel">Chú ý thằng này phải khớp với Build Index ngoài Editor</param>
     /// <param name="needReset">Có cần bắn event reset vài thứ khi chuyển scene không</param>
     /// <param name="isReplay">Nếu chơi lại thì 0 cần phải start new countdown</param>
-    public void AnimateAndTransitionScene(int indexLevel, bool needReset = false, bool isReplay = false)
+    public void AnimateAndTransitionScene(int indexLevel, bool needReset = false, bool isReplay = false, bool needAid = false)
     {
         if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
         {
             //cần tween cụm button
             _buttonContainer.Tween(false);
-            StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1));
+            StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, false, false, needAid));
         }
         else
         {
@@ -195,17 +195,17 @@ public class UIManager : BaseSingleton<UIManager>
             if (_dictPopupUI[EPopup.Result].gameObject.activeInHierarchy)
             {
                 _popupResult.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay, needAid));
             }
             else
             {
                 _popupNotification.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay, needAid));
             }
         }
     }
 
-    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime, bool needReset = false, bool isReplay = false)
+    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime, bool needReset = false, bool isReplay = false, bool needAid = false)
     {
         yield return new WaitForSeconds(waitTime);
 
@@ -213,6 +213,8 @@ public class UIManager : BaseSingleton<UIManager>
         {
             ToggleMenuUIsCanvas((indexLevel != GAME_MENU) ? false : true);
             ToggleInGameCanvas((indexLevel != GAME_MENU) ? true : false);
+            if (needAid)
+                EventsManager.Instance.NotifyObservers(EEvents.OnAidForPlayer);
             GameManager.Instance.SwitchScene(indexLevel);
             if (needReset)
                 EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel);
@@ -222,7 +224,7 @@ public class UIManager : BaseSingleton<UIManager>
                     HandleDisplayMenuUI();
                 else if (!isReplay)
                 {
-                    _hudControl.Countdown(); //0 phải replay thì mới count
+                    //_hudControl.Countdown(); //0 phải replay thì mới count
                     string strLevelTheme = "Level" + indexLevel.ToString() + "Theme";
                     ESoundName levelTheme = (ESoundName)Enum.Parse(typeof(ESoundName), strLevelTheme);
                     SoundsManager.Instance.PlayMusic(levelTheme);
@@ -230,6 +232,7 @@ public class UIManager : BaseSingleton<UIManager>
                 List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills();
                 EventsManager.Instance.NotifyObservers(EEvents.OnValidatePlayerBuffs, skills);
                 _imageSceneTrans.position = new(_initPos, _imageSceneTrans.position.y);
+                _hudControl.Countdown(); //0 phải replay thì mới count
             });
         });
     }
