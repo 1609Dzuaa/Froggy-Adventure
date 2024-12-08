@@ -127,7 +127,6 @@ public class LevelDetailData : MonoBehaviour
                 string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
                 NotificationParam param = new(content, false, null, () =>
                 {
-                    //EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
                     UIManager.Instance.TogglePopup(EPopup.Notification, false);
                     UIManager.Instance.TogglePopup(EPopup.Shop, true);
                 }, () =>

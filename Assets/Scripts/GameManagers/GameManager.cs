@@ -9,15 +9,17 @@ using static GameEnums;
 public class GameManager : BaseSingleton<GameManager>
 {
     [SerializeField] int _targetFrameRate;
+    [HideInInspector] public List<string> ListPrefsInconsistentKeys;
 
     protected override void Awake()
     {
         base.Awake();
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         DontDestroyOnLoad(gameObject);
         //Mobile platforms always ignore QualitySettings.vSyncCount and instead
         //use Application.targetFrameRate to choose a target frame rate for the game.
         Application.targetFrameRate = _targetFrameRate;
+        ListPrefsInconsistentKeys = new List<string>();
     }
 
     public void SwitchScene(int sceneIndex)
@@ -34,9 +36,14 @@ public class GameManager : BaseSingleton<GameManager>
 
     private void OnApplicationQuit()
     {
-        //PlayerPrefs.DeleteAll();
+        DeleteInconsistentPrefsKey();
         PlayerHealthManager.Instance.DecreaseHP();
         //Debug.Log("Quit");
     }
 
+    public void DeleteInconsistentPrefsKey()
+    {
+        foreach (string key in ListPrefsInconsistentKeys)
+            PlayerPrefs.DeleteKey(key);
+    }
 }

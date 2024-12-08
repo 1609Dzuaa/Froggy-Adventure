@@ -64,18 +64,15 @@ public class PopupNotification : PopupController
 
         if (param.BtnContinueCallback != null)
             _btnContinue.onClick.AddListener(param.BtnContinueCallback);
-        else
-            _btnContinue.onClick.AddListener(OnClose);
+        _btnContinue.onClick.AddListener(OnClose);
 
         if (param.BtnYesCallback != null)
             _btnYes.onClick.AddListener(param.BtnYesCallback);
-        else
-            _btnYes.onClick.AddListener(OnClose);
+        _btnYes.onClick.AddListener(OnClose);
 
         if (param.BtnNoCallback != null)
             _btnNo.onClick.AddListener(param.BtnNoCallback);
-        else
-            _btnNo.onClick.AddListener(OnClose);
+        _btnNo.onClick.AddListener(OnClose);
 
         //Debug.Log("Hello");
     }

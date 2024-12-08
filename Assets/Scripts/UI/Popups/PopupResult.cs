@@ -48,7 +48,7 @@ public class PopupResult : PopupController
     [SerializeField] float _tweenChildDuration;
     [SerializeField] Transform[] _arrButton;
 
-    [SerializeField] PopupNotification _notification;
+    //[SerializeField] PopupNotification _notification;
     float _initPosition;
     float _endPosition;
     bool _canClick = true; //prevent mutliple click
@@ -239,7 +239,8 @@ public class PopupResult : PopupController
                 {
                     _canClick = false;
                     StartCoroutine(CooldownButton());
-                    UIManager.Instance.AnimateAndTransitionScene(GAME_MENU, true);
+                    UIManager.Instance.AnimateAndTransitionScene(GAME_MENU, true, false, false, true);
+                    EventsManager.Instance.NotifyObservers(EEvents.OnReturnMainMenu);
                 }
                 break;
 
@@ -280,7 +281,6 @@ public class PopupResult : PopupController
             {
                 _canClick = false;
                 StartCoroutine(CooldownButton());
-                _notification.OnClose();
             });
             ShowNotificationHelper.ShowNotification(param);
         }
@@ -291,7 +291,6 @@ public class PopupResult : PopupController
             {
                 _canClick = false;
                 StartCoroutine(CooldownButton());
-                _notification.OnClose();
             });
             ShowNotificationHelper.ShowNotification(param);
         }
@@ -302,13 +301,12 @@ public class PopupResult : PopupController
                 string content = "Based On The Amount Of Silver You Have, You Are Granted 1 HP And 2 Temporary HP.";
                 NotificationParam param = new NotificationParam(content, true, () =>
                 {
-                    _notification.OnClose();
                     _canClose = true;
                     OnClose();
                     if (levelToSwitch == _currentLevel)
                         UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, true);
                     else
-                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, false, false, true);
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, false, true);
                 });
                 ShowNotificationHelper.ShowNotification(param);
             }
@@ -317,7 +315,6 @@ public class PopupResult : PopupController
                 string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop!";
                 NotificationParam param = new(content, true, () =>
                 {
-                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
                     UIManager.Instance.TogglePopup(EPopup.Shop, true);
                 });
                 ShowNotificationHelper.ShowNotification(param);
@@ -327,13 +324,12 @@ public class PopupResult : PopupController
                 string content = "Based On The Amount Of Silver You Have, You Are Granted 2 Temporary HP.";
                 NotificationParam param = new NotificationParam(content, true, () =>
                 {
-                    _notification.OnClose();
                     _canClose = true;
                     OnClose();
                     if (levelToSwitch == _currentLevel)
                         UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, true);
                     else
-                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, false, false, true);
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, false, true);
                 });
                 ShowNotificationHelper.ShowNotification(param);
             }
@@ -342,17 +338,15 @@ public class PopupResult : PopupController
                 string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now?";
                 NotificationParam param = new(content, false, null, () =>
                 {
-                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
                     UIManager.Instance.TogglePopup(EPopup.Shop, true);
                 }, () =>
                 {
-                    _notification.OnClose();
                     _canClose = true;
                     OnClose();
                     if (levelToSwitch == _currentLevel)
                         UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, true);
                     else
-                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, false, false, true);
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, false, true);
                 });
                 ShowNotificationHelper.ShowNotification(param);
             }
@@ -362,7 +356,7 @@ public class PopupResult : PopupController
             if (levelToSwitch == _currentLevel)
                 UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, true);
             else
-                UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, false, false, true);
+                UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, false, true);
         }
     }
 }

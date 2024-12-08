@@ -42,6 +42,10 @@ public class MEnemiesGotHitState : MEnemiesBaseState
         if (!_mEnemiesManager.NotPlayDeadSfx)
             SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.EnemiesDeadSfx, 1.0f);
         if (!_mEnemiesManager.ID.Contains(GameConstants.CLONE))
-            PlayerPrefs.SetString(GameEnums.ESpecialStates.Deleted + _mEnemiesManager.ID, "deleted");
+        {
+            string key = GameEnums.ESpecialStates.Deleted + _mEnemiesManager.ID;
+            GameManager.Instance.ListPrefsInconsistentKeys.Add(key);
+            PlayerPrefs.SetString(key, "deleted");
+        }
     }
 }

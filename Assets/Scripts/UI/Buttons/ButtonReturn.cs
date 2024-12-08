@@ -10,10 +10,11 @@ public class ButtonReturn : ButtonController
     {
         base.OnClick();
         string content = "Are You Sure Want To Back To Main Menu ?";
-        NotificationParam param = new(content, false, () =>
+        NotificationParam param = new(content, false, null, () =>
         {
-            UIManager.Instance.AnimateAndTransitionScene(GAME_MENU);
+            UIManager.Instance.AnimateAndTransitionScene(GAME_MENU, true, false, false, true);
             EventsManager.Instance.NotifyObservers(EEvents.OnReturnMainMenu);
+            GameManager.Instance.ListPrefsInconsistentKeys.Clear();
         });
         ShowNotificationHelper.ShowNotification(param);
     }

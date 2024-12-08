@@ -326,7 +326,7 @@ public class PlayerStateManager : MonoBehaviour
             anim.SetTrigger(DEAD_ANIMATION);
             rb.bodyType = RigidbodyType2D.Static;
             EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Completed);
-            PlayerPrefs.DeleteAll(); //xoá hết data trong đây khi win level
+            GameManager.Instance.DeleteInconsistentPrefsKey(); //xoá hết data trong đây khi win level
             //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
@@ -854,10 +854,19 @@ public class PlayerStateManager : MonoBehaviour
     private void UpdateRespawnPosition(object obj)
     {
         Vector3 checkPointPos = (Vector3)obj;
-        PlayerPrefs.SetFloat(ESpecialStates.PlayerPositionUpdatedX.ToString(), checkPointPos.x);
-        PlayerPrefs.SetFloat(ESpecialStates.PlayerPositionUpdatedY.ToString(), checkPointPos.y);
-        PlayerPrefs.SetFloat(ESpecialStates.PlayerPositionUpdatedZ.ToString(), checkPointPos.z);
+
+        string keyX = ESpecialStates.PlayerPositionUpdatedX.ToString();
+        string keyY = ESpecialStates.PlayerPositionUpdatedY.ToString();
+        string keyZ = ESpecialStates.PlayerPositionUpdatedZ.ToString();
+
+        PlayerPrefs.SetFloat(keyX, checkPointPos.x);
+        PlayerPrefs.SetFloat(keyY, checkPointPos.y);
+        PlayerPrefs.SetFloat(keyZ, checkPointPos.z);
         PlayerPrefs.Save();
+
+        GameManager.Instance.ListPrefsInconsistentKeys.Add(keyX);
+        GameManager.Instance.ListPrefsInconsistentKeys.Add(keyY);
+        GameManager.Instance.ListPrefsInconsistentKeys.Add(keyZ);
     }
 
     private void HandleWinGame(object obj)

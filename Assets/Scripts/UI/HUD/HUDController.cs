@@ -74,7 +74,7 @@ public class HUDController : MonoBehaviour
         //performanceMarker.End();
     }
 
-    //Ngưng hoặc resume tween timer khi replay scene
+    //Ngưng hoặc resume tween timer khi replay scene (replay lúc die)
     public void ControlTweenTimer(bool isStop)
     {
         if (isStop) _timerTween.Pause();
@@ -132,7 +132,10 @@ public class HUDController : MonoBehaviour
         _timeLeft = _timeAllow = _levelInfo.LevelTimeAllow + _bonusTime;
         TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeAllow, _timeAllow);
         HandleDisplayBuffIcons();
-        Countdown(0.5f);
+
+        bool isResetNoCD = (bool)obj;
+        if (!isResetNoCD)
+            Countdown(0.5f);
         //Debug.Log("Reset");
     }
 
