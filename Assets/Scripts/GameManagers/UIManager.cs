@@ -209,6 +209,7 @@ public class UIManager : BaseSingleton<UIManager>
     {
         yield return new WaitForSeconds(waitTime);
 
+        if (isReplay) _hudControl.ControlTweenTimer(true);
         _imageSceneTrans.DOLocalMoveX(0f, _transDuration).OnComplete(() =>
         {
             ToggleMenuUIsCanvas((indexLevel != GAME_MENU) ? false : true);
@@ -224,15 +225,16 @@ public class UIManager : BaseSingleton<UIManager>
                     HandleDisplayMenuUI();
                 else if (!isReplay)
                 {
-                    //_hudControl.Countdown(); //0 phải replay thì mới count
+                    _hudControl.Countdown(); //0 phải replay thì mới start count lại từ đầu
                     string strLevelTheme = "Level" + indexLevel.ToString() + "Theme";
                     ESoundName levelTheme = (ESoundName)Enum.Parse(typeof(ESoundName), strLevelTheme);
                     SoundsManager.Instance.PlayMusic(levelTheme);
                 }
+                else
+                    _hudControl.ControlTweenTimer(false);
                 List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills();
                 EventsManager.Instance.NotifyObservers(EEvents.OnValidatePlayerBuffs, skills);
                 _imageSceneTrans.position = new(_initPos, _imageSceneTrans.position.y);
-                _hudControl.Countdown(); //0 phải replay thì mới count
             });
         });
     }

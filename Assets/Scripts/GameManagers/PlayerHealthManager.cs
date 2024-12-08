@@ -52,6 +52,8 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     public int CurrentHP { get { return _currentHP; } set { _currentHP = value; } }
 
+    public int TempHP { get => _tempHP; set => _tempHP = value; }
+
     protected override void Awake()
     {
         base.Awake();

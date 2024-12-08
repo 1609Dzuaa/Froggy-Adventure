@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameEnums;
 
 public class NMEnemiesManager : EnemiesManager
 {
@@ -45,7 +46,7 @@ public class NMEnemiesManager : EnemiesManager
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
             string bulletID = collision.collider.GetComponent<BulletController>().BulletID;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnHit, bulletID);
+            EventsManager.Instance.NotifyObservers(EEvents.BulletOnHit, bulletID);
             ChangeState(_nmEnemiesGotHitState);
         }
     }
@@ -58,7 +59,9 @@ public class NMEnemiesManager : EnemiesManager
             //có thể enemy này dính đòn từ bullet => rotate z khi GotHit
             //và Trigger collider của Player dẫn đến JumpPassive
             _hasGotHit = true;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive);
+            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnJumpPassive);
+            SpawnRewardForPlayer();
+            SpawnDeathFX(EPoolable.EnemyDeathSkullVfx);
             ChangeState(_nmEnemiesGotHitState);
             SpawnBountyIfMarked();
         }
@@ -72,7 +75,7 @@ public class NMEnemiesManager : EnemiesManager
 
     protected virtual void AllowAttackPlayer()
     {
-        if (BuffsManager.Instance.GetBuff(GameEnums.EBuffs.Invisible).IsActivating)
+        if (BuffsManager.Instance.GetBuff(EBuffs.Invisible).IsActivating)
         {
             ChangeState(_nmEnemiesIdleState);
             return;

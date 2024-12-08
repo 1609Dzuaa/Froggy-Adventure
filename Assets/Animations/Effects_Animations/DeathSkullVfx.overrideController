@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DeathSkullVfx
+  m_Controller: {fileID: 9100000, guid: c77c50349b5e4854390b924474da94b0, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 901f837b1fe2bfe4eb244021b5d152ef, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: eb844a1fa323a5241874b57d6aed8f04, type: 2}
