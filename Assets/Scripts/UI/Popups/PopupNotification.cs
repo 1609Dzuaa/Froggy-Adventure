@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -36,6 +37,10 @@ public class PopupNotification : PopupController
     [SerializeField] Button _btnYes;
     [SerializeField] Button _btnNo;
 
+    UnityAction _btnContinueCallback;
+    UnityAction _btnYesCallback;
+    UnityAction _btnNoCallback;
+
     private void Awake()
     {
         EventsManager.Instance.SubcribeToAnEvent(EEvents.NotificationOnPopup, ReceiveInformation);
@@ -57,23 +62,46 @@ public class PopupNotification : PopupController
         _btnNo.gameObject.SetActive(param.ShowBtnYesNo);
 
         //handle callbacks
+        Debug.Log("No runtime callbacks1: " + CountRuntimeListeners(_btnNo));
 
-        _btnContinue.onClick.RemoveAllListeners();
-        _btnYes.onClick.RemoveAllListeners();
-        _btnNo.onClick.RemoveAllListeners();
+        if (_btnContinueCallback != null)
+            _btnContinue.onClick.RemoveListener(_btnContinueCallback);
+        if (_btnYesCallback != null)
+            _btnYes.onClick.RemoveListener(_btnYesCallback);
+        if (_btnNoCallback != null)
+            _btnNo.onClick.RemoveListener(_btnNoCallback);
 
         if (param.BtnContinueCallback != null)
             _btnContinue.onClick.AddListener(param.BtnContinueCallback);
-        _btnContinue.onClick.AddListener(OnClose);
 
         if (param.BtnYesCallback != null)
             _btnYes.onClick.AddListener(param.BtnYesCallback);
-        _btnYes.onClick.AddListener(OnClose);
 
         if (param.BtnNoCallback != null)
             _btnNo.onClick.AddListener(param.BtnNoCallback);
-        _btnNo.onClick.AddListener(OnClose);
+
+        Debug.Log("No runtime callbacks2: " + CountRuntimeListeners(_btnNo));
+
+
+        //cache callbacks
+        _btnContinueCallback = param.BtnContinueCallback;
+        _btnYesCallback = param.BtnYesCallback;
+        _btnNoCallback = param.BtnNoCallback;
 
         //Debug.Log("Hello");
+    }
+
+    //gpt : đếm số listener đc thêm lúc runtime
+    int CountRuntimeListeners(Button button)
+    {
+        // Access the private field "m_Calls" of UnityEvent
+        FieldInfo field = typeof(UnityEventBase).GetField("m_Calls", BindingFlags.NonPublic | BindingFlags.Instance);
+        object mCalls = field.GetValue(button.onClick);
+
+        // Get the list of runtime listeners
+        FieldInfo runtimeCallsField = mCalls.GetType().GetField("m_RuntimeCalls", BindingFlags.NonPublic | BindingFlags.Instance);
+        var runtimeCalls = runtimeCallsField.GetValue(mCalls) as System.Collections.IList;
+
+        return runtimeCalls?.Count ?? 0;
     }
 }

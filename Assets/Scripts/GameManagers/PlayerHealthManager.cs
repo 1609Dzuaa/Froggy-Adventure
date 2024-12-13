@@ -37,6 +37,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     private int _currentHP;
     private int _tempHP;
     private bool _hasIncreaseHP;
+    private bool _gameplayFinished;
 
     //Giúp cảnh báo Player khi máu ảo sắp hết thgian sử dụng ^^
     #region BLINK EFFECT FOR TEMP_HP WHEN RUNNING OUT
@@ -58,6 +59,8 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     {
         base.Awake();
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSetupLevel, SetupLevel);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLevelCompleted, LevelFinished);
     }
 
     private void AidForPlayer(object obj)
@@ -67,12 +70,24 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         _hasGotTempHP = true; //Đánh dấu đã nhận đc máu ảo để tính giờ
         _tempHPEntryTime = Time.time; //Bắt đầu tính giờ thgian để sd máu ảo
         AssignHPArray(); //assign lại cái HP UI
-        Debug.Log("Aid");
+        //Debug.Log("Aid");
+    }
+
+    private void SetupLevel(object obj)
+    {
+        _gameplayFinished = false;
+    }
+
+    private void LevelFinished(object obj)
+    {
+        _gameplayFinished = true;
     }
 
     private void OnDestroy()
     {
         EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSetupLevel, SetupLevel);
+        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLevelCompleted, LevelFinished);
     }
 
     private void Start()
@@ -133,7 +148,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 0 && !_gameplayFinished)
         {
             HandleIterateTempHP();
             UpdateHPToUI();

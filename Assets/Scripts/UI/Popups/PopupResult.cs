@@ -315,7 +315,7 @@ public class PopupResult : PopupController
                 string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop!";
                 NotificationParam param = new(content, true, () =>
                 {
-                    UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                    StartCoroutine(DelayShopHelper.DelayOpenShop());
                 });
                 ShowNotificationHelper.ShowNotification(param);
             }
@@ -338,15 +338,15 @@ public class PopupResult : PopupController
                 string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now?";
                 NotificationParam param = new(content, false, null, () =>
                 {
-                    UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                    StartCoroutine(DelayShopHelper.DelayOpenShop());
                 }, () =>
                 {
                     _canClose = true;
                     OnClose();
                     if (levelToSwitch == _currentLevel)
-                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, true);
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, false);
                     else
-                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, false, true);
+                        UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, false, false);
                 });
                 ShowNotificationHelper.ShowNotification(param);
             }

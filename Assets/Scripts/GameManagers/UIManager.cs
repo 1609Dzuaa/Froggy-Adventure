@@ -141,7 +141,7 @@ public class UIManager : BaseSingleton<UIManager>
             _lockUICanvas.gameObject.SetActive((_stackPopupCanvas.Count == 0) ? false : true);
         }
 
-        //Debug.Log("Popup: " + id + ", isOn: " + isOn + ", S-order: " + _popupSortOrder);
+        Debug.Log("Popup: " + id + ", isOn: " + isOn + ", S-order: " + _popupSortOrder);
     }
 
     private void ResetAllPopupSortOrder()
@@ -180,8 +180,8 @@ public class UIManager : BaseSingleton<UIManager>
     /// <param name="needReset">Để bắn event reset vài thứ khi chuyển scene (kèm CD)</param>
     /// <param name="isReplay">Chơi lại (lúc die) thì 0 cần phải start new countdown</param>
     /// <param name="needAid">Để bắn 1 event sp Player nếu họ cùng đường</param>
-    /// <param name="isResetNoCD">Nếu out về MainMenu thì sẽ reset mà 0 cần Countdown</param>
-    public void AnimateAndTransitionScene(int indexLevel, bool needReset = false, bool isReplay = false, bool needAid = false, bool isResetNoCD = false)
+    /// <param name="isResetWithoutCD">Nếu out về MainMenu thì sẽ reset mà 0 cần Countdown</param>
+    public void AnimateAndTransitionScene(int indexLevel, bool needReset = false, bool isReplay = false, bool needAid = false, bool isResetWithoutCD = false)
     {
         if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
         {
@@ -197,17 +197,17 @@ public class UIManager : BaseSingleton<UIManager>
             if (_dictPopupUI[EPopup.Result].gameObject.activeInHierarchy)
             {
                 _popupResult.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay, needAid, isResetNoCD));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay, needAid, isResetWithoutCD));
             }
             else
             {
                 _popupNotification.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay, needAid, isResetNoCD));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay, needAid, isResetWithoutCD));
             }
         }
     }
 
-    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime, bool needReset = false, bool isReplay = false, bool needAid = false, bool isResetNoCD = false)
+    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime, bool needReset = false, bool isReplay = false, bool needAid = false, bool isResetWithoutCD = false)
     {
         yield return new WaitForSeconds(waitTime);
 
@@ -221,8 +221,8 @@ public class UIManager : BaseSingleton<UIManager>
             GameManager.Instance.SwitchScene(indexLevel);
             if (needReset)
             {
-                EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel, isResetNoCD);
-                Debug.Log("Fire Reset Level");
+                EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel, isResetWithoutCD);
+                //Debug.Log("Fire Reset Level");
             }
             _imageSceneTrans.DOLocalMoveX(_target, _transDuration).OnComplete(() =>
             {

@@ -897,6 +897,6 @@ public class PlayerStateManager : MonoBehaviour
             EventsManager.Instance.NotifyObservers(EEvents.OnBeingCursed);
             Debug.Log("curse noti");
         }
-        Debug.Log("vali buff");
+        //Debug.Log("vali buff");
     }
 }

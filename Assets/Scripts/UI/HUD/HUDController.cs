@@ -90,7 +90,7 @@ public class HUDController : MonoBehaviour
         {
             HandleFinishLevel();
         });
-        Debug.Log("start Count");
+        //Debug.Log("start Count");
     }
 
     private void ReceiveLevelResult(object obj)
@@ -117,7 +117,7 @@ public class HUDController : MonoBehaviour
         _bonusTime = 0;
         EventsManager.Instance.NotifyObservers(EEvents.OnLockLimitedSkills);
         //lock item trước r mới check sau
-        Debug.Log("Kill");
+        //Debug.Log("Kill");
     }
 
     private void HandleReset(object obj)
@@ -133,8 +133,8 @@ public class HUDController : MonoBehaviour
         TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeAllow, _timeAllow);
         HandleDisplayBuffIcons();
 
-        bool isResetNoCD = (bool)obj;
-        if (!isResetNoCD)
+        bool isResetWithoutCD = (bool)obj;
+        if (!isResetWithoutCD)
             Countdown(0.5f);
         //Debug.Log("Reset");
     }
