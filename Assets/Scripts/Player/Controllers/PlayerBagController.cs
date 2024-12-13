@@ -84,7 +84,8 @@ public class PlayerBagController : MonoBehaviour
 
     private void HandleBuyShopItem(object obj)
     {
-        ItemShop item = (ItemShop)obj;
+        BuyStruct buyStruct = (BuyStruct)obj;
+        ItemShop item = buyStruct.Item;
         int itemSCoinPrice = item.ItemSData.DictPriceInfo[ECurrency.Silver].Price;
         int itemGCoinPrice = 0;
         if (item.ItemSData.DictPriceInfo.ContainsKey(ECurrency.Gold))
@@ -97,7 +98,9 @@ public class PlayerBagController : MonoBehaviour
             {
                 TweenTextCoins(itemSCoinPrice, itemGCoinPrice);
                 TweenIcon(itemGCoinPrice);
+                EventsManager.Instance.NotifyObservers(EEvents.OnPurchaseSuccess);
                 SoundsManager.Instance.PlaySfx(ESoundName.BountyAppearVfxSfx, 1.0f);
+                buyStruct.CloseCallback?.Invoke();
             }
             //Debug.Log("Mua thanh cong item: " + itemSData.ItemName);
         }
