@@ -29,7 +29,9 @@ public class SwitchController : GameObjectManager
             _hasTriggered = true;
             EventsManager.Instance.NotifyObservers(GameEnums.EEvents.FanOnBeingDisabled, null);
             SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.SwitchActivatedSfx, 1.0f);
-            PlayerPrefs.SetString(GameEnums.ESpecialStates.Disabled + _ID, "Disabled");
+            string key = GameEnums.ESpecialStates.Disabled + _ID;
+            PlayerPrefs.SetString(key, "Disabled");
+            GameManager.Instance.ListPrefsInconsistentKeys.Add(key);
         }
     }
 }

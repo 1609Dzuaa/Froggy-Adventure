@@ -32,6 +32,7 @@ public static class GameConstants
     public const int BUTTON_BUFF_COOLDOWN_DURATION = 30; 
     public const int TRASH_VALUE = 0123; //trash val for tween, dùng khi tween đó 0 quan trọng value
     public const float COOLDOWN_BUTTON = 0.75f; //thgian cooldown 1 button trong result
+    public const float DELAY_OPEN_SHOP = 0.315f; //delay open shop để tween close noti trong 1 số th
 
     #endregion
 

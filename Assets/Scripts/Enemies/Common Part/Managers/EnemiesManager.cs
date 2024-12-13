@@ -174,4 +174,20 @@ public class EnemiesManager : CharactersManager
         //Debug.Log("marked: " + _bountyMarked);
     }
 
+    protected void SpawnRewardForPlayer()
+    {
+        int sCoinGiven = UnityEngine.Random.Range(_enemiesSO.MinSilverGiven, _enemiesSO.MaxSilverGiven + 1);
+        int gCoinGiven = UnityEngine.Random.Range(_enemiesSO.MinGoldGiven, _enemiesSO.MaxGoldGiven + 1);
+        int SilverOrCoin = UnityEngine.Random.Range(0, 2);
+
+        CoinInfo info = new CoinInfo((SilverOrCoin == 0) ? ECurrency.Silver : ECurrency.Gold, (SilverOrCoin == 0) ? sCoinGiven : gCoinGiven);
+        EventsManager.Instance.NotifyObservers(EEvents.OnRewardCoin, info);
+    }
+
+    protected void SpawnDeathFX(EPoolable fxName)
+    {
+        GameObject deathFx = Pool.Instance.GetObjectInPool(fxName);
+        deathFx.transform.position = transform.position;
+        deathFx.SetActive(true);
+    }
 }

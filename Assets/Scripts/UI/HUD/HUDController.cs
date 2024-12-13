@@ -74,9 +74,16 @@ public class HUDController : MonoBehaviour
         //performanceMarker.End();
     }
 
-    public void Countdown()
+    //Ngưng hoặc resume tween timer khi replay scene (replay lúc die)
+    public void ControlTweenTimer(bool isStop)
     {
-        _timerTween = DOTween.To(() => _timeLeft, x => _timeLeft = x, 0, _timeLeft).OnUpdate(() =>
+        if (isStop) _timerTween.Pause();
+        else _timerTween.Play();
+    }
+
+    public void Countdown(float delay = 0f)
+    {
+        _timerTween = DOTween.To(() => _timeLeft, x => _timeLeft = x, 0, _timeLeft + delay).OnUpdate(() =>
         {
             TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeLeft, _timeAllow);
         }).SetEase(Ease.Linear).OnComplete(() =>
@@ -97,7 +104,7 @@ public class HUDController : MonoBehaviour
         int timeComplete = _timeAllow - _timeLeft;
         ResultParam pr = new(result, _HUDCoin.SCoinCollected, _HUDCoin.GCoinCollected, timeComplete, _timeAllow);
         UIManager.Instance.TogglePopup(EPopup.Result, true);
-        SaveLevelProgress();
+        SaveLevelProgress(result);
         KillTweenTimer();
         EventsManager.Instance.NotifyObservers(EEvents.OnHandleLevelCompleted, pr);
         EventsManager.Instance.NotifyObservers(EEvents.OnSavePlayerData);
@@ -125,19 +132,23 @@ public class HUDController : MonoBehaviour
         _timeLeft = _timeAllow = _levelInfo.LevelTimeAllow + _bonusTime;
         TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeAllow, _timeAllow);
         HandleDisplayBuffIcons();
-        //Countdown();
+
+        bool isResetWithoutCD = (bool)obj;
+        if (!isResetWithoutCD)
+            Countdown(0.5f);
         //Debug.Log("Reset");
     }
 
-    private void SaveLevelProgress()
+    private void SaveLevelProgress(ELevelResult res)
     {
         int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
-        LevelProgressData levelPData = new(currentLevelIndex, true, true, _timeAllow - _timeLeft);
+        bool passedCurrentLevel = (res == ELevelResult.Completed);
+        LevelProgressData currentLevelPData = new(currentLevelIndex, true, passedCurrentLevel, (passedCurrentLevel) ? _timeAllow - _timeLeft : 0);
         string levelFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + currentLevelIndex.ToString() + ".json";
-        JSONDataHelper.SaveToJSon<LevelProgressData>(levelPData, levelFilePath);
+        JSONDataHelper.SaveToJSon<LevelProgressData>(currentLevelPData, levelFilePath);
 
         int nextLevelIndex = currentLevelIndex + 1;
-        LevelProgressData nextLevelPData = new(nextLevelIndex, true, false, 0);
+        LevelProgressData nextLevelPData = new(nextLevelIndex, passedCurrentLevel, false, 0);
         string nextLevelFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + nextLevelIndex.ToString() + ".json";
         JSONDataHelper.SaveToJSon<LevelProgressData>(nextLevelPData, nextLevelFilePath);
         EventsManager.Instance.NotifyObservers(EEvents.OnUpdateLevel, nextLevelIndex);

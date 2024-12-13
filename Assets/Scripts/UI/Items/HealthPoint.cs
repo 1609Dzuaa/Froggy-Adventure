@@ -7,7 +7,7 @@ public class HealthPoint : ItemShop
 {
     public override bool HandleBuyItem()
     {
-        if (PlayerHealthManager.Instance.CurrentHP == 3)
+        if (PlayerHealthManager.Instance.CurrentHP == PlayerHealthManager.Instance.MaxHP)
         {
             string content = "Purchase Fail,\nMaximum Health Point Reached!";
             NotificationParam param = new(content, true);

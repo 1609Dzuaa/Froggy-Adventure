@@ -89,7 +89,7 @@ public class LevelDetailData : MonoBehaviour
                 NotificationParam param = new NotificationParam(content, true, () =>
                 {
                     EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
-                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    //UIManager.Instance.TogglePopup(EPopup.Notification, false);
                     _popupLevelGrid.ButtonOnClick(false);
                     _popupLevelDetail.ButtonOnClick(false);
                     StartLevel(true);
@@ -102,8 +102,7 @@ public class LevelDetailData : MonoBehaviour
                 string content = "You Don't Have Any HealthPoint Left, Go Buy It In The Shop !";
                 NotificationParam param = new(content, true, () =>
                 {
-                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
-                    UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                    StartCoroutine(DelayShopHelper.DelayOpenShop());
                 });
                 ShowNotificationHelper.ShowNotification(param);
                 EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
@@ -114,7 +113,7 @@ public class LevelDetailData : MonoBehaviour
                 NotificationParam param = new NotificationParam(content, true, () =>
                 {
                     EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
-                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    //UIManager.Instance.TogglePopup(EPopup.Notification, false);
                     _popupLevelGrid.ButtonOnClick(false);
                     _popupLevelDetail.ButtonOnClick(false);
                     StartLevel(true);
@@ -127,13 +126,11 @@ public class LevelDetailData : MonoBehaviour
                 string content = "You Only Have One HealthPoint Left, Buy It In The Shop Now ?";
                 NotificationParam param = new(content, false, null, () =>
                 {
-                    //EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
-                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
-                    UIManager.Instance.TogglePopup(EPopup.Shop, true);
+                    StartCoroutine(DelayShopHelper.DelayOpenShop());
                 }, () =>
                 {
                     EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
-                    UIManager.Instance.TogglePopup(EPopup.Notification, false);
+                    //StartCoroutine(DelayShopHelper.DelayOpenShop());
                     _popupLevelGrid.ButtonOnClick(false);
                     _popupLevelDetail.ButtonOnClick(false);
                     StartLevel();

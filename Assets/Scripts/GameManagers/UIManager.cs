@@ -141,7 +141,7 @@ public class UIManager : BaseSingleton<UIManager>
             _lockUICanvas.gameObject.SetActive((_stackPopupCanvas.Count == 0) ? false : true);
         }
 
-        //Debug.Log("Popup: " + id + ", isOn: " + isOn + ", S-order: " + _popupSortOrder);
+        Debug.Log("Popup: " + id + ", isOn: " + isOn + ", S-order: " + _popupSortOrder);
     }
 
     private void ResetAllPopupSortOrder()
@@ -177,9 +177,11 @@ public class UIManager : BaseSingleton<UIManager>
     /// Chuyển scene = hàm này, 0 phải hàm bên GameManager
     /// </summary>
     /// <param name="indexLevel">Chú ý thằng này phải khớp với Build Index ngoài Editor</param>
-    /// <param name="needReset">Có cần bắn event reset vài thứ khi chuyển scene không</param>
-    /// <param name="isReplay">Nếu chơi lại thì 0 cần phải start new countdown</param>
-    public void AnimateAndTransitionScene(int indexLevel, bool needReset = false, bool isReplay = false, bool needAid = false)
+    /// <param name="needReset">Để bắn event reset vài thứ khi chuyển scene (kèm CD)</param>
+    /// <param name="isReplay">Chơi lại (lúc die) thì 0 cần phải start new countdown</param>
+    /// <param name="needAid">Để bắn 1 event sp Player nếu họ cùng đường</param>
+    /// <param name="isResetWithoutCD">Nếu out về MainMenu thì sẽ reset mà 0 cần Countdown</param>
+    public void AnimateAndTransitionScene(int indexLevel, bool needReset = false, bool isReplay = false, bool needAid = false, bool isResetWithoutCD = false)
     {
         if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
         {
@@ -195,20 +197,21 @@ public class UIManager : BaseSingleton<UIManager>
             if (_dictPopupUI[EPopup.Result].gameObject.activeInHierarchy)
             {
                 _popupResult.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay, needAid));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay, needAid, isResetWithoutCD));
             }
             else
             {
                 _popupNotification.OnClose();
-                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay, needAid));
+                StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay, needAid, isResetWithoutCD));
             }
         }
     }
 
-    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime, bool needReset = false, bool isReplay = false, bool needAid = false)
+    private IEnumerator HandleTransitionAndSwitchScene(int indexLevel, float waitTime, bool needReset = false, bool isReplay = false, bool needAid = false, bool isResetWithoutCD = false)
     {
         yield return new WaitForSeconds(waitTime);
 
+        if (isReplay) _hudControl.ControlTweenTimer(true);
         _imageSceneTrans.DOLocalMoveX(0f, _transDuration).OnComplete(() =>
         {
             ToggleMenuUIsCanvas((indexLevel != GAME_MENU) ? false : true);
@@ -217,22 +220,26 @@ public class UIManager : BaseSingleton<UIManager>
                 EventsManager.Instance.NotifyObservers(EEvents.OnAidForPlayer);
             GameManager.Instance.SwitchScene(indexLevel);
             if (needReset)
-                EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel);
+            {
+                EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel, isResetWithoutCD);
+                //Debug.Log("Fire Reset Level");
+            }
             _imageSceneTrans.DOLocalMoveX(_target, _transDuration).OnComplete(() =>
             {
                 if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
                     HandleDisplayMenuUI();
                 else if (!isReplay)
                 {
-                    //_hudControl.Countdown(); //0 phải replay thì mới count
+                    _hudControl.Countdown(); //0 phải replay thì mới start count lại từ đầu
                     string strLevelTheme = "Level" + indexLevel.ToString() + "Theme";
                     ESoundName levelTheme = (ESoundName)Enum.Parse(typeof(ESoundName), strLevelTheme);
                     SoundsManager.Instance.PlayMusic(levelTheme);
                 }
+                else
+                    _hudControl.ControlTweenTimer(false);
                 List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills();
                 EventsManager.Instance.NotifyObservers(EEvents.OnValidatePlayerBuffs, skills);
                 _imageSceneTrans.position = new(_initPos, _imageSceneTrans.position.y);
-                _hudControl.Countdown(); //0 phải replay thì mới count
             });
         });
     }

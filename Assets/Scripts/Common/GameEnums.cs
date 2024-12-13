@@ -139,6 +139,10 @@
         Orange,
         Pineapple,
         Strawberry,
+        EnemyDeathSkullVfx,
+        EnemyDeathStarVfx,
+        EnemyDeathDustVfx,
+
     }
 
     #endregion

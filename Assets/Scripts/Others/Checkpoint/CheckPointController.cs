@@ -19,6 +19,7 @@ public class CheckPointController : GameObjectManager
 
         if (!PlayerPrefs.HasKey(_ID))
         {
+            GameManager.Instance.ListPrefsInconsistentKeys.Add(_ID);
             PlayerPrefs.SetString(_ID, _ID);
             PlayerPrefs.Save();
         }
@@ -38,7 +39,9 @@ public class CheckPointController : GameObjectManager
             _anim.SetTrigger(CHECKPOINT_ANIM_FLAG_OUT);
             SoundsManager.Instance.PlaySfx(ESoundName.CheckpointSfx, 1.0f);
             EventsManager.Instance.NotifyObservers(EEvents.PlayerOnUpdateRespawnPosition, transform.position);
-            PlayerPrefs.SetString(ESpecialStates.Actived + _ID, "Activated");
+            string key = ESpecialStates.Actived + _ID;
+            PlayerPrefs.SetString(key, "Activated");
+            GameManager.Instance.ListPrefsInconsistentKeys.Add(key);
         }
     }
 
