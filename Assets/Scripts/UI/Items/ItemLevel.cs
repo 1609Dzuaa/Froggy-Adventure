@@ -34,7 +34,7 @@ public class ItemLevel : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUpdateLevel, HandleUpdateLevel);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnUpdateLevel, HandleUpdateLevel);
     }
 
     private void HandleUpdateLevel(object obj = null)

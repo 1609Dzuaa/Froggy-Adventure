@@ -15,7 +15,7 @@ public class PopupLevel : PopupController
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnPopupLevelCanToggle, OnPopupLevelCanToggle);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnPopupLevelCanToggle, OnPopupLevelCanToggle);
     }
 
     //phục vụ việc tắt popup level và level detail của 2 button play và back

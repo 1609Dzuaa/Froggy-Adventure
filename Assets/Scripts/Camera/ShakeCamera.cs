@@ -25,7 +25,7 @@ public class ShakeCamera : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.CameraOnShake, ShakeCameraa);
+        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.CameraOnShake, ShakeCameraa);
     }
 
     private void Start()

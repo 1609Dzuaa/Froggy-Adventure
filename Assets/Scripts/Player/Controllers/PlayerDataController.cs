@@ -49,8 +49,8 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
     private void OnDestroy()
     {
         SavePlayerData();
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
         //Debug.Log("Ondes");
     }
 

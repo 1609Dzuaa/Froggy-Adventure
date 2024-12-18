@@ -59,10 +59,10 @@ public class EnemiesManager : CharactersManager
 
     protected virtual void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.ObjectOnRestart, OnRestartID);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.BossOnSummonMinion, ReceiveBossCommand);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.BossOnDie, HandleIfBossDie);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnBountyMarked, BountyMarked);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.ObjectOnRestart, OnRestartID);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.BossOnSummonMinion, ReceiveBossCommand);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.BossOnDie, HandleIfBossDie);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnBountyMarked, BountyMarked);
     }
 
     // Start is called before the first frame update

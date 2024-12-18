@@ -76,10 +76,10 @@ public class PlayerBagController : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
 
     private void HandleBuyShopItem(object obj)

@@ -61,7 +61,7 @@ public class LevelDetailData : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.LevelOnSelected, ShowDetail);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.LevelOnSelected, ShowDetail);
     }
 
     private void ShowDetail(object obj)

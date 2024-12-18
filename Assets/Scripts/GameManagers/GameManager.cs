@@ -14,7 +14,9 @@ public class GameManager : BaseSingleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        //PlayerPrefs.DeleteAll();
+#if UNITY_EDITOR
+        PlayerPrefs.DeleteAll();
+#endif
         DontDestroyOnLoad(gameObject);
         //Mobile platforms always ignore QualitySettings.vSyncCount and instead
         //use Application.targetFrameRate to choose a target frame rate for the game.
@@ -37,7 +39,7 @@ public class GameManager : BaseSingleton<GameManager>
     private void OnApplicationQuit()
     {
         DeleteInconsistentPrefsKey();
-        PlayerHealthManager.Instance.DecreaseHP();
+        //PlayerHealthManager.Instance.DecreaseHP();
         //Debug.Log("Quit");
     }
 

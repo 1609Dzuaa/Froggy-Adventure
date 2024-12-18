@@ -35,7 +35,7 @@ public class ItemShopDetail : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.ShopItemOnClick, ShowDetail);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.ShopItemOnClick, ShowDetail);
     }
 
     private void ShowDetail(object obj)

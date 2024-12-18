@@ -24,7 +24,7 @@ public class TweenNotifyPurchase : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnPurchaseSuccess, Notify);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnPurchaseSuccess, Notify);
     }
 
     private void Notify(object obj)

@@ -35,7 +35,7 @@ public class PopupNewAbility : PopupController
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUnlockSkill, DisplayAbility);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnUnlockSkill, DisplayAbility);
     }
 
     private void DisplayAbility(object obj)

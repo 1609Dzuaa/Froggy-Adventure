@@ -23,7 +23,7 @@ public class Coin : GameObjectManager
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnMagnetizeCoins, MoveTowardPlayer);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnMagnetizeCoins, MoveTowardPlayer);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -32,6 +32,8 @@ public class Coin : GameObjectManager
         {
             CoinInfo info = new(_type, _valueGiven);
             EventsManager.Instance.NotifyObservers(EEvents.OnCollectCoin, info);
+
+            //MarkAsDeleted();
             Destroy(gameObject);
         }
     }

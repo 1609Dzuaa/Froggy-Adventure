@@ -84,6 +84,6 @@ public class OnlyFanController : GameObjectManager
             PlayerPrefs.SetString(GameEnums.ESpecialStates.Disabled + _ID, "Off");
         }
         _state = 1;
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
+        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
     }
 }

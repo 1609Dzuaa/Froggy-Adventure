@@ -226,15 +226,15 @@ public class PlayerStateManager : MonoBehaviour
 
     private void UnsubcribeAllEvents()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnTakeDamage, BeingDamaged);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnJumpPassive, JumpPassive);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnValidatePlayerBuffs, ValidateBuffs);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnTakeDamage, BeingDamaged);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnJumpPassive, JumpPassive);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnValidatePlayerBuffs, ValidateBuffs);
     }
 
     public void ChangeState(PlayerBaseState state)

@@ -88,8 +88,8 @@ public class BulletController : MonoBehaviour
 
     private void OnDisable()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.BulletOnReceiveInfo, ReceiveInfo);
+        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
+        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.BulletOnReceiveInfo, ReceiveInfo);
         //Debug.Log("unsub event thanh cong");
     }
 

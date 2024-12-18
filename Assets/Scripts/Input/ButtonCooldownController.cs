@@ -29,7 +29,7 @@ public class ButtonCooldownController : ButtonSkillController
 
     protected void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnCooldownSkill, CooldownButton);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnCooldownSkill, CooldownButton);
     }
 
     protected void CooldownButton(object obj = null)
