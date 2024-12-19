@@ -13,7 +13,7 @@ public class PlayerActiveBuffs : PlayerBuffs
 
     protected void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
     }
 
     protected void PerformSkill(object obj) 

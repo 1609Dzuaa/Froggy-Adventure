@@ -76,15 +76,16 @@ public class PlayerBagController : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
 
     private void HandleBuyShopItem(object obj)
     {
-        ItemShop item = (ItemShop)obj;
+        BuyStruct buyStruct = (BuyStruct)obj;
+        ItemShop item = buyStruct.Item;
         int itemSCoinPrice = item.ItemSData.DictPriceInfo[ECurrency.Silver].Price;
         int itemGCoinPrice = 0;
         if (item.ItemSData.DictPriceInfo.ContainsKey(ECurrency.Gold))
@@ -97,7 +98,9 @@ public class PlayerBagController : MonoBehaviour
             {
                 TweenTextCoins(itemSCoinPrice, itemGCoinPrice);
                 TweenIcon(itemGCoinPrice);
+                EventsManager.Instance.NotifyObservers(EEvents.OnPurchaseSuccess);
                 SoundsManager.Instance.PlaySfx(ESoundName.BountyAppearVfxSfx, 1.0f);
+                buyStruct.CloseCallback?.Invoke();
             }
             //Debug.Log("Mua thanh cong item: " + itemSData.ItemName);
         }

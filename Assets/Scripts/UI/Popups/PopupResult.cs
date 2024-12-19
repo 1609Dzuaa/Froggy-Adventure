@@ -69,7 +69,7 @@ public class PopupResult : PopupController
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
     }
 
     private void ReceiveResultParam(object obj)
@@ -353,10 +353,12 @@ public class PopupResult : PopupController
         }
         else
         {
+            _canClose = true;
+            OnClose();
             if (levelToSwitch == _currentLevel)
-                UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true, true);
+                UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true);
             else
-                UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, false, true);
+                UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true);
         }
     }
 }

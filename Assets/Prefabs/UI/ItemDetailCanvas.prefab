@@ -761,6 +761,7 @@ MonoBehaviour:
   _txtName: {fileID: 2940492705541168280}
   _imgItem: {fileID: 1033331243585745875}
   _txtDescribe: {fileID: 8645607288486731943}
+  _popupItemDetail: {fileID: 2558847452216463865}
 --- !u!114 &2558847452216463865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1058,7 +1059,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &8809344502282647968
 MonoBehaviour:
   m_ObjectHideFlags: 0

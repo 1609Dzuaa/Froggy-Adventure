@@ -25,7 +25,7 @@ public class EventsManager : BaseSingleton<EventsManager>
         _dictEvents[eventName] += callback;
     }
 
-    public void UnSubcribeToAnEvent(EEvents eventName, Action<object> callback)
+    public void UnsubscribeToAnEvent(EEvents eventName, Action<object> callback)
     {
         _dictEvents[eventName] -= callback;
     }

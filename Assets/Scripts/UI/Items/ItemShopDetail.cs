@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,11 +6,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using static GameEnums;
 
+//mua thành công thì fire close popup
+public struct BuyStruct
+{
+    public ItemShop Item;
+    public Action CloseCallback;
+
+    public BuyStruct(ItemShop item, Action close)
+    {
+        Item = item;
+        CloseCallback = close;
+    }
+}
+
 public class ItemShopDetail : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _txtName;
     [SerializeField] Image _imgItem;
     [SerializeField] TextMeshProUGUI _txtDescribe;
+    [SerializeField] PopupController _popupItemDetail;
     ItemShop _itemShop;
 
     // Start is called before the first frame update
@@ -20,7 +35,7 @@ public class ItemShopDetail : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.ShopItemOnClick, ShowDetail);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.ShopItemOnClick, ShowDetail);
     }
 
     private void ShowDetail(object obj)
@@ -33,6 +48,7 @@ public class ItemShopDetail : MonoBehaviour
 
     public void ButtonBuyOnClick()
     {
-        EventsManager.Instance.NotifyObservers(EEvents.PlayerOnBuyShopItem, _itemShop);
+        BuyStruct buyStruct = new BuyStruct(_itemShop, _popupItemDetail.OnClose);
+        EventsManager.Instance.NotifyObservers(EEvents.PlayerOnBuyShopItem, buyStruct);
     }
 }

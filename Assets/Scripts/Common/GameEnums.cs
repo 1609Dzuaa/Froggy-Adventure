@@ -105,6 +105,7 @@
         OnUseSkill,
         OnRewardCoin, //reward coin <=> diệt quái
         OnAidForPlayer, //viện trợ player khi cùng đường (0 máu, 0 còn cắc bạc)
+        OnPurchaseSuccess,
 
     }
 

@@ -37,10 +37,10 @@ public class HUDController : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSetupLevel, SetupHUD);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnSetupLevel, SetupHUD);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnResetLevel, HandleReset);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
     }
 
     private void HandleDisplayBuffIcons()
@@ -90,7 +90,7 @@ public class HUDController : MonoBehaviour
         {
             HandleFinishLevel();
         });
-        //Debug.Log("start Count");
+        Debug.Log("start Count");
     }
 
     private void ReceiveLevelResult(object obj)
@@ -113,11 +113,12 @@ public class HUDController : MonoBehaviour
     private void KillTweenTimer(object obj = null)
     {
         _timerTween.Kill();
+        _timerTween = null;
         //Debug.Log(_timerTween.IsActive());
         _bonusTime = 0;
         EventsManager.Instance.NotifyObservers(EEvents.OnLockLimitedSkills);
         //lock item trước r mới check sau
-        //Debug.Log("Kill");
+        Debug.Log("Kill");
     }
 
     private void HandleReset(object obj)

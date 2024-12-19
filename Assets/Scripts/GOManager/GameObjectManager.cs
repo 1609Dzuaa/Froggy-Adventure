@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameEnums;
 
 public class GameObjectManager : MonoBehaviour
 {
@@ -52,18 +53,20 @@ public class GameObjectManager : MonoBehaviour
         _ID = gameObject.name;
 
         if (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Deleted + _ID))
+        {
+            Debug.Log("Delete ID: " + _ID);
             Destroy(gameObject);
+        }
         //Debug.Log("ID: " + _ID);
     }
 
     protected virtual void SetUpProperties() { }
 
-    /*protected IEnumerator NotifyUnlockSkill()
+    public void MarkAsDeleted()
     {
-        yield return new WaitForSeconds(_skillUnlockDelay);
-
-        //EventsManager.Instance.NotifyObservers(GameEnums.EEvents.OnUnlockSkill, _skillUnlocked);
-        PlayerPrefs.SetString(GameEnums.ESpecialStates.SkillUnlocked + _skillUnlocked.ToString(), "Unlocked");
-    }*/
+        string key = ESpecialStates.Deleted + ID;
+        GameManager.Instance.ListPrefsInconsistentKeys.Add(key);
+        PlayerPrefs.SetString(key, "deleted");
+    }
 
 }

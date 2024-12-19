@@ -48,7 +48,7 @@ public class PopupNotification : PopupController
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.NotificationOnPopup, ReceiveInformation);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.NotificationOnPopup, ReceiveInformation);
     }
 
     private void ReceiveInformation(object obj)
@@ -62,7 +62,7 @@ public class PopupNotification : PopupController
         _btnNo.gameObject.SetActive(param.ShowBtnYesNo);
 
         //handle callbacks
-        Debug.Log("No runtime callbacks1: " + CountRuntimeListeners(_btnNo));
+        //Debug.Log("No runtime callbacks1: " + CountRuntimeListeners(_btnNo));
 
         if (_btnContinueCallback != null)
             _btnContinue.onClick.RemoveListener(_btnContinueCallback);
@@ -80,7 +80,7 @@ public class PopupNotification : PopupController
         if (param.BtnNoCallback != null)
             _btnNo.onClick.AddListener(param.BtnNoCallback);
 
-        Debug.Log("No runtime callbacks2: " + CountRuntimeListeners(_btnNo));
+        //Debug.Log("No runtime callbacks2: " + CountRuntimeListeners(_btnNo));
 
 
         //cache callbacks

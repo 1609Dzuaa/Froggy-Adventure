@@ -40,7 +40,7 @@ public class AbilityItemShop : ItemShop
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnItemEligibleCheck, HandleDisplayItem);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnItemEligibleCheck, HandleDisplayItem);
     }
 
     public override void OnClick()

@@ -75,8 +75,8 @@ public class TutorialZoneController : GameObjectManager
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.TutorOnDestroy, SelfDestroy);
-        EventsManager.Instance.UnSubcribeToAnEvent(GameEnums.EEvents.OnUnlockSkill, AllowPopUpTutor);
+        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.TutorOnDestroy, SelfDestroy);
+        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.OnUnlockSkill, AllowPopUpTutor);
     }
 
     /// <summary>

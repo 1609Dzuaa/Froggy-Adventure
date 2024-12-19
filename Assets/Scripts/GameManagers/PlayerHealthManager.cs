@@ -85,9 +85,9 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnSetupLevel, SetupLevel);
-        EventsManager.Instance.UnSubcribeToAnEvent(EEvents.OnLevelCompleted, LevelFinished);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnSetupLevel, SetupLevel);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, LevelFinished);
     }
 
     private void Start()
