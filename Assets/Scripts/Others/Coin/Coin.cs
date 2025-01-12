@@ -33,7 +33,7 @@ public class Coin : GameObjectManager
             CoinInfo info = new(_type, _valueGiven);
             EventsManager.Instance.NotifyObservers(EEvents.OnCollectCoin, info);
 
-            //MarkAsDeleted();
+            MarkAsDeleted();
             Destroy(gameObject);
         }
     }

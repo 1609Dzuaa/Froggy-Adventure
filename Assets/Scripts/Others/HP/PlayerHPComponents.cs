@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using static GameConstants;
+using static GameEnums;
 
 public class PlayerHPComponents : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class PlayerHPComponents : MonoBehaviour
         {
             if (PlayerHealthManager.Instance.CurrentHP < PlayerHealthManager.Instance.MaxHP)
             {
-                PlayerHealthManager.Instance.ChangeHPState(HP_STATE_NORMAL);
+                EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.AddOneHP);
                 Destroy(transform.parent.gameObject);
             }
         }

@@ -676,7 +676,7 @@ public class PlayerStateManager : MonoBehaviour
 
         if (_isCursed)
         {
-            PlayerHealthManager.Instance.HandleIfCurse();
+            EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.LooseAll);
             HandleDeadAnimation();
             EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
         }
@@ -685,7 +685,7 @@ public class PlayerStateManager : MonoBehaviour
             //Check vì có thể dính DeadZone nên 0 vào state GotHit
             if (PlayerHealthManager.Instance.CurrentHP > 0)
             {
-                PlayerHealthManager.Instance.ChangeHPState(HP_STATE_LOST);
+                EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.MinusOneHP);
                 if (PlayerHealthManager.Instance.CurrentHP == 0)
                 {
                     EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
