@@ -53,6 +53,8 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         _currentHP = DEFAULT_AID_PLAYER_HP;
         _tempHP = DEFAULT_AID_PLAYER_TEMP_HP;
         _hasTempHP = true;
+        for (int i = 0; i < _currentHP + _tempHP; i++)
+            _uiHP[i].sprite = (i < _currentHP) ? _normalHPSprite : _tempHPSprite;
         //Debug.Log("Aid");
     }
 
