@@ -106,6 +106,8 @@
         OnRewardCoin, //reward coin <=> diệt quái
         OnAidForPlayer, //viện trợ player khi cùng đường (0 máu, 0 còn cắc bạc)
         OnPurchaseSuccess,
+        OnChangeHP, //xử lý +, -, mất hoàn toàn hp qua event này
+        OnStartCountTempHP,
 
     }
 
@@ -310,6 +312,19 @@
     {
         Failed,
         Completed
+    }
+
+    #endregion
+
+    #region HP
+    
+    public enum EHPStatus
+    {
+        AddOneHP,
+        MinusOneHP,
+        AddOneTempHP,
+        MinusOneTempHP,
+        LooseAll
     }
 
     #endregion

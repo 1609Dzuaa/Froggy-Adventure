@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameConstants;
+using static GameEnums;
 
 public class TempHealthPoint : ItemShop
 {
@@ -9,7 +9,7 @@ public class TempHealthPoint : ItemShop
     {
         if (PlayerHealthManager.Instance.CurrentHP + PlayerHealthManager.Instance.TempHP < PlayerHealthManager.Instance.MaxHP)
         {
-            PlayerHealthManager.Instance.ChangeHPState(HP_STATE_TEMP);
+            EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.AddOneTempHP);
             return true;
         }
 

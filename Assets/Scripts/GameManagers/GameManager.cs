@@ -14,14 +14,21 @@ public class GameManager : BaseSingleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         PlayerPrefs.DeleteAll();
-#endif
+        //Debug.Log("DeleteAll");
+//#endif
         DontDestroyOnLoad(gameObject);
         //Mobile platforms always ignore QualitySettings.vSyncCount and instead
         //use Application.targetFrameRate to choose a target frame rate for the game.
         Application.targetFrameRate = _targetFrameRate;
+        Application.quitting += DeleteInconsistentPrefsKey;
         ListPrefsInconsistentKeys = new List<string>();
+    }
+
+    private void OnDestroy()
+    {
+        Application.quitting -= DeleteInconsistentPrefsKey;
     }
 
     public void SwitchScene(int sceneIndex)

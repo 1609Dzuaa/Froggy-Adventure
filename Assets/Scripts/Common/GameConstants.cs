@@ -112,10 +112,8 @@ public static class GameConstants
 
     #region HEALTHPOINT(HP) Constants
 
-    public const int HP_STATE_NORMAL = 0;
-    public const int HP_STATE_LOST = 1;
-    public const int HP_STATE_TEMP = 2;
     public const int HP_ALARM_THRESHOLD = 1;
+    public const int MIN_HP = 0;
 
     #endregion
 

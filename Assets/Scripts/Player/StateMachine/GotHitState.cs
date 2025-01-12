@@ -55,9 +55,9 @@ public class GotHitState : PlayerBaseState
     }
 
     private void HandleGotHit()
-    {     
+    {
         //if (!BuffsManager.Instance.GetBuff(EBuffs.Absorb).IsActivating)
-        PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_LOST);
+        EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.MinusOneHP);
         if (PlayerHealthManager.Instance.CurrentHP == 0)
             _playerStateManager.HandleDeadState();
         //else
