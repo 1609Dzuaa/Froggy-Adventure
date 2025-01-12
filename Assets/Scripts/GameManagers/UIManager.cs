@@ -239,7 +239,7 @@ public class UIManager : BaseSingleton<UIManager>
                     _hudControl.ControlTweenTimer(false);
                 List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills();
                 EventsManager.Instance.NotifyObservers(EEvents.OnValidatePlayerBuffs, skills);
-                EventsManager.Instance.NotifyObservers(EEvents.OnStartCountTempHP);
+                EventsManager.Instance.NotifyObservers(EEvents.OnHandlePlayerHP);
                 _imageSceneTrans.position = new(_initPos, _imageSceneTrans.position.y);
             });
         });
