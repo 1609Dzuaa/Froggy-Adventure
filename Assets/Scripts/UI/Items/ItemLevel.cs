@@ -28,7 +28,7 @@ public class ItemLevel : MonoBehaviour
     void Start()
     {
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUpdateLevel, HandleUpdateLevel);
-        HandleLockLevel();
+        HandleUpdateDataLevel();
         _txtLevelOrder.text = LvlSData.OrderID.ToString();
     }
 
@@ -39,21 +39,18 @@ public class ItemLevel : MonoBehaviour
 
     private void HandleUpdateLevel(object obj = null)
     {
-        if (obj != null)
-        {
-            //int levelIndex = (int)obj;
-            //if (LvlSData.OrderID == levelIndex)
-                HandleLockLevel();
-        }
+        HandleUpdateDataLevel();
     }
 
-    private void HandleLockLevel()
+    private void HandleUpdateDataLevel()
     {
         string itemFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + LvlSData.OrderID.ToString() + ".json";
         LvlPData = JSONDataHelper.LoadFromJSon<LevelProgressData>(itemFilePath);
         _lockLevel.SetActive(!LvlPData.IsUnlock);
         _imgUnlock.gameObject.SetActive(LvlPData.IsUnlock);
         _dataDetail = new(LvlSData, LvlPData);
+        //if (LvlSData.OrderID == 1)
+            //Debug.Log("lvl1PData: " + LvlPData.TimeCompleted);
     }
 
     public void OnClick()

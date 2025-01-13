@@ -144,4 +144,10 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
             _uiHP[i].sprite = (i < _currentHP) ? _normalHPSprite : _lostHPSprite;
         }
     }
+
+    public void IncreaseMaxHP()
+    {
+        MaxHP++;
+        _uiHP[MaxHP-1].sprite = _normalHPSprite;
+    }
 }

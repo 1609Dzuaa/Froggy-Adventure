@@ -280,6 +280,7 @@
         Hourglass = 8,
         Magnetic = 9,
         Curse = 10,
+        MoreHP = 11,
 
     }
 

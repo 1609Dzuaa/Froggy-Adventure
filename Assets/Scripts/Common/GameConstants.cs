@@ -137,7 +137,7 @@ public static class GameConstants
 
     public const int PLAYER_MAX_HP_LEVEL_1 = 3;
     public const int PLAYER_MAX_HP_LEVEL_2 = 5;
-    public const int PLAYER_MAX_HP = 8; //Lượng HP có thể đạt đc khi cộng dồn từ tempHP
+    public const int PLAYER_MAX_HP = 7; //SIUUUUUUUUUUU
 
     #endregion
 
