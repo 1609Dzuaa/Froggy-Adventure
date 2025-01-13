@@ -44,7 +44,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         base.Awake();
         InitUIHP();
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnStartCountTempHP, StartCountTempHP);
+        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnHandlePlayerHP, HandlePlayerHP);
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnChangeHP, HandleChangeHP);
     }
 
@@ -58,8 +58,9 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
         //Debug.Log("Aid");
     }
 
-    private void StartCountTempHP(object obj)
+    private void HandlePlayerHP(object obj)
     {
+        //counting
         if (_hasTempHP)
         {
             _firstTweenTempHP = DOTween.To(() => _tempHPEntryTime, x => _tempHPEntryTime = x, _tempHPDuration, _tempHPDuration).OnComplete(() =>
@@ -87,6 +88,10 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
                 });
             });
         }
+
+        //UI
+        for (int i = 0; i < _currentHP + _tempHP; i++)
+            _uiHP[i].sprite = (i < _currentHP) ? _normalHPSprite : _tempHPSprite;
     }
 
     private void HandleChangeHP(object obj)
@@ -127,7 +132,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     private void OnDestroy()
     {
         EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnStartCountTempHP, StartCountTempHP);
+        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnHandlePlayerHP, HandlePlayerHP);
         EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnChangeHP, HandleChangeHP);
     }
 
@@ -138,5 +143,11 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
             _uiHP[i].enabled = i < MaxHP;
             _uiHP[i].sprite = (i < _currentHP) ? _normalHPSprite : _lostHPSprite;
         }
+    }
+
+    public void IncreaseMaxHP()
+    {
+        MaxHP++;
+        _uiHP[MaxHP-1].sprite = _normalHPSprite;
     }
 }

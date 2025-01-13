@@ -50,18 +50,6 @@ public class HUDController : MonoBehaviour
             item.Icon.SetActive(listLimitedSkills.Find(x => x.SkillName == item.Name) != null);
     }
 
-    /*private void Update()
-    {
-        performanceMarker.Begin();
-        if (Time.time - _timer >= 1f)
-        {
-            _count--;
-            _timer = Time.time;
-            TimeDisplayHelper.DisplayTime(ref _txtTimer, _timeLeft, 10);
-        }
-        performanceMarker.End();
-    }*/
-
     private void SetupHUD(object obj)
     {
         //performanceMarker.Begin();
@@ -90,7 +78,7 @@ public class HUDController : MonoBehaviour
         {
             HandleFinishLevel();
         });
-        Debug.Log("start Count");
+        //Debug.Log("start Count");
     }
 
     private void ReceiveLevelResult(object obj)
@@ -118,7 +106,7 @@ public class HUDController : MonoBehaviour
         _bonusTime = 0;
         EventsManager.Instance.NotifyObservers(EEvents.OnLockLimitedSkills);
         //lock item trước r mới check sau
-        Debug.Log("Kill");
+        //Debug.Log("Kill");
     }
 
     private void HandleReset(object obj)
@@ -143,15 +131,38 @@ public class HUDController : MonoBehaviour
     private void SaveLevelProgress(ELevelResult res)
     {
         int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
-        bool passedCurrentLevel = (res == ELevelResult.Completed);
-        LevelProgressData currentLevelPData = new(currentLevelIndex, true, passedCurrentLevel, (passedCurrentLevel) ? _timeAllow - _timeLeft : 0);
-        string levelFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + currentLevelIndex.ToString() + ".json";
-        JSONDataHelper.SaveToJSon<LevelProgressData>(currentLevelPData, levelFilePath);
+        bool passedCurrentLevel = res == ELevelResult.Completed;
+        string currentLevelFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + currentLevelIndex.ToString() + ".json";
+        LevelProgressData currentLevelPData = JSONDataHelper.LoadFromJSon<LevelProgressData>(currentLevelFilePath);
+
+        //nếu level hiện tại ch xong thì mới xét đk để set done time = 0
+        //còn nếu xong r thì xét đk để set done time nào nhanh nhất
+        if (!currentLevelPData.IsCompleted)
+            currentLevelPData = new(currentLevelIndex, true, passedCurrentLevel, (passedCurrentLevel) ? _timeAllow - _timeLeft : 0);
+        else
+        {
+            int prevDoneTime = currentLevelPData.TimeCompleted;
+            if (prevDoneTime > _timeAllow - _timeLeft)
+                currentLevelPData = new(currentLevelIndex, true, passedCurrentLevel, _timeAllow - _timeLeft);
+        }
+
+        JSONDataHelper.SaveToJSon<LevelProgressData>(currentLevelPData, currentLevelFilePath);
+
+        //lvl hiện tại là max, kh xử lý nữa
+        if (currentLevelIndex == MAX_GAME_LEVEL - 1) return;
 
         int nextLevelIndex = currentLevelIndex + 1;
-        LevelProgressData nextLevelPData = new(nextLevelIndex, passedCurrentLevel, false, 0);
         string nextLevelFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + nextLevelIndex.ToString() + ".json";
-        JSONDataHelper.SaveToJSon<LevelProgressData>(nextLevelPData, nextLevelFilePath);
-        EventsManager.Instance.NotifyObservers(EEvents.OnUpdateLevel, nextLevelIndex);
+        LevelProgressData nextLevelPData = JSONDataHelper.LoadFromJSon<LevelProgressData>(nextLevelFilePath);
+
+        //chỉ xét unlock nếu lvl kế ch đc unlock
+        if (!nextLevelPData.IsUnlock)
+        {
+            nextLevelPData = new(nextLevelIndex, passedCurrentLevel, false, 0);
+            JSONDataHelper.SaveToJSon<LevelProgressData>(nextLevelPData, nextLevelFilePath);
+        }
+
+        //bắn để cập nhật thông tin level (open level, time completed, ...)
+        EventsManager.Instance.NotifyObservers(EEvents.OnUpdateLevel);
     }
 }

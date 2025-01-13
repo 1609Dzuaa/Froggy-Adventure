@@ -107,7 +107,7 @@
         OnAidForPlayer, //viện trợ player khi cùng đường (0 máu, 0 còn cắc bạc)
         OnPurchaseSuccess,
         OnChangeHP, //xử lý +, -, mất hoàn toàn hp qua event này
-        OnStartCountTempHP,
+        OnHandlePlayerHP, //xử lý liên quan đến hp player(hiển thị, count timer temp hp)
 
     }
 
@@ -280,6 +280,7 @@
         Hourglass = 8,
         Magnetic = 9,
         Curse = 10,
+        MoreHP = 11,
 
     }
 
