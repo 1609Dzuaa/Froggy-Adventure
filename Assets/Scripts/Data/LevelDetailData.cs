@@ -39,8 +39,7 @@ public class LevelDetailData : MonoBehaviour
     [SerializeField] Image _imageLevel;
     [SerializeField] TextMeshProUGUI _levelDescribe;
     [SerializeField] TextMeshProUGUI _timeDisplay;
-    [SerializeField] PopupLevel _popupLevelGrid;
-    [SerializeField] PopupLevel _popupLevelDetail;
+    [SerializeField] PopupLevel _popupLevel;
 
     LevelStaticData _LvlSData;
     LevelProgressData _LvlProgressData;
@@ -89,9 +88,7 @@ public class LevelDetailData : MonoBehaviour
                 NotificationParam param = new NotificationParam(content, true, () =>
                 {
                     EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
-                    //UIManager.Instance.TogglePopup(EPopup.Notification, false);
-                    _popupLevelGrid.ButtonOnClick(false);
-                    _popupLevelDetail.ButtonOnClick(false);
+                    _popupLevel.ButtonOnClick(false);
                     StartLevel(true);
                 });
                 ShowNotificationHelper.ShowNotification(param);
@@ -113,9 +110,7 @@ public class LevelDetailData : MonoBehaviour
                 NotificationParam param = new NotificationParam(content, true, () =>
                 {
                     EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
-                    //UIManager.Instance.TogglePopup(EPopup.Notification, false);
-                    _popupLevelGrid.ButtonOnClick(false);
-                    _popupLevelDetail.ButtonOnClick(false);
+                    _popupLevel.ButtonOnClick(false);
                     StartLevel(true);
                 });
                 ShowNotificationHelper.ShowNotification(param);
@@ -130,9 +125,7 @@ public class LevelDetailData : MonoBehaviour
                 }, () =>
                 {
                     EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
-                    //StartCoroutine(DelayShopHelper.DelayOpenShop());
-                    _popupLevelGrid.ButtonOnClick(false);
-                    _popupLevelDetail.ButtonOnClick(false);
+                    _popupLevel.ButtonOnClick(false);
                     StartLevel();
                 });
                 ShowNotificationHelper.ShowNotification(param);
@@ -146,7 +139,6 @@ public class LevelDetailData : MonoBehaviour
     private void StartLevel(bool needAid = false)
     {
         UIManager.Instance.AnimateAndTransitionScene(_indexLevel, false, false, needAid);
-        //EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
         List<Skills> listActiveSkills = ToggleAbilityItemHelper.GetListActivatedSkills();
         LevelInfo levelInfo = new(listActiveSkills, _levelTimeAllow);
         EventsManager.Instance.NotifyObservers(EEvents.OnSetupLevel, levelInfo);

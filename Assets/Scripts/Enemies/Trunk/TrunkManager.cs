@@ -71,7 +71,7 @@ public class TrunkManager : MEnemiesManager
         else
             _withdrawnHit = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _withdrawnCheckDistance, _enemiesSO.PlayerLayer);
 
-        return _canWithDrawn = (_withdrawnHit && _withdrawnHit.collider.CompareTag(PLAYER_TAG));
+        return _canWithDrawn = (_withdrawnHit && _withdrawnHit.collider.CompareTag(PLAYER_TAG) && _state is not TrunkWithdrawnState);
     }
 
     protected override void FixedUpdate()

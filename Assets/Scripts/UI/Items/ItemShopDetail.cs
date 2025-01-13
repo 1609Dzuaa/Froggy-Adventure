@@ -48,7 +48,7 @@ public class ItemShopDetail : MonoBehaviour
 
     public void ButtonBuyOnClick()
     {
-        BuyStruct buyStruct = new BuyStruct(_itemShop, _popupItemDetail.OnClose);
+        BuyStruct buyStruct = new BuyStruct(_itemShop, (_itemShop.ItemSData is not SpecialItemStaticData) ? _popupItemDetail.OnClose : null);
         EventsManager.Instance.NotifyObservers(EEvents.PlayerOnBuyShopItem, buyStruct);
     }
 }

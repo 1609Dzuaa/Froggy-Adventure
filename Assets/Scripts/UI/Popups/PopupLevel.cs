@@ -1,16 +1,30 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static GameEnums;
 
 public class PopupLevel : PopupController
 {
+    [SerializeField] Transform[] _arrPopupLevels;
     [SerializeField] LevelDetailData _levelDetailData;
     bool _canClose = true;
 
     private void Awake()
     {
         EventsManager.Instance.SubcribeToAnEvent(EEvents.OnPopupLevelCanToggle, OnPopupLevelCanToggle);
+    }
+
+    protected override void OnEnable()
+    {
+        if (!_isFirstOnEnable)
+            OnOpen();
+        else
+        {
+            _isFirstOnEnable = false;
+            _arrPopupLevels[0].localScale = Vector3.zero;
+            _arrPopupLevels[1].localScale = Vector3.zero;
+        }
     }
 
     private void OnDestroy()
@@ -23,32 +37,35 @@ public class PopupLevel : PopupController
     {
         if (isBack)
         {
-            base.OnClose();
-            if (_levelDetailData != null)
-                _levelDetailData.gameObject.SetActive(false);
+            OnClose();
+            _levelDetailData.gameObject.SetActive(false);
         }
         else
         {
             if (_canClose)
             {
-                base.OnClose();
-                if (_levelDetailData != null)
-                    _levelDetailData.gameObject.SetActive(false);
-
+                OnClose();
+                _levelDetailData.gameObject.SetActive(false);
+                Debug.Log("Start can close");
             }
         }
     }
 
-    /*public override void OnClose()
+    public override void OnOpen()
     {
-        if (_canClose)
-        {
-            base.OnClose();
-            if (_levelDetailData != null)
-                _levelDetailData.gameObject.SetActive(false);
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(_arrPopupLevels[0].DOScale(Vector3.one, _duration)).SetEase(_ease);
+        sequence.Append(_arrPopupLevels[1].DOScale(Vector3.one, _duration)).SetEase(_ease);
+        Debug.Log("Level Open");
+    }
 
-        }
-    }*/
+    public override void OnClose()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(_arrPopupLevels[0].DOScale(Vector3.zero, _duration)).SetEase(_ease);
+        sequence.Append(_arrPopupLevels[1].DOScale(Vector3.zero, _duration)).SetEase(_ease);
+        sequence.OnComplete(() => UIManager.Instance.TogglePopup(_popupName, false));
+    }
 
     private void OnPopupLevelCanToggle(object obj)
     {

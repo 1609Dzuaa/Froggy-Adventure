@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static GameEnums;
-using static GameConstants;
 
 [System.Serializable]
 public class CurrencyInfoComponents
