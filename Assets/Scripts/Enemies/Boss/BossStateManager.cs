@@ -146,13 +146,13 @@ public class BossStateManager : MEnemiesManager
     protected override void OnEnable()
     {
         base.OnEnable();
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
+        EventsManager.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
     }
 
     protected override void Start()
@@ -210,7 +210,7 @@ public class BossStateManager : MEnemiesManager
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
-            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnTakeDamage, _isFacingRight);
+            EventsManager.NotifyObservers(EEvents.PlayerOnTakeDamage, _isFacingRight);
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
@@ -221,7 +221,7 @@ public class BossStateManager : MEnemiesManager
         {
             _hasGotHit = true;
             ChangeState(_gotHitState);
-            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnJumpPassive, null);
+            EventsManager.NotifyObservers(EEvents.PlayerOnJumpPassive, null);
         }
     }
 
@@ -305,7 +305,7 @@ public class BossStateManager : MEnemiesManager
                 Instantiate(GetMinion(EBossMinions.Bunny), _spawnPos.position, Quaternion.identity, null);
                 break;
         }
-        EventsManager.Instance.NotifyObservers(EEvents.BossOnSummonMinion, _isFacingRight);
+        EventsManager.NotifyObservers(EEvents.BossOnSummonMinion, _isFacingRight);
         SpawnBuff();
     }
 

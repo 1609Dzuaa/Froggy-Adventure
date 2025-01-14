@@ -201,15 +201,21 @@ public class PlayerStateManager : MonoBehaviour
 
     private void RegisterFunction()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnTakeDamage, BeingDamaged);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnJumpPassive, JumpPassive);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnValidatePlayerBuffs, ValidateBuffs);
+        EventsManager.SubcribeToAnEvent(EEvents.PlayerOnTakeDamage, BeingDamaged);
+        EventsManager.SubcribeToAnEvent(EEvents.PlayerOnJumpPassive, JumpPassive);
+        EventsManager.SubcribeToAnEvent(EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
+        EventsManager.SubcribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
+        EventsManager.SubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
+        EventsManager.SubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
+        EventsManager.SubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
+        EventsManager.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
+        EventsManager.SubcribeToAnEvent(EEvents.OnValidatePlayerBuffs, ValidateBuffs);
+        EventsManager.SubcribeToAnEvent(EEvents.OnSavePlayerData, PlayDeadAnimation);
+    }
+
+    private void PlayDeadAnimation(object obj)
+    {
+        HandleDeadAnimation();
     }
 
     private void SetupProperties()
@@ -226,15 +232,16 @@ public class PlayerStateManager : MonoBehaviour
 
     private void UnsubcribeAllEvents()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnTakeDamage, BeingDamaged);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnJumpPassive, JumpPassive);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnValidatePlayerBuffs, ValidateBuffs);
+        EventsManager.UnsubscribeToAnEvent(EEvents.PlayerOnTakeDamage, BeingDamaged);
+        EventsManager.UnsubscribeToAnEvent(EEvents.PlayerOnJumpPassive, JumpPassive);
+        EventsManager.UnsubscribeToAnEvent(EEvents.PlayerOnInteractWithNPCs, InteractWithNPC);
+        EventsManager.UnsubscribeToAnEvent(EEvents.PlayerOnStopInteractWithNPCs, StopInteractWithNPC);
+        EventsManager.UnsubscribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
+        EventsManager.UnsubscribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnValidatePlayerBuffs, ValidateBuffs);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnSavePlayerData, PlayDeadAnimation);
     }
 
     public void ChangeState(PlayerBaseState state)
@@ -323,11 +330,8 @@ public class PlayerStateManager : MonoBehaviour
         else if (collision.CompareTag(PORTAL_TAG))
         {
             SoundsManager.Instance.PlaySfx(ESoundName.GreenPortalSfx, 1.0f);
-            anim.SetTrigger(DEAD_ANIMATION);
-            rb.bodyType = RigidbodyType2D.Static;
-            EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Completed);
+            EventsManager.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Completed);
             GameManager.Instance.DeleteInconsistentPrefsKey(); //xoá hết data trong đây khi win level
-            //GameManager.Instance.SwitchToScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 
@@ -676,25 +680,25 @@ public class PlayerStateManager : MonoBehaviour
 
         if (_isCursed)
         {
-            EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.LooseAll);
+            EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.LooseAll);
             HandleDeadAnimation();
-            EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
+            EventsManager.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
         }
         else
         {
             //Check vì có thể dính DeadZone nên 0 vào state GotHit
             if (PlayerHealthManager.Instance.CurrentHP > 0)
             {
-                EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.MinusOneHP);
+                EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.MinusOneHP);
                 if (PlayerHealthManager.Instance.CurrentHP == 0)
                 {
-                    EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
+                    EventsManager.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
                 }
                 else
                     UIManager.Instance.AnimateAndTransitionScene(SceneManager.GetActiveScene().buildIndex, false, true);
             }
             else
-                EventsManager.Instance.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
+                EventsManager.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
 
             HandleDeadAnimation();
         }
@@ -889,12 +893,12 @@ public class PlayerStateManager : MonoBehaviour
         _isCursed = (curse != null);
         if (_isMagnetized)
         {
-            EventsManager.Instance.NotifyObservers(EEvents.OnBountyMarked);
+            EventsManager.NotifyObservers(EEvents.OnBountyMarked);
             Debug.Log("bounty noti");
         }
         if (_isCursed)
         {
-            EventsManager.Instance.NotifyObservers(EEvents.OnBeingCursed);
+            EventsManager.NotifyObservers(EEvents.OnBeingCursed);
             Debug.Log("curse noti");
         }
         //Debug.Log("vali buff");

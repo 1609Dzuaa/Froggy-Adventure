@@ -15,6 +15,6 @@ public class InitializeFilesController : MonoBehaviour
         _shopController.CreateItemAndInitFiles();
         _pData.InitializePlayerData(); //có data r mới setup dict
         _bagController.SetupDictionary();
-        EventsManager.Instance.NotifyObservers(EEvents.OnItemEligibleCheck);
+        EventsManager.NotifyObservers(EEvents.OnItemEligibleCheck);
     }
 }

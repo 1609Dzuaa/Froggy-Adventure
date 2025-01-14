@@ -24,12 +24,12 @@ public class ButtonCooldownController : ButtonSkillController
         base.Awake();
         gameObject.SetActive(_isActivated);
         _txtCooldown.gameObject.SetActive(false);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnCooldownSkill, CooldownButton);
+        EventsManager.SubcribeToAnEvent(EEvents.OnCooldownSkill, CooldownButton);
     }
 
     protected void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnCooldownSkill, CooldownButton);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnCooldownSkill, CooldownButton);
     }
 
     protected void CooldownButton(object obj = null)

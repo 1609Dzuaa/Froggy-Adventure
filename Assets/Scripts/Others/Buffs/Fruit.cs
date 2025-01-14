@@ -12,7 +12,7 @@ public class Fruit : GameObjectManager
     {
         if (collision.CompareTag(PLAYER_TAG))
         {
-            EventsManager.Instance.NotifyObservers(EEvents.OnCollectFruit, _fruitData);
+            EventsManager.NotifyObservers(EEvents.OnCollectFruit, _fruitData);
             GameObject go = Pool.Instance.GetObjectInPool(EPoolable.CollectFruits);
             go.SetActive(true);
             go.transform.position = collision.ClosestPoint(transform.position);

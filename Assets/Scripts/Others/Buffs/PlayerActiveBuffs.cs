@@ -8,12 +8,12 @@ public class PlayerActiveBuffs : PlayerBuffs
     public override void Awake()
     {
         base.Awake();
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
+        EventsManager.SubcribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
     }
 
     protected void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnUseSkill, PerformSkill);
     }
 
     protected void PerformSkill(object obj) 

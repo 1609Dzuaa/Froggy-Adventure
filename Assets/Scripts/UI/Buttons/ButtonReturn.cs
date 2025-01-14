@@ -13,7 +13,7 @@ public class ButtonReturn : ButtonController
         NotificationParam param = new(content, false, null, () =>
         {
             UIManager.Instance.AnimateAndTransitionScene(GAME_MENU, true, false, false, true);
-            EventsManager.Instance.NotifyObservers(EEvents.OnReturnMainMenu);
+            EventsManager.NotifyObservers(EEvents.OnReturnMainMenu);
             GameManager.Instance.ListPrefsInconsistentKeys.Clear();
         });
         ShowNotificationHelper.ShowNotification(param);

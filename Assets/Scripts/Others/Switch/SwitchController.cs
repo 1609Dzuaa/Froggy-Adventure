@@ -27,7 +27,7 @@ public class SwitchController : GameObjectManager
         {
             _anim.SetTrigger("Hit");
             _hasTriggered = true;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.FanOnBeingDisabled, null);
+            EventsManager.NotifyObservers(GameEnums.EEvents.FanOnBeingDisabled, null);
             SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.SwitchActivatedSfx, 1.0f);
             string key = GameEnums.ESpecialStates.Disabled + _ID;
             PlayerPrefs.SetString(key, "Disabled");

@@ -93,7 +93,7 @@ public class SnailManager : MEnemiesManager
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit)
         {
             StopAllCoroutines();
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive);
+            EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive);
             _hasGotHit = true;
             ChangeState(_snailGotHitState);
         }

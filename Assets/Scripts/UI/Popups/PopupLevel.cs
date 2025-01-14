@@ -12,7 +12,7 @@ public class PopupLevel : PopupController
 
     private void Awake()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnPopupLevelCanToggle, OnPopupLevelCanToggle);
+        EventsManager.SubcribeToAnEvent(EEvents.OnPopupLevelCanToggle, OnPopupLevelCanToggle);
     }
 
     protected override void OnEnable()
@@ -29,7 +29,7 @@ public class PopupLevel : PopupController
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnPopupLevelCanToggle, OnPopupLevelCanToggle);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnPopupLevelCanToggle, OnPopupLevelCanToggle);
     }
 
     //phục vụ việc tắt popup level và level detail của 2 button play và back
@@ -46,7 +46,7 @@ public class PopupLevel : PopupController
             {
                 OnClose();
                 _levelDetailData.gameObject.SetActive(false);
-                Debug.Log("Start can close");
+                //Debug.Log("Start can close");
             }
         }
     }
@@ -56,7 +56,7 @@ public class PopupLevel : PopupController
         Sequence sequence = DOTween.Sequence();
         sequence.Append(_arrPopupLevels[0].DOScale(Vector3.one, _duration)).SetEase(_ease);
         sequence.Append(_arrPopupLevels[1].DOScale(Vector3.one, _duration)).SetEase(_ease);
-        Debug.Log("Level Open");
+        //Debug.Log("Level Open");
     }
 
     public override void OnClose()

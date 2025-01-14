@@ -93,7 +93,7 @@ public class TrunkManager : MEnemiesManager
 
         //Prob here
         BulletInfor info = new(GameEnums.EPoolable.TrunkBullet, bulletID, _isFacingRight, _shootPosition.position);
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
+        EventsManager.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.TrunkShootSfx, 1.0f);
         //Event của animation Attack
     }

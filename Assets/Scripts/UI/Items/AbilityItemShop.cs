@@ -21,7 +21,7 @@ public class AbilityItemShop : ItemShop
         if (SISData == null)
             Debug.Log("Null cmnr");
         StartCoroutine(DelayHandleDisplayItem());
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnItemEligibleCheck, HandleDisplayItem);
+        EventsManager.SubcribeToAnEvent(EEvents.OnItemEligibleCheck, HandleDisplayItem);
     }
 
     //Cần delay việc check display item để chắc chắn rằng
@@ -40,7 +40,7 @@ public class AbilityItemShop : ItemShop
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnItemEligibleCheck, HandleDisplayItem);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnItemEligibleCheck, HandleDisplayItem);
     }
 
     public override void OnClick()
@@ -70,7 +70,7 @@ public class AbilityItemShop : ItemShop
         //mua thành công thì tắt ItemDetail mở thông báo
         if (_isPurchaseSuccess)
         {
-            EventsManager.Instance.NotifyObservers(EEvents.OnUnlockSkill, ItemSData);
+            EventsManager.NotifyObservers(EEvents.OnUnlockSkill, ItemSData);
             UIManager.Instance.TogglePopup(EPopup.ItemShopDetail, false);
             UIManager.Instance.TogglePopup(EPopup.Ability, true);
             HandleDisplayItem();

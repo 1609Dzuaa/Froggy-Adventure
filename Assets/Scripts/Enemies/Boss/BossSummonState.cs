@@ -12,7 +12,7 @@ public class BossSummonState : MEnemiesBaseState
         _bossManager.GetRigidbody2D().velocity = Vector2.zero;
         _bossManager.StartCoroutine(_bossManager.Slam(0));
         _bossManager.StartCoroutine(_bossManager.BackToNormal());
-        EventsManager.Instance.NotifyObservers(EEvents.CameraOnShake, null);
+        EventsManager.NotifyObservers(EEvents.CameraOnShake, null);
         SoundsManager.Instance.PlaySfx(ESoundName.BossSummonSfx, 1.0f);
         Debug.Log("Summon");
     }

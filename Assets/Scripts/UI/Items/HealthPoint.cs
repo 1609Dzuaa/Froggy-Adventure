@@ -16,9 +16,9 @@ public class HealthPoint : ItemShop
             return _isPurchaseSuccess;
         }
 
-        EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.AddOneHP);
+        EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.AddOneHP);
         if (PlayerHealthManager.Instance.CurrentHP > 0)
-            EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
+            EventsManager.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
         return true;
     }
 }

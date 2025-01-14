@@ -30,7 +30,7 @@ public class BossParticleController : MonoBehaviour
         if (collision.CompareTag(GameConstants.PLAYER_TAG))
         {
             //Debug.Log("Particle DMG");
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _bossRef.GetComponent<BossStateManager>().GetIsFacingRight());
+            EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _bossRef.GetComponent<BossStateManager>().GetIsFacingRight());
         }
     }
 }

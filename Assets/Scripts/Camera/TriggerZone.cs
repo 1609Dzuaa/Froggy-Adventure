@@ -57,7 +57,7 @@ public class TriggerZone : GameObjectManager
     {
         yield return new WaitForSeconds(_delayCloseGate);
 
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BossGateOnClose, null);
+        EventsManager.NotifyObservers(GameEnums.EEvents.BossGateOnClose, null);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BossIntroduceSfx, 1.0f);
     }
 }

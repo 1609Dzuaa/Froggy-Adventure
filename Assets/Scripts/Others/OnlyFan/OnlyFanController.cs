@@ -50,7 +50,7 @@ public class OnlyFanController : GameObjectManager
         base.SetUpProperties();
         _isFacingRight = (transform.eulerAngles.z) >= 90f && (transform.eulerAngles.z) < 270f;
         _state = (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Disabled + _ID)) ? 1 : 0;
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
+        EventsManager.SubcribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -58,7 +58,7 @@ public class OnlyFanController : GameObjectManager
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && _state == 0)
         {
             PushBackInfor pInfo = new PushBackInfor(_pushBackForce, _isFacingRight);
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnBeingPushedBack, pInfo);
+            EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnBeingPushedBack, pInfo);
         }
     }
 
@@ -67,7 +67,7 @@ public class OnlyFanController : GameObjectManager
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && _state == 0)
         {
             PushBackInfor pInfo = new PushBackInfor(_pushBackForce, _isFacingRight);
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnBeingPushedBack, pInfo);
+            EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnBeingPushedBack, pInfo);
         }
     }
 
@@ -80,10 +80,10 @@ public class OnlyFanController : GameObjectManager
         else
         {
             _anim.SetTrigger("Off");
-            //EventsManager.Instance.NotifyObservers(GameEnums.EEvents.TutorOnDestroy, _tutorRef);
+            //EventsManager.NotifyObservers(GameEnums.EEvents.TutorOnDestroy, _tutorRef);
             PlayerPrefs.SetString(GameEnums.ESpecialStates.Disabled + _ID, "Off");
         }
         _state = 1;
-        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
+        EventsManager.UnsubscribeToAnEvent(GameEnums.EEvents.FanOnBeingDisabled, BeingDisabled);
     }
 }

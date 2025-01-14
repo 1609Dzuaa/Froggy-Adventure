@@ -43,10 +43,10 @@ public class PlayerBagController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
+        EventsManager.SubcribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
+        EventsManager.SubcribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
+        EventsManager.SubcribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
+        EventsManager.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
 
     public void SetupDictionary()
@@ -76,10 +76,10 @@ public class PlayerBagController : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnResetLevel, HandleReset);
+        EventsManager.UnsubscribeToAnEvent(EEvents.PlayerOnBuyShopItem, HandleBuyShopItem);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnHandleLevelCompleted, HandleFinishLevel);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnCollectFruit, CollectFruit);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnResetLevel, HandleReset);
     }
 
     private void HandleBuyShopItem(object obj)
@@ -98,7 +98,7 @@ public class PlayerBagController : MonoBehaviour
             {
                 TweenTextCoins(itemSCoinPrice, itemGCoinPrice);
                 TweenIcon(itemGCoinPrice);
-                EventsManager.Instance.NotifyObservers(EEvents.OnPurchaseSuccess);
+                EventsManager.NotifyObservers(EEvents.OnPurchaseSuccess);
                 SoundsManager.Instance.PlaySfx(ESoundName.BountyAppearVfxSfx, 1.0f);
                 buyStruct.CloseCallback?.Invoke();
             }
@@ -158,7 +158,7 @@ public class PlayerBagController : MonoBehaviour
         {
             DisplayCurrencyTexts();
         }).SetEase(_ease)).OnComplete(() =>
-                        EventsManager.Instance.NotifyObservers(EEvents.OnSavePlayerData)
+                        EventsManager.NotifyObservers(EEvents.OnSavePlayerData)
         );
     }
 

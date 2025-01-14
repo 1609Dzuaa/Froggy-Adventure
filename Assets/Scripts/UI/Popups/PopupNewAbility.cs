@@ -18,7 +18,7 @@ public class PopupNewAbility : PopupController
 
     private void Awake()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUnlockSkill, DisplayAbility);
+        EventsManager.SubcribeToAnEvent(EEvents.OnUnlockSkill, DisplayAbility);
     }
 
     protected override void OnEnable()
@@ -35,7 +35,7 @@ public class PopupNewAbility : PopupController
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnUnlockSkill, DisplayAbility);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnUnlockSkill, DisplayAbility);
     }
 
     private void DisplayAbility(object obj)

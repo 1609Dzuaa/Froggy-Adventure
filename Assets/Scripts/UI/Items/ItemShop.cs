@@ -78,7 +78,7 @@ public class ItemShop : MonoBehaviour
     public virtual void OnClick()
     {
         UIManager.Instance.TogglePopup(EPopup.ItemShopDetail, true);
-        EventsManager.Instance.NotifyObservers(EEvents.ShopItemOnClick, this);
+        EventsManager.NotifyObservers(EEvents.ShopItemOnClick, this);
     }
 
     public virtual bool HandleBuyItem()

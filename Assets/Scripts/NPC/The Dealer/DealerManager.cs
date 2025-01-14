@@ -147,7 +147,7 @@ public class DealerManager : NPCManagers
         //Thêm ĐK Player OnGround thì mới cho phép bắt đầu xl
         if (_isPlayerNearBy && Input.GetKeyDown(KeyCode.T) && _playerReference.GetIsOnGround() && _state is not NPCTalkState)
         {
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnInteractWithNPCs, null);
+            EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnInteractWithNPCs, null);
             Debug.Log("Trading");
             //Hiện shop lúc này
             //ChangeState(_dealerTalkState);

@@ -40,7 +40,7 @@ public class PlantManager : NMEnemiesManager
         bulletID = bullet.GetComponent<BulletController>().BulletID;
 
         BulletInfor info = new BulletInfor(GameEnums.EPoolable.PlantBullet, bulletID, _isFacingRight, _shootPosition.position);
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
+        EventsManager.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.PlantShootSfx, 1.0f);
         //Debug.Log("ID!: " + bulletID);
     }

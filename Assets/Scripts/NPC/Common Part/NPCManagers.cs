@@ -140,7 +140,7 @@ public class NPCManagers : CharactersManager
     protected void AllowEndInteract()
     {
         //Delay việc ngừng tương tác của Player với NPC 1 xíu
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, null);
+        EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnStopInteractWithNPCs, null);
     }
 
 }

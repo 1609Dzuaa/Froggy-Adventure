@@ -63,13 +63,13 @@ public class PopupResult : PopupController
     {
         _initPosition = transform.localPosition.y;
         _endPosition = transform.localPosition.y - _distance;
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
+        EventsManager.SubcribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
         ResetScaleButtons();
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
     }
 
     private void ReceiveResultParam(object obj)
@@ -90,7 +90,7 @@ public class PopupResult : PopupController
         //save data here
         PlayerDataController.Instance.PlayerBag.SilverCoin += _param.SilverCollected;
         PlayerDataController.Instance.PlayerBag.GoldCoin += _param.GoldCollected;
-        EventsManager.Instance.NotifyObservers(EEvents.OnSavePlayerData);
+        EventsManager.NotifyObservers(EEvents.OnSavePlayerData);
     }
 
     //Vì có thể player đã mua đồ nhưng đống current data của player ch đc update
@@ -240,7 +240,7 @@ public class PopupResult : PopupController
                     _canClick = false;
                     StartCoroutine(CooldownButton());
                     UIManager.Instance.AnimateAndTransitionScene(GAME_MENU, true, false, false, true);
-                    EventsManager.Instance.NotifyObservers(EEvents.OnReturnMainMenu);
+                    EventsManager.NotifyObservers(EEvents.OnReturnMainMenu);
                 }
                 break;
 

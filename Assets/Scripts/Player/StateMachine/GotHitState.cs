@@ -57,7 +57,7 @@ public class GotHitState : PlayerBaseState
     private void HandleGotHit()
     {
         //if (!BuffsManager.Instance.GetBuff(EBuffs.Absorb).IsActivating)
-        EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.MinusOneHP);
+        EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.MinusOneHP);
         if (PlayerHealthManager.Instance.CurrentHP == 0)
             _playerStateManager.HandleDeadState();
         //else
@@ -70,6 +70,6 @@ public class GotHitState : PlayerBaseState
         _playerStateManager.IsApplyGotHitEffect = true;
         if (PlayerHealthManager.Instance.CurrentHP > 0)
             SoundsManager.Instance.PlaySfx(ESoundName.PlayerGotHitSfx, 1.0f);
-        EventsManager.Instance.NotifyObservers(EEvents.CameraOnShake);
+        EventsManager.NotifyObservers(EEvents.CameraOnShake);
     }
 }

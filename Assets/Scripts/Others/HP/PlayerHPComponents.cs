@@ -8,17 +8,19 @@ using static GameEnums;
 public class PlayerHPComponents : MonoBehaviour
 {
     [SerializeField] Transform _top, _bot;
-    [SerializeField] float _duration, _distance;
+    [SerializeField] float _duration;
+    bool _isUp = true;
     float _target;
 
     // Start is called before the first frame update
     void Start()
     {
-        _target = transform.position.y + _distance;
-        transform.DOMoveY(_target, _duration).OnComplete(() =>
+        _target = (_isUp) ? _top.localPosition.y : _bot.localPosition.y;
+        transform.DOLocalMoveY(_target, _duration).OnComplete(() =>
         {
-            _target = transform.position.y - 2 * _distance;
-        }).SetLoops((int)LoopType.Yoyo);
+            _isUp = !_isUp;
+            Start();
+        });
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -27,7 +29,7 @@ public class PlayerHPComponents : MonoBehaviour
         {
             if (PlayerHealthManager.Instance.CurrentHP < PlayerHealthManager.Instance.MaxHP)
             {
-                EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.AddOneHP);
+                EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.AddOneHP);
                 Destroy(transform.parent.gameObject);
             }
         }

@@ -9,7 +9,7 @@ public class TempHealthPoint : ItemShop
     {
         if (PlayerHealthManager.Instance.CurrentHP + PlayerHealthManager.Instance.TempHP < PlayerHealthManager.Instance.MaxHP)
         {
-            EventsManager.Instance.NotifyObservers(EEvents.OnChangeHP, EHPStatus.AddOneTempHP);
+            EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.AddOneTempHP);
             return true;
         }
 

@@ -30,12 +30,12 @@ public class ItemShopDetail : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.ShopItemOnClick, ShowDetail);
+        EventsManager.SubcribeToAnEvent(EEvents.ShopItemOnClick, ShowDetail);
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.ShopItemOnClick, ShowDetail);
+        EventsManager.UnsubscribeToAnEvent(EEvents.ShopItemOnClick, ShowDetail);
     }
 
     private void ShowDetail(object obj)
@@ -49,6 +49,6 @@ public class ItemShopDetail : MonoBehaviour
     public void ButtonBuyOnClick()
     {
         BuyStruct buyStruct = new BuyStruct(_itemShop, (_itemShop.ItemSData is not SpecialItemStaticData) ? _popupItemDetail.OnClose : null);
-        EventsManager.Instance.NotifyObservers(EEvents.PlayerOnBuyShopItem, buyStruct);
+        EventsManager.NotifyObservers(EEvents.PlayerOnBuyShopItem, buyStruct);
     }
 }

@@ -18,13 +18,13 @@ public class TweenNotifyPurchase : MonoBehaviour
     {
         _initialYPos = transform.localPosition.y;
         _imageBG = GetComponent<Image>();
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnPurchaseSuccess, Notify);
+        EventsManager.SubcribeToAnEvent(EEvents.OnPurchaseSuccess, Notify);
         gameObject.SetActive(false);
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnPurchaseSuccess, Notify);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnPurchaseSuccess, Notify);
     }
 
     private void Notify(object obj)
