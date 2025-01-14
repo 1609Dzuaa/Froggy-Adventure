@@ -15,7 +15,7 @@ public class BossTeleportState : MEnemiesBaseState
         _bossManager.transform.position = _bossManager.MiddleRoom.position;
         _bossManager.StartCoroutine(_bossManager.BackToWeak());
         SoundsManager.Instance.PlaySfx(ESoundName.BossTeleSfx, 1.0f);
-        EventsManager.Instance.NotifyObservers(EEvents.BossOnDie, null);
+        EventsManager.NotifyObservers(EEvents.BossOnDie, null);
     }
 
     private void SpawnTeleVfx()

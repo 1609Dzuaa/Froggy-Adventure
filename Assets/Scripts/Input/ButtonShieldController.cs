@@ -21,7 +21,7 @@ public class ButtonShieldController : ButtonCooldownController, ISkillOnClick
         if(!_isCooldown)
         {
             _isCooldown = true;
-            EventsManager.Instance.NotifyObservers(EEvents.OnUseSkill, _btnSkill);
+            EventsManager.NotifyObservers(EEvents.OnUseSkill, _btnSkill);
             HandleCooldown(BUTTON_BUFF_COOLDOWN_DURATION);
         }
     }

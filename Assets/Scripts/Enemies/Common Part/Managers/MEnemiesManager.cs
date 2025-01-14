@@ -166,7 +166,7 @@ public class MEnemiesManager : EnemiesManager
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
             string bulletID = collision.collider.GetComponent<BulletController>().BulletID;
-            EventsManager.Instance.NotifyObservers(EEvents.BulletOnHit, bulletID);
+            EventsManager.NotifyObservers(EEvents.BulletOnHit, bulletID);
             ChangeState(_mEnemiesGotHitState);
         }
         else if (collision.collider.CompareTag(GameConstants.BOX_TAG) && _state is MEnemiesPatrolState)
@@ -183,7 +183,7 @@ public class MEnemiesManager : EnemiesManager
         if (collision.CompareTag(GameConstants.PLAYER_TAG) && !_hasGotHit && _state is not MEnemiesGotHitState)
         {
             _hasGotHit = true;
-            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnJumpPassive);
+            EventsManager.NotifyObservers(EEvents.PlayerOnJumpPassive);
             SpawnRewardForPlayer();
             SpawnDeathFX(EPoolable.EnemyDeathStarVfx);
             ChangeState(_mEnemiesGotHitState);

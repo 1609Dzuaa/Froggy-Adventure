@@ -40,7 +40,7 @@ public class NPCTalkState : CharacterBaseState
             npcManagers.ConversationPos = new Vector2(npcManagers.transform.position.x - npcManagers.AdjustConversationRange, npcManagers.transform.parent.position.y);
 
         //Gán vị trí cần di chuyển cho Player thông qua Event
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnInteractWithNPCs, npcManagers.ConversationPos);
+        EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnInteractWithNPCs, npcManagers.ConversationPos);
         Debug.Log("Conver pos: "+ npcManagers.ConversationPos);
 
         //Lấy và bắt đầu Thoại

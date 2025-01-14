@@ -10,7 +10,7 @@ public class BossWallHitState : MEnemiesBaseState
         _bossManager = (BossStateManager)charactersManager;
         _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)EBossState.shieldRunOut);
         _bossManager.GetRigidbody2D().velocity = Vector2.zero;
-        EventsManager.Instance.NotifyObservers(EEvents.CameraOnShake, null);
+        EventsManager.NotifyObservers(EEvents.CameraOnShake, null);
         SoundsManager.Instance.PlaySfx(ESoundName.BossWallHitSfx, 1.0f);
         Debug.Log("WH");
     }

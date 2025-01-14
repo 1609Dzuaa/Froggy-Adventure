@@ -61,8 +61,8 @@ public class BulletController : MonoBehaviour
     private void OnEnable()
     {
         _entryTime = Time.time;
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BulletOnReceiveInfo, ReceiveInfo);
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
+        EventsManager.SubcribeToAnEvent(GameEnums.EEvents.BulletOnReceiveInfo, ReceiveInfo);
+        EventsManager.SubcribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
         //Debug.Log("OnEnable sub event");
     }
 
@@ -88,8 +88,8 @@ public class BulletController : MonoBehaviour
 
     private void OnDisable()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
-        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.BulletOnReceiveInfo, ReceiveInfo);
+        EventsManager.UnsubscribeToAnEvent(GameEnums.EEvents.BulletOnHit, DamageTarget);
+        EventsManager.UnsubscribeToAnEvent(GameEnums.EEvents.BulletOnReceiveInfo, ReceiveInfo);
         //Debug.Log("unsub event thanh cong");
     }
 
@@ -97,7 +97,7 @@ public class BulletController : MonoBehaviour
     {
         if (collision.collider.CompareTag(GameConstants.PLAYER_TAG))
         {
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isDirectionRight);
+            EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isDirectionRight);
             SpawnBulletPieces();
             gameObject.SetActive(false);
         }

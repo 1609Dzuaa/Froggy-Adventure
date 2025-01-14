@@ -27,14 +27,14 @@ public class ItemLevel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnUpdateLevel, HandleUpdateLevel);
+        EventsManager.SubcribeToAnEvent(EEvents.OnUpdateLevel, HandleUpdateLevel);
         HandleUpdateDataLevel();
         _txtLevelOrder.text = LvlSData.OrderID.ToString();
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnUpdateLevel, HandleUpdateLevel);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnUpdateLevel, HandleUpdateLevel);
     }
 
     private void HandleUpdateLevel(object obj = null)
@@ -55,6 +55,6 @@ public class ItemLevel : MonoBehaviour
 
     public void OnClick()
     {
-        EventsManager.Instance.NotifyObservers(EEvents.LevelOnSelected, _dataDetail);
+        EventsManager.NotifyObservers(EEvents.LevelOnSelected, _dataDetail);
     }
 }

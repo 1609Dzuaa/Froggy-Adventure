@@ -23,7 +23,7 @@ public class DashState : PlayerBaseState
         HandleIfPrevStateWallSlide();
         HandleDash();
         SkillData data = new(GameEnums.ESkills.Dash, _playerStateManager.GetPlayerStats.DelayDashTime);
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.OnCooldownSkill, data);
+        EventsManager.NotifyObservers(GameEnums.EEvents.OnCooldownSkill, data);
         Debug.Log("Dash");
     }
 

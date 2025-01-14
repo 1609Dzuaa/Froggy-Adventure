@@ -18,12 +18,12 @@ public class Coin : GameObjectManager
     {
         base.SetUpProperties();
         _valueGiven = Random.Range(_data.MinValue, _data.MaxValue + 1);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnMagnetizeCoins, MoveTowardPlayer);
+        EventsManager.SubcribeToAnEvent(EEvents.OnMagnetizeCoins, MoveTowardPlayer);
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnMagnetizeCoins, MoveTowardPlayer);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnMagnetizeCoins, MoveTowardPlayer);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -31,9 +31,9 @@ public class Coin : GameObjectManager
         if (collision.CompareTag(PLAYER_TAG))
         {
             CoinInfo info = new(_type, _valueGiven);
-            EventsManager.Instance.NotifyObservers(EEvents.OnCollectCoin, info);
+            EventsManager.NotifyObservers(EEvents.OnCollectCoin, info);
 
-            MarkAsDeleted();
+            //MarkAsDeleted();
             Destroy(gameObject);
         }
     }
@@ -58,7 +58,7 @@ public class Coin : GameObjectManager
                { 
                    DOTween.Kill(transform);
                    CoinInfo info = new(_type, _valueGiven);
-                   EventsManager.Instance.NotifyObservers(EEvents.OnCollectCoin, info);
+                   EventsManager.NotifyObservers(EEvents.OnCollectCoin, info);
                    Destroy(gameObject);
                });
                //.SetLoops(-1, LoopType.Restart);

@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static GameEnums;
-using static GameConstants;
 
 [System.Serializable]
 public class CurrencyInfoComponents
@@ -79,7 +78,7 @@ public class ItemShop : MonoBehaviour
     public virtual void OnClick()
     {
         UIManager.Instance.TogglePopup(EPopup.ItemShopDetail, true);
-        EventsManager.Instance.NotifyObservers(EEvents.ShopItemOnClick, this);
+        EventsManager.NotifyObservers(EEvents.ShopItemOnClick, this);
     }
 
     public virtual bool HandleBuyItem()

@@ -43,9 +43,9 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
     {
         base.Awake();
         InitUIHP();
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnHandlePlayerHP, HandlePlayerHP);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnChangeHP, HandleChangeHP);
+        EventsManager.SubcribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
+        EventsManager.SubcribeToAnEvent(EEvents.OnHandlePlayerHP, HandlePlayerHP);
+        EventsManager.SubcribeToAnEvent(EEvents.OnChangeHP, HandleChangeHP);
     }
 
     private void AidForPlayer(object obj)
@@ -131,9 +131,9 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnHandlePlayerHP, HandlePlayerHP);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnChangeHP, HandleChangeHP);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnAidForPlayer, AidForPlayer);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnHandlePlayerHP, HandlePlayerHP);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnChangeHP, HandleChangeHP);
     }
 
     private void InitUIHP()

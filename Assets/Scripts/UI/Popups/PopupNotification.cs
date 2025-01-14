@@ -43,12 +43,12 @@ public class PopupNotification : PopupController
 
     private void Awake()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.NotificationOnPopup, ReceiveInformation);
+        EventsManager.SubcribeToAnEvent(EEvents.NotificationOnPopup, ReceiveInformation);
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.NotificationOnPopup, ReceiveInformation);
+        EventsManager.UnsubscribeToAnEvent(EEvents.NotificationOnPopup, ReceiveInformation);
     }
 
     private void ReceiveInformation(object obj)

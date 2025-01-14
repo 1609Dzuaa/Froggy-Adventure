@@ -151,7 +151,7 @@ public class GeckoManager : MEnemiesManager
             if (_hasDetectedPlayer)
             {
                 SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.GeckoAttackSfx, 1.0f);
-                EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
+                EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnTakeDamage, _isFacingRight);
             }
         }
 

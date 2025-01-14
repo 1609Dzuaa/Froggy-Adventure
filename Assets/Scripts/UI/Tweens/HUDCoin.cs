@@ -36,9 +36,9 @@ public class HUDCoin : MonoBehaviour
     void Start()
     {
         ResetCoins();
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnCollectCoin, CollectCoin);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnBeingCursed, DoubleReward);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnRewardCoin, CollectCoin);
+        EventsManager.SubcribeToAnEvent(EEvents.OnCollectCoin, CollectCoin);
+        EventsManager.SubcribeToAnEvent(EEvents.OnBeingCursed, DoubleReward);
+        EventsManager.SubcribeToAnEvent(EEvents.OnRewardCoin, CollectCoin);
     }
 
     private void RewardCoin(object obj)
@@ -48,9 +48,9 @@ public class HUDCoin : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnCollectCoin, CollectCoin);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnBeingCursed, DoubleReward);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnRewardCoin, CollectCoin);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnCollectCoin, CollectCoin);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnBeingCursed, DoubleReward);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnRewardCoin, CollectCoin);
     }
 
     public void ResetCoins()

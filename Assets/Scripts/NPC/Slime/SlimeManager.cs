@@ -58,7 +58,7 @@ public class SlimeManager : NPCManagers
         if (collision.name == GameConstants.PLAYER_TAG && !_hasGotHit)
         {
             _hasGotHit = true;
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive);
+            EventsManager.NotifyObservers(GameEnums.EEvents.PlayerOnJumpPassive);
             ChangeState(_slimeGotHitState);
             _hasStartConversationPassive = true;
         }

@@ -14,7 +14,7 @@ public class PopupController : MonoBehaviour
     protected virtual void OnEnable()
     {
         if (!_isFirstOnEnable)
-            transform.DOScale(Vector3.one, _duration).SetEase(_ease).SetUpdate(true);
+            OnOpen();
         else
         {
             _isFirstOnEnable = false;
@@ -27,6 +27,11 @@ public class PopupController : MonoBehaviour
     {
         //Debug.Log("dis Here");
         transform.localScale = Vector3.zero;
+    }
+
+    public virtual void OnOpen()
+    {
+        transform.DOScale(Vector3.one, _duration).SetEase(_ease).SetUpdate(true);
     }
 
     public virtual void OnClose()

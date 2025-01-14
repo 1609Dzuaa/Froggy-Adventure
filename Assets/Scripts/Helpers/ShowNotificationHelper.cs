@@ -8,6 +8,6 @@ public static class ShowNotificationHelper
     public static void ShowNotification(NotificationParam param)
     {
         UIManager.Instance.TogglePopup(EPopup.Notification, true);
-        EventsManager.Instance.NotifyObservers(EEvents.NotificationOnPopup, param);
+        EventsManager.NotifyObservers(EEvents.NotificationOnPopup, param);
     }
 }

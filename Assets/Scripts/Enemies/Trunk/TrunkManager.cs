@@ -71,7 +71,7 @@ public class TrunkManager : MEnemiesManager
         else
             _withdrawnHit = Physics2D.Raycast(new Vector2(_playerCheck.position.x, _playerCheck.position.y), Vector2.right, _withdrawnCheckDistance, _enemiesSO.PlayerLayer);
 
-        return _canWithDrawn = (_withdrawnHit && _withdrawnHit.collider.CompareTag(PLAYER_TAG));
+        return _canWithDrawn = (_withdrawnHit && _withdrawnHit.collider.CompareTag(PLAYER_TAG) && _state is not TrunkWithdrawnState);
     }
 
     protected override void FixedUpdate()
@@ -93,7 +93,7 @@ public class TrunkManager : MEnemiesManager
 
         //Prob here
         BulletInfor info = new(GameEnums.EPoolable.TrunkBullet, bulletID, _isFacingRight, _shootPosition.position);
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
+        EventsManager.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.TrunkShootSfx, 1.0f);
         //Event của animation Attack
     }

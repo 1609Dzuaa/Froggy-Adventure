@@ -39,8 +39,7 @@ public class LevelDetailData : MonoBehaviour
     [SerializeField] Image _imageLevel;
     [SerializeField] TextMeshProUGUI _levelDescribe;
     [SerializeField] TextMeshProUGUI _timeDisplay;
-    [SerializeField] PopupLevel _popupLevelGrid;
-    [SerializeField] PopupLevel _popupLevelDetail;
+    [SerializeField] PopupLevel _popupLevel;
 
     LevelStaticData _LvlSData;
     LevelProgressData _LvlProgressData;
@@ -50,7 +49,7 @@ public class LevelDetailData : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.LevelOnSelected, ShowDetail);
+        EventsManager.SubcribeToAnEvent(EEvents.LevelOnSelected, ShowDetail);
         //Debug.Log("Subbed");
     }
 
@@ -61,7 +60,7 @@ public class LevelDetailData : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.LevelOnSelected, ShowDetail);
+        EventsManager.UnsubscribeToAnEvent(EEvents.LevelOnSelected, ShowDetail);
     }
 
     private void ShowDetail(object obj)
@@ -88,14 +87,12 @@ public class LevelDetailData : MonoBehaviour
                 string content = "Based On The Amount Of Silver You Have, You Are Granted 1 HP And 2 Temporary HP.";
                 NotificationParam param = new NotificationParam(content, true, () =>
                 {
-                    EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
-                    //UIManager.Instance.TogglePopup(EPopup.Notification, false);
-                    _popupLevelGrid.ButtonOnClick(false);
-                    _popupLevelDetail.ButtonOnClick(false);
+                    EventsManager.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
+                    _popupLevel.ButtonOnClick(false);
                     StartLevel(true);
                 });
                 ShowNotificationHelper.ShowNotification(param);
-                EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+                EventsManager.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
             }
             else if (PlayerHealthManager.Instance.CurrentHP == 0)
             {
@@ -105,21 +102,19 @@ public class LevelDetailData : MonoBehaviour
                     StartCoroutine(DelayShopHelper.DelayOpenShop());
                 });
                 ShowNotificationHelper.ShowNotification(param);
-                EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+                EventsManager.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
             }
             else if (PlayerDataController.Instance.PlayerBag.SilverCoin < DEFAULT_MINIMUM_SILVER_PLAYABLE)
             {
                 string content = "Based On The Amount Of Silver You Have, You Are Granted 2 Temporary HP.";
                 NotificationParam param = new NotificationParam(content, true, () =>
                 {
-                    EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
-                    //UIManager.Instance.TogglePopup(EPopup.Notification, false);
-                    _popupLevelGrid.ButtonOnClick(false);
-                    _popupLevelDetail.ButtonOnClick(false);
+                    EventsManager.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
+                    _popupLevel.ButtonOnClick(false);
                     StartLevel(true);
                 });
                 ShowNotificationHelper.ShowNotification(param);
-                EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+                EventsManager.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
             }
             else
             {
@@ -129,14 +124,12 @@ public class LevelDetailData : MonoBehaviour
                     StartCoroutine(DelayShopHelper.DelayOpenShop());
                 }, () =>
                 {
-                    EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
-                    //StartCoroutine(DelayShopHelper.DelayOpenShop());
-                    _popupLevelGrid.ButtonOnClick(false);
-                    _popupLevelDetail.ButtonOnClick(false);
+                    EventsManager.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
+                    _popupLevel.ButtonOnClick(false);
                     StartLevel();
                 });
                 ShowNotificationHelper.ShowNotification(param);
-                EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
+                EventsManager.NotifyObservers(EEvents.OnPopupLevelCanToggle, false);
             }
         }
         else
@@ -146,10 +139,9 @@ public class LevelDetailData : MonoBehaviour
     private void StartLevel(bool needAid = false)
     {
         UIManager.Instance.AnimateAndTransitionScene(_indexLevel, false, false, needAid);
-        //EventsManager.Instance.NotifyObservers(EEvents.OnPopupLevelCanToggle, true);
         List<Skills> listActiveSkills = ToggleAbilityItemHelper.GetListActivatedSkills();
         LevelInfo levelInfo = new(listActiveSkills, _levelTimeAllow);
-        EventsManager.Instance.NotifyObservers(EEvents.OnSetupLevel, levelInfo);
+        EventsManager.NotifyObservers(EEvents.OnSetupLevel, levelInfo);
         //Debug.Log("need aid");
     }
 }

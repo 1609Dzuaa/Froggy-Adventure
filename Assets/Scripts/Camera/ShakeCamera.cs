@@ -20,12 +20,12 @@ public class ShakeCamera : MonoBehaviour
 
     private void OnEnable()
     {
-        EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.CameraOnShake, ShakeCameraa);
+        EventsManager.SubcribeToAnEvent(GameEnums.EEvents.CameraOnShake, ShakeCameraa);
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.CameraOnShake, ShakeCameraa);
+        EventsManager.UnsubscribeToAnEvent(GameEnums.EEvents.CameraOnShake, ShakeCameraa);
     }
 
     private void Start()

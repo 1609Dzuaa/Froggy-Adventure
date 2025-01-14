@@ -13,14 +13,14 @@ public class SawController : MovingObjectController
         if (_isBossGate)
         {
             gameObject.SetActive(false);
-            EventsManager.Instance.SubcribeToAnEvent(GameEnums.EEvents.BossGateOnClose, ActiveGate);
+            EventsManager.SubcribeToAnEvent(GameEnums.EEvents.BossGateOnClose, ActiveGate);
         }
     }
     private void OnDestroy()
     {
         if (_isBossGate)
         {
-            EventsManager.Instance.UnsubscribeToAnEvent(GameEnums.EEvents.BossGateOnClose, ActiveGate);
+            EventsManager.UnsubscribeToAnEvent(GameEnums.EEvents.BossGateOnClose, ActiveGate);
             //Debug.Log("Unsub");
         }
     }

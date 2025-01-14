@@ -196,11 +196,13 @@ public class UIManager : BaseSingleton<UIManager>
             //nếu 0 phải thì chỉ còn TH out về MainMenu trong Gameplay => gọi tween Noti
             if (_dictPopupUI[EPopup.Result].gameObject.activeInHierarchy)
             {
+                Debug.Log("Result Close");
                 _popupResult.OnClose();
                 StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay, needAid, isResetWithoutCD));
             }
             else
             {
+                Debug.Log("Noti Close");
                 _popupNotification.OnClose();
                 StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay, needAid, isResetWithoutCD));
             }
@@ -217,11 +219,11 @@ public class UIManager : BaseSingleton<UIManager>
             ToggleMenuUIsCanvas((indexLevel != GAME_MENU) ? false : true);
             ToggleInGameCanvas((indexLevel != GAME_MENU) ? true : false);
             if (needAid)
-                EventsManager.Instance.NotifyObservers(EEvents.OnAidForPlayer);
+                EventsManager.NotifyObservers(EEvents.OnAidForPlayer);
             GameManager.Instance.SwitchScene(indexLevel);
             if (needReset)
             {
-                EventsManager.Instance.NotifyObservers(EEvents.OnResetLevel, isResetWithoutCD);
+                EventsManager.NotifyObservers(EEvents.OnResetLevel, isResetWithoutCD);
                 //Debug.Log("Fire Reset Level");
             }
             _imageSceneTrans.DOLocalMoveX(_target, _transDuration).OnComplete(() =>
@@ -238,8 +240,8 @@ public class UIManager : BaseSingleton<UIManager>
                 else
                     _hudControl.ControlTweenTimer(false);
                 List<Skills> skills = ToggleAbilityItemHelper.GetListActivatedSkills();
-                EventsManager.Instance.NotifyObservers(EEvents.OnValidatePlayerBuffs, skills);
-                EventsManager.Instance.NotifyObservers(EEvents.OnHandlePlayerHP);
+                EventsManager.NotifyObservers(EEvents.OnValidatePlayerBuffs, skills);
+                EventsManager.NotifyObservers(EEvents.OnHandlePlayerHP);
                 _imageSceneTrans.position = new(_initPos, _imageSceneTrans.position.y);
             });
         });

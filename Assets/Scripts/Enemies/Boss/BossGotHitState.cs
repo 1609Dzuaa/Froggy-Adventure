@@ -16,7 +16,7 @@ public class BossGotHitState : MEnemiesBaseState
         if (_currentHP < 0)
         {
             _bossManager.StopAllCoroutines();
-            EventsManager.Instance.NotifyObservers(GameEnums.EEvents.OnLevelCompleted, null);
+            EventsManager.NotifyObservers(GameEnums.EEvents.OnLevelCompleted, null);
         }
         //Debug.Log("GH");
     }

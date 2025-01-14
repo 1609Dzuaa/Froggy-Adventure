@@ -16,8 +16,8 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
+        EventsManager.SubcribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
+        EventsManager.SubcribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
     }
 
     //đc gọi ở script InitializeFiles để đồng nhất việc init các file cùng 1 lúc
@@ -49,8 +49,8 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
     private void OnDestroy()
     {
         SavePlayerData();
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnSavePlayerData, SaveData);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnLockLimitedSkills, LockLimitedSkills);
         //Debug.Log("Ondes");
     }
 
@@ -77,7 +77,7 @@ public class PlayerDataController : BaseSingleton<PlayerDataController>
         }
 
         SavePlayerData();
-        EventsManager.Instance.NotifyObservers(EEvents.OnItemEligibleCheck);
+        EventsManager.NotifyObservers(EEvents.OnItemEligibleCheck);
         //Debug.Log("check");
     }
 

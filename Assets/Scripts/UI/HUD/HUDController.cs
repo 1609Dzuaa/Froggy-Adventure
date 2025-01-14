@@ -29,18 +29,18 @@ public class HUDController : MonoBehaviour
 
     void Awake()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnSetupLevel, SetupHUD);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
+        EventsManager.SubcribeToAnEvent(EEvents.OnSetupLevel, SetupHUD);
+        EventsManager.SubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
+        EventsManager.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
+        EventsManager.SubcribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
     }
 
     private void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnSetupLevel, SetupHUD);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnResetLevel, HandleReset);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnSetupLevel, SetupHUD);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnResetLevel, HandleReset);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
     }
 
     private void HandleDisplayBuffIcons()
@@ -91,11 +91,11 @@ public class HUDController : MonoBehaviour
         //truyen them tham so fail hay win
         int timeComplete = _timeAllow - _timeLeft;
         ResultParam pr = new(result, _HUDCoin.SCoinCollected, _HUDCoin.GCoinCollected, timeComplete, _timeAllow);
-        UIManager.Instance.TogglePopup(EPopup.Result, true);
         SaveLevelProgress(result);
         KillTweenTimer();
-        EventsManager.Instance.NotifyObservers(EEvents.OnHandleLevelCompleted, pr);
-        EventsManager.Instance.NotifyObservers(EEvents.OnSavePlayerData);
+        EventsManager.NotifyObservers(EEvents.OnHandleLevelCompleted, pr);
+        EventsManager.NotifyObservers(EEvents.OnSavePlayerData);
+        UIManager.Instance.TogglePopup(EPopup.Result, true);
     }
 
     private void KillTweenTimer(object obj = null)
@@ -104,7 +104,7 @@ public class HUDController : MonoBehaviour
         _timerTween = null;
         //Debug.Log(_timerTween.IsActive());
         _bonusTime = 0;
-        EventsManager.Instance.NotifyObservers(EEvents.OnLockLimitedSkills);
+        EventsManager.NotifyObservers(EEvents.OnLockLimitedSkills);
         //lock item trước r mới check sau
         //Debug.Log("Kill");
     }
@@ -163,6 +163,6 @@ public class HUDController : MonoBehaviour
         }
 
         //bắn để cập nhật thông tin level (open level, time completed, ...)
-        EventsManager.Instance.NotifyObservers(EEvents.OnUpdateLevel);
+        EventsManager.NotifyObservers(EEvents.OnUpdateLevel);
     }
 }

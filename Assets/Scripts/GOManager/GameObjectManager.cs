@@ -8,18 +8,6 @@ public class GameObjectManager : MonoBehaviour
     protected Animator _anim;
     protected string _ID;
 
-    /*[Tooltip("Với vài GObj cần Tutor thì để ý 2 phần này, còn kh thì bỏ qua. Nó sẽ " +
-        "Link GObj này với Tutor để tắt Tutor khi Player đã tác động lên GObj này")]
-    [SerializeField] protected bool _needTutor;
-    [SerializeField] protected GameObject _tutorRef;
-
-    [Header("Special Obj?"), Tooltip("Tick vào và chọn skill nếu đây là obj đặc biệt, " +
-    "cung cấp skill cho Player")]
-    [SerializeField] protected bool _isApplySkillToPlayer;
-    [SerializeField] protected GameEnums.EPlayerState _skillUnlocked;
-    [SerializeField] protected float _skillUnlockDelay;*/
-    //Nếu là obj đặc biệt sẽ Notify events unlock skill cho Player
-
     public Animator Animator { get { return _anim; } }
 
     public string ID { get { return _ID; } }
@@ -52,7 +40,7 @@ public class GameObjectManager : MonoBehaviour
     {
         _ID = gameObject.name;
 
-        if (PlayerPrefs.HasKey(GameEnums.ESpecialStates.Deleted + _ID))
+        if (PlayerPrefs.HasKey(ESpecialStates.Deleted + _ID))
         {
             Debug.Log("Delete ID: " + _ID);
             Destroy(gameObject);

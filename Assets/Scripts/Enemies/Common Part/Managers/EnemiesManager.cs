@@ -50,19 +50,19 @@ public class EnemiesManager : CharactersManager
 
     protected virtual void OnEnable()
     {
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.ObjectOnRestart, OnRestartID);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.BossOnSummonMinion, ReceiveBossCommand);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.BossOnDie, HandleIfBossDie);
-        EventsManager.Instance.SubcribeToAnEvent(EEvents.OnBountyMarked, BountyMarked);
+        EventsManager.SubcribeToAnEvent(EEvents.ObjectOnRestart, OnRestartID);
+        EventsManager.SubcribeToAnEvent(EEvents.BossOnSummonMinion, ReceiveBossCommand);
+        EventsManager.SubcribeToAnEvent(EEvents.BossOnDie, HandleIfBossDie);
+        EventsManager.SubcribeToAnEvent(EEvents.OnBountyMarked, BountyMarked);
         //Debug.Log("Subbed");
     }
 
     protected virtual void OnDestroy()
     {
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.ObjectOnRestart, OnRestartID);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.BossOnSummonMinion, ReceiveBossCommand);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.BossOnDie, HandleIfBossDie);
-        EventsManager.Instance.UnsubscribeToAnEvent(EEvents.OnBountyMarked, BountyMarked);
+        EventsManager.UnsubscribeToAnEvent(EEvents.ObjectOnRestart, OnRestartID);
+        EventsManager.UnsubscribeToAnEvent(EEvents.BossOnSummonMinion, ReceiveBossCommand);
+        EventsManager.UnsubscribeToAnEvent(EEvents.BossOnDie, HandleIfBossDie);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnBountyMarked, BountyMarked);
     }
 
     // Start is called before the first frame update
@@ -93,7 +93,7 @@ public class EnemiesManager : CharactersManager
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag(PLAYER_TAG))
-            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnTakeDamage, _isFacingRight);
+            EventsManager.NotifyObservers(EEvents.PlayerOnTakeDamage, _isFacingRight);
     }
 
     protected virtual void DetectPlayer()
@@ -181,7 +181,7 @@ public class EnemiesManager : CharactersManager
         int SilverOrCoin = UnityEngine.Random.Range(0, 2);
 
         CoinInfo info = new CoinInfo((SilverOrCoin == 0) ? ECurrency.Silver : ECurrency.Gold, (SilverOrCoin == 0) ? sCoinGiven : gCoinGiven);
-        EventsManager.Instance.NotifyObservers(EEvents.OnRewardCoin, info);
+        EventsManager.NotifyObservers(EEvents.OnRewardCoin, info);
     }
 
     protected void SpawnDeathFX(EPoolable fxName)

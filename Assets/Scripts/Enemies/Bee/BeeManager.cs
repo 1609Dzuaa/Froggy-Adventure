@@ -126,7 +126,7 @@ public class BeeManager : MEnemiesManager
         string bulletID = bullet.GetComponent<BulletController>().BulletID;
 
         BulletInfor info = new(GameEnums.EPoolable.BeeBullet, bulletID, _isFacingRight, _shootPosition.position);
-        EventsManager.Instance.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
+        EventsManager.NotifyObservers(GameEnums.EEvents.BulletOnReceiveInfo, info);
         SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BeeShootSfx, 1.0f);
     }
 

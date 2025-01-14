@@ -46,7 +46,7 @@ public class NMEnemiesManager : EnemiesManager
         if (collision.collider.CompareTag(GameConstants.BULLET_TAG))
         {
             string bulletID = collision.collider.GetComponent<BulletController>().BulletID;
-            EventsManager.Instance.NotifyObservers(EEvents.BulletOnHit, bulletID);
+            EventsManager.NotifyObservers(EEvents.BulletOnHit, bulletID);
             ChangeState(_nmEnemiesGotHitState);
         }
     }
@@ -59,7 +59,7 @@ public class NMEnemiesManager : EnemiesManager
             //có thể enemy này dính đòn từ bullet => rotate z khi GotHit
             //và Trigger collider của Player dẫn đến JumpPassive
             _hasGotHit = true;
-            EventsManager.Instance.NotifyObservers(EEvents.PlayerOnJumpPassive);
+            EventsManager.NotifyObservers(EEvents.PlayerOnJumpPassive);
             SpawnRewardForPlayer();
             SpawnDeathFX(EPoolable.EnemyDeathSkullVfx);
             ChangeState(_nmEnemiesGotHitState);
