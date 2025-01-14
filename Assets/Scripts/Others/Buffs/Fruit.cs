@@ -16,7 +16,7 @@ public class Fruit : GameObjectManager
             GameObject go = Pool.Instance.GetObjectInPool(EPoolable.CollectFruits);
             go.SetActive(true);
             go.transform.position = collision.ClosestPoint(transform.position);
-            MarkAsDeleted();
+            //MarkAsDeleted();
             Destroy(gameObject);
         }
     }

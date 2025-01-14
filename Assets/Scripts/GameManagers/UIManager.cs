@@ -196,11 +196,13 @@ public class UIManager : BaseSingleton<UIManager>
             //nếu 0 phải thì chỉ còn TH out về MainMenu trong Gameplay => gọi tween Noti
             if (_dictPopupUI[EPopup.Result].gameObject.activeInHierarchy)
             {
+                Debug.Log("Result Close");
                 _popupResult.OnClose();
                 StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay, needAid, isResetWithoutCD));
             }
             else
             {
+                Debug.Log("Noti Close");
                 _popupNotification.OnClose();
                 StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay, needAid, isResetWithoutCD));
             }

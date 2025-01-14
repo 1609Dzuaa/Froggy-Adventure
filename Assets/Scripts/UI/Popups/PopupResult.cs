@@ -58,11 +58,13 @@ public class PopupResult : PopupController
     int _currentSCoin;
     int _currentLevel;
     int _nextLevel;
+    Sprite _defaultFruitSprite;
 
     private void Awake()
     {
         _initPosition = transform.localPosition.y;
         _endPosition = transform.localPosition.y - _distance;
+        _defaultFruitSprite = _arrImgFruit[0].sprite;
         EventsManager.SubcribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
         ResetScaleButtons();
     }
@@ -176,6 +178,7 @@ public class PopupResult : PopupController
         FadeTextFruits(0f);
         FadeImageFruits(0f);
         FadeTextTimer(0f);
+        ResetFruitsCollected();
     }
 
     private void FadeImageFruits(float value)
@@ -203,6 +206,14 @@ public class PopupResult : PopupController
     {
         for (int i = 0; i < _arrTextTime.Length; i++)
             _arrTextTime[i].DOFade(value, _duration);
+    }
+
+    private void ResetFruitsCollected()
+    {
+        for (int i = 0; i < 3; i++)
+            _arrImgFruit[i].sprite = _defaultFruitSprite;
+        for (int i = 0; i < _arrTxtFruit.Length; i++)
+            _arrTxtFruit[i].text = "0";
     }
 
     public override void OnClose()
@@ -280,6 +291,7 @@ public class PopupResult : PopupController
             NotificationParam param = new(content, true, () =>
             {
                 _canClick = false;
+                _canClose = true;
                 StartCoroutine(CooldownButton());
             });
             ShowNotificationHelper.ShowNotification(param);
@@ -290,6 +302,7 @@ public class PopupResult : PopupController
             NotificationParam param = new(content, true, () =>
             {
                 _canClick = false;
+                _canClose = true;
                 StartCoroutine(CooldownButton());
             });
             ShowNotificationHelper.ShowNotification(param);

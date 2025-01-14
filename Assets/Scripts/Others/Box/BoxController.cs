@@ -113,6 +113,7 @@ public class BoxController : GameObjectManager
         {
             SpawnPiece();
             SpawnGift(_boxType);
+            MarkAsDeleted();
             Destroy(gameObject);
         }
     }
