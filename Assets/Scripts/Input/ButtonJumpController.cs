@@ -10,7 +10,7 @@ public class ButtonJumpController : ButtonSkillController
     [SerializeField] PlayerStateManager _player;
 
     private bool _isHolding = false;
-    private bool _dbJump = true;
+    private bool _dbJump = false;
     int _count = 0;
 
     public bool IsHolding { get => _isHolding; }
