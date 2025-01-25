@@ -14,18 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Rare Diamond
   ListPriceInfos:
-  - Price: 100
+  - Price: 300
     Image: {fileID: 21300000, guid: a36b4c68824bd2d4f8131499d94f4a20, type: 3}
     Currency: 0
-  - Price: 60
+  - Price: 180
     Image: {fileID: 21300000, guid: ff3624512f436d8498497fa735d8e767, type: 3}
     Currency: 1
   ItemImage: {fileID: 843312020, guid: 59a4db05df382ad448a066e1b2e05f49, type: 3}
   ItemDescribe: Give you one more Health Point slot.
   Ability:
     AbilityName: 11
-    FruitName: 2
+    FruitName: 7
     IsLimited: 0
-    FruitsRequired: 6
+    FruitsRequired: 4
     AbilityImage: {fileID: -1069194065, guid: a88ee2911ca9c06429e6865603edb9fa, type: 3}
     AbilityDescribe: Gain maximum HP by one. Maximum HP can reach is 8.
