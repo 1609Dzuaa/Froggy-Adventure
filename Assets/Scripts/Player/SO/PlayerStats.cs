@@ -32,10 +32,6 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private Vector2 _knockBackForce;
     [SerializeField] private Vector2 _dashForce;
 
-    //Đạt được nhiều thành tựu thì mới tăng thêm maxHP
-    [Header("HP"), Range(1, GameConstants.PLAYER_MAX_HP_LEVEL_2)]
-    [SerializeField] private int _maxHP;
-
     [Header("Factor")]
     [SerializeField, Range(1f, 2f)] private float _jumpSpeedFactor; 
     [SerializeField, Range(1f, 2f)] private float _dbJumpSpeedFactor; //Db jump 0 thể mạnh hơn Jump
@@ -66,9 +62,6 @@ public class PlayerStats : ScriptableObject
     public Vector2 KnockBackForce { get { return _knockBackForce; } }
 
     public Vector2 DashForce { get { return _dashForce; } }
-
-    //Xử lý cẩn thận
-    public int MaxHP { get { return _maxHP; } set { _maxHP = value; } } //Ngoại lệ
 
     public float JumpSpeedFactor { get { return _jumpSpeedFactor; } }
 
