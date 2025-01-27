@@ -16,6 +16,8 @@ public class PopupNewAbility : PopupController
     [SerializeField] float _tweenDuration;
     [SerializeField] Ease _tweenEase;
 
+    const float DEFAULT_TWEEN_VALUE = 0.01f;
+
     private void Awake()
     {
         EventsManager.SubcribeToAnEvent(EEvents.OnUnlockSkill, DisplayAbility);
@@ -24,7 +26,12 @@ public class PopupNewAbility : PopupController
     protected override void OnEnable()
     {
         base.OnEnable();
-        TweenAbility(1f);
+    }
+
+    public override void OnOpen()
+    {
+        base.OnOpen();
+        TweenAbility(1f, false);
     }
 
     protected override void OnDisable()
@@ -46,13 +53,13 @@ public class PopupNewAbility : PopupController
         _abilityImage.sprite = sItemSData.Ability.AbilityImage;
     }
 
-    private void TweenAbility(float endValue)
+    private void TweenAbility(float endValue, bool useDefaultVal = true)
     {
-        _txtAbilityName.DOFade(endValue, _tweenDuration).SetEase(_tweenEase).OnComplete(() =>
+        _txtAbilityName.DOFade(endValue, (!useDefaultVal) ? _tweenDuration : DEFAULT_TWEEN_VALUE).SetEase(_tweenEase).OnComplete(() =>
         {
-            _abilityImage.DOFade(endValue, _tweenDuration).SetEase(_tweenEase).OnComplete(() =>
+            _abilityImage.DOFade(endValue, (!useDefaultVal) ? _tweenDuration : DEFAULT_TWEEN_VALUE).SetEase(_tweenEase).OnComplete(() =>
             {
-                _txtAbilityDescribe.DOFade(endValue, _tweenDuration).SetEase(_tweenEase);
+                _txtAbilityDescribe.DOFade(endValue, (!useDefaultVal) ? _tweenDuration : DEFAULT_TWEEN_VALUE).SetEase(_tweenEase);
             });
         });
     }

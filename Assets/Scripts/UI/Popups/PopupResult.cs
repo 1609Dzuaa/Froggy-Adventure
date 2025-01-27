@@ -48,7 +48,9 @@ public class PopupResult : PopupController
     [SerializeField] float _tweenChildDuration;
     [SerializeField] Transform[] _arrButton;
 
-    //[SerializeField] PopupNotification _notification;
+    [Header("PS Shine")]
+    [SerializeField] GameObject _psShine;
+
     float _initPosition;
     float _endPosition;
     bool _canClick = true; //prevent mutliple click
@@ -78,6 +80,7 @@ public class PopupResult : PopupController
     {
         if (obj == null) return;
         _param = obj as ResultParam;
+        _psShine.SetActive(_param.Result == ELevelResult.Completed);
         _txtBanner.text = (_param.Result == ELevelResult.Completed) ? "Level Completed" : "Level Failed";
         _imageBanner.sprite = (_param.Result == ELevelResult.Completed) ? _spritesBanner[0] : _spritesBanner[1];
         _txtSilver.text = "0";
