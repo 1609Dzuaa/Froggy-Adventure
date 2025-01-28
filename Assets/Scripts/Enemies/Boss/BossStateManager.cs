@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using static GameEnums;
 using UnityEngine.UI;
+using TMPro;
+using Cinemachine;
 
 [System.Serializable]
 public struct BossMinions
@@ -35,7 +37,7 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] int _maxHP;
 
     [Header("Text Related")]
-    [SerializeField] private Text _txtOverHead;
+    [SerializeField] private TextMeshProUGUI _txtOverHead;
     [SerializeField] private Transform _txtPosition;
     [SerializeField] private float _delayTxtEnable;
     [SerializeField] private float _timeEnableTxt;
@@ -85,6 +87,9 @@ public class BossStateManager : MEnemiesManager
 
     [Header("Dialog")]
     [SerializeField] Dialog _bossDialog;
+
+    [Header("Boss's Cam")]
+    [SerializeField] CinemachineVirtualCamera _bossCam;
 
     BossWaitState _waitState = new();
     BossNormalState _normalState = new();
@@ -364,7 +369,7 @@ public class BossStateManager : MEnemiesManager
 
     private void SpawnBuff()
     {
-        if (Time.time - _startTickSpawnBuff >= _delaySpawnBuff)
+        /*if (Time.time - _startTickSpawnBuff >= _delaySpawnBuff)
         {
             int random = UnityEngine.Random.Range(0, 2);
             float xPos = UnityEngine.Random.Range(_minRange.position.x, _maxRange.position.x);
@@ -373,7 +378,7 @@ public class BossStateManager : MEnemiesManager
 
             Instantiate((random > 0) ? _playerShield : _playerAbsorb, spawnPos, Quaternion.identity);
             _startTickSpawnBuff = Time.time;
-        }
+        }*/
     }
 
     private void SpawnSummonEffect(Vector3 pos)
@@ -537,5 +542,6 @@ public class BossStateManager : MEnemiesManager
     public void AllowEnterBattle()
     {
         _enterBattle = true;
+        _bossCam.Priority = 20;
     }
 }

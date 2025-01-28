@@ -40,24 +40,13 @@ public class TriggerZone : GameObjectManager
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag(GameConstants.PLAYER_TAG) && _playerRef.GetIsOnGround())
+        if (collision.CompareTag(GameConstants.PLAYER_TAG)) //&& _playerRef.GetIsOnGround())
         {
             _boxCol.enabled = false;
             _playableDirector.Play();
             if (_isBossTimeline)
-            {
-                StartCoroutine(CloseGate());
                 SoundsManager.Instance.PlayMusic(GameEnums.ESoundName.BossTheme);
-            }
             //Debug.Log("PlayStay");
         }
-    }
-
-    private IEnumerator CloseGate()
-    {
-        yield return new WaitForSeconds(_delayCloseGate);
-
-        EventsManager.NotifyObservers(GameEnums.EEvents.BossGateOnClose, null);
-        SoundsManager.Instance.PlaySfx(GameEnums.ESoundName.BossIntroduceSfx, 1.0f);
     }
 }
