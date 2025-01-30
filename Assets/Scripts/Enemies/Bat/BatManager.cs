@@ -89,7 +89,8 @@ public class BatManager : MEnemiesManager
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
+        //base.FixedUpdate();
+        _state?.FixedUpdate();
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static GameConstants;
 
 public class BeeChaseState : MEnemiesAttackState
 {
@@ -33,7 +34,7 @@ public class BeeChaseState : MEnemiesAttackState
     {
         HandleLeftRightLogic();
 
-        if (CheckIfCanAttack())
+        if (CheckIfCanShoot())
             _beeManager.ChangeState(_beeManager.GetBeeAttackState());
         else if (CheckIfCanIdle())
             _beeManager.ChangeState(_beeManager.GetBeeIdleState());
@@ -54,9 +55,9 @@ public class BeeChaseState : MEnemiesAttackState
         return !_beeManager.HasDetectedPlayer;
     }
 
-    private bool CheckIfCanAttack()
+    private bool CheckIfCanShoot()
     {
-        return Vector2.Distance(_beeManager.transform.position, _attackPos) < 0.1f;
+        return Vector2.Distance(_beeManager.transform.position, _attackPos) < NEAR_ZERO_THRESHOLD;
     }
 
     private bool CheckIfOutOfMinMaxRange()

@@ -4,6 +4,9 @@ using UnityEngine;
 using System;
 using static GameEnums;
 using UnityEngine.UI;
+using TMPro;
+using Cinemachine;
+using UnityEngine.Playables;
 
 [System.Serializable]
 public struct BossMinions
@@ -35,7 +38,7 @@ public class BossStateManager : MEnemiesManager
     [SerializeField] int _maxHP;
 
     [Header("Text Related")]
-    [SerializeField] private Text _txtOverHead;
+    [SerializeField] private TextMeshProUGUI _txtOverHead;
     [SerializeField] private Transform _txtPosition;
     [SerializeField] private float _delayTxtEnable;
     [SerializeField] private float _timeEnableTxt;
@@ -85,6 +88,12 @@ public class BossStateManager : MEnemiesManager
 
     [Header("Dialog")]
     [SerializeField] Dialog _bossDialog;
+
+    [Header("Boss's Cam")]
+    [SerializeField] CinemachineVirtualCamera _bossCam;
+
+    [Header("Endgame Cutscene")]
+    [SerializeField] PlayableDirector _endGameCutscene;
 
     BossWaitState _waitState = new();
     BossNormalState _normalState = new();
@@ -146,13 +155,13 @@ public class BossStateManager : MEnemiesManager
     protected override void OnEnable()
     {
         base.OnEnable();
-        EventsManager.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
+        EventsManager.SubcribeToAnEvent(EEvents.OnBossDefeated, HandleWhenPlayerWin);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        EventsManager.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnBossDefeated, HandleWhenPlayerWin);
     }
 
     protected override void Start()
@@ -364,7 +373,7 @@ public class BossStateManager : MEnemiesManager
 
     private void SpawnBuff()
     {
-        if (Time.time - _startTickSpawnBuff >= _delaySpawnBuff)
+        /*if (Time.time - _startTickSpawnBuff >= _delaySpawnBuff)
         {
             int random = UnityEngine.Random.Range(0, 2);
             float xPos = UnityEngine.Random.Range(_minRange.position.x, _maxRange.position.x);
@@ -373,7 +382,7 @@ public class BossStateManager : MEnemiesManager
 
             Instantiate((random > 0) ? _playerShield : _playerAbsorb, spawnPos, Quaternion.identity);
             _startTickSpawnBuff = Time.time;
-        }
+        }*/
     }
 
     private void SpawnSummonEffect(Vector3 pos)
@@ -486,6 +495,7 @@ public class BossStateManager : MEnemiesManager
         SpawnDeadVfx();
         SoundsManager.Instance.PlaySfx(ESoundName.BossDeadSfx, 1.0f);
         Destroy(gameObject);
+        _endGameCutscene.Play();
     }
 
     private void SpawnDeadVfx()
@@ -537,5 +547,6 @@ public class BossStateManager : MEnemiesManager
     public void AllowEnterBattle()
     {
         _enterBattle = true;
+        _bossCam.Priority = 20;
     }
 }

@@ -208,7 +208,7 @@ public class PlayerStateManager : MonoBehaviour
         EventsManager.SubcribeToAnEvent(EEvents.PlayerOnBeingPushedBack, PushBack);
         EventsManager.SubcribeToAnEvent(EEvents.PlayerOnUpdateRespawnPosition, UpdateRespawnPosition);
         EventsManager.SubcribeToAnEvent(EEvents.OnUnlockSkill, UnlockSkill);
-        EventsManager.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWinGame);
+        EventsManager.SubcribeToAnEvent(EEvents.OnBossDefeated, HandleWinGame);
         EventsManager.SubcribeToAnEvent(EEvents.OnValidatePlayerBuffs, ValidateBuffs);
         EventsManager.SubcribeToAnEvent(EEvents.OnSavePlayerData, PlayDeadAnimation);
     }

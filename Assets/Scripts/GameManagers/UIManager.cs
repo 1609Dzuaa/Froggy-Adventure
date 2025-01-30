@@ -47,12 +47,15 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] HUDController _hudControl;
     [SerializeField] float _target;
     [SerializeField] float _initPos;
+    [SerializeField] Transform _signComponent;
+    [SerializeField] float _durationFadeEndGame;
 
     #region Internal Attributes
     Dictionary<EPopup, Canvas> _dictPopupUI = new();
     Dictionary<EToggleButton, ToggleButton> _dictToggleBtn = new();
     Stack<Canvas> _stackPopupCanvas = new();
     int _popupSortOrder = 1;
+    Image _imageLockUI;
     //từ điển lưu các gameobject UI cần Popup, dễ mở rộng hơn
     //thay thế mấy đoạn popup...canvas... = popup(tham số)
     #endregion
@@ -61,6 +64,7 @@ public class UIManager : BaseSingleton<UIManager>
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
+        _imageLockUI = _lockUICanvas.GetComponentInChildren<Image>();
         //StartCoroutine(hell());
     }
 
@@ -196,13 +200,13 @@ public class UIManager : BaseSingleton<UIManager>
             //nếu 0 phải thì chỉ còn TH out về MainMenu trong Gameplay => gọi tween Noti
             if (_dictPopupUI[EPopup.Result].gameObject.activeInHierarchy)
             {
-                Debug.Log("Result Close");
+                //Debug.Log("Result Close");
                 _popupResult.OnClose();
                 StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans1, needReset, isReplay, needAid, isResetWithoutCD));
             }
             else
             {
-                Debug.Log("Noti Close");
+                //Debug.Log("Noti Close");
                 _popupNotification.OnClose();
                 StartCoroutine(HandleTransitionAndSwitchScene(indexLevel, _delayTrans2, needReset, isReplay, needAid, isResetWithoutCD));
             }
@@ -220,6 +224,7 @@ public class UIManager : BaseSingleton<UIManager>
             ToggleInGameCanvas((indexLevel != GAME_MENU) ? true : false);
             if (needAid)
                 EventsManager.NotifyObservers(EEvents.OnAidForPlayer);
+            _signComponent.gameObject.SetActive(SceneManager.GetActiveScene().buildIndex != 0);//MAX_GAME_LEVEL - 2);
             GameManager.Instance.SwitchScene(indexLevel);
             if (needReset)
             {
@@ -232,7 +237,8 @@ public class UIManager : BaseSingleton<UIManager>
                     HandleDisplayMenuUI();
                 else if (!isReplay)
                 {
-                    _hudControl.Countdown(); //0 phải replay thì mới start count lại từ đầu
+                    if (SceneManager.GetActiveScene().buildIndex != 1)
+                        _hudControl.Countdown(); //0 phải replay thì mới start count lại từ đầu
                     string strLevelTheme = "Level" + indexLevel.ToString() + "Theme";
                     ESoundName levelTheme = (ESoundName)Enum.Parse(typeof(ESoundName), strLevelTheme);
                     SoundsManager.Instance.PlayMusic(levelTheme);
@@ -266,5 +272,23 @@ public class UIManager : BaseSingleton<UIManager>
         double fps = 1 / Time.deltaTime;
         fps = Math.Round(fps, 2);
         _txtFPS.text = fps.ToString();
+    }
+
+    public void FadeEndGame()
+    {
+        _lockUICanvas.gameObject.SetActive(true);
+        _imageLockUI.color = new Color(1f, 1f, 1f, 0f);
+        _imageLockUI.DOFade(1f, _durationFadeEndGame).OnComplete(() =>
+        {
+            GameManager.Instance.SwitchScene(GAME_MENU);
+            ToggleMenuUIsCanvas(true);
+            ToggleInGameCanvas(false);
+            _imageLockUI.DOFade(0f, _durationFadeEndGame).OnComplete(() =>
+            {
+                _lockUICanvas.gameObject.SetActive(false);
+                _imageLockUI.color = new Color(0f, 0f, 0f, 0.7f);
+                HandleDisplayMenuUI();
+            });
+        });
     }
 }

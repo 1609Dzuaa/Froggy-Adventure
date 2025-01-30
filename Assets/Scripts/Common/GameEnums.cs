@@ -108,7 +108,7 @@
         OnPurchaseSuccess,
         OnChangeHP, //xử lý +, -, mất hoàn toàn hp qua event này
         OnHandlePlayerHP, //xử lý liên quan đến hp player(hiển thị, count timer temp hp)
-
+        OnBossDefeated,
     }
 
     #endregion

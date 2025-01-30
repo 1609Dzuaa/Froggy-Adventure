@@ -78,7 +78,7 @@ public class HUDController : MonoBehaviour
         {
             HandleFinishLevel();
         });
-        //Debug.Log("start Count");
+        Debug.Log("start Count");
     }
 
     private void ReceiveLevelResult(object obj)

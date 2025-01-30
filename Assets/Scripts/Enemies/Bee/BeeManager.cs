@@ -89,7 +89,8 @@ public class BeeManager : MEnemiesManager
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
+        _state?.FixedUpdate();
+        //base.FixedUpdate();
     }
 
     protected override void DetectPlayer()
