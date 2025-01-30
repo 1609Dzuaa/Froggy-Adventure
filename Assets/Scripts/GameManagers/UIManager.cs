@@ -48,12 +48,14 @@ public class UIManager : BaseSingleton<UIManager>
     [SerializeField] float _target;
     [SerializeField] float _initPos;
     [SerializeField] Transform _signComponent;
+    [SerializeField] float _durationFadeEndGame;
 
     #region Internal Attributes
     Dictionary<EPopup, Canvas> _dictPopupUI = new();
     Dictionary<EToggleButton, ToggleButton> _dictToggleBtn = new();
     Stack<Canvas> _stackPopupCanvas = new();
     int _popupSortOrder = 1;
+    Image _imageLockUI;
     //từ điển lưu các gameobject UI cần Popup, dễ mở rộng hơn
     //thay thế mấy đoạn popup...canvas... = popup(tham số)
     #endregion
@@ -62,6 +64,7 @@ public class UIManager : BaseSingleton<UIManager>
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
+        _imageLockUI = _lockUICanvas.GetComponentInChildren<Image>();
         //StartCoroutine(hell());
     }
 
@@ -269,5 +272,23 @@ public class UIManager : BaseSingleton<UIManager>
         double fps = 1 / Time.deltaTime;
         fps = Math.Round(fps, 2);
         _txtFPS.text = fps.ToString();
+    }
+
+    public void FadeEndGame()
+    {
+        _lockUICanvas.gameObject.SetActive(true);
+        _imageLockUI.color = new Color(1f, 1f, 1f, 0f);
+        _imageLockUI.DOFade(1f, _durationFadeEndGame).OnComplete(() =>
+        {
+            GameManager.Instance.SwitchScene(GAME_MENU);
+            ToggleMenuUIsCanvas(true);
+            ToggleInGameCanvas(false);
+            _imageLockUI.DOFade(0f, _durationFadeEndGame).OnComplete(() =>
+            {
+                _lockUICanvas.gameObject.SetActive(false);
+                _imageLockUI.color = new Color(0f, 0f, 0f, 0.7f);
+                HandleDisplayMenuUI();
+            });
+        });
     }
 }

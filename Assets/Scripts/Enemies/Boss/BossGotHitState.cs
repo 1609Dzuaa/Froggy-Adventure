@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static GameEnums;
 
 public class BossGotHitState : MEnemiesBaseState
 {
@@ -9,14 +10,14 @@ public class BossGotHitState : MEnemiesBaseState
     {
         base.EnterState(charactersManager);
         _bossManager = (BossStateManager)charactersManager;
-        _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)GameEnums.EBossState.hitShieldOff);
+        _bossManager.Animator.SetInteger(GameConstants.ANIM_PARA_STATE, (int)EBossState.hitShieldOff);
         _currentHP = --_bossManager.MaxHP;
 
         //Thêm cho nó 1 cutscene lúc chết
-        if (_currentHP < 0)
+        if (_currentHP <= 0)
         {
             _bossManager.StopAllCoroutines();
-            EventsManager.NotifyObservers(GameEnums.EEvents.OnLevelCompleted, null);
+            EventsManager.NotifyObservers(EEvents.OnBossDefeated);
         }
         //Debug.Log("GH");
     }

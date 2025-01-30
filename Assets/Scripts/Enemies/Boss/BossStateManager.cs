@@ -6,6 +6,7 @@ using static GameEnums;
 using UnityEngine.UI;
 using TMPro;
 using Cinemachine;
+using UnityEngine.Playables;
 
 [System.Serializable]
 public struct BossMinions
@@ -91,6 +92,9 @@ public class BossStateManager : MEnemiesManager
     [Header("Boss's Cam")]
     [SerializeField] CinemachineVirtualCamera _bossCam;
 
+    [Header("Endgame Cutscene")]
+    [SerializeField] PlayableDirector _endGameCutscene;
+
     BossWaitState _waitState = new();
     BossNormalState _normalState = new();
     BossChargeState _chargeState = new();
@@ -151,13 +155,13 @@ public class BossStateManager : MEnemiesManager
     protected override void OnEnable()
     {
         base.OnEnable();
-        EventsManager.SubcribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
+        EventsManager.SubcribeToAnEvent(EEvents.OnBossDefeated, HandleWhenPlayerWin);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        EventsManager.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, HandleWhenPlayerWin);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnBossDefeated, HandleWhenPlayerWin);
     }
 
     protected override void Start()
@@ -491,6 +495,7 @@ public class BossStateManager : MEnemiesManager
         SpawnDeadVfx();
         SoundsManager.Instance.PlaySfx(ESoundName.BossDeadSfx, 1.0f);
         Destroy(gameObject);
+        _endGameCutscene.Play();
     }
 
     private void SpawnDeadVfx()
