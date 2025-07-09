@@ -18,6 +18,7 @@ public class LevelController : MonoBehaviour
     void Start()
     {
         LoadDataItemLevel();
+        CacheLevelProgress(); //cache level progress data into LevelsManager
         SetupDictionary();
         //performanceMarker.Begin();
         SetupForLevelButtons(_arrItemLevels);
@@ -50,6 +51,18 @@ public class LevelController : MonoBehaviour
             }
         }
     }
+
+    private void CacheLevelProgress()
+    {
+        for (int i = 0; i < _dataLevels.Length; i++)
+        {
+            string itemFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + _dataLevels[i].OrderID.ToString() + ".json";
+            LevelProgressData levelData = JSONDataHelper.LoadFromJSon<LevelProgressData>(itemFilePath);
+            if (!LevelsManager.Instance.DictLevelsProgress.ContainsKey(_dataLevels[i].OrderID))
+                LevelsManager.Instance.DictLevelsProgress.Add(_dataLevels[i].OrderID, levelData);
+        }
+    }
+
 
     private void ResetHighlightButtons(object obj = null)
     {

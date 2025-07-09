@@ -201,7 +201,12 @@
         BossParticleSfx,
         BossTeleSfx,
         BossDeadSfx,
-        BossIntroduceSfx
+        BossIntroduceSfx,
+        Level5Theme,
+        Level6Theme,
+        CollectHPSfx,
+        ItemPurchaseSfx,
+
     }
 
     #endregion

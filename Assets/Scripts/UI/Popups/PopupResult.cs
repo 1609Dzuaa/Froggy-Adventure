@@ -68,12 +68,17 @@ public class PopupResult : PopupController
         _endPosition = transform.localPosition.y - _distance;
         _defaultFruitSprite = _arrImgFruit[0].sprite;
         EventsManager.SubcribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
+        EventsManager.SubcribeToAnEvent(EEvents.OnChangeHP, AllowClosePopup);
         ResetScaleButtons();
     }
+
+    private void AllowClosePopup(object obj)
+        => _canClose = true;
 
     private void OnDestroy()
     {
         EventsManager.UnsubscribeToAnEvent(EEvents.OnHandleLevelCompleted, ReceiveResultParam);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnChangeHP, AllowClosePopup);
     }
 
     private void ReceiveResultParam(object obj)
@@ -299,7 +304,8 @@ public class PopupResult : PopupController
             });
             ShowNotificationHelper.ShowNotification(param);
         }
-        else if (_param.Result == ELevelResult.Failed && levelToSwitch == SceneManager.GetActiveScene().buildIndex + 1)
+        else if (levelToSwitch == SceneManager.GetActiveScene().buildIndex + 1 
+            && !LevelsManager.Instance.DictLevelsProgress[levelToSwitch].IsUnlock)
         {
             string content = "Finish This Level To Open Next Level!";
             NotificationParam param = new(content, true, () =>

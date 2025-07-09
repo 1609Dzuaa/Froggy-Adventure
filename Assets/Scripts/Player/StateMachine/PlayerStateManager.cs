@@ -689,7 +689,8 @@ public class PlayerStateManager : MonoBehaviour
             //Check vì có thể dính DeadZone nên 0 vào state GotHit
             if (PlayerHealthManager.Instance.CurrentHP > 0)
             {
-                EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.MinusOneHP);
+                bool hasTempHP = PlayerHealthManager.Instance.HasTempHP;
+                EventsManager.NotifyObservers(EEvents.OnChangeHP, hasTempHP ? EHPStatus.MinusOneTempHP : EHPStatus.MinusOneHP);
                 if (PlayerHealthManager.Instance.CurrentHP == 0)
                 {
                     EventsManager.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);

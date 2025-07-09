@@ -224,7 +224,10 @@ public class UIManager : BaseSingleton<UIManager>
             ToggleInGameCanvas((indexLevel != GAME_MENU) ? true : false);
             if (needAid)
                 EventsManager.NotifyObservers(EEvents.OnAidForPlayer);
-            _signComponent.gameObject.SetActive(SceneManager.GetActiveScene().buildIndex != 0);//MAX_GAME_LEVEL - 2);
+            bool canDisplaySignUI = SceneManager.GetActiveScene().buildIndex == GAME_MENU && indexLevel != GAME_MENU
+            || SceneManager.GetActiveScene().buildIndex == indexLevel;//replay
+            bool countFromBeginning = SceneManager.GetActiveScene().buildIndex == GAME_MENU || isReplay;
+            _signComponent.gameObject.SetActive(canDisplaySignUI);//MAX_GAME_LEVEL - 2);
             GameManager.Instance.SwitchScene(indexLevel);
             if (needReset)
             {
@@ -237,7 +240,7 @@ public class UIManager : BaseSingleton<UIManager>
                     HandleDisplayMenuUI();
                 else if (!isReplay)
                 {
-                    if (SceneManager.GetActiveScene().buildIndex != 1)
+                    if (countFromBeginning)
                         _hudControl.Countdown(); //0 phải replay thì mới start count lại từ đầu
                     string strLevelTheme = "Level" + indexLevel.ToString() + "Theme";
                     ESoundName levelTheme = (ESoundName)Enum.Parse(typeof(ESoundName), strLevelTheme);

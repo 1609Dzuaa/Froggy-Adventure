@@ -73,6 +73,7 @@ public class AbilityItemShop : ItemShop
             EventsManager.NotifyObservers(EEvents.OnUnlockSkill, ItemSData);
             UIManager.Instance.TogglePopup(EPopup.ItemShopDetail, false);
             UIManager.Instance.TogglePopup(EPopup.Ability, true);
+            SoundsManager.Instance.PlaySfx(ESoundName.ItemPurchaseSfx, 1.0f);
             HandleDisplayItem();
         }
 
