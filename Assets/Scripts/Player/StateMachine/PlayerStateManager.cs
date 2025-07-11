@@ -215,6 +215,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void PlayDeadAnimation(object obj)
     {
+        if (_hasDead) return;
         HandleDeadAnimation();
     }
 
@@ -712,6 +713,7 @@ public class PlayerStateManager : MonoBehaviour
         _capCollider2D.enabled = false;
         gameObject.layer = LayerMask.NameToLayer("Enemies"); //Đổi layer tránh bị quái Detect dù đã chết
         SoundsManager.Instance.PlaySfx(ESoundName.PlayerDeadSfx, 1.0f);
+        Debug.Log("dead");
     }
 
     private void HandleCoyoteTime()

@@ -237,7 +237,10 @@ public class UIManager : BaseSingleton<UIManager>
             _imageSceneTrans.DOLocalMoveX(_target, _transDuration).OnComplete(() =>
             {
                 if (SceneManager.GetActiveScene().buildIndex == GAME_MENU)
+                {
                     HandleDisplayMenuUI();
+                    SoundsManager.Instance.PlayMusic(ESoundName.StartMenuTheme);
+                }
                 else if (!isReplay)
                 {
                     if (countFromBeginning)
