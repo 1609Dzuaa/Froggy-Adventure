@@ -33,6 +33,7 @@ public class HUDController : MonoBehaviour
         EventsManager.SubcribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
         EventsManager.SubcribeToAnEvent(EEvents.OnResetLevel, HandleReset);
         EventsManager.SubcribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
+        EventsManager.SubcribeToAnEvent(EEvents.OnBossDefeated, KillTweenTimer);
     }
 
     private void OnDestroy()
@@ -41,6 +42,12 @@ public class HUDController : MonoBehaviour
         EventsManager.UnsubscribeToAnEvent(EEvents.OnReturnMainMenu, KillTweenTimer);
         EventsManager.UnsubscribeToAnEvent(EEvents.OnResetLevel, HandleReset);
         EventsManager.UnsubscribeToAnEvent(EEvents.OnLevelCompleted, ReceiveLevelResult);
+        EventsManager.UnsubscribeToAnEvent(EEvents.OnBossDefeated, KillTweenTimer);
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("hud dis");
     }
 
     private void HandleDisplayBuffIcons()
@@ -149,7 +156,7 @@ public class HUDController : MonoBehaviour
         JSONDataHelper.SaveToJSon<LevelProgressData>(currentLevelPData, currentLevelFilePath);
 
         //lvl hiện tại là max, kh xử lý nữa
-        if (currentLevelIndex == MAX_GAME_LEVEL - 1) return;
+        if (currentLevelIndex == MAX_GAME_LEVEL) return;
 
         int nextLevelIndex = currentLevelIndex + 1;
         string nextLevelFilePath = Application.persistentDataPath + LEVEL_DATA_PATH + nextLevelIndex.ToString() + ".json";

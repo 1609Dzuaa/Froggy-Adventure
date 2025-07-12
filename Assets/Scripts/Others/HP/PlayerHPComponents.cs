@@ -30,6 +30,7 @@ public class PlayerHPComponents : MonoBehaviour
             if (PlayerHealthManager.Instance.CurrentHP < PlayerHealthManager.Instance.MaxHP)
             {
                 EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.AddOneHP);
+                SoundsManager.Instance.PlaySfx(ESoundName.CollectHPSfx, 1.0f);
                 Destroy(transform.parent.gameObject);
             }
         }

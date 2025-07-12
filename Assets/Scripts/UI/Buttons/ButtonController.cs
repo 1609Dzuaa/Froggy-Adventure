@@ -10,5 +10,6 @@ public class ButtonController : MonoBehaviour
     public virtual void OnClick()
     {
         SoundsManager.Instance.PlaySfx(_sfxName, 1.0f);
+        Debug.Log("play " + _sfxName);
     }
 }

@@ -48,6 +48,7 @@ public class LevelController : MonoBehaviour
                         DEFAULT_TIME_COMPLETED);
                     JSONDataHelper.SaveToJSon<LevelProgressData>(data, itemFilePath);
                 }
+                LevelsManager.Instance.DictLevelsStaticData.TryAdd(item.OrderID, item);
             }
         }
     }

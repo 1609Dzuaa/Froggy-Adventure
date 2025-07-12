@@ -18,6 +18,7 @@ public class Coin : GameObjectManager
     {
         base.SetUpProperties();
         _valueGiven = Random.Range(_data.MinValue, _data.MaxValue + 1);
+        _playerRef = FindAnyObjectByType<PlayerStateManager>().GetComponent<Transform>();
         EventsManager.SubcribeToAnEvent(EEvents.OnMagnetizeCoins, MoveTowardPlayer);
     }
 
@@ -32,7 +33,7 @@ public class Coin : GameObjectManager
         {
             CoinInfo info = new(_type, _valueGiven);
             EventsManager.NotifyObservers(EEvents.OnCollectCoin, info);
-
+            SoundsManager.Instance.PlaySfx(ESoundName.PickupCoinSfx, 0.85f);
             //MarkAsDeleted();
             Destroy(gameObject);
         }

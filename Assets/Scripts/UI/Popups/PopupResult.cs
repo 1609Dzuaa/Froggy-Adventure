@@ -119,6 +119,9 @@ public class PopupResult : PopupController
             _isFirstOnEnable = false;
         else
         {
+            SoundsManager.Instance.PlaySfx((_param.Result == ELevelResult.Completed) ? 
+                ESoundName.LevelCompletedSfx : ESoundName.LevelFailedSfx, 1.0f);
+
             transform.DOLocalMoveY(_endPosition, _duration).SetEase(_ease).OnComplete(() =>
             {
                 //tween sCoin
@@ -305,7 +308,8 @@ public class PopupResult : PopupController
             ShowNotificationHelper.ShowNotification(param);
         }
         else if (levelToSwitch == SceneManager.GetActiveScene().buildIndex + 1 
-            && !LevelsManager.Instance.DictLevelsProgress[levelToSwitch].IsUnlock)
+            && !LevelsManager.Instance.DictLevelsProgress[levelToSwitch].IsUnlock
+            && _param.Result == ELevelResult.Failed)
         {
             string content = "Finish This Level To Open Next Level!";
             NotificationParam param = new(content, true, () =>
@@ -380,7 +384,12 @@ public class PopupResult : PopupController
             if (levelToSwitch == _currentLevel)
                 UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true);
             else
-                UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, true);
+                UIManager.Instance.AnimateAndTransitionScene(levelToSwitch, true, false);
+
+            List<Skills> listActiveSkills = ToggleAbilityItemHelper.GetListActivatedSkills();
+            LevelInfo levelInfo = new(listActiveSkills, LevelsManager.Instance.DictLevelsStaticData[levelToSwitch].TimeAllow);
+            EventsManager.NotifyObservers(EEvents.OnSetupLevel, levelInfo);
+
         }
     }
 }

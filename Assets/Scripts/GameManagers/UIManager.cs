@@ -218,6 +218,7 @@ public class UIManager : BaseSingleton<UIManager>
         yield return new WaitForSeconds(waitTime);
 
         if (isReplay) _hudControl.ControlTweenTimer(true);
+        SoundsManager.Instance.PlaySfx(ESoundName.SceneTransSfx, 1.0f);
         _imageSceneTrans.DOLocalMoveX(0f, _transDuration).OnComplete(() =>
         {
             ToggleMenuUIsCanvas((indexLevel != GAME_MENU) ? false : true);
@@ -227,7 +228,7 @@ public class UIManager : BaseSingleton<UIManager>
             bool canDisplaySignUI = SceneManager.GetActiveScene().buildIndex == GAME_MENU && indexLevel != GAME_MENU
             || SceneManager.GetActiveScene().buildIndex == indexLevel;//replay
             bool countFromBeginning = SceneManager.GetActiveScene().buildIndex == GAME_MENU || isReplay;
-            _signComponent.gameObject.SetActive(canDisplaySignUI);//MAX_GAME_LEVEL - 2);
+            //_signComponent.gameObject.SetActive(canDisplaySignUI);//MAX_GAME_LEVEL - 2);
             GameManager.Instance.SwitchScene(indexLevel);
             if (needReset)
             {
@@ -294,6 +295,7 @@ public class UIManager : BaseSingleton<UIManager>
                 _lockUICanvas.gameObject.SetActive(false);
                 _imageLockUI.color = new Color(0f, 0f, 0f, 0.7f);
                 HandleDisplayMenuUI();
+                SoundsManager.Instance.PlayMusic(ESoundName.StartMenuTheme);
             });
         });
     }

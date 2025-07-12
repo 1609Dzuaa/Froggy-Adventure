@@ -206,6 +206,11 @@
         Level6Theme,
         CollectHPSfx,
         ItemPurchaseSfx,
+        LevelCompletedSfx,
+        LevelFailedSfx,
+        PickupCoinSfx,
+        SceneTransSfx,
+        Level7Theme,
 
     }
 
