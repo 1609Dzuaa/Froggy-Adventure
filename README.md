@@ -1,5 +1,6 @@
 # Name: Froggy's Adventure 🐸
-## Free 2 Play (PC Version): https://l1ttl3turtl3.itch.io/ech-ops-adventure
+## 🖥️PC Version: https://l1ttl3turtl3.itch.io/ech-ops-adventure
+## 📱Mobile Android Version: https://l1ttl3turtl3.itch.io/froggys-adventure-v2
 ### PC Version now move to branch ([PC-Build](https://github.com/1609Dzuaa/Froggy-Adventure/tree/PC-Build))
 #### 📌 This project is for learning Unity Engine through a basic 2D game. All the assets are free to use from Itch.io and Unity Asset Store. If you have any copyright issues or questions, contact me via my email: datrua3152003@gmail.com. If you found it helpful, a star would be appreciated ⭐ ^^.<br>
 # Table of Contents
