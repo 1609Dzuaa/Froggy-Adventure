@@ -39,6 +39,8 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
 
     public int TempHP { get => _tempHP; set => _tempHP = value; }
 
+    public bool HasTempHP => _hasTempHP;
+
     protected override void Awake()
     {
         base.Awake();
@@ -73,7 +75,7 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
                     if (Time.time - _tempHPRunOutEntryTime >= _timeEachBlink)
                     {
                         _tempHPRunOutEntryTime = Time.time;
-                        for (int i = _currentHP; i <= _currentHP + _tempHP; i++)
+                        for (int i = _currentHP; i < _currentHP + _tempHP; i++)
                             _uiHP[i].sprite = (_blinkLost) ? _lostHPSprite : _tempHPSprite;
                         _blinkLost = !_blinkLost;
                     }
@@ -103,6 +105,8 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
                 _uiHP[_currentHP].sprite = _normalHPSprite;
                 _currentHP++;
                 Mathf.Clamp(_currentHP, MIN_HP, MaxHP);
+                _firstTweenTempHP.Kill();
+                _secondTweenTempHP.Kill();
                 break;
 
             case EHPStatus.MinusOneHP:
@@ -124,6 +128,20 @@ public class PlayerHealthManager : BaseSingleton<PlayerHealthManager>
                 _firstTweenTempHP.Kill();
                 _secondTweenTempHP.Kill();
                 _currentHP = _tempHP = 0;
+                break;
+
+            case EHPStatus.MinusOneTempHP:
+                _tempHP--;
+                _uiHP[_currentHP + _tempHP].sprite = _lostHPSprite;
+                Mathf.Clamp(_tempHP, MIN_HP, MaxHP);
+                if (_tempHP == MIN_HP && _hasTempHP)
+                {
+                    _hasTempHP = false;
+                    _tempHP = 0;
+                    _firstTweenTempHP.Kill();
+                    _secondTweenTempHP.Kill();
+                    _tempHPEntryTime = _tempHPRunOutEntryTime = 0f;
+                }
                 break;
         }
         Debug.Log("HP change, current: " + _currentHP);

@@ -99,6 +99,8 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private ButtonJumpController _btnJumpControl;
     [SerializeField] private ButtonDashController _btnDashControl;
 
+    [SerializeField] private PhysicsMaterial2D _highFrictionMat;
+
     [HideInInspector] public float MoveSpeed;
     [HideInInspector] public float JumpSpeed;
 
@@ -215,6 +217,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void PlayDeadAnimation(object obj)
     {
+        if (_hasDead) return;
         HandleDeadAnimation();
     }
 
@@ -223,6 +226,8 @@ public class PlayerStateManager : MonoBehaviour
         _state = idleState;
         _state.EnterState(this);
         rb.gravityScale = _playerStats.GravScale;
+        if (SceneManager.GetActiveScene().buildIndex == 5)
+            rb.sharedMaterial = _highFrictionMat;
     }
 
     private void OnDestroy()
@@ -689,7 +694,8 @@ public class PlayerStateManager : MonoBehaviour
             //Check vì có thể dính DeadZone nên 0 vào state GotHit
             if (PlayerHealthManager.Instance.CurrentHP > 0)
             {
-                EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.MinusOneHP);
+                bool hasTempHP = PlayerHealthManager.Instance.HasTempHP;
+                EventsManager.NotifyObservers(EEvents.OnChangeHP, hasTempHP ? EHPStatus.MinusOneTempHP : EHPStatus.MinusOneHP);
                 if (PlayerHealthManager.Instance.CurrentHP == 0)
                 {
                     EventsManager.NotifyObservers(EEvents.OnLevelCompleted, ELevelResult.Failed);
@@ -711,6 +717,7 @@ public class PlayerStateManager : MonoBehaviour
         _capCollider2D.enabled = false;
         gameObject.layer = LayerMask.NameToLayer("Enemies"); //Đổi layer tránh bị quái Detect dù đã chết
         SoundsManager.Instance.PlaySfx(ESoundName.PlayerDeadSfx, 1.0f);
+        Debug.Log("dead");
     }
 
     private void HandleCoyoteTime()

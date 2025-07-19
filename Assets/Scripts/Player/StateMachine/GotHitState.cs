@@ -56,12 +56,10 @@ public class GotHitState : PlayerBaseState
 
     private void HandleGotHit()
     {
-        //if (!BuffsManager.Instance.GetBuff(EBuffs.Absorb).IsActivating)
-        EventsManager.NotifyObservers(EEvents.OnChangeHP, EHPStatus.MinusOneHP);
+        bool hasTempHP = PlayerHealthManager.Instance.HasTempHP;
+        EventsManager.NotifyObservers(EEvents.OnChangeHP, hasTempHP ? EHPStatus.MinusOneTempHP : EHPStatus.MinusOneHP);
         if (PlayerHealthManager.Instance.CurrentHP == 0)
             _playerStateManager.HandleDeadState();
-        //else
-            //PlayerHealthManager.Instance.ChangeHPState(GameConstants.HP_STATE_TEMP);
 
         _playerStateManager.IsVunerable = true;
         _entryTime = Time.time;

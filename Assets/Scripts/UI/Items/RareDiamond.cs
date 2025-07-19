@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GameConstants;
 
-public class RareDiamond : ItemShop
+public class RareDiamond : AbilityItemShop
 {
     public override bool HandleBuyItem()
     {

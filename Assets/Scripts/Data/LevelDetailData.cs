@@ -76,7 +76,8 @@ public class LevelDetailData : MonoBehaviour
 
     public void ButtonPlayOnClick()
     {
-        if (PlayerHealthManager.Instance.CurrentHP <= HP_ALARM_THRESHOLD)
+        if (PlayerHealthManager.Instance.CurrentHP <= HP_ALARM_THRESHOLD
+            && PlayerHealthManager.Instance.TempHP == MIN_HP)
         {
             //xét thêm nếu hết máu và còn tiền hoặc nếu hết máu và hết tiền
 

@@ -18,6 +18,7 @@ public class ShopController : MonoBehaviour
     [Header("Prefab Items để Instantiate")]
     public ItemShop[] ArrItemPrefabs;
     ItemShop[] _arrItems;
+    Tween _tweenItems;
 
     public void CreateItemAndInitFiles()
     {
@@ -94,7 +95,9 @@ public class ShopController : MonoBehaviour
 
     private void OnDisable()
     {
+        _tweenItems?.Kill();
         ResetScaleItems();
+        _tweenItems = null;
     }
 
     /*private void TweenItems()
@@ -124,6 +127,7 @@ public class ShopController : MonoBehaviour
         {
             //Debug.Log("Current Frame: " + Time.frameCount);
             Sequence sequence = DOTween.Sequence();
+            _tweenItems = sequence;
             for (int i = 0; i < arr.Length; i++)
                 sequence.Append(arr[i].transform.DOScale(Vector3.one, _tweenDuration).SetEase(_ease));
         }

@@ -691,6 +691,7 @@ MonoBehaviour:
   ItemSData: {fileID: 11400000, guid: a18f4a9b269dd0748885e652f74f3ee0, type: 2}
   _imageFrame: {fileID: 8690355613356554348}
   _skill: 0
+  SISData: {fileID: 0}
 --- !u!114 &6107860758919874121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703,7 +704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9092e72c7dedff9419d501af06cf81a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sfxName: 16
+  _sfxName: 18
 --- !u!114 &2584443808061487465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,6 +751,18 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8902287817113991261}
         m_TargetAssemblyTypeName: AbilityItemShop, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6107860758919874121}
+        m_TargetAssemblyTypeName: ButtonController, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
