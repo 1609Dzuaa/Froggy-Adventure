@@ -290,6 +290,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b090563da0e788a4283ff4fe4db5d931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnlockedDbJump: 0
+  UnlockedWallSlide: 0
   dustPS: {fileID: 8824840369930275787}
   groundCheck: {fileID: 8824840369502370912}
   groundCheckRadius: 0.4
@@ -311,6 +313,7 @@ MonoBehaviour:
   _joystick: {fileID: 0}
   _btnJumpControl: {fileID: 0}
   _btnDashControl: {fileID: 0}
+  _highFrictionMat: {fileID: 6200000, guid: e713970313526ec4aa48d008e36040c0, type: 2}
   MoveSpeed: 0
   JumpSpeed: 0
 --- !u!95 &8824840369338483482

@@ -99,6 +99,8 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private ButtonJumpController _btnJumpControl;
     [SerializeField] private ButtonDashController _btnDashControl;
 
+    [SerializeField] private PhysicsMaterial2D _highFrictionMat;
+
     [HideInInspector] public float MoveSpeed;
     [HideInInspector] public float JumpSpeed;
 
@@ -224,6 +226,8 @@ public class PlayerStateManager : MonoBehaviour
         _state = idleState;
         _state.EnterState(this);
         rb.gravityScale = _playerStats.GravScale;
+        if (SceneManager.GetActiveScene().buildIndex == 5)
+            rb.sharedMaterial = _highFrictionMat;
     }
 
     private void OnDestroy()
